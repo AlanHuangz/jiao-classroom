@@ -141,10 +141,10 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline
 .code b{font-size:32px;letter-spacing:.14em;background:#fff;color:var(--ink);padding:0 12px;border-radius:8px;font-variant-numeric:tabular-nums}
 .t-head .btn{background:transparent;color:#fff;border-color:rgba(255,255,255,.4);padding:6px 10px;font-size:15px}
 .t-head .btn.on{background:#fff;color:var(--ink)}
-.t-tasks{display:flex;flex-wrap:wrap;gap:8px;padding:8px 16px;background:var(--paper);border-bottom:1px solid var(--line);align-items:center}
+.t-tasks{display:flex;flex-wrap:wrap;gap:5px;max-height:128px;overflow-y:auto;padding:6px 16px;background:var(--paper);border-bottom:1px solid var(--line);align-items:center}
 .t-tasks .lead{font-weight:700;margin-right:4px}
-.task-btn{text-align:left;padding:6px 12px}
-.task-btn small{display:block;font-size:12px;color:var(--muted)}
+.task-btn{text-align:left;padding:3px 9px;font-size:14px;line-height:1.2}
+.task-btn small{display:block;font-size:11px;color:var(--muted)}
 .task-btn.on small{color:#cfd9e1}
 .t-main{flex:1;min-height:0;display:flex;flex-direction:column}
 .grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));grid-auto-rows:max-content;gap:10px;padding:10px 16px;overflow:auto;flex:1;align-content:start}
@@ -234,7 +234,7 @@ var ROLE='student';
 var PAGES={};
 var LITE=true;
 var STUDENT_URL='https://alanhuangz.github.io/jiao-classroom/';
-var PAGE_IDS=['59','60','61','62','63','69','70','71','72','73','74','75'];
+var PAGE_IDS=['59','60','61','62','63','69','70','71','72','73','74','75','b86','b87','b88','b89','b90','b91','b92','b93','b94','b95','b96','b97'];
 var PREFIX='jiao3-wk-';
 
 /* ================= helpers ================= */
@@ -281,6 +281,27 @@ var TASKS=[
   {id:'p63b',unit:'angle',kind:'wb',page:'63',box:[100,685,1070,765],title:'p.63 第4題',sub:'生活中的角'},
   {id:'rao',unit:'angle',kind:'rao',title:'直角・銳角・鈍角',sub:'練習 20 題（各種方向）'},
   {id:'cmp',unit:'angle',kind:'cmp',title:'哪個角比較大',sub:'練習 12 題（平移＋旋轉）'},
+  {id:'r86a',kind:'wb',unit:'areab',page:'b86',box:[20,1150,1200,386],tools:['tiles'],title:'p.86',sub:'暖身：面積比一比'},
+  {id:'r87a',kind:'wb',unit:'areab',page:'b87',box:[0,0,1241,1536],tools:['sheet','tiles'],title:'p.87',sub:'哪張海報最大'},
+  {id:'r88a',kind:'wb',unit:'areab',page:'b88',box:[60,90,1150,750],tools:['tiles'],title:'p.88 第1題',sub:'小卡片和方瓦'},
+  {id:'r88b',kind:'wb',unit:'areab',page:'b88',box:[60,850,1150,600],tools:['tiles'],title:'p.88 第2題',sub:'1 平方公分'},
+  {id:'r89a',kind:'wb',unit:'areab',page:'b89',box:[60,60,1150,520],tools:['tiles'],title:'p.89 第3題',sub:'幾個 1 cm²'},
+  {id:'r89b',kind:'wb',unit:'areab',page:'b89',box:[60,590,1150,400],tools:['tiles'],title:'p.89 第4題',sub:'用方瓦排排看'},
+  {id:'r89c',kind:'wb',unit:'areab',page:'b89',box:[60,990,1150,460],tools:['tiles'],title:'p.89 做做看',sub:'用方瓦排排看'},
+  {id:'r90a',kind:'wb',unit:'areab',page:'b90',box:[60,60,1150,490],tools:['tiles','sheet'],lat:[{x0:0,x1:600,y0:0,y1:560,ox:146.5,oy:240.6}],title:'p.90 第5題',sub:'平方公分板'},
+  {id:'r90b',kind:'wb',unit:'areab',page:'b90',box:[60,560,1150,900],tools:['sheet'],title:'p.90 第6題',sub:'用平方公分板量'},
+  {id:'r91a',kind:'wb',unit:'areab',page:'b91',box:[60,60,1150,620],tools:['sheet'],title:'p.91 第7題',sub:'卡片有多大'},
+  {id:'r91b',kind:'wb',unit:'areab',page:'b91',box:[60,720,1150,720],tools:['cut','sheet'],title:'p.91 第8題',sub:'剪開再拼'},
+  {id:'r92a',kind:'wb',unit:'areab',page:'b92',box:[60,40,1150,800],tools:['cut','paint'],lat:[{x0:200,x1:385,y0:320,y1:490,ox:221.6,oy:344.6},{x0:400,x1:585,y0:320,y1:490,ox:424.5,oy:344.6},{x0:600,x1:785,y0:320,y1:490,ox:627.5,oy:344.6},{x0:200,x1:385,y0:630,y1:800,ox:221.6,oy:655.5},{x0:400,x1:585,y0:630,y1:800,ox:425.4,oy:655.5},{x0:600,x1:785,y0:630,y1:800,ox:627.5,oy:655.5}],title:'p.92 第1題①②',sub:'切割拼湊補成一格'},
+  {id:'r92b',kind:'wb',unit:'areab',page:'b92',box:[60,850,1150,620],tools:['cut','paint'],lat:[{x0:200,x1:385,y0:1050,y1:1250,ox:224.5,oy:1073.5},{x0:400,x1:585,y0:920,y1:1080,ox:424.5,oy:940.6},{x0:400,x1:585,y0:1190,y1:1350,ox:424.5,oy:1210.6},{x0:600,x1:785,y0:920,y1:1080,ox:628.6,oy:940.6}],title:'p.92 第1題③',sub:'兩個三角形合成一格'},
+  {id:'r93a',kind:'wb',unit:'areab',page:'b93',box:[60,60,1150,580],tools:['paint','cut'],lat:[{y0:0,y1:700,ox:176.2,oy:196.2}],title:'p.93 第2題',sub:'切割拼湊'},
+  {id:'r93b',kind:'wb',unit:'areab',page:'b93',box:[60,720,1150,720],tools:['paint','cut'],lat:[{y0:700,y1:9999,ox:185.8,oy:842.3}],title:'p.93 第3題',sub:'點子圖'},
+  {id:'r94a',kind:'wb',unit:'areab',page:'b94',box:[60,40,1150,1450],tools:['sheet'],title:'p.94 第1題',sub:'估估看'},
+  {id:'r95a',kind:'wb',unit:'areab',page:'b95',box:[60,60,1150,1400],tools:['sheet','paint'],lat:[{x0:600,x1:1110,y0:190,y1:530,ox:618.2,oy:215.5}],title:'p.95 第2題',sub:'估圖案、葉子'},
+  {id:'r96a',kind:'wb',unit:'areab',page:'b96',box:[60,100,1150,880],tools:['sheet'],title:'p.96 練習 第1題',sub:'量量看'},
+  {id:'r96b',kind:'wb',unit:'areab',page:'b96',box:[60,990,1150,470],tools:['sheet'],title:'p.96 練習 第2題',sub:'估郵票和鈔票'},
+  {id:'r97a',kind:'wb',unit:'areab',page:'b97',box:[60,60,1150,920],tools:['paint','cut'],lat:[{y0:0,y1:960,ox:199.1,oy:194.5}],title:'p.97 練習 第3題①',sub:'方格圖'},
+  {id:'r97b',kind:'wb',unit:'areab',page:'b97',box:[60,960,1150,500],tools:['paint','cut'],lat:[{y0:960,y1:9999,ox:200.5,oy:1031.1}],title:'p.97 練習 第3題②',sub:'點子圖'},
   {id:'q69a',kind:'wb',unit:'area',page:'69',box:[85,95,1070,1395],tools:['tiles'],title:'p.69 第1題',sub:'用方瓦排排看'},
   {id:'q70a',kind:'wb',unit:'area',page:'70',box:[85,70,1070,580],tools:['sheet','tiles'],title:'p.70 第2題',sub:'用平方公分板量'},
   {id:'q70b',kind:'wb',unit:'area',page:'70',box:[85,650,1070,780],tools:['sheet'],title:'p.70 第3題',sub:'門票的面積'},
@@ -291,12 +312,13 @@ var TASKS=[
   {id:'q73a',kind:'wb',unit:'area',page:'73',box:[85,85,1070,1345],tools:['sheet'],title:'p.73 第1題',sub:'估一估'},
   {id:'q74a',kind:'wb',unit:'area',page:'74',box:[85,40,1070,1385],tools:['paint','cut'],lat:[{y0:0,y1:575,ox:147.8,oy:200.6},{y0:575,y1:9999,ox:147.5,oy:607.5}],title:'p.74 綜合第1題',sub:'看圖回答'},
   {id:'q75a',kind:'wb',unit:'area',page:'75',box:[85,60,1070,1380],tools:['paint','sheet'],lat:[{y0:0,y1:700,ox:180.1,oy:218.6}],title:'p.75 綜合第2題',sub:'估餅乾'},
-  {id:'acnt',kind:'acnt',unit:'area',title:'數格子算面積',sub:'練習 15 題（有半格）'},
-  {id:'apair',kind:'apair',unit:'area',title:'補成一格',sub:'練習 12 題（移動半格）'},
-  {id:'acmp',kind:'acmp',unit:'area',title:'哪個面積比較大',sub:'練習 12 題'},
-  {id:'adot',kind:'adot',unit:'area',title:'點子圖算面積',sub:'練習 12 題'}
+  {id:'acnt',kind:'acnt',unit:'areab area',title:'數格子算面積',sub:'練習 15 題（有半格）'},
+  {id:'apair',kind:'apair',unit:'areab area',title:'補成一格',sub:'練習 12 題（移動半格）'},
+  {id:'acmp',kind:'acmp',unit:'areab area',title:'哪個面積比較大',sub:'練習 12 題'},
+  {id:'adot',kind:'adot',unit:'areab area',title:'點子圖算面積',sub:'練習 12 題'}
 ];
-var UNITS=[['angle','第5單元 角'],['area','第6單元 面積']];
+var UNITS=[['angle','第5單元 角'],['areab','面積・課本'],['area','面積・習作']];
+function isAreaUnit(t){return !!t&&!!t.unit&&t.unit.indexOf('area')>=0;}
 var TASK={};TASKS.forEach(function(t){TASK[t.id]=t;});
 
 var PAGE_URL={};
@@ -332,7 +354,7 @@ function genCmp(){
 }
 function newState(id){
   var t=TASK[id];
-  if(t.kind==='wb'){var bx=t.box;var o={k:'wb',id:id,ink:[],copies:[],boards:[],sel:-1,zoom:{z:1,cx:bx[0]+bx[2]/2,cy:bx[1]+bx[3]/2}};if(t.unit==='area'){o.tiles=[];o.sheets=[];o.pieces=[];o.paint=[];o.asel=null;}return o;}
+  if(t.kind==='wb'){var bx=t.box;var o={k:'wb',id:id,ink:[],copies:[],boards:[],sel:-1,zoom:{z:1,cx:bx[0]+bx[2]/2,cy:bx[1]+bx[3]/2}};if(isAreaUnit(t)){o.tiles=[];o.sheets=[];o.pieces=[];o.paint=[];o.asel=null;}return o;}
   if(t.kind==='acnt'||t.kind==='adot')return {k:t.kind,id:id,qs:genACnt(t.kind==='adot'),i:0,ans:null,res:[],paint:[],pieces:[],done:false};
   if(t.kind==='acmp')return {k:'acmp',id:id,qs:genACmp(),i:0,ans:null,res:[],paint:[],pieces:[],done:false};
   if(t.kind==='apair'){var pq=genAPair();return {k:'apair',id:id,qs:pq,i:0,ans:null,res:[],paint:[],pieces:triPieces(pq[0]),done:false};}
@@ -578,12 +600,12 @@ var PIECECOL=['#e0663c','#2a8f6a','#7a52c7','#d19a12','#2a6fb0','#c2417a'];
 var DIR4=[[1,0],[-1,0],[0,1],[0,-1]];
 var LEGS=[['t','l'],['t','r'],['r','b'],['b','l']];
 var NBR={t:[0,-1],r:[1,0],b:[0,1],l:[-1,0]};
-function isAreaSt(st){return !!st&&(!!AREA_KINDS[st.k]||(st.k==='wb'&&!!TASK[st.id]&&TASK[st.id].unit==='area'));}
+function isAreaSt(st){return !!st&&(!!AREA_KINDS[st.k]||(st.k==='wb'&&isAreaUnit(TASK[st.id])));}
 function unitOf(st){return st.k==='wb'?U_WB:U_PR;}
 function latAt(st,p){
   if(AREA_KINDS[st.k])return {ox:0,oy:0,s:U_PR};
   var t=TASK[st.id];if(!t||!t.lat)return null;
-  for(var i=0;i<t.lat.length;i++){var L=t.lat[i];if(!p||(p[1]>=L.y0&&p[1]<L.y1))return {ox:L.ox,oy:L.oy,s:U_WB};}
+  for(var i=0;i<t.lat.length;i++){var L=t.lat[i];if(!p||(p[1]>=L.y0&&p[1]<L.y1&&(L.x0==null||(p[0]>=L.x0&&p[0]<L.x1))))return {ox:L.ox,oy:L.oy,s:U_WB};}
   return null;
 }
 function cellOf(L,p){return [Math.floor((p[0]-L.ox)/L.s),Math.floor((p[1]-L.oy)/L.s)];}
@@ -732,7 +754,7 @@ Scene.prototype.snapSheet=function(S){
 Scene.prototype.snapPiece=function(i){
   var st=this.st,Pc=st.pieces[i],W=pieceWorld(Pc),best=null,U=unitOf(st);
   var L=latAt(st,[Pc.x,Pc.y]);
-  if(L){W.forEach(function(w){var q=nearPt(L,w),d=dist(q,w);if(!best||d<best.d)best={d:d,dx:q[0]-w[0],dy:q[1]-w[1]};});if(best&&best.d<U*0.28){Pc.x+=best.dx;Pc.y+=best.dy;}return;}
+  if(L){var hs=st.k==='wb',LL=hs?{ox:L.ox,oy:L.oy,s:L.s/2}:L;W.forEach(function(w){var q=nearPt(LL,w),d=dist(q,w);if(!best||d<best.d)best={d:d,dx:q[0]-w[0],dy:q[1]-w[1]};});if(best&&best.d<U*(hs?0.2:0.28)){Pc.x+=best.dx;Pc.y+=best.dy;}return;}
   var T=[];st.pieces.forEach(function(o,j){T=T.concat(o.o);if(j!==i)T=T.concat(pieceWorld(o));});
   W.forEach(function(w){T.forEach(function(q){var d=dist(q,w);if(!best||d<best.d)best={d:d,dx:q[0]-w[0],dy:q[1]-w[1]};});});
   if(best&&best.d<16){Pc.x+=best.dx;Pc.y+=best.dy;}
@@ -754,7 +776,7 @@ Scene.prototype.areaDown=function(p,hv){
   var block={t:'x'};
   if(AREA_KINDS[st.k]&&(st.ans||st.done))return block;
   if(s.mode==='cut'){
-    var L=latAt(st,p),q=p;if(L){var np=nearPt(L,p);if(dist(np,p)<L.s*0.4)q=np;}
+    var L=latAt(st,p),q=p;if(L){var hs=st.k==='wb';var np=nearPt(hs?{ox:L.ox,oy:L.oy,s:L.s/2}:L,p);if(dist(np,p)<L.s*(hs?0.24:0.4))q=np;}
     if(s.cut.length>=3&&dist(q,s.cut[0])<24)s.finishCut();else s.cut.push([f(q[0]),f(q[1])]);
     if(s.opt.onMode)s.opt.onMode();return block;
   }
@@ -838,7 +860,7 @@ function Workspace(root,opt){
 Workspace.prototype.state=function(){return this.states[this.id];};
 Workspace.prototype.setTask=function(id){
   if(!TASK[id])return;this.id=id;var st=this.states[id];
-  if(!st||st.k!==TASK[id].kind||(st.k==='wb'&&!st.boards)||(TASK[id].unit==='area'&&!st.pieces)){st=this.states[id]=newState(id);}
+  if(!st||st.k!==TASK[id].kind||(st.k==='wb'&&!st.boards)||(isAreaUnit(TASK[id])&&!st.pieces)){st=this.states[id]=newState(id);}
   this.scene.mode='move';this.scene.load(st);this.buildTools();this.buildAns();this.syncTools();this.onChange(true);
 };
 Workspace.prototype.reset=function(){this.states[this.id]=newState(this.id);this.setTask(this.id);};
@@ -1062,7 +1084,9 @@ function StudentApp(){
     }
     setInterval(function(){
       if(!linked()||Date.now()-lastChunk<1500)return;
-      var order=[curPage()].concat(PAGE_IDS);for(var k=0;k<order.length;k++){var pg=order[k];if(pg&&!PAGE_URL[pg]){requestPage(pg);break;}}
+      var t0=ws.id&&TASK[ws.id],u0=t0?(t0.unit||'').split(' '):[];
+      var order=[curPage()].concat(TASKS.filter(function(t){return t.page&&(t.unit||'').split(' ').some(function(u){return u0.indexOf(u)>=0;});}).map(function(t){return t.page;}));
+      for(var k=0;k<order.length;k++){var pg=order[k];if(pg&&!PAGE_URL[pg]){requestPage(pg);break;}}
     },1000);
     var wasLinked=false;
     setInterval(function(){
@@ -1096,11 +1120,11 @@ function TeacherApp(){
   var netEl=$('.net');function setNet(c,t){netEl.className='net '+c;netEl.textContent=t;}
   /* tasks */
   var tbar=$('.t-tasks');
-  var unit=lsGet('jiao.t.unit',TASK[task].unit||'angle');
+  var unit=lsGet('jiao.t.unit',(TASK[task].unit||'angle').split(' ')[0]);if(!UNITS.some(function(u){return u[0]===unit;}))unit='angle';
   var ubar=h('span',{class:'units'});UNITS.forEach(function(u){var b=h('button',{class:'btn unit-btn',type:'button'},esc(u[1]));b.dataset.u=u[0];b.addEventListener('click',function(){unit=u[0];lsSet('jiao.t.unit',unit);syncTaskBtns();});ubar.appendChild(b);});tbar.appendChild(ubar);
   TASKS.forEach(function(t){var b=h('button',{class:'btn task-btn',type:'button'},esc(t.title)+'<small>'+esc(t.sub)+'</small>');b.dataset.id=t.id;b.dataset.u=t.unit;b.addEventListener('click',function(){assign(t.id);});tbar.appendChild(b);});
   function assign(id){task=id;lsSet('jiao.t.task',id);for(var n in seats)seats[n].light=null;syncTaskBtns();broadcast();demo.setTask(id);renderAllTiles();}
-  function syncTaskBtns(){tbar.querySelectorAll('.task-btn').forEach(function(b){b.classList.toggle('on',b.dataset.id===task);b.hidden=b.dataset.u!==unit;});tbar.querySelectorAll('.unit-btn').forEach(function(b){b.classList.toggle('on',b.dataset.u===unit);});}
+  function syncTaskBtns(){tbar.querySelectorAll('.task-btn').forEach(function(b){b.classList.toggle('on',b.dataset.id===task);b.hidden=b.dataset.u.split(' ').indexOf(unit)<0;});tbar.querySelectorAll('.unit-btn').forEach(function(b){b.classList.toggle('on',b.dataset.u===unit);});}
   /* tiles */
   var grid=$('.grid');
   for(var i=1;i<=7;i++)(function(n){
