@@ -556,6 +556,7 @@ Scene.prototype.bind=function(){
     var p=svgPt(svg,e),hn=e.target.closest?e.target.closest('[data-h]'):null,hv=hn?hn.getAttribute('data-h'):'';
     if(s.anim){s.anim.cancel();s.anim=null;}
     var st=s.st;
+    if(s.mode==='erase'&&(st.k==='wb'||isAreaSt(st))){if(AREA_KINDS[st.k]&&(st.ans||st.done))return;var hit=s.eraseAt(p,hv);drag={t:'erase'};try{svg.setPointerCapture(e.pointerId);}catch(_){}e.preventDefault();if(hit){s.drawInk();s.drawDyn();s.changed(false);}return;}
     if(isAreaSt(st)){var ad=s.areaDown(p,hv);if(ad){drag=ad;try{svg.setPointerCapture(e.pointerId);}catch(_){}e.preventDefault();s.drawDyn();s.changed(false);return;}}
     if(st.k==='wb'&&s.mode==='pen'){var k={c:s.penColor,p:[Math.round(p[0]),Math.round(p[1])]};var path=el('path',{class:'ink',stroke:k.c,d:inkD(k.p)},s.gInk);drag={t:'pen',k:k,path:path,last:p};}
     else if(st.k==='wb'&&s.mode==='line'){var a0=s.lineSnap(p,null);var k2={c:s.penColor,p:[a0.q[0],a0.q[1],a0.q[0],a0.q[1]]};var path2=el('path',{class:'ink',stroke:k2.c,d:inkD(k2.p)},s.gInk);drag={t:'line',k:k2,path:path2,a:a0.q,ed:a0.ed};}
@@ -569,6 +570,7 @@ Scene.prototype.bind=function(){
   });
   svg.addEventListener('pointermove',function(e){
     if(!drag)return;var p=svgPt(svg,e),st=s.st;
+    if(drag.t==='erase'){if(s.eraseInk(p)){s.drawInk();s.drawDyn();s.changed(false);}return;}
     if(drag.t==='x'){if(drag.move){drag.move(p);s.drawDyn();s.changed(false);}return;}
     if(drag.t==='line'){var q2=s.lineSnap(p,drag);drag.k.p[2]=q2.q[0];drag.k.p[3]=q2.q[1];drag.path.setAttribute('d',inkD(drag.k.p));return;}
     if(drag.t==='pen'){if(dist(p,drag.last)>=3&&drag.k.p.length<4000){drag.k.p.push(Math.round(p[0]),Math.round(p[1]));drag.last=p;drag.path.setAttribute('d',inkD(drag.k.p));}return;}
@@ -581,6 +583,7 @@ Scene.prototype.bind=function(){
   });
   function up(e){
     if(!drag)return;var d=drag;drag=null;
+    if(d.t==='erase'){s.drawInk();s.drawDyn();s.changed(true);return;}
     if(d.t==='x'){if(d.up)d.up(svgPt(svg,e));s.drawDyn();s.changed(true);return;}
     if(d.t==='pen'){if(d.k.p.length>=2)s.st.ink.push(d.k);s.drawInk();}
     if(d.t==='line'){if(dist(d.a,[d.k.p[2],d.k.p[3]])>=8&&s.st.ink.length<300)s.st.ink.push(d.k);s.drawInk();}
@@ -602,6 +605,23 @@ Scene.prototype.lineSnap=function(p,dr){
   else if(!ed){var best=null;(st.ink||[]).forEach(function(k){if(!k.p||k.p.length!==4)return;[[k.p[0],k.p[1]],[k.p[2],k.p[3]]].forEach(function(e){var d=dist(e,q);if(d<14&&(!best||d<best.d))best={d:d,e:e};});});
     if(best)q=best.e;else if(dr){var a=ang(dr.a,q),sn=Math.round(a/90)*90;if(Math.abs(adiff(a,sn))<3){var dd=dist(dr.a,q);q=P(dr.a,sn,dd);}}}
   return {q:[Math.round(q[0]),Math.round(q[1])],ed:ed};
+};
+Scene.prototype.eraseInk=function(p,th){
+  var st=this.st,best=-1,bd=th||16;
+  (st.ink||[]).forEach(function(k,i){var q=k.p;if(!q)return;for(var j=0;j+1<q.length;j+=2){var A=[q[j],q[j+1]],B=j+3<q.length?[q[j+2],q[j+3]]:A;var d=dist(projSeg(p,A,B,true).q,p);if(d<=bd){bd=d;best=i;}}});
+  if(best>=0){st.ink.splice(best,1);return true;}
+  if(th)return false;
+  if(st.paint&&st.paint.length){var U=unitOf(st);for(var i=st.paint.length-1;i>=0;i--){var c=st.paint[i];if(p[0]>=c[0]&&p[0]<c[0]+U&&p[1]>=c[1]&&p[1]<c[1]+U){st.paint.splice(i,1);return true;}}}
+  return false;
+};
+Scene.prototype.eraseAt=function(p,hv){
+  var st=this.st,m;if(this.eraseInk(p,10))return true;
+  if((m=/^c?(copy|knob):(\d+)$/.exec(hv))&&m[0].charAt(0)==='c'&&st.copies){st.copies.splice(+m[2],1);return true;}
+  if((m=/^(board|knob):(\d+)$/.exec(hv))&&st.boards){st.boards.splice(+m[2],1);st.sel=st.boards.length-1;return true;}
+  if((m=/^tile:(\d+)$/.exec(hv))&&st.tiles){st.tiles.splice(+m[1],1);st.asel=null;return true;}
+  if((m=/^s?(sheet|knob):(\d+)$/.exec(hv))&&m[0].charAt(0)==='s'&&st.sheets){st.sheets.splice(+m[2],1);st.asel=null;return true;}
+  if((m=/^p?(piece|knob):(\d+)$/.exec(hv))&&m[0].charAt(0)==='p'&&st.pieces&&st.k!=='apair'){st.pieces.splice(+m[2],1);st.asel=null;this.liftI=-1;return true;}
+  return this.eraseInk(p);
 };
 Scene.prototype.addCopy=function(){
   var v=this.tr[0],a=this.tr[1],b=this.tr[2],st=this.st;this.tr=[];
@@ -956,6 +976,7 @@ Workspace.prototype.buildTools=function(){
   if(st.k==='wb'){
     cap('工具');
     btn('移動',function(){sc.mode='move';sc.tr=[];sc.drawDyn();self.syncTools();},'','move');
+    btn('橡皮擦',function(){sc.mode='erase';sc.tr=[];sc.drawDyn();self.syncTools();},'','erase');
     btn('畫筆',function(){sc.mode='pen';sc.tr=[];sc.drawDyn();self.syncTools();},'','pen');
     var sw=h('div',{class:'sw'});['#d3392a','#2a6fb0','#1c2a38'].forEach(function(c){var b=h('button',{type:'button','aria-label':'筆的顏色',style:'background:'+c});b.dataset.c=c;b.addEventListener('click',function(){sc.penColor=c;sc.mode='pen';self.syncTools();});sw.appendChild(b);});T.appendChild(sw);
     var wt=TASK[st.id].tools||[];
@@ -970,7 +991,7 @@ Workspace.prototype.buildTools=function(){
     if(wt.indexOf('ruler')>=0){sep();cap('直尺（公分）');btn('＋ 拿直尺',function(){sc.addRuler();});row(mk('變長',function(){var b=sc.board();if(b&&b.t==='ru')sc.resizeBoard(2);}),mk('變短',function(){var b=sc.board();if(b&&b.t==='ru')sc.resizeBoard(0.5);}));}
     sep();cap('描角（描圖紙）');
     btn('描角',function(){sc.mode='trace';sc.tr=[];sc.drawDyn();self.syncTools();},'','trace');
-    btn('清除描角',function(){sc.st.copies=[];sc.tr=[];sc.drawDyn();sc.changed(true);});
+    btn('全部描角清掉',function(){sc.st.copies=[];sc.tr=[];sc.drawDyn();sc.changed(true);});
     sep();cap('看清楚');
     row(mk('放大',function(){zoom(1.4);}),mk('縮小',function(){zoom(1/1.4);}));
   }else{
@@ -988,6 +1009,7 @@ Workspace.prototype.buildAreaTools=function(btn,sep,cap,row,mk){
   function mode(m){sc.mode=m;sc.cut=[];sc.justCut=false;sc.liftI=-1;sc.drawDyn();self.syncTools();}
   cap('工具');
   btn('移動',function(){mode('move');},'','move');
+  btn('橡皮擦',function(){mode('erase');},'','erase');
   if(st.k==='wb'){
     btn('畫筆',function(){mode('pen');},'','pen');
     var sw=h('div',{class:'sw'});['#d3392a','#2a6fb0','#1c2a38'].forEach(function(c){var b=h('button',{type:'button','aria-label':'筆的顏色',style:'background:'+c});b.dataset.c=c;b.addEventListener('click',function(){sc.penColor=c;mode('pen');});sw.appendChild(b);});T.appendChild(sw);
@@ -1011,7 +1033,8 @@ Workspace.prototype.syncTools=function(){
   this.tools.querySelectorAll('[data-k]').forEach(function(b){var k=b.dataset.k;b.classList.toggle('on',k===sc.mode);});
   this.tools.querySelectorAll('.sw button').forEach(function(b){b.classList.toggle('on',sc.mode==='pen'&&b.dataset.c===sc.penColor);});
   var t='',ok2=this.tools.querySelector('[data-k="cutok"]');if(ok2)ok2.disabled=sc.cut.length<3;
-  if(isAreaSt(st)){
+  if(sc.mode==='erase')t='橡皮擦：點一下要擦掉的東西，只會擦掉那一個（筆跡、描的角、三角板、直尺、方瓦、平方公分板、剪下來的圖形、塗的格子）。按住拖過筆跡也可以擦。';
+  else if(isAreaSt(st)){
     if(sc.mode==='pen')t='畫筆：直接在習作上作答';
     else if(sc.mode==='paint')t='塗格子：點一格塗一格，會自動編號；再點一次取消。也可以拖著塗。';
     else if(sc.mode==='cut')t=sc.cut.length<3?'剪下來：沿著要剪的地方，一個角一個角點下去（會吸到格子點上）':'再點第一個點，或按「剪好了」，就剪下來了';
