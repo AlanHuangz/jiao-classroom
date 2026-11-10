@@ -130,7 +130,9 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline
 .join-card{background:var(--paper);border-radius:18px;padding:28px;max-width:640px;width:100%;display:flex;flex-direction:column;gap:18px;box-shadow:0 10px 40px rgba(28,42,56,.12)}
 .join-card h1{margin:0;font-size:34px}
 .join-card .lbl{font-size:18px;color:var(--muted)}
-.seats{display:grid;grid-template-columns:repeat(7,1fr);gap:8px}
+.seats{display:grid;grid-template-columns:repeat(8,1fr);gap:8px}
+.seats button.s8{font-size:20px;line-height:1.1;background:#eef4f8}.seats button.s8 small{display:block;font-size:12px;font-weight:600}
+.tile.t8 footer{display:none}.tile.t8 .seatno{color:var(--blue,#2a6fb0)}
 .seats button{font-size:28px;font-weight:700;padding:14px 0;border-radius:12px;border:2px solid var(--line);background:var(--paper)}
 .seats button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
 .codein{font-size:40px;letter-spacing:.3em;text-align:center;padding:8px;border:2px solid var(--line);border-radius:12px;width:100%}
@@ -1111,16 +1113,16 @@ function StudentApp(){
   join.innerHTML='<div class="join-card"><h1>角的教室</h1><div class="lbl">1. 點你的座號</div><div class="seats"></div><div class="lbl">2. 輸入老師螢幕上的「班級代碼」</div><input class="codein" inputmode="numeric" maxlength="4" autocomplete="off" aria-label="班級代碼"><button class="go" type="button">進入</button></div>';
   document.body.appendChild(join);
   var seatsEl=join.querySelector('.seats'),codeIn=join.querySelector('.codein'),goBtn=join.querySelector('.go');
-  for(var i=1;i<=7;i++){(function(n){var b=h('button',{type:'button'},String(n));b.addEventListener('click',function(){seat=n;sync();});seatsEl.appendChild(b);})(i);}
+  for(var i=1;i<=8;i++){(function(n){var b=h('button',{type:'button',class:n===8?'s8':''},n===8?'8<small>投影</small>':String(n));b.addEventListener('click',function(){seat=n;sync();});seatsEl.appendChild(b);})(i);}
   codeIn.value=code||'';
-  function sync(){seatsEl.querySelectorAll('button').forEach(function(b,i){b.classList.toggle('on',i+1===seat);});goBtn.disabled=!(seat>=1&&seat<=7&&/^\d{4}$/.test(codeIn.value));}
+  function sync(){seatsEl.querySelectorAll('button').forEach(function(b,i){b.classList.toggle('on',i+1===seat);});goBtn.disabled=!(seat>=1&&seat<=8&&/^\d{4}$/.test(codeIn.value));}
   codeIn.addEventListener('input',function(){codeIn.value=codeIn.value.replace(/\D/g,'').slice(0,4);sync();});
   sync();
   goBtn.addEventListener('click',function(){code=codeIn.value;lsSet('jiao.s.seat',seat);lsSet('jiao.s.code',code);join.remove();start();});
 
   function start(){
     var offline=code==='0000';
-    root.innerHTML='<div class="bar"><span class="seat">'+seat+' 號</span><span class="ttl"></span><span class="taskpick" hidden></span><span class="net">連線中…</span></div><div class="light" hidden><span class="bulb"></span><span class="lt"></span></div><div class="wsroot" style="flex:1;min-height:0;display:flex;flex-direction:column"></div>';
+    root.innerHTML='<div class="bar"><span class="seat">'+(seat===8?'8 號・老師投影':seat+' 號')+'</span><span class="ttl"></span><span class="taskpick" hidden></span><span class="net">連線中…</span></div><div class="light" hidden><span class="bulb"></span><span class="lt"></span></div><div class="wsroot" style="flex:1;min-height:0;display:flex;flex-direction:column"></div>';
     var ttl=root.querySelector('.ttl'),net=root.querySelector('.net'),light=root.querySelector('.light'),lt=light.querySelector('.lt'),tp=root.querySelector('.taskpick');
     var skey='jiao.s.states.'+seat,states=lsGet(skey,{})||{};
     var dirty=true,saveT=null;
@@ -1149,7 +1151,7 @@ function StudentApp(){
       if(d.t!=='cmd')return;
       if(!linked())dirty=true;
       lastHeard=Date.now();setNet('ok','已連線老師');
-      if(d.task)setTask(d.task);freeze.hidden=!d.freeze;setLight(d.light==='g'||d.light==='r'?d.light:null);
+      if(d.task)setTask(d.task);freeze.hidden=seat===8||!d.freeze;setLight(seat!==8&&(d.light==='g'||d.light==='r')?d.light:null);
     }
     function newPeer(){
       try{if(peer)peer.destroy();}catch(e){}
@@ -1224,9 +1226,9 @@ function TeacherApp(){
   function syncTaskBtns(){tbar.querySelectorAll('.task-btn').forEach(function(b){b.classList.toggle('on',b.dataset.id===task);b.hidden=b.dataset.u.split(' ').indexOf(unit)<0;});tbar.querySelectorAll('.unit-btn').forEach(function(b){b.classList.toggle('on',b.dataset.u===unit);});}
   /* tiles */
   var grid=$('.grid');
-  for(var i=1;i<=7;i++)(function(n){
-    var t=h('article',{class:'tile'});
-    t.innerHTML='<header><b class="seatno">'+n+' 號</b><input class="nm" placeholder="名字" aria-label="'+n+' 號名字"><span class="dot"></span></header><div class="tile-stage"><svg></svg><div class="off">還沒連線</div></div><div class="tile-sum"></div><div class="dots"></div><footer><button class="lg gbtn" type="button">綠燈：去習作做</button><button class="lg rbtn" type="button">紅燈：來找我</button><button class="lg cbtn" type="button">清除</button></footer>';
+  for(var i=1;i<=8;i++)(function(n){
+    var t=h('article',{class:'tile'+(n===8?' t8':'')});
+    t.innerHTML='<header><b class="seatno">'+(n===8?'8 號・投影':n+' 號')+'</b><input class="nm" placeholder="'+(n===8?'老師桌電':'名字')+'" aria-label="'+n+' 號名字"><span class="dot"></span></header><div class="tile-stage"><svg></svg><div class="off">還沒連線</div></div><div class="tile-sum"></div><div class="dots"></div><footer><button class="lg gbtn" type="button">綠燈：去習作做</button><button class="lg rbtn" type="button">紅燈：來找我</button><button class="lg cbtn" type="button">清除</button></footer>';
     grid.appendChild(t);
     var nm=t.querySelector('.nm');nm.value=names[n]||'';nm.addEventListener('input',function(){names[n]=nm.value;lsSet('jiao.t.names',names);});
     var s=seats[n]={n:n,el:t,pid:null,last:0,st:null,light:null,dirty:false,scene:new Scene(t.querySelector('svg'),{})};
@@ -1235,7 +1237,7 @@ function TeacherApp(){
     t.querySelector('.cbtn').addEventListener('click',function(){setLight(n,null);});
     t.querySelector('.tile-stage').addEventListener('click',function(){openModal(n);});
   })(i);
-  function setLight(n,l){seats[n].light=l;sendCmd(n);renderTile(n);if(modalSeat===n)renderModal();}
+  function setLight(n,l){if(n===8)l=null;seats[n].light=l;sendCmd(n);renderTile(n);if(modalSeat===n)renderModal();}
   function online(s){return !!(s.pid&&Date.now()-s.last<12000);}
   function renderTile(n){
     var s=seats[n],t=s.el,on=online(s);
@@ -1285,11 +1287,11 @@ function TeacherApp(){
   $('.newcode').addEventListener('click',function(){code=String(ri(1000,9999));lsSet('jiao.t.code',code);$('.codev').textContent=code;startPeer();});
   /* network */
   var peer=null,tries=0;
-  function sendCmd(n){var s=seats[n];if(!s.pid)return;relay(peer,s.pid,{t:'cmd',task:task,freeze:freeze,light:s.light||null});}
+  function sendCmd(n){var s=seats[n];if(!s.pid)return;relay(peer,s.pid,{t:'cmd',task:task,freeze:n===8?false:freeze,light:n===8?null:(s.light||null)});}
   function broadcast(){for(var n in seats)sendCmd(+n);}
   function onMsg(m){
     if(!m||!m.src||!m.payload||typeof m.payload.jiao!=='object')return;
-    var d=m.payload.jiao;if(!d)return;var n=parseInt(d.seat,10);if(!(n>=1&&n<=7))return;var s=seats[n];
+    var d=m.payload.jiao;if(!d)return;var n=parseInt(d.seat,10);if(!(n>=1&&n<=8))return;var s=seats[n];
     var fresh=s.pid!==m.src||!online(s);s.pid=m.src;s.last=Date.now();
     if(d.t==='hello'||fresh)sendCmd(n);
     if(d.t==='img?')queueImg(m.src,String(d.page),Array.isArray(d.miss)?d.miss:null);
