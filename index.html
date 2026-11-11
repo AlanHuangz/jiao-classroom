@@ -192,6 +192,8 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline
 .qrcard details{width:100%;font-size:15px}.qrcard details input{width:100%;margin:6px 0;padding:6px 8px;border:2px solid var(--line);border-radius:8px}
 .units{display:inline-flex;gap:4px;margin-right:8px;padding-right:10px;border-right:2px solid var(--line)}
 .unit-btn{padding:6px 10px;font-weight:700}
+.subj-btn{padding:6px 14px;font-weight:800;font-size:17px}
+.ink.hl{stroke-width:26;stroke-opacity:.42}
 .ws-count{position:absolute;right:10px;top:10px;background:rgba(255,255,255,.95);border:2px solid var(--ink);border-radius:12px;padding:6px 14px;font-size:22px;font-weight:700;pointer-events:none;font-variant-numeric:tabular-nums}
 .num-disp{min-width:150px;font-size:30px;font-weight:700;padding:4px 14px;border:2px solid var(--line);border-radius:12px;text-align:center;font-variant-numeric:tabular-nums}
 .num-disp small{font-size:16px;font-weight:400}
@@ -240,7 +242,7 @@ var ROLE='student';
 var PAGES={};
 var LITE=true;
 var STUDENT_URL='https://alanhuangz.github.io/jiao-classroom/';
-var PAGE_IDS=['b76','b77','b78','b79','b80','b81','b82','b83','59','60','61','62','63','69','70','71','72','73','74','75','b86','b87','b88','b89','b90','b91','b92','b93','b94','b95','b96','b97'];
+var PAGE_IDS=['z76','z77','z78','z79','z80','z81','z82','z83','z84','z85','z86','z87','z88','z89','z90','z91','z92','z93','z94','z95','z96','z97','z98','z99','z108','z109','z110','z111','z112','z113','z114','z115','z116','z117','z118','z119','z120','z121','z122','z123','z124','z125','z126','z127','z128','z129','z130','z131','b76','b77','b78','b79','b80','b81','b82','b83','59','60','61','62','63','69','70','71','72','73','74','75','b86','b87','b88','b89','b90','b91','b92','b93','b94','b95','b96','b97'];
 var PREFIX='jiao3-wk-';
 
 /* ================= helpers ================= */
@@ -268,6 +270,11 @@ var reduceMotion=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)
 function tween(dur,fn,done){var stop=false;if(reduceMotion){fn(1);if(done)done();return {cancel:function(){}};}var t0=performance.now();function step(t){if(stop)return;var r=Math.min(1,(t-t0)/dur);var k=r<.5?2*r*r:1-Math.pow(-2*r+2,2)/2;fn(k);if(r<1)requestAnimationFrame(step);else if(done)done();}requestAnimationFrame(step);return {cancel:function(){stop=true;}};}
 function lsGet(k,d){try{var v=localStorage.getItem(k);return v==null?d:JSON.parse(v);}catch(e){return d;}}
 function lsSet(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
+function cachePage(pg,b64){try{
+  var L=lsGet('jiao.pgl',null);if(!Array.isArray(L)){L=[];for(var i=0;i<localStorage.length;i++){var key=localStorage.key(i);if(key&&key.indexOf('jiao.pg.')===0)L.push([key.slice(8),(localStorage.getItem(key)||'').length]);}}
+  L=L.filter(function(e){return e[0]!==pg;});L.push([pg,b64.length+2]);
+  var tot=0;L.forEach(function(e){tot+=e[1];});while(tot>2600000&&L.length>1){var o=L.shift();tot-=o[1];localStorage.removeItem('jiao.pg.'+o[0]);}
+  lsSet('jiao.pgl',L);lsSet('jiao.pg.'+pg,b64);}catch(e){}}
 function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
 
 /* ================= tasks ================= */
@@ -275,6 +282,54 @@ var WB_W=1241,WB_H=1536,PR_W=1200,PR_H=800,T30=Math.tan(Math.PI/6);
 var COPYCOL=['#8a3fc2','#e07a12','#0f9488'];
 var TNAME={r:'直角',a:'銳角',o:'鈍角'},TSYM={r:'√',a:'○',o:'✕'};
 var TASKS=[
+  {id:'z76',unit:'zh7',subj:'zh',kind:'wb',page:'z76',box:[0,0,1241,1536],title:'p.76 課文①',sub:'第七課 淡水小鎮'},
+  {id:'z77',unit:'zh7',subj:'zh',kind:'wb',page:'z77',box:[0,0,1241,1536],title:'p.77 課文②',sub:'第七課 淡水小鎮'},
+  {id:'z78',unit:'zh7',subj:'zh',kind:'wb',page:'z78',box:[0,0,1241,1536],title:'p.78 課文③',sub:'第七課 淡水小鎮'},
+  {id:'z79',unit:'zh7',subj:'zh',kind:'wb',page:'z79',box:[0,0,1241,1536],title:'p.79 課文④',sub:'第七課 淡水小鎮'},
+  {id:'z80',unit:'zh7',subj:'zh',kind:'wb',page:'z80',box:[0,0,1241,1536],title:'p.80 我會寫字',sub:'第七課 淡水小鎮'},
+  {id:'z81',unit:'zh7',subj:'zh',kind:'wb',page:'z81',box:[0,0,1241,1536],title:'p.81 我會認字',sub:'第七課 淡水小鎮'},
+  {id:'z82',unit:'zh7',subj:'zh',kind:'wb',page:'z82',box:[0,0,1241,1536],title:'p.82 童詩開門',sub:'第七課 淡水小鎮'},
+  {id:'z83',unit:'zh7',subj:'zh',kind:'wb',page:'z83',box:[0,0,1241,1536],title:'p.83 我會聆聽',sub:'第七課 淡水小鎮'},
+  {id:'z84',unit:'zh8',subj:'zh',kind:'wb',page:'z84',box:[0,0,1241,1536],title:'p.84 課文①',sub:'第八課 安平古堡參觀記'},
+  {id:'z85',unit:'zh8',subj:'zh',kind:'wb',page:'z85',box:[0,0,1241,1536],title:'p.85 課文②',sub:'第八課 安平古堡參觀記'},
+  {id:'z86',unit:'zh8',subj:'zh',kind:'wb',page:'z86',box:[0,0,1241,1536],title:'p.86 課文③',sub:'第八課 安平古堡參觀記'},
+  {id:'z87',unit:'zh8',subj:'zh',kind:'wb',page:'z87',box:[0,0,1241,1536],title:'p.87 課文④',sub:'第八課 安平古堡參觀記'},
+  {id:'z88',unit:'zh8',subj:'zh',kind:'wb',page:'z88',box:[0,0,1241,1536],title:'p.88 我會寫字',sub:'第八課 安平古堡參觀記'},
+  {id:'z89',unit:'zh8',subj:'zh',kind:'wb',page:'z89',box:[0,0,1241,1536],title:'p.89 認識詞語',sub:'第八課 安平古堡參觀記'},
+  {id:'z90',unit:'zh8',subj:'zh',kind:'wb',page:'z90',box:[0,0,1241,1536],title:'p.90 認識句子',sub:'第八課 安平古堡參觀記'},
+  {id:'z91',unit:'zh8',subj:'zh',kind:'wb',page:'z91',box:[0,0,1241,1536],title:'p.91 我會說話',sub:'第八課 安平古堡參觀記'},
+  {id:'z92',unit:'zh9',subj:'zh',kind:'wb',page:'z92',box:[0,0,1241,1536],title:'p.92 課文①',sub:'第九課 馬太鞍的巴拉告'},
+  {id:'z93',unit:'zh9',subj:'zh',kind:'wb',page:'z93',box:[0,0,1241,1536],title:'p.93 課文②',sub:'第九課 馬太鞍的巴拉告'},
+  {id:'z94',unit:'zh9',subj:'zh',kind:'wb',page:'z94',box:[0,0,1241,1536],title:'p.94 課文③',sub:'第九課 馬太鞍的巴拉告'},
+  {id:'z95',unit:'zh9',subj:'zh',kind:'wb',page:'z95',box:[0,0,1241,1536],title:'p.95 課文④',sub:'第九課 馬太鞍的巴拉告'},
+  {id:'z96',unit:'zh9',subj:'zh',kind:'wb',page:'z96',box:[0,0,1241,1536],title:'p.96 我會寫字',sub:'第九課 馬太鞍的巴拉告'},
+  {id:'z97',unit:'zh9',subj:'zh',kind:'wb',page:'z97',box:[0,0,1241,1536],title:'p.97 認識形容詞',sub:'第九課 馬太鞍的巴拉告'},
+  {id:'z98',unit:'zh9',subj:'zh',kind:'wb',page:'z98',box:[0,0,1241,1536],title:'p.98 認識標點符號',sub:'第九課 馬太鞍的巴拉告'},
+  {id:'z99',unit:'zh9',subj:'zh',kind:'wb',page:'z99',box:[0,0,1241,1536],title:'p.99 我會讀圖片訊息',sub:'第九課 馬太鞍的巴拉告'},
+  {id:'z108',unit:'zh10',subj:'zh',kind:'wb',page:'z108',box:[0,0,1241,1536],title:'p.108 課文①',sub:'第十課 狐狸的故事'},
+  {id:'z109',unit:'zh10',subj:'zh',kind:'wb',page:'z109',box:[0,0,1241,1536],title:'p.109 課文②',sub:'第十課 狐狸的故事'},
+  {id:'z110',unit:'zh10',subj:'zh',kind:'wb',page:'z110',box:[0,0,1241,1536],title:'p.110 課文③',sub:'第十課 狐狸的故事'},
+  {id:'z111',unit:'zh10',subj:'zh',kind:'wb',page:'z111',box:[0,0,1241,1536],title:'p.111 課文④',sub:'第十課 狐狸的故事'},
+  {id:'z112',unit:'zh10',subj:'zh',kind:'wb',page:'z112',box:[0,0,1241,1536],title:'p.112 我會寫字',sub:'第十課 狐狸的故事'},
+  {id:'z113',unit:'zh10',subj:'zh',kind:'wb',page:'z113',box:[0,0,1241,1536],title:'p.113 我會認字',sub:'第十課 狐狸的故事'},
+  {id:'z114',unit:'zh10',subj:'zh',kind:'wb',page:'z114',box:[0,0,1241,1536],title:'p.114 認識押韻',sub:'第十課 狐狸的故事'},
+  {id:'z115',unit:'zh10',subj:'zh',kind:'wb',page:'z115',box:[0,0,1241,1536],title:'p.115 我會寫作',sub:'第十課 狐狸的故事'},
+  {id:'z116',unit:'zh11',subj:'zh',kind:'wb',page:'z116',box:[0,0,1241,1536],title:'p.116 課文①',sub:'第十一課 巨人的花園'},
+  {id:'z117',unit:'zh11',subj:'zh',kind:'wb',page:'z117',box:[0,0,1241,1536],title:'p.117 課文②',sub:'第十一課 巨人的花園'},
+  {id:'z118',unit:'zh11',subj:'zh',kind:'wb',page:'z118',box:[0,0,1241,1536],title:'p.118 課文③',sub:'第十一課 巨人的花園'},
+  {id:'z119',unit:'zh11',subj:'zh',kind:'wb',page:'z119',box:[0,0,1241,1536],title:'p.119 課文④',sub:'第十一課 巨人的花園'},
+  {id:'z120',unit:'zh11',subj:'zh',kind:'wb',page:'z120',box:[0,0,1241,1536],title:'p.120 我會寫字',sub:'第十一課 巨人的花園'},
+  {id:'z121',unit:'zh11',subj:'zh',kind:'wb',page:'z121',box:[0,0,1241,1536],title:'p.121 認識詞語',sub:'第十一課 巨人的花園'},
+  {id:'z122',unit:'zh11',subj:'zh',kind:'wb',page:'z122',box:[0,0,1241,1536],title:'p.122 認識標點符號',sub:'第十一課 巨人的花園'},
+  {id:'z123',unit:'zh11',subj:'zh',kind:'wb',page:'z123',box:[0,0,1241,1536],title:'p.123 認識句子',sub:'第十一課 巨人的花園'},
+  {id:'z124',unit:'zh12',subj:'zh',kind:'wb',page:'z124',box:[0,0,1241,1536],title:'p.124 課文①',sub:'第十二課 模仿貓'},
+  {id:'z125',unit:'zh12',subj:'zh',kind:'wb',page:'z125',box:[0,0,1241,1536],title:'p.125 課文②',sub:'第十二課 模仿貓'},
+  {id:'z126',unit:'zh12',subj:'zh',kind:'wb',page:'z126',box:[0,0,1241,1536],title:'p.126 課文③',sub:'第十二課 模仿貓'},
+  {id:'z127',unit:'zh12',subj:'zh',kind:'wb',page:'z127',box:[0,0,1241,1536],title:'p.127 課文④',sub:'第十二課 模仿貓'},
+  {id:'z128',unit:'zh12',subj:'zh',kind:'wb',page:'z128',box:[0,0,1241,1536],title:'p.128 我會寫字',sub:'第十二課 模仿貓'},
+  {id:'z129',unit:'zh12',subj:'zh',kind:'wb',page:'z129',box:[0,0,1241,1536],title:'p.129 我會認字',sub:'第十二課 模仿貓'},
+  {id:'z130',unit:'zh12',subj:'zh',kind:'wb',page:'z130',box:[0,0,1241,1536],title:'p.130 認識詞語',sub:'第十二課 模仿貓'},
+  {id:'z131',unit:'zh12',subj:'zh',kind:'wb',page:'z131',box:[0,0,1241,1536],title:'p.131 我會修改句子',sub:'第十二課 模仿貓'},
   {id:'r76a',unit:'angleb',kind:'wb',page:'b76',box:[60,60,1150,680],tools:['line'],title:'p.76 第4題',sub:'三角板比一比'},
   {id:'r76b',unit:'angleb',kind:'wb',page:'b76',box:[60,770,1150,700],tools:['line'],title:'p.76 第5題',sub:'猜猜看哪個角最大'},
   {id:'r77a',unit:'angleb',kind:'wb',page:'b77',box:[60,60,1150,1010],tools:['line'],title:'p.77 第6題',sub:'邊長會影響角的大小嗎'},
@@ -342,7 +397,10 @@ var TASKS=[
   {id:'acmp',kind:'acmp',unit:'areab area',title:'哪個面積比較大',sub:'練習 12 題'},
   {id:'adot',kind:'adot',unit:'areab area',title:'點子圖算面積',sub:'練習 12 題'}
 ];
-var UNITS=[['angleb','角・課本'],['angle','角・習作'],['areab','面積・課本'],['area','面積・習作']];
+var UNITS=[['angleb','角・課本','math'],['angle','角・習作','math'],['areab','面積・課本','math'],['area','面積・習作','math'],['zh7','七 淡水小鎮','zh'],['zh8','八 安平古堡參觀記','zh'],['zh9','九 馬太鞍的巴拉告','zh'],['zh10','十 狐狸的故事','zh'],['zh11','十一 巨人的花園','zh'],['zh12','十二 模仿貓','zh']];
+var SUBJ=[['math','數學'],['zh','國語']];
+function unitSubj(u){for(var i=0;i<UNITS.length;i++)if(UNITS[i][0]===u)return UNITS[i][2];return 'math';}
+function isZhSt(st){return !!st&&st.k==='wb'&&!!TASK[st.id]&&TASK[st.id].subj==='zh';}
 function isAreaUnit(t){return !!t&&!!t.unit&&t.unit.indexOf('area')>=0;}
 var TASK={};TASKS.forEach(function(t){TASK[t.id]=t;});
 
@@ -431,7 +489,7 @@ function copyAligned(st){var q=curQ(st),c=st.B;if(!q||!c)return {v:false,s:false
 
 /* ================= Scene ================= */
 function Scene(svg,opt){
-  this.svg=svg;this.opt=opt||{};this.ia=!!this.opt.interactive;this.mode='move';this.cut=[];this.penColor='#d3392a';this.tr=[];this.anim=null;this.st=null;
+  this.svg=svg;this.opt=opt||{};this.ia=!!this.opt.interactive;this.mode='move';this.cut=[];this.penColor='#d3392a';this.hlColor='#ffd400';this.tr=[];this.anim=null;this.st=null;
   svg.setAttribute('preserveAspectRatio','xMidYMid meet');
   this.bgId='sbg'+(++CLIPN);this.gBg=el('g',{id:this.bgId},svg);this.gInk=el('g',null,svg);this.gDyn=el('g',null,svg);
   if(this.ia)this.bind();
@@ -474,7 +532,7 @@ Scene.prototype.drawBg=function(){
   }
 };
 function inkD(p){var s='M'+p[0]+' '+p[1];if(p.length===2)return s+' l0.1 0';for(var i=2;i<p.length;i+=2)s+=' L'+p[i]+' '+p[i+1];return s;}
-Scene.prototype.drawInk=function(){var g=this.gInk;clear(g);if(this.st.k!=='wb')return;(this.st.ink||[]).forEach(function(k){if(k&&k.p&&k.p.length>=2)el('path',{d:inkD(k.p),class:'ink',stroke:/^#[0-9a-f]{6}$/i.test(k.c)?k.c:'#d3392a'},g);});};
+Scene.prototype.drawInk=function(){var g=this.gInk;clear(g);if(this.st.k!=='wb')return;var ink=this.st.ink||[];[1,0].forEach(function(hh){ink.forEach(function(k){if(k&&k.p&&k.p.length>=2&&(k.h?1:0)===hh)el('path',{d:inkD(k.p),class:hh?'ink hl':'ink',stroke:/^#[0-9a-f]{6}$/i.test(k.c)?k.c:'#d3392a'},g);});});};
 Scene.prototype.drawBoard=function(g,b,L,idx,sel){
   if(b.t==='ru')return this.drawRuler(g,b,L,idx||0,sel);
   var H=L*T30,ia=this.ia;idx=idx||0;
@@ -560,7 +618,7 @@ Scene.prototype.bind=function(){
     var st=s.st;
     if(s.mode==='erase'&&(st.k==='wb'||isAreaSt(st))){if(AREA_KINDS[st.k]&&(st.ans||st.done))return;var hit=s.eraseAt(p,hv);drag={t:'erase'};try{svg.setPointerCapture(e.pointerId);}catch(_){}e.preventDefault();if(hit){s.drawInk();s.drawDyn();s.changed(false);}return;}
     if(isAreaSt(st)){var ad=s.areaDown(p,hv);if(ad){drag=ad;try{svg.setPointerCapture(e.pointerId);}catch(_){}e.preventDefault();s.drawDyn();s.changed(false);return;}}
-    if(st.k==='wb'&&s.mode==='pen'){var k={c:s.penColor,p:[Math.round(p[0]),Math.round(p[1])]};var path=el('path',{class:'ink',stroke:k.c,d:inkD(k.p)},s.gInk);drag={t:'pen',k:k,path:path,last:p};}
+    if(st.k==='wb'&&(s.mode==='pen'||s.mode==='hl')){var isH=s.mode==='hl';var k={c:isH?s.hlColor:s.penColor,p:[Math.round(p[0]),Math.round(p[1])]};if(isH)k.h=1;var path=el('path',{class:isH?'ink hl':'ink',stroke:k.c,d:inkD(k.p)},s.gInk);drag={t:'pen',k:k,path:path,last:p};}
     else if(st.k==='wb'&&s.mode==='line'){var a0=s.lineSnap(p,null);var k2={c:s.penColor,p:[a0.q[0],a0.q[1],a0.q[0],a0.q[1]]};var path2=el('path',{class:'ink',stroke:k2.c,d:inkD(k2.p)},s.gInk);drag={t:'line',k:k2,path:path2,a:a0.q,ed:a0.ed};}
     else if(st.k==='wb'&&s.mode==='trace'){s.tr.push([Math.round(p[0]),Math.round(p[1])]);if(s.tr.length===3)s.addCopy();s.drawDyn();if(s.opt.onMode)s.opt.onMode();s.changed(true);return;}
     else if(hv.indexOf('board:')===0){var bi=+hv.slice(6),b=s.board(bi);if(st.k==='wb'){st.sel=bi;}drag={t:'board',b:b,off:[b.x-p[0],b.y-p[1]],p0:p,moved:false};}
@@ -952,7 +1010,7 @@ Workspace.prototype.state=function(){return this.states[this.id];};
 Workspace.prototype.setTask=function(id){
   if(!TASK[id])return;this.id=id;var st=this.states[id];
   if(!st||st.k!==TASK[id].kind||(st.k==='wb'&&!st.boards)||(isAreaUnit(TASK[id])&&!st.pieces)){st=this.states[id]=newState(id);}
-  this.scene.mode='move';this.scene.load(st);this.buildTools();this.buildAns();this.syncTools();this.onChange(true);
+  this.scene.mode=TASK[id].subj==='zh'?'pen':'move';this.scene.load(st);this.buildTools();this.buildAns();this.syncTools();this.onChange(true);
 };
 Workspace.prototype.reset=function(){this.states[this.id]=newState(this.id);this.setTask(this.id);};
 Workspace.prototype.onChange=function(fin){this.updateAns();this.updateCount();if(this.opt.onChange)this.opt.onChange(fin);};
@@ -975,6 +1033,20 @@ Workspace.prototype.buildTools=function(){
   function cap(t){T.appendChild(h('div',{class:'cap'},t));}
   function row(a,b){var r=h('div',{class:'row2'});r.appendChild(a);r.appendChild(b);T.appendChild(r);}
   if(isAreaSt(st)){this.buildAreaTools(btn,sep,cap,row,mk);return;}
+  if(isZhSt(st)){
+    function md(m){sc.mode=m;sc.tr=[];sc.drawDyn();self.syncTools();}
+    function sw(list,m,key){var w=h('div',{class:'sw'});list.forEach(function(c){var b=h('button',{type:'button','aria-label':'顏色',style:'background:'+c});b.dataset.c=c;b.dataset.m=m;b.addEventListener('click',function(){sc[key]=c;md(m);});w.appendChild(b);});T.appendChild(w);}
+    cap('工具');
+    btn('畫筆',function(){md('pen');},'','pen');sw(['#d3392a','#2a6fb0','#1c2a38'],'pen','penColor');
+    btn('螢光筆',function(){md('hl');},'','hl');sw(['#ffd400','#5fd068','#ff8fc0'],'hl','hlColor');
+    btn('畫直線',function(){md('line');},'','line');
+    btn('橡皮擦',function(){md('erase');},'','erase');
+    row(mk('復原',function(){sc.st.ink.pop();sc.drawInk();sc.changed(true);}),mk('全清',function(){sc.st.ink=[];sc.drawInk();sc.changed(true);}));
+    sep();cap('看清楚');
+    row(mk('放大',function(){var z=sc.st.zoom;z.z=clamp(z.z*1.4,1,3.5);sc.view();}),mk('縮小',function(){var z=sc.st.zoom;z.z=clamp(z.z/1.4,1,3.5);if(z.z<1.05)z.z=1;sc.view();}));
+    btn('移動畫面',function(){md('move');},'','move');
+    return;
+  }
   if(st.k==='wb'){
     cap('工具');
     btn('移動',function(){sc.mode='move';sc.tr=[];sc.drawDyn();self.syncTools();},'','move');
@@ -1033,7 +1105,7 @@ Workspace.prototype.buildAreaTools=function(btn,sep,cap,row,mk){
 Workspace.prototype.syncTools=function(){
   var sc=this.scene,st=this.state();
   this.tools.querySelectorAll('[data-k]').forEach(function(b){var k=b.dataset.k;b.classList.toggle('on',k===sc.mode);});
-  this.tools.querySelectorAll('.sw button').forEach(function(b){b.classList.toggle('on',sc.mode==='pen'&&b.dataset.c===sc.penColor);});
+  this.tools.querySelectorAll('.sw button').forEach(function(b){var m=b.dataset.m||'pen';b.classList.toggle('on',sc.mode===m&&b.dataset.c===(m==='hl'?sc.hlColor:sc.penColor));});
   var t='',ok2=this.tools.querySelector('[data-k="cutok"]');if(ok2)ok2.disabled=sc.cut.length<3;
   if(sc.mode==='erase')t='橡皮擦：點一下要擦掉的東西，只會擦掉那一個（筆跡、描的角、三角板、直尺、方瓦、平方公分板、剪下來的圖形、塗的格子）。按住拖過筆跡也可以擦。';
   else if(isAreaSt(st)){
@@ -1047,6 +1119,8 @@ Workspace.prototype.syncTools=function(){
     else t='拖曳方瓦、平方公分板、剪下來的圖形（點一下剪下來的圖形會轉 90°）；在平方公分板上點一格可以做記號';
   }else if(st.k==='wb'){
     if(sc.mode==='pen')t='畫筆：直接在習作上作答（打 √、圈起來、畫線）';
+    else if(sc.mode==='hl')t='螢光筆：塗在重要的字詞或句子上，字還看得到';
+    else if(isZhSt(st)&&sc.mode==='move')t='移動畫面：按「放大」以後，用手指拖曳可以移動頁面';
     else if(sc.mode==='line')t=TASK[st.id].lat?'畫直線：按住拖曳，線的兩端會吸到格子的交叉點上':'畫直線：按住拖曳。從三角板或直尺的邊旁邊開始畫，就會沿著邊畫出直直的線';
     else if(sc.mode==='trace')t=['描角：① 點角的「頂點」','描角：② 點第一條邊（起始邊）上的一點','描角：③ 點另一條邊上的一點'][sc.tr.length]||'';
     else t='拖曳三角板、描好的角；拉圓形 ↻ 旋轉。點一下三角板的某個角，紅點會換到那裡當旋轉中心。「＋ 拿三角板」可以拿很多個。';
@@ -1090,6 +1164,7 @@ Workspace.prototype.updateAns=function(){
 function summary(st){
   if(!st)return '';
   if(st.k==='wb'&&st.tiles){var c=areaCounts(st);return '方瓦 '+c.tiles+'・塗 '+c.paint+' 格・剪 '+c.pieces+' 片・筆 '+((st.ink||[]).length)+' 條';}
+  if(isZhSt(st)){var hc=(st.ink||[]).filter(function(k){return k.h;}).length;return '筆跡 '+((st.ink||[]).length-hc)+' 條・螢光筆 '+hc+' 條';}
   if(st.k==='wb')return '筆跡 '+((st.ink||[]).length)+' 條・描角 '+((st.copies||[]).length)+' 個・三角板 '+((st.boards||[]).filter(function(b){return b.t!=='ru';}).length)+' 個'+((st.boards||[]).some(function(b){return b.t==='ru';})?'・直尺 '+(st.boards||[]).filter(function(b){return b.t==='ru';}).length:'');
   var ok=(st.res||[]).filter(function(r){return r.ok;}).length,n=nQ(st);
   if(st.done)return '<span class="good">完成！答對 '+ok+' / '+(st.res||[]).length+'</span>';
@@ -1132,7 +1207,7 @@ function StudentApp(){
     var freeze=h('div',{class:'overlay'},'<div class="big">請看老師</div><div class="small">先把手離開鍵盤和觸控板</div>');freeze.hidden=true;
     document.body.appendChild(wait);document.body.appendChild(freeze);
     function setTask(id){if(!TASK[id])return;if(ws.id!==id)ws.setTask(id);ttl.textContent=TASK[id].title+'　'+TASK[id].sub;wait.hidden=true;}
-    function setLight(l){light.hidden=!l;light.className='light '+(l||'');lt.textContent=l==='g'?'做得好！拿出習作，用真的三角板做做看。':l==='r'?'請帶著 Chromebook 到老師那裡。':'';}
+    function setLight(l){light.hidden=!l;light.className='light '+(l||'');lt.textContent=l==='g'?((ws&&ws.id&&TASK[ws.id]&&TASK[ws.id].subj==='zh')?'做得好！拿出國語課本，自己做做看。':'做得好！拿出習作，用真的三角板做做看。'):l==='r'?'請帶著 Chromebook 到老師那裡。':'';}
     function setNet(cls,t){net.className='net '+cls;net.textContent=t;var wn=wait.querySelector('.wnet');wn.className='wnet net '+cls;wn.textContent=t;}
     if(offline){
       setNet('bad','自己練習（沒有連線）');tp.hidden=false;
@@ -1179,7 +1254,7 @@ function StudentApp(){
       lastChunk=Date.now();lastHeard=Date.now();
       var b=imgBuf[pg];if(!b||b.n!==n)b=imgBuf[pg]={n:n,parts:[],got:0};
       if(b.parts[i]==null){b.parts[i]=d.d;b.got++;}
-      if(b.got===b.n){var b64=b.parts.join('');delete imgBuf[pg];setPage(pg,b64);lsSet('jiao.pg.'+pg,b64);if(curPage()===pg)ws.scene.drawBg();}
+      if(b.got===b.n){var b64=b.parts.join('');delete imgBuf[pg];setPage(pg,b64);cachePage(pg,b64);if(curPage()===pg)ws.scene.drawBg();}
     }
     setInterval(function(){
       if(!linked()||Date.now()-lastChunk<1500)return;
@@ -1220,10 +1295,11 @@ function TeacherApp(){
   /* tasks */
   var tbar=$('.t-tasks');
   var unit=lsGet('jiao.t.unit',(TASK[task].unit||'angle').split(' ')[0]);if(!UNITS.some(function(u){return u[0]===unit;}))unit='angleb';
-  var ubar=h('span',{class:'units'});UNITS.forEach(function(u){var b=h('button',{class:'btn unit-btn',type:'button'},esc(u[1]));b.dataset.u=u[0];b.addEventListener('click',function(){unit=u[0];lsSet('jiao.t.unit',unit);syncTaskBtns();});ubar.appendChild(b);});tbar.appendChild(ubar);
+  var sbar=h('span',{class:'units subjs'});SUBJ.forEach(function(sj){var b=h('button',{class:'btn subj-btn',type:'button'},esc(sj[1]));b.dataset.s=sj[0];b.addEventListener('click',function(){if(unitSubj(unit)===sj[0])return;var last=lsGet('jiao.t.unit.'+sj[0],null);unit=(last&&unitSubj(last)===sj[0])?last:UNITS.filter(function(u){return u[2]===sj[0];})[0][0];lsSet('jiao.t.unit',unit);syncTaskBtns();});sbar.appendChild(b);});tbar.appendChild(sbar);
+  var ubar=h('span',{class:'units'});UNITS.forEach(function(u){var b=h('button',{class:'btn unit-btn',type:'button'},esc(u[1]));b.dataset.u=u[0];b.addEventListener('click',function(){unit=u[0];lsSet('jiao.t.unit',unit);lsSet('jiao.t.unit.'+u[2],unit);syncTaskBtns();});ubar.appendChild(b);});tbar.appendChild(ubar);
   TASKS.forEach(function(t){var b=h('button',{class:'btn task-btn',type:'button'},esc(t.title)+'<small>'+esc(t.sub)+'</small>');b.dataset.id=t.id;b.dataset.u=t.unit;b.addEventListener('click',function(){assign(t.id);});tbar.appendChild(b);});
   function assign(id){task=id;lsSet('jiao.t.task',id);for(var n in seats)seats[n].light=null;syncTaskBtns();broadcast();demo.setTask(id);renderAllTiles();}
-  function syncTaskBtns(){tbar.querySelectorAll('.task-btn').forEach(function(b){b.classList.toggle('on',b.dataset.id===task);b.hidden=b.dataset.u.split(' ').indexOf(unit)<0;});tbar.querySelectorAll('.unit-btn').forEach(function(b){b.classList.toggle('on',b.dataset.u===unit);});}
+  function syncTaskBtns(){tbar.querySelectorAll('.task-btn').forEach(function(b){b.classList.toggle('on',b.dataset.id===task);b.hidden=b.dataset.u.split(' ').indexOf(unit)<0;});tbar.querySelectorAll('.unit-btn').forEach(function(b){b.classList.toggle('on',b.dataset.u===unit);b.hidden=unitSubj(b.dataset.u)!==unitSubj(unit);});tbar.querySelectorAll('.subj-btn').forEach(function(b){b.classList.toggle('on',b.dataset.s===unitSubj(unit));});}
   /* tiles */
   var grid=$('.grid');
   for(var i=1;i<=8;i++)(function(n){
