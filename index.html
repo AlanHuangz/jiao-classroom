@@ -212,6 +212,15 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline
 .modal-stage{flex:1;min-height:0;background:var(--stage)}
 .modal-stage svg{width:100%;height:100%;display:block}
 .modal-card .lg{flex:none;padding:8px 14px;font-size:16px}
+/* ---- 錄影 ---- */
+.t-head .btn.recbtn{border-color:#ff6b5e;color:#fff}
+.t-head .btn.recbtn.on{background:#d3392a;border-color:#d3392a;color:#fff;font-weight:700}
+.t-head .recst{font-size:14px;opacity:.9}
+.recdot{display:inline-block;width:10px;height:10px;border-radius:50%;background:#ff4d40;margin-right:6px;animation:pulse 1.2s ease-in-out infinite}
+.rec8{position:fixed;right:16px;bottom:16px;z-index:60;background:#d3392a;color:#fff;border:0;border-radius:16px;padding:18px 24px;font-size:24px;font-weight:700;font-family:inherit;box-shadow:0 8px 30px rgba(0,0,0,.35);text-align:left;line-height:1.35;max-width:min(560px,calc(100% - 32px))}
+.rec8 small{display:block;font-size:17px;font-weight:400;opacity:.92;margin-top:4px}
+.bar .rec8on{font-size:14px;color:#ffb3ad}
+
 /* ---- 個別頁面 + 老師遠端操作 ---- */
 .modal-ws{flex:1;min-height:0;display:flex;flex-direction:column;box-shadow:inset 0 0 0 5px #e08a00}
 .modal-card .rcbtn{flex:none;padding:8px 14px;font-size:16px;font-weight:700;border:2px solid #e08a00;color:#a35f00;background:var(--paper);border-radius:9px}
@@ -1261,6 +1270,19 @@ function wire(st){
 }
 /* relay through the PeerJS signalling server: payload must look like an ICE candidate, and stay under ~16 KB */
 function relay(p,dst,obj){try{if(p&&p.socket&&!p.disconnected&&!p.destroyed)p.socket.send({type:'CANDIDATE',dst:dst,payload:{candidate:{candidate:'',sdpMid:'0',sdpMLineIndex:0},type:'data',connectionId:'dc_jiao',jiao:obj}});}catch(e){}}
+
+/* ================= 錄影（每台各自錄成影片檔，存到「下載」資料夾） ================= */
+function recMime(audio){var c=audio?['video/mp4;codecs=avc1,mp4a.40.2','video/mp4','video/webm;codecs=vp9,opus','video/webm']:['video/mp4;codecs=avc1','video/mp4','video/webm;codecs=vp9','video/webm'];for(var i=0;i<c.length;i++){try{if(window.MediaRecorder&&MediaRecorder.isTypeSupported(c[i]))return c[i];}catch(e){}}return '';}
+function recName(pre,t){var d=new Date(t),p=function(x){return (x<10?'0':'')+x;};return pre+'_'+d.getFullYear()+p(d.getMonth()+1)+p(d.getDate())+'_'+p(d.getHours())+p(d.getMinutes())+p(d.getSeconds());}
+function recSave(blob,name){var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove();},120000);}
+function Rec(stream,pre,onDone){
+  var audio=stream.getAudioTracks().length>0,mt=recMime(audio),parts=[],t0=Date.now(),o={videoBitsPerSecond:1500000};if(mt)o.mimeType=mt;
+  var r=new MediaRecorder(stream,o);
+  r.ondataavailable=function(e){if(e.data&&e.data.size)parts.push(e.data);};
+  r.onstop=function(){var type=((r.mimeType||mt||'video/webm').split(';')[0])||'video/webm',b=new Blob(parts,{type:type});parts=[];recSave(b,recName(pre,t0)+(type.indexOf('mp4')>=0?'.mp4':'.webm'));if(onDone)onDone(b.size);};
+  r.start(2000);return r;
+}
+function recStopTracks(s){try{s.getTracks().forEach(function(t){t.stop();});}catch(e){}}
 function relayChunks(p,dst,head,str){var CH=7000,n=Math.max(1,Math.ceil(str.length/CH));for(var i=0;i<n;i++){var o={};for(var k in head)o[k]=head[k];o.i=i;o.n=n;o.d=str.substr(i*CH,CH);relay(p,dst,o);}}
 function dropLost(p){try{if(p&&p._lostMessages)p._lostMessages.clear();}catch(e){}}
 function fitWire(st){
@@ -2029,6 +2051,21 @@ function StudentApp(){
       ws.locked=true;wsroot.classList.add('rc');rcbar.hidden=false;syncPick();
       if(!c.ok&&ws.id&&c.id===ws.id&&(rc.sent!==c.id||Date.now()-rcFsT>3000)){rc.sent=c.id;rcFsT=Date.now();relayChunks(peer,TID,{t:'fs',seat:seat,k:c.k,id:c.id},JSON.stringify(ws.state()));}
     }
+    /* 8 號投影：老師按錄影 → 這台也錄自己的畫面（第一次要在這台點一下允許） */
+    var recId=null,recR=null,recS=null,recSt='off',recBtn=null,recOnEl=null;
+    function recReport(s){recSt=s;tx({t:'rec',seat:seat,s:s});}
+    function recUI(){var want=!!recId&&!recR;if(want&&!recBtn){recBtn=h('button',{class:'rec8',type:'button'},'⏺ 老師要錄這台投影的畫面<small>點這裡 → 選「整個畫面」→ 按「分享」</small>');recBtn.addEventListener('click',recGo);document.body.appendChild(recBtn);}if(!want&&recBtn){recBtn.remove();recBtn=null;}
+      if(!recOnEl){recOnEl=h('span',{class:'rec8on'},'<span class="recdot"></span>投影錄影中');root.querySelector('.bar').insertBefore(recOnEl,net);}recOnEl.hidden=!recR;}
+    function recGo(){if(!recId||recR)return;if(!navigator.mediaDevices||!navigator.mediaDevices.getDisplayMedia||!window.MediaRecorder){recReport('err');return;}
+      navigator.mediaDevices.getDisplayMedia({video:{displaySurface:'monitor',frameRate:15},audio:false,selfBrowserSurface:'include'}).then(function(s){
+        if(!recId){recStopTracks(s);return;}recS=s;recR=Rec(s,'301投影畫面',function(){recReport('saved');});
+        s.getVideoTracks()[0].addEventListener('ended',function(){if(recR&&recS===s){recR.stop();recR=null;recStopTracks(s);recS=null;recId=null;recUI();}});
+        recReport('on');recUI();
+      }).catch(function(){recReport('need');if(recBtn)recBtn.querySelector('small').textContent='剛剛沒有分享到，再點一次 → 選「整個畫面」→「分享」';});}
+    function recCmd(r){r=(typeof r==='string'&&r)?r:null;if(r===recId){if(r&&!recR&&recSt!=='need'&&recSt!=='err')recReport('need');return;}
+      if(recR){try{recR.stop();}catch(e){}recR=null;}if(recS){recStopTracks(recS);recS=null;}
+      recId=r;if(r)recReport('need');else if(recSt!=='saved')recReport('off');recUI();}
+    window.addEventListener('beforeunload',function(e){if(recR){e.preventDefault();e.returnValue='';}});
     function rcGot(d){
       if(!rc||d.k!==rc.k)return;var v=+d.v,n=+d.n,i=+d.i;if(!(v>rcV)||!(n>0&&n<300&&i>=0&&i<n)||typeof d.d!=='string')return;
       if(!rcBuf||rcBuf.v!==v){if(rcBuf&&rcBuf.v>v)return;rcBuf={v:v,n:n,p:[],got:0};}
@@ -2066,6 +2103,7 @@ function StudentApp(){
       var pk=(seat!==8&&Array.isArray(d.pick))?d.pick.filter(function(x){return TASK[x]&&TASK[x].kind!=='zi';}):null;if(pk&&!pk.length)pk=null;setPick(pk);
       if(d.task&&(!pk||d.tv!==lastTv||pk.indexOf(ws.id)<0))setTask(d.task);lastTv=pk?d.tv:null;
       rcCmd(seat!==8?d.ctl:null);
+      if(seat===8)recCmd(d.rec);
       if(d.zi&&typeof d.zi==='object')ziCmd(d.zi);if(ws.zi&&ws.id&&TASK[ws.id].kind==='zi'){ws.zi.setRound(d.zr&&typeof d.zr==='object'?d.zr:null);if(seat===8)ws.zi.showWall(d.zw&&typeof d.zw==='object'?d.zw:null);}freeze.hidden=seat===8||!d.freeze||!!rc;setLight(seat!==8&&(d.light==='g'||d.light==='r')?d.light:null);
     }
     function newPeer(){
@@ -2132,7 +2170,7 @@ function TeacherApp(){
   root.innerHTML=
     '<div class="t-head"><h1>301線上教室・老師</h1><div class="code">班級代碼 <b class="codev"></b></div><button class="btn showqr" type="button">學生 QR code</button><span class="net">連線中…</span>'+
     '<span style="flex-basis:100%;height:0"></span>'+
-    '<button class="btn vgrid on" type="button">全班畫面</button><button class="btn vdemo" type="button">老師示範（投影）</button><button class="btn frz" type="button">全班看老師</button><button class="btn clrall" type="button">清除全部燈號</button><button class="btn zibtn" type="button">造字審核<b class="zin">0</b></button><button class="btn indall" type="button" hidden></button></div>'+
+    '<button class="btn vgrid on" type="button">全班畫面</button><button class="btn vdemo" type="button">老師示範（投影）</button><button class="btn frz" type="button">全班看老師</button><button class="btn clrall" type="button">清除全部燈號</button><button class="btn zibtn" type="button">造字審核<b class="zin">0</b></button><button class="btn indall" type="button" hidden></button><button class="btn recbtn" type="button">⏺ 錄影</button><span class="recst"></span></div>'+
     '<div class="t-tasks"><span class="lead">派題：</span></div>'+
     '<div class="t-main"><div class="grid"></div><div class="legend">每格下方的小圓點是每一題：綠＝答對、紅＝答錯；空心＝作答時沒有先用三角板／描圖紙對齊。點畫面可以放大看。</div><div class="demo" hidden></div></div>';
   var $=function(s){return root.querySelector(s);};
@@ -2255,7 +2293,7 @@ function TeacherApp(){
   qrBox.querySelector('.qrsave').addEventListener('click',function(){lsSet('jiao.t.surl',qrBox.querySelector('.qrin').value.trim());showQR();});
   /* network */
   var peer=null,tries=0;
-  function sendCmd(n){var s=seats[n];if(!s.pid)return;var I=n===8?null:indiv[n];relay(peer,s.pid,{t:'cmd',task:I?I.c:task,pick:I?I.p:undefined,tv:I?I.tv:undefined,ctl:s.ctl?{k:s.ctl.k,id:s.ctl.id,ok:s.ctl.ok}:undefined,freeze:n===8?false:freeze,light:n===8?null:(s.light||null),zi:Z?Z.cmdFor(n):undefined,zr:Z?Z.roundFor(task):null,zw:(n===8&&Z)?Z.wallFor(task):undefined});s.zt=Date.now();}
+  function sendCmd(n){var s=seats[n];if(!s.pid)return;var I=n===8?null:indiv[n];relay(peer,s.pid,{t:'cmd',rec:n===8?(recId||null):undefined,task:I?I.c:task,pick:I?I.p:undefined,tv:I?I.tv:undefined,ctl:s.ctl?{k:s.ctl.k,id:s.ctl.id,ok:s.ctl.ok}:undefined,freeze:n===8?false:freeze,light:n===8?null:(s.light||null),zi:Z?Z.cmdFor(n):undefined,zr:Z?Z.roundFor(task):null,zw:(n===8&&Z)?Z.wallFor(task):undefined});s.zt=Date.now();}
   function broadcast(){for(var n in seats)sendCmd(+n);}
   function onMsg(m){
     if(!m||!m.src||!m.payload||typeof m.payload.jiao!=='object')return;
@@ -2263,6 +2301,7 @@ function TeacherApp(){
     var fresh=s.pid!==m.src||!online(s);s.pid=m.src;s.last=Date.now();
     if(d.t==='hello'||fresh)sendCmd(n);
     if(d.t==='img?')queueImg(m.src,String(d.page),Array.isArray(d.miss)?d.miss:null);
+    if(d.t==='rec'&&n===8&&typeof d.s==='string'){rec8=d.s;recLabel();}
     if(d.t==='fs'&&s.ctl&&!s.ctl.ok&&d.k===s.ctl.k&&d.id===s.ctl.id){var fn=+d.n,fi=+d.i;if(fn>0&&fn<300&&fi>=0&&fi<fn&&typeof d.d==='string'){var fb=s.fsBuf;if(!fb||fb.k!==d.k||fb.id!==d.id||fb.n!==fn)fb=s.fsBuf={k:d.k,id:d.id,n:fn,p:[],got:0};if(fb.p[fi]==null){fb.p[fi]=d.d;fb.got++;}if(fb.got===fb.n){s.fsBuf=null;var full=null;try{full=JSON.parse(fb.p.join(''));}catch(e){}if(full&&full.id===s.ctl.id&&TASK[full.id])rcLoad(n,full);}}}
     if(d.t==='st'&&d.st&&typeof d.st==='object'&&TASK[d.st.id]&&s.ctl&&s.ctl.ok){}
     else if(d.t==='st'&&d.st&&typeof d.st==='object'&&TASK[d.st.id]){var I=indiv[n];if(I&&d.tv===I.tv&&I.p.indexOf(d.st.id)>=0&&I.c!==d.st.id){I.c=d.st.id;saveIndiv();}s.st=d.st;s.dirty=true;s.mdirty=true;if(d.st.k==='zi'&&Date.now()-s.zt>1500&&Z.needs(n,d.st))sendCmd(n);}
@@ -2291,6 +2330,30 @@ function TeacherApp(){
   setInterval(function(){renderAllTiles();if(modalSeat!=null&&!modal.hidden)renderModal();},300);
   setInterval(broadcast,4000);
   setInterval(function(){dropLost(peer);},5000);
+  /* 錄影：錄這台筆電的畫面＋老師的聲音；同時叫 8 號投影也錄 */
+  var recId=null,recR=null,recStreams=[],recT0=0,rec8='',recAC=null,recMsg='';
+  function recLabel(){var b=$('.recbtn'),st=$('.recst');b.classList.toggle('on',!!recR);
+    if(recR){var sec=Math.floor((Date.now()-recT0)/1000),mm=Math.floor(sec/60),ss=sec%60;b.innerHTML='<span class="recdot"></span>停止錄影 '+mm+':'+(ss<10?'0':'')+ss;
+      var p8=!online(seats[8])?'8 號投影沒連線，只錄這台':({need:'8 號投影：請到投影那台點一下紅色按鈕',on:'8 號投影也在錄',err:'8 號投影那台不能錄影',off:'8 號投影沒在錄'}[rec8]||'8 號投影：等回應…');st.textContent=p8;}
+    else{b.textContent='⏺ 錄影';st.textContent=recMsg+(recMsg&&rec8==='saved'?'；8 號投影的影片存在投影那台的「下載」資料夾':'');}}
+  function recStart(){
+    if(!navigator.mediaDevices||!navigator.mediaDevices.getDisplayMedia||!window.MediaRecorder){alert('這個瀏覽器不能錄影，請用 Chrome。');return;}
+    navigator.mediaDevices.getDisplayMedia({video:{displaySurface:'monitor',frameRate:15},audio:true,systemAudio:'include',selfBrowserSurface:'include'}).then(function(disp){
+      return navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true}}).then(function(mic){return [disp,mic];},function(){return [disp,null];});
+    }).then(function(r){
+      var disp=r[0],mic=r[1],tracks=disp.getVideoTracks().slice(),srcA=[disp,mic].filter(function(x){return x&&x.getAudioTracks().length;});recStreams=[disp];if(mic)recStreams.push(mic);
+      if(srcA.length===1)tracks=tracks.concat(srcA[0].getAudioTracks());
+      else if(srcA.length>1){try{recAC=new AudioContext();var dst=recAC.createMediaStreamDestination();srcA.forEach(function(x){recAC.createMediaStreamSource(x).connect(dst);});tracks=tracks.concat(dst.stream.getAudioTracks());}catch(e){tracks=tracks.concat(srcA[0].getAudioTracks());}}
+      recT0=Date.now();recId=String(recT0);rec8='';recMsg='';
+      recR=Rec(new MediaStream(tracks),'301老師畫面',function(size){recMsg='影片存到這台的「下載」資料夾了（約 '+Math.max(1,Math.round(size/1048576))+' MB）';recLabel();});
+      disp.getVideoTracks()[0].addEventListener('ended',function(){if(recR)recStop();});
+      broadcast();recLabel();
+    }).catch(function(){recMsg='沒有開始錄影（沒有選要分享的畫面）';recLabel();});
+  }
+  function recStop(){if(!recR)return;var r=recR;recR=null;recId=null;try{r.stop();}catch(e){}recStreams.forEach(recStopTracks);recStreams=[];if(recAC){try{recAC.close();}catch(e){}recAC=null;}recMsg='正在存檔…';broadcast();recLabel();}
+  $('.recbtn').addEventListener('click',function(){if(recR){if(confirm('要停止錄影並存檔嗎？'))recStop();}else recStart();});
+  setInterval(function(){if(recR)recLabel();},1000);
+  window.addEventListener('beforeunload',function(e){if(recR){e.preventDefault();e.returnValue='';}});
   syncTaskBtns();syncIndAll();demo.setTask(task);Z.setTask(task);setView('grid');startPeer();
 }
 
