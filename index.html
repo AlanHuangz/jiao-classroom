@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>角的教室・學生</title>
+<title>301線上教室・學生</title>
 <style>
 /* 版面：上方工具列＋左側工具＋中間大舞台（習作原頁或練習題）；老師端多一個 7 格監看牆 */
 :root{
@@ -193,6 +193,7 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline
 .units{display:inline-flex;gap:4px;margin-right:8px;padding-right:10px;border-right:2px solid var(--line)}
 .unit-btn{padding:6px 10px;font-weight:700}
 .subj-btn{padding:6px 14px;font-weight:800;font-size:17px}
+.subj-empty{color:var(--muted);font-size:16px;padding:6px 4px}
 .ink.hl{stroke-width:26;stroke-opacity:.42}
 .ws-count{position:absolute;right:10px;top:10px;background:rgba(255,255,255,.95);border:2px solid var(--ink);border-radius:12px;padding:6px 14px;font-size:22px;font-weight:700;pointer-events:none;font-variant-numeric:tabular-nums}
 .num-disp{min-width:150px;font-size:30px;font-weight:700;padding:4px 14px;border:2px solid var(--line);border-radius:12px;text-align:center;font-variant-numeric:tabular-nums}
@@ -871,7 +872,7 @@ function ziTeacher(o){
 }
 
 var UNITS=[['angleb','角・課本','math'],['angle','角・習作','math'],['areab','面積・課本','math'],['area','面積・習作','math'],['zh7','七 淡水小鎮','zh'],['zh8','八 安平古堡參觀記','zh'],['zh9','九 馬太鞍的巴拉告','zh'],['zh10','十 狐狸的故事','zh'],['zh11','十一 巨人的花園','zh'],['zh12','十二 模仿貓','zh'],['zizao','拆字造字','zh']];
-var SUBJ=[['math','數學'],['zh','國語']];
+var SUBJ=[['zh','國語教室'],['math','數學教室'],['soc','社會教室']];
 function unitSubj(u){for(var i=0;i<UNITS.length;i++)if(UNITS[i][0]===u)return UNITS[i][2];return 'math';}
 function isZhSt(st){return !!st&&st.k==='wb'&&!!TASK[st.id]&&TASK[st.id].subj==='zh';}
 function isAreaUnit(t){return !!t&&!!t.unit&&t.unit.indexOf('area')>=0;}
@@ -1664,7 +1665,7 @@ function StudentApp(){
   var seat=lsGet('jiao.s.seat',0),code=lsGet('jiao.s.code','');
   var hc=(location.hash||'').replace(/[^0-9]/g,'');if(/^\d{4}$/.test(hc))code=hc;
   var join=h('div',{class:'join'});
-  join.innerHTML='<div class="join-card"><h1>角的教室</h1><div class="lbl">1. 點你的座號</div><div class="seats"></div><div class="lbl">2. 輸入老師螢幕上的「班級代碼」</div><input class="codein" inputmode="numeric" maxlength="4" autocomplete="off" aria-label="班級代碼"><button class="go" type="button">進入</button></div>';
+  join.innerHTML='<div class="join-card"><h1>301線上教室</h1><div class="lbl">1. 點你的座號</div><div class="seats"></div><div class="lbl">2. 輸入老師螢幕上的「班級代碼」</div><input class="codein" inputmode="numeric" maxlength="4" autocomplete="off" aria-label="班級代碼"><button class="go" type="button">進入</button></div>';
   document.body.appendChild(join);
   var seatsEl=join.querySelector('.seats'),codeIn=join.querySelector('.codein'),goBtn=join.querySelector('.go');
   for(var i=1;i<=8;i++){(function(n){var b=h('button',{type:'button',class:n===8?'s8':''},n===8?'8<small>投影</small>':String(n));b.addEventListener('click',function(){seat=n;sync();});seatsEl.appendChild(b);})(i);}
@@ -1769,7 +1770,7 @@ function TeacherApp(){
   var task=lsGet('jiao.t.task','p59a');if(!TASK[task])task='p59a';
   var freeze=false,view='grid',seats={},modalSeat=null;
   root.innerHTML=
-    '<div class="t-head"><h1>角的教室・老師</h1><div class="code">班級代碼 <b class="codev"></b></div><button class="btn showqr" type="button">學生 QR code</button><button class="btn newcode" type="button">換代碼</button><span class="net">連線中…</span>'+
+    '<div class="t-head"><h1>301線上教室・老師</h1><div class="code">班級代碼 <b class="codev"></b></div><button class="btn showqr" type="button">學生 QR code</button><button class="btn newcode" type="button">換代碼</button><span class="net">連線中…</span>'+
     '<span style="flex-basis:100%;height:0"></span>'+
     '<button class="btn vgrid on" type="button">全班畫面</button><button class="btn vdemo" type="button">老師示範（投影）</button><button class="btn frz" type="button">全班看老師</button><button class="btn clrall" type="button">清除全部燈號</button><button class="btn zibtn" type="button">造字審核<b class="zin">0</b></button></div>'+
     '<div class="t-tasks"><span class="lead">派題：</span></div>'+
@@ -1780,11 +1781,13 @@ function TeacherApp(){
   /* tasks */
   var tbar=$('.t-tasks');
   var unit=lsGet('jiao.t.unit',(TASK[task].unit||'angle').split(' ')[0]);if(!UNITS.some(function(u){return u[0]===unit;}))unit='angleb';
-  var sbar=h('span',{class:'units subjs'});SUBJ.forEach(function(sj){var b=h('button',{class:'btn subj-btn',type:'button'},esc(sj[1]));b.dataset.s=sj[0];b.addEventListener('click',function(){if(unitSubj(unit)===sj[0])return;var last=lsGet('jiao.t.unit.'+sj[0],null);unit=(last&&unitSubj(last)===sj[0])?last:UNITS.filter(function(u){return u[2]===sj[0];})[0][0];lsSet('jiao.t.unit',unit);syncTaskBtns();});sbar.appendChild(b);});tbar.appendChild(sbar);
+  var subj=lsGet('jiao.t.subj',unitSubj(unit));if(!SUBJ.some(function(sj){return sj[0]===subj;}))subj=unitSubj(unit);
+  var sbar=h('span',{class:'units subjs'});SUBJ.forEach(function(sj){var b=h('button',{class:'btn subj-btn',type:'button'},esc(sj[1]));b.dataset.s=sj[0];b.addEventListener('click',function(){if(subj===sj[0])return;subj=sj[0];lsSet('jiao.t.subj',subj);var us=UNITS.filter(function(u){return u[2]===subj;});if(us.length){var last=lsGet('jiao.t.unit.'+subj,null);unit=(last&&unitSubj(last)===subj)?last:us[0][0];lsSet('jiao.t.unit',unit);}syncTaskBtns();});sbar.appendChild(b);});tbar.appendChild(sbar);
+  var subjEmpty=h('span',{class:'subj-empty'},'社會教室還在準備中，目前還沒有內容。');tbar.appendChild(subjEmpty);
   var ubar=h('span',{class:'units'});UNITS.forEach(function(u){var b=h('button',{class:'btn unit-btn',type:'button'},esc(u[1]));b.dataset.u=u[0];b.addEventListener('click',function(){unit=u[0];lsSet('jiao.t.unit',unit);lsSet('jiao.t.unit.'+u[2],unit);syncTaskBtns();});ubar.appendChild(b);});tbar.appendChild(ubar);
   TASKS.forEach(function(t){var b=h('button',{class:'btn task-btn',type:'button'},esc(t.title)+'<small>'+esc(t.sub)+'</small>');b.dataset.id=t.id;b.dataset.u=t.unit;b.addEventListener('click',function(){assign(t.id);});tbar.appendChild(b);});
   function assign(id){task=id;lsSet('jiao.t.task',id);for(var n in seats)seats[n].light=null;syncTaskBtns();broadcast();demo.setTask(id);renderAllTiles();}
-  function syncTaskBtns(){tbar.querySelectorAll('.task-btn').forEach(function(b){b.classList.toggle('on',b.dataset.id===task);b.hidden=b.dataset.u.split(' ').indexOf(unit)<0;});tbar.querySelectorAll('.unit-btn').forEach(function(b){b.classList.toggle('on',b.dataset.u===unit);b.hidden=unitSubj(b.dataset.u)!==unitSubj(unit);});tbar.querySelectorAll('.subj-btn').forEach(function(b){b.classList.toggle('on',b.dataset.s===unitSubj(unit));});}
+  function syncTaskBtns(){var has=unitSubj(unit)===subj;tbar.querySelectorAll('.task-btn').forEach(function(b){b.classList.toggle('on',b.dataset.id===task);b.hidden=!has||b.dataset.u.split(' ').indexOf(unit)<0;});tbar.querySelectorAll('.unit-btn').forEach(function(b){b.classList.toggle('on',b.dataset.u===unit);b.hidden=unitSubj(b.dataset.u)!==subj;});tbar.querySelectorAll('.subj-btn').forEach(function(b){b.classList.toggle('on',b.dataset.s===subj);});subjEmpty.hidden=has;subjEmpty.textContent=(SUBJ.filter(function(sj){return sj[0]===subj;})[0]||['',''])[1]+'還在準備中，目前還沒有內容。';}
   /* tiles */
   var grid=$('.grid');
   for(var i=1;i<=8;i++)(function(n){
