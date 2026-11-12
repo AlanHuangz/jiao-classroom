@@ -450,7 +450,8 @@ var ZI_FLIP='matrix(1 0 0 -1 0 900)',ZI_INK=22,ZI_PAD=48;
 '.zi-thumb{width:64px;height:64px;display:block;background:#fff;border-radius:6px}'+
 '.zi-st{font-size:15px;color:var(--muted);display:flex;flex-direction:column;gap:4px;align-items:flex-start}'+
 '.zi-st .zi-big{font-size:40px;color:var(--ink);line-height:1}.zi-st .zy{font-size:15px;color:var(--green);font-weight:700}'+
-'.zi-item.n .zi-st{color:var(--red)}.zi-st .btn{padding:3px 8px;font-size:14px}'+
+'.zi-item.n .zi-st,.zi-item.x .zi-st{color:var(--red)}'+
+'.zi-item.x{border-color:#f0b7b0;background:#fff5f4}.zi-item.x .zi-big{color:#b9a3a0;text-decoration:line-through}.zi-st .btn{padding:3px 8px;font-size:14px}'+
 '.zi-empty{color:var(--muted);font-size:15px;line-height:1.6}'+
 '.zi-toast{position:absolute;left:50%;top:70px;transform:translateX(-50%);background:var(--ink);color:#fff;font-size:22px;font-weight:700;padding:12px 22px;border-radius:14px;z-index:5;box-shadow:0 8px 30px rgba(0,0,0,.25);pointer-events:none;max-width:90%;text-align:center}'+
 '.zi-toast.good{background:var(--green)}'+
@@ -480,7 +481,7 @@ var ZI_FLIP='matrix(1 0 0 -1 0 900)',ZI_INK=22,ZI_PAD=48;
 '.zrc-cs{display:flex;flex-wrap:wrap;gap:6px}'+
 '.zc{display:flex;flex-direction:column;align-items:center;min-width:58px;padding:4px 6px;border:2px solid var(--green);border-radius:10px;background:#fff;line-height:1.1}'+
 '.zc .c{font-size:34px}.zc .z{font-size:13px;color:var(--green);font-weight:700}.zc .dup{font-size:11px;color:var(--amber)}'+
-'.zc:hover{background:#eefaf2}'+
+'.zc:hover{background:#eefaf2}.zc.nf{border-style:dashed;border-color:#9fb0bd}.zc.nf .z{color:var(--muted)}.zrc-no .zimg{border-color:#9fd3b0;color:var(--green)}'+
 '.zrc-notes{font-size:13px;color:#a06b00;display:flex;flex-direction:column;gap:2px}'+
 '.zrc-in{display:flex;gap:6px}.zrc-in input{width:90px;font-size:22px;padding:2px 8px;border:2px solid var(--line);border-radius:9px;text-align:center}'+
 '.zrc-no{display:flex;gap:6px;flex-wrap:wrap}.zrc-no .btn{border-color:#f0b7b0;color:var(--red);padding:5px 10px;font-size:15px}'+
@@ -521,7 +522,9 @@ function ziRdp(k,tol){
 function ziSimplify(ink,tol){return (ink||[]).map(function(k){return ziRdp(k,tol||2);});}
 function ziUid(){return Date.now().toString(36).slice(-5)+Math.random().toString(36).slice(2,5);}
 function ziClone(o){return JSON.parse(JSON.stringify(o));}
-var ZI_WHY={nz:'老師說：這不是國字，再想想看',cl:'老師說：寫清楚一點，再送一次'};
+var ZI_WHY={nz:'老師說：這不是國字，再想想看',cl:'老師說：寫清楚一點，再送一次',dup:'這個字有同學先造出來了，不算分',orig:'這就是原本的字，不算分'};
+function ziValid(s){return s.s==='o'&&(!s.why||s.why==='img');}
+function ziShow(ch){return ch||'◎';}
 
 /* ---------- 生字部件選取 ---------- */
 function ZiPicker(svg,onChange){
@@ -694,11 +697,13 @@ ZiDesk.prototype.send=function(){
 };
 ZiDesk.prototype.renderMine=function(){
   var self=this,L=this.listEl,subs=(this.st.subs||[]).slice().reverse();L.innerHTML='';
-  var ok=subs.filter(function(s){return s.s==='o';}).length;this.nEl.textContent=subs.length?'（老師通過 '+ok+' 個）':'';
+  var ok=subs.filter(ziValid).length;this.nEl.textContent=subs.length?'（老師通過 '+ok+' 個）':'';
   if(!subs.length){L.appendChild(zmk('div','zi-empty','還沒有。<br>① 點生字的筆畫或部件<br>② 按「放進作答區」<br>③ 移動、縮放，再手寫補筆畫<br>④ 按「送給老師看」'));return;}
   subs.forEach(function(sb){
     var it=zmk('div','zi-item '+(sb.s||'')),stx=zmk('div','zi-st');it.appendChild(ziSvg(sb,'zi-thumb'));
-    if(sb.s==='o')stx.innerHTML='<span class="zi-big zi-kai">'+esc(sb.ch)+'</span><span class="zy">'+esc(sb.zy||'')+'</span><span>✓ 老師說可以</span>';
+    if(sb.s==='o'&&(sb.why==='dup'||sb.why==='orig')){it.className='zi-item x';stx.innerHTML='<span class="zi-big zi-kai">'+esc(sb.ch)+'</span><span>✗ '+esc(ZI_WHY[sb.why])+'</span>';}
+    else if(sb.s==='o'&&sb.why==='img')stx.innerHTML='<span>✓ 老師說這是一個字（打不出來的字）</span>';
+    else if(sb.s==='o')stx.innerHTML='<span class="zi-big zi-kai">'+esc(sb.ch)+'</span><span class="zy">'+esc(sb.zy||'')+'</span><span>✓ 老師說可以</span>';
     else if(sb.s==='n')stx.innerHTML='<span>'+esc(ZI_WHY[sb.why]||'老師請你再想想')+'</span><button class="btn" type="button" data-a="redo" data-id="'+esc(sb.id)+'">拿回來改</button>';
     else if(sb.v>0)stx.innerHTML='<span>⏳ 等老師看</span>';
     else stx.innerHTML='<span>傳送中…</span>';
@@ -707,8 +712,9 @@ ZiDesk.prototype.renderMine=function(){
 };
 /* 套用老師的審核結果；回傳是否有變動、新通過的字 */
 function ziApply(st,r){
-  var out={changed:false,ok:[],no:0};if(!st||!st.subs||!r)return out;
-  st.subs.forEach(function(sb){var x=r[sb.id];if(!Array.isArray(x)||!(x[0]>(sb.v||0)))return;var was=sb.s;sb.v=x[0];sb.s=x[1]==='o'||x[1]==='n'?x[1]:'w';sb.ch=String(x[2]||'').slice(0,2);sb.zy=String(x[3]||'').slice(0,12);sb.why=String(x[4]||'').slice(0,4);out.changed=true;if(sb.s==='o'&&was!=='o')out.ok.push(sb.ch);if(sb.s==='n'&&was!=='n')out.no++;});
+  var out={changed:false,ok:[],no:0,dup:[],orig:[]};if(!st||!st.subs||!r)return out;
+  st.subs.forEach(function(sb){var x=r[sb.id];if(!Array.isArray(x)||!(x[0]>(sb.v||0)))return;var wasV=ziValid(sb),wasW=sb.s==='o'?sb.why:sb.s;sb.v=x[0];sb.s=x[1]==='o'||x[1]==='n'?x[1]:'w';sb.ch=String(x[2]||'').slice(0,2);sb.zy=String(x[3]||'').slice(0,12);sb.why=String(x[4]||'').slice(0,4);out.changed=true;
+    if(ziValid(sb)&&!wasV)out.ok.push(ziShow(sb.ch));if(sb.s==='n'&&wasW!=='n')out.no++;if(sb.s==='o'&&sb.why==='dup'&&wasW!=='dup')out.dup.push(sb.ch);if(sb.s==='o'&&sb.why==='orig'&&wasW!=='orig')out.orig.push(sb.ch);});
   return out;
 }
 function ziWire(st){
@@ -723,6 +729,7 @@ function ziTile(box,st){
 }
 
 /* ---------- 老師：收作品、電腦辨識建議、審核 ---------- */
+var ZI_SIMP=new Set(Array.from('# Format: key㐷㐽㑇㑈㑔㑩㓆㓥㓰㔉㖊㖞㘎㚯㛀㛟㛠㛣㛤㛿㟆㟜㟥㡎㤘㤽㥪㧏㧐㧑㧟㧰㨫㭎㭏㭣㭤㭴㱩㱮㲿㳔㳕㳠㳡㳢㳽㴋㶉㶶㶽㺍㻅㻏㻘䀥䁖䂵䃅䅉䅟䅪䇲䉤䌶䌷䌸䌹䌺䌻䌼䌽䌾䌿䍀䍁䍠䎬䏝䑽䓓䓕䓖䓨䗖䘛䘞䙊䙌䙓䜣䜤䜥䜧䜩䝙䞌䞍䞎䞐䟢䢀䢁䢂䥺䥽䥾䥿䦀䦁䦂䦃䦅䦆䦶䦷䩄䭪䯃䯄䯅䲝䲞䲟䲠䲡䲢䲣䴓䴔䴕䴖䴗䴘䴙䶮与专业丛东丝丢两严丧个临为丽举么义乌乐乔习乡书买乱争亏亚产亩亲亵亸亿仅从仑仓仪们众优会伛伞伟传伡伣伤伥伦伧伪伫体佥侠侣侥侦侧侨侩侪侬侭俣俦俨俩俪俫俭债倾偬偻偾偿傤傥傧储傩儿兑兖兰关兴兹养兽冁内冈册写军农冯冲决况冻净凄凉减凑凛凤凫凭凯击凿刍刘则刚创删别刬刭刹刽刾刿剀剂剐剑剥剧劝办务劢动励劲劳势勋勚匀匦匮区医华协单卖卢卤卧卫却卺厅历厉压厌厍厐厕厢厣厦厨厩厮县叁参叆叇双发变叙叠号叹叽吓吕吗吨听启吴呐呒呓呕呖呗员呙呛呜咏咙咛咝咤响哑哒哓哔哕哗哙哜哝哟唛唝唠唡唢唤啧啬啭啮啯啰啴啸喷喽喾嗫嗳嘘嘤嘱噜嚣团园囱围囵国图圆圣圹场坏块坚坛坜坝坞坟坠垄垅垆垒垦垩垫垭垯垱垲垴埘埙埚堑堕塆墙壮声壳壶壸处备复够头夹夺奁奂奋奖奥妆妇妈妩妪妫姗姹娄娅娆娇娈娱娲娴婳婴婵婶媪媭嫒嫔嫱嬷孙学孪宁宝实宠审宪宫宽宾寝对寻导寿将尔尘尝尧尴尽层屃屉届属屡屦屿岁岂岖岗岘岚岛岭岽岿峃峄峡峣峤峥峦峰崂崃崄崭嵘嵚嵝巅巩巯币帅师帏帐帜带帧帮帱帻帼幂并庄庆床庐庑库应庙庞废庼廪开异弃弑张弥弪弯弹强归当录彟彦彨彻径徕忆忏忧忾怀态怂怃怄怅怆怜总怼怿恋恒恳恶恸恹恺恻恼恽悦悫悬悭悮悯惊惧惨惩惫惬惭惮惯愠愤愦慑慭懑懒懔戆戋戏戗战戬戯户扑执扩扪扫扬扰抚抛抟抠抡抢护报担拟拢拣拥拦拧拨择挚挛挜挝挞挟挠挡挢挣挤挥挦捝捞损捡换捣掳掴掷掸掺掼揽揾揿搀搁搂搄搅携摄摅摆摇摈摊撄撑撵撷撸撺擜擞攒敌敚敛敩数斋斓斩断无旧时旷旸昙昵昼昽显晋晒晓晔晕晖暂暅暧术机杀杂权条来杨杩构枞枢枣枥枧枨枪枫枭柠柽栀栅标栈栉栊栋栌栎栏树栖样栾桠桡桢档桤桥桦桧桨桩桪梦梼梾梿检棁棂椁椝椟椠椢椤椫椭椮楼榄榅榇榈榉榝槚槛槟槠横樯樱橥橱橹橼檩欢欤欧歼殁殇残殒殓殚殡殴毁毂毕毙毡毵毶氇气氢氩氲汇汉汤汹沄沟没沣沤沥沦沧沨沩沪泞泪泶泷泸泺泻泼泽泾洁洒洼浃浅浆浇浈浉浊测浍济浏浐浑浒浓浔浕涚涛涝涞涟涠涡涢涣涤润涧涨涩渊渌渍渎渐渑渔渖渗温湾湿溁溃溅溆溇滗滚滞滟滠满滢滤滥滦滨滩滪潆潇潋潍潜潴澛澜濑濒灏灭灯灵灶灾灿炀炉炖炜炝点炼炽烁烂烃烛烟烦烧烨烩烫烬热焕焖焘煴爱爷牍牦牵牺犊状犷犸犹狈狝狞独狭狮狯狰狱狲猃猎猕猡猪猫猬献獭玑玙玚玛玮环现玱玺珐珑珰珲琎琏琐琼瑶瑷瑸璎瓒瓮瓯电画畅畴疖疗疟疠疡疬疭疮疯疱疴痈痉痒痖痨痪痫痴瘅瘆瘗瘘瘪瘫瘾瘿癞癣癫皑皱皲盏盐监盖盗盘眍眦眬睁睐睑瞆瞒瞩矫矶矾矿砀码砖砗砚砜砺砻砾础硁硕硖硗硙硚硵碍碛碜碱礼祃祎祢祯祷祸禀禄禅离秃秆秘积称秽秾稆税稣稳穑穞穷窃窍窎窑窜窝窥窦窭竖竞笃笋笔笕笺笼笾筚筛筜筝筹筼签筿简箓箦箧箨箩箪箫篑篓篮篯篱簖籁籴类籼粜粝粤粪粮粽糁糇糍紧絷緼縆纟纠纡红纣纤纥约级纨纩纪纫纬纭纮纯纰纱纲纳纴纵纶纷纸纹纺纻纼纽纾线绀绁绂练组绅细织终绉绊绋绌绍绎经绐绑绒结绔绕绖绗绘给绚绛络绝绞统绠绡绢绣绤绥绦继绨绩绪绫绬续绮绯绰绱绲绳维绵绶绷绸绹绺绻综绽绾绿缀缁缂缃缄缅缆缇缈缉缊缋缌缍缎缏缐缑缒缓缔缕编缗缘缙缚缛缜缝缞缟缠缡缢缣缤缥缦缧缨缩缪缫缬缭缮缯缰缱缲缳缴缵罂网罗罚罢罴羁羟羡群翘翙翚耢耧耸耻聂聋职聍联聩聪肃肠肤肮肴肾肿胀胁胆胧胨胪胫胶脉脍脏脐脑脓脔脚脱脶脸腘腭腻腼腽腾膑臜舆舣舰舱舻艰艳艺节芈芗芜芦苁苇苈苋苌苍苎苏苧茎茏茑茔茕茧荆荙荚荛荜荝荞荟荠荡荣荤荥荦荧荨荩荪荫荬荭荮药莅莱莲莳莴莶获莸莹莺莼萚萝萤营萦萧萨葱蒀蒇蒉蒋蒌蒏蓝蓟蓠蓣蓥蓦蔂蔷蔹蔺蔼蕰蕲蕴薮藓藴蘖虏虑虚虬虮虱虽虾虿蚀蚁蚂蚃蚕蚬蛊蛎蛏蛮蛰蛱蛲蛳蛴蜕蜗蝇蝈蝉蝼蝾螀螨蟏衅衔补衬衮袄袅袆袜袭袯装裆裈裢裣裤裥褛褴襕见观觃规觅视觇览觉觊觋觌觍觎觏觐觑觞触觯訚詟誉誊讠计订讣认讥讦讧讨让讪讫讬训议讯记讱讲讳讴讵讶讷许讹论讻讼讽设访诀证诂诃评诅识诇诈诉诊诋诌词诎诏诐译诒诓诔试诖诗诘诙诚诛诜话诞诟诠诡询诣诤该详诧诨诩诪诫诬语诮误诰诱诲诳说诵诶请诸诹诺读诼诽课诿谀谁谂调谄谅谆谇谈谉谊谋谌谍谎谏谐谑谒谓谔谕谖谗谘谙谚谛谜谝谞谟谠谡谢谣谤谥谦谧谨谩谪谫谬谭谮谯谰谱谲谳谴谵谶豮贝贞负贠贡财责贤败账货质贩贪贫贬购贮贯贰贱贲贳贴贵贶贷贸费贺贻贼贽贾贿赀赁赂赃资赅赆赇赈赉赊赋赌赍赎赏赐赑赒赓赔赕赖赗赘赙赚赛赜赝赞赟赠赡赢赣赪赵赶趋趱趸跃跄跞践跶跷跸跹跻踌踪踬踯蹑蹒蹰蹿躏躜躯輼车轧轨轩轪轫转轭轮软轰轱轲轳轴轵轶轷轸轹轺轻轼载轾轿辀辁辂较辄辅辆辇辈辉辊辋辌辍辎辏辐辑辒输辔辕辖辗辘辙辚辞辩辫边辽达迁过迈运还这进远违连迟迩迳迹选逊递逦逻遗遥邓邝邬邮邹邺邻郏郐郑郓郦郧郸酂酝酦酱酽酾酿醖释鉴銮錾钅钆钇针钉钊钋钌钍钎钏钐钑钒钓钔钕钖钗钘钙钚钛钜钝钞钟钠钡钢钣钤钥钦钧钨钩钪钫钬钭钮钯钰钱钲钳钴钵钶钷钸钹钺钻钼钽钾钿铀铁铂铃铄铅铆铇铈铉铊铋铌铍铎铏铐铑铒铓铔铕铖铗铘铙铚铛铜铝铞铟铠铡铢铣铤铥铦铧铨铩铪铫铬铭铮铯铰铱铲铳铴铵银铷铸铹铺铻铼铽链铿销锁锂锃锄锅锆锇锈锉锊锋锌锍锎锏锐锑锒锓锔锕锖锗锘错锚锛锜锝锞锟锠锡锢锣锤锥锦锧锨锩锪锫锬锭键锯锰锱锲锳锴锵锶锷锸锹锺锻锼锽锾锿镀镁镂镃镄镅镆镇镈镉镊镋镌镍镎镏镐镑镒镓镔镕镖镗镘镙镚镛镜镝镞镟镠镡镢镣镤镥镦镧镨镩镪镫镬镭镮镯镰镱镲镳镴镵镶长门闩闪闫闬闭问闯闰闱闲闳间闵闶闷闸闹闺闻闼闽闾闿阀阁阂阃阄阅阆阇阈阉阊阋阌阍阎阏阐阑阒阓阔阕阖阗阘阙阚阛队阳阴阵阶际陆陇陈陉陕陦陧陨险随隐隶隽难雏雠雳雾霁霉霡霭靓靔静靥鞑鞒鞯鞲韦韧韨韩韪韫韬韵页顶顷顸项顺须顼顽顾顿颀颁颂颃预颅领颇颈颉颊颋颌颍颎颏颐频颒颓颔颕颖颗题颙颚颛颜额颞颟颠颡颢颣颤颥颦颧风飏飐飑飒飓飔飕飖飗飘飙飚飞飨餍饣饤饥饦饧饨饩饪饫饬饭饮饯饰饱饲饳饴饵饶饷饸饹饺饻饼饽饾饿馀馁馂馃馄馅馆馇馈馉馊馋馌馍馎馏馐馑馒馓馔馕马驭驮驯驰驱驲驳驴驵驶驷驸驹驺驻驼驽驾驿骀骁骂骃骄骅骆骇骈骉骊骋验骍骎骏骐骑骒骓骔骕骖骗骘骙骚骛骜骝骞骟骠骡骢骣骤骥骦骧髅髋髌鬓鬶魇魉鱼鱽鱾鱿鲀鲁鲂鲃鲄鲅鲆鲇鲈鲉鲊鲋鲌鲍鲎鲏鲐鲑鲒鲓鲔鲕鲖鲗鲘鲙鲚鲛鲜鲝鲞鲟鲠鲡鲢鲣鲤鲥鲦鲧鲨鲩鲪鲫鲬鲭鲮鲯鲰鲱鲲鲳鲴鲵鲶鲷鲸鲹鲺鲻鲼鲽鲾鲿鳀鳁鳂鳃鳄鳅鳆鳇鳈鳉鳊鳋鳌鳍鳎鳏鳐鳑鳒鳓鳔鳕鳖鳗鳘鳙鳚鳛鳜鳝鳞鳟鳠鳡鳢鳣鳤鸟鸠鸡鸢鸣鸤鸥鸦鸧鸨鸩鸪鸫鸬鸭鸮鸯鸰鸱鸲鸳鸴鸵鸶鸷鸸鸹鸺鸻鸼鸽鸾鸿鹀鹁鹂鹃鹄鹅鹆鹇鹈鹉鹊鹋鹌鹍鹎鹏鹐鹑鹒鹓鹔鹕鹖鹗鹘鹙鹚鹛鹜鹝鹞鹟鹠鹡鹢鹣鹤鹥鹦鹧鹨鹩鹪鹫鹬鹭鹮鹯鹰鹱鹲鹳鹴鹾麦麸麹麺麽黄黉黡黩黪黾鼋鼌鼍鼹齐齑齿龀龁龂龃龄龅龆龇龈龉龊龋龌龙龚龛龟鿎鿏鿒鿔𠀾𠆲𠆿𠇹𠉂𠉗𠋆𠚳𠛅𠛆𠛾𠡠𠮶𠯟𠯠𠰱𠰷𠱞𠲥𠴛𠴢𠵸𠵾𡋀𡋗𡋤𡍣𡒄𡝠𡞋𡞱𡠟𡥧𡭜𡭬𡳃𡳒𡶴𡸃𡺃𡺄𢋈𢗓𢘙𢘝𢘞𢙏𢙐𢙑𢙒𢙓𢛯𢠁𢢐𢧐𢫊𢫞𢫬𢬍𢬦𢭏𢽾𣃁𣆐𣈣𣍨𣍯𣍰𣎑𣏢𣐕𣐤𣑶𣒌𣓿𣔌𣗊𣗋𣗙𣘐𣘓𣘴𣘷𣚚𣞎𣨼𣭤𣯣𣱝𣲗𣲘𣳆𣶩𣶫𣶭𣷷𣸣𣺼𣺽𣽷𤆡𤆢𤇃𤇄𤇭𤇹𤈶𤈷𤊀𤊰𤋏𤎺𤎻𤙯𤝢𤞃𤞤𤠋𤦀𤩽𤳄𤶊𤶧𤻊𤽯𤾀𤿲𥁢𥅘𥅴𥅿𥆧𥇢𥎝𥐟𥐯𥐰𥐻𥞦𥧂𥩟𥩺𥫣𥬀𥬞𥬠𥭉𥮋𥮜𥮾𥱔𥹥𥺅𥺇𦈈𦈉𦈋𦈌𦈎𦈏𦈐𦈑𦈒𦈓𦈔𦈕𦈖𦈗𦈘𦈙𦈚𦈛𦈜𦈝𦈞𦈟𦈠𦈡𦍠𦛨𦝼𦟗𦨩𦰏𦰴𦶟𦶻𦻕𧉐𧉞𧌥𧏖𧏗𧑏𧒭𧜭𧝝𧝧𧮪𧳕𧹑𧹒𧹓𧹔𧹕𧹖𧹗𧿈𨀁𨀱𨁴𨂺𨄄𨅛𨅫𨅬𨉗𨐅𨐆𨐇𨐈𨐉𨐊𨑹𨟳𨠨𨡙𨡺𨤰𨰾𨰿𨱀𨱁𨱂𨱃𨱄𨱅𨱆𨱇𨱈𨱉𨱊𨱋𨱌𨱍𨱎𨱏𨱐𨱑𨱒𨱓𨱔𨱕𨱖𨷿𨸀𨸁𨸂𨸃𨸄𨸅𨸆𨸇𨸉𨸊𨸋𨸌𨸎𨸘𨸟𩏼𩏽𩏾𩏿𩐀𩓋𩖕𩖖𩖗𩙥𩙦𩙧𩙨𩙩𩙪𩙫𩙬𩙭𩙮𩙯𩙰𩟿𩠀𩠁𩠂𩠃𩠅𩠆𩠇𩠈𩠉𩠊𩠋𩠌𩠎𩠏𩠠𩡖𩧦𩧨𩧩𩧪𩧫𩧬𩧭𩧮𩧯𩧰𩧱𩧲𩧳𩧴𩧵𩧶𩧸𩧺𩧻𩧼𩧿𩨀𩨁𩨂𩨃𩨄𩨅𩨆𩨇𩨈𩨉𩨊𩨋𩨌𩨍𩨎𩨏𩨐𩩈𩬣𩬤𩭹𩯒𩰰𩲒𩴌𩽹𩽺𩽻𩽼𩽽𩽾𩽿𩾁𩾂𩾃𩾄𩾅𩾆𩾇𩾈𩾊𩾋𩾌𩾎𪉂𪉃𪉄𪉅𪉆𪉈𪉉𪉊𪉋𪉌𪉍𪉎𪉏𪉐𪉑𪉒𪉔𪉕𪎈𪎉𪎊𪎋𪎌𪑅𪔭𪚏𪚐𪜎𪞝𪟎𪟝𪠀𪠟𪠡𪠳𪠵𪠸𪠺𪠽𪡀𪡃𪡋𪡏𪡛𪡞𪡺𪢌𪢐𪢒𪢕𪢖𪢠𪢮𪢸𪣆𪣒𪣻𪤄𪤚𪥠𪥫𪥰𪥿𪧀𪧘𪨊𪨗𪨧𪨩𪨶𪨷𪨹𪩇𪩎𪩘𪩛𪩷𪩸𪪏𪪑𪪞𪪴𪪼𪫌𪫡𪫷𪫺𪬚𪬯𪭝𪭢𪭧𪭯𪭵𪭾𪮃𪮋𪮖𪮳𪮶𪯋𪰶𪱥𪱷𪲎𪲔𪲛𪲮𪳍𪳗𪴙𪵑𪵣𪵱𪶄𪶒𪶮𪷍𪷽𪸕𪸩𪹀𪹠𪹳𪹹𪺣𪺪𪺭𪺷𪺸𪺻𪺽𪻐𪻨𪻲𪻺𪼋𪼴𪽈𪽝𪽪𪽭𪽮𪽴𪽷𪾔𪾢𪾣𪾦𪾸𪿊𪿞𪿫𪿵𫀌𫀓𫀨𫀬𫀮𫁂𫁟𫁡𫁱𫁲𫁳𫁷𫁺𫂃𫂆𫂈𫂖𫂿𫃗𫄙𫄚𫄛𫄜𫄝𫄞𫄟𫄠𫄡𫄢𫄣𫄤𫄥𫄦𫄧𫄨𫄩𫄪𫄫𫄬𫄭𫄮𫄯𫄰𫄱𫄲𫄳𫄴𫄵𫄶𫄷𫄸𫄹𫅅𫅗𫅥𫅭𫅼𫆏𫆝𫆫𫇘𫇛𫇪𫇭𫇴𫇽𫈉𫈎𫈟𫈵𫉁𫉄𫊪𫊮𫊸𫊹𫊻𫋇𫋌𫋲𫋷𫋹𫋻𫌀𫌇𫌋𫌨𫌪𫌫𫌬𫌭𫌯𫍐𫍙𫍚𫍛𫍜𫍝𫍞𫍟𫍠𫍡𫍢𫍣𫍤𫍥𫍦𫍧𫍨𫍩𫍪𫍫𫍬𫍭𫍮𫍯𫍰𫍱𫍲𫍳𫍴𫍵𫍶𫍷𫍸𫍹𫍺𫍻𫍼𫍽𫍾𫍿𫎆𫎌𫎦𫎧𫎨𫎩𫎪𫎫𫎬𫎭𫎱𫎳𫎸𫎺𫏃𫏆𫏋𫏌𫏐𫏑𫏕𫏞𫏨𫐄𫐅𫐆𫐇𫐈𫐉𫐊𫐋𫐌𫐍𫐎𫐏𫐐𫐑𫐒𫐓𫐔𫐕𫐖𫐗𫐘𫐙𫐷𫑘𫑡𫑷𫓥𫓦𫓧𫓨𫓩𫓪𫓫𫓬𫓭𫓮𫓯𫓰𫓱𫓲𫓳𫓴𫓵𫓶𫓷𫓸𫓹𫓺𫓻𫓼𫓽𫓾𫓿𫔀𫔁𫔂𫔃𫔄𫔅𫔆𫔇𫔈𫔉𫔊𫔋𫔌𫔍𫔎𫔏𫔐𫔑𫔒𫔓𫔔𫔕𫔖𫔭𫔮𫔯𫔰𫔲𫔴𫔵𫔶𫔽𫕚𫕥𫕨𫖃𫖅𫖇𫖑𫖒𫖓𫖔𫖕𫖖𫖪𫖫𫖬𫖭𫖮𫖯𫖰𫖱𫖲𫖳𫖴𫖵𫖶𫖷𫖸𫖹𫖺𫗇𫗈𫗉𫗊𫗋𫗚𫗞𫗟𫗠𫗡𫗢𫗣𫗤𫗥𫗦𫗧𫗨𫗩𫗪𫗫𫗬𫗭𫗮𫗯𫗰𫗱𫗳𫗴𫗵𫘛𫘜𫘝𫘞𫘟𫘠𫘡𫘣𫘤𫘥𫘦𫘧𫘨𫘩𫘪𫘫𫘬𫘭𫘮𫘯𫘰𫘱𫘽𫙂𫚈𫚉𫚊𫚋𫚌𫚍𫚎𫚏𫚐𫚑𫚒𫚓𫚔𫚕𫚖𫚗𫚘𫚙𫚚𫚛𫚜𫚝𫚞𫚟𫚠𫚡𫚢𫚣𫚤𫚥𫚦𫚧𫚨𫚩𫚪𫚫𫚬𫚭𫛚𫛛𫛜𫛝𫛞𫛟𫛠𫛡𫛢𫛣𫛤𫛥𫛦𫛧𫛨𫛩𫛪𫛫𫛬𫛭𫛮𫛯𫛰𫛱𫛲𫛳𫛴𫛵𫛶𫛷𫛸𫛹𫛺𫛻𫛼𫛽𫛾𫜀𫜁𫜂𫜃𫜄𫜅𫜊𫜑𫜒𫜓𫜔𫜕𫜙𫜟𫜨𫜩𫜪𫜫𫜬𫜭𫜮𫜯𫜰𫜲𫜳𫝈𫝋𫝦𫝧𫝨𫝩𫝪𫝫𫝬𫝭𫝮𫝵𫞅𫞗𫞚𫞛𫞝𫞠𫞡𫞢𫞣𫞥𫞦𫞧𫞨𫞩𫞷𫟃𫟄𫟅𫟆𫟇𫟑𫟕𫟞𫟟𫟠𫟡𫟢𫟤𫟥𫟦𫟫𫟬𫟲𫟳𫟴𫟵𫟶𫟷𫟸𫟹𫟺𫟻𫟼𫟽𫟾𫟿𫠀𫠁𫠂𫠅𫠆𫠇𫠈𫠊𫠋𫠌𫠏𫠐𫠑𫠒𫠖𫠜𫢸𫧃𫧮𫫇𫬐𫭟𫭢𫭼𫮃𫰛𫵷𫶇𫷷𫸩𬀩𬀪𬂩𬃊𬇕𬇙𬇹𬉼𬊈𬊤𬍛𬍡𬍤𬒈𬒗𬕂𬘓𬘘𬘡𬘩𬘫𬘬𬘭𬘯𬙂𬙊𬙋𬜬𬜯𬞟𬟁𬟽𬣙𬣞𬣡𬣳𬤇𬤊𬤝𬨂𬨎𬩽𬪩𬬩𬬭𬬮𬬱𬬸𬬹𬬻𬬿𬭁𬭊𬭎𬭚𬭛𬭤𬭩𬭬𬭭𬭯𬭳𬭶𬭸𬭼𬮱𬮿𬯀𬯎𬱖𬱟𬳵𬳶𬳽𬳿𬴂𬴃𬴊𬶋𬶍𬶏𬶐𬶟𬶠𬶨𬶭𬶮𬷕𬸘𬸚𬸣𬸦𬸪𬸯𬹼𬺈𬺓𰬸𰰨𰶎𰻝𰾄𰾭𱊜'));/* 簡體字（OpenCC），不列入建議 */
 var ZI_G='https://inputtools.google.com/request?ime=handwriting&app=classroom&dbg=0&cs=1&oe=UTF-8';
 function ziTimeout(ms){try{return AbortSignal.timeout(ms);}catch(e){return undefined;}}
 function ziGoogle(strokes){
@@ -749,10 +756,10 @@ function ziRecognize(rec){
     var ok=res.filter(function(r){return Array.isArray(r)&&r.length;});
     if(!ok.length)throw new Error((res[0]&&res[0].err)||'電腦辨識不出來');
     var score={};ok.forEach(function(r){r.slice(0,10).forEach(function(c,i){score[c]=(score[c]||0)+(10-i);});});
-    var merged=Object.keys(score).sort(function(a,b){return score[b]-score[a];}).slice(0,9);
+    var merged=Object.keys(score).filter(function(c){return !ZI_SIMP.has(c);}).sort(function(a,b){return score[b]-score[a];}).slice(0,9);
     var tops=ok.map(function(r){return r[0];}),stable=ok.length===3&&tops.every(function(t){return t===tops[0];});
     return Promise.all(merged.map(function(c){return ziMoe(c).catch(function(){return {f:1,z:''};});})).then(function(info){
-      var cand=[];merged.forEach(function(c,i){if(info[i].f&&cand.length<6)cand.push([c,info[i].z]);});
+      var cand=[],miss=0;merged.forEach(function(c,i){if(info[i].f&&cand.length<6)cand.push([c,info[i].z,1]);});merged.forEach(function(c,i){if(!info[i].f&&miss<3){miss++;cand.push([c,'',0]);}});
       var notes=[],top=cand[0]&&cand[0][0];
       if(!stable)notes.push('電腦不太確定（換筆順結果不同），請看清楚');
       if(top&&rec.src.indexOf(top)>=0)notes.push('電腦看起來和原本的生字「'+top+'」一樣');
@@ -784,16 +791,27 @@ function ziTeacher(o){
   }
   function needs(n,st){return Array.isArray(st.subs)&&st.subs.some(function(x){return Array.isArray(x)&&!x[1]&&!find(n,x[0]);});}
   function summary(n,st){
-    var mine=recs.filter(function(r){return r.seat===n&&r.task===st.id;}),w=mine.filter(function(r){return r.s==='w';}).length,ok=mine.filter(function(r){return r.s==='o';}).length;
+    var mine=recs.filter(function(r){return r.seat===n&&r.task===st.id;}),w=mine.filter(function(r){return r.s==='w';}).length,ok=mine.filter(ziValid).length;
     var s='拆「'+esc(st.cur||'')+'」・送出 '+mine.length;if(w)s+='・<span class="warn">待審 '+w+'</span>';if(ok)s+='・<span class="good">通過 '+ok+'</span>';return s;
   }
   function pending(){return recs.filter(function(r){return r.s==='w';}).length;}
+  /* 規則：老師只判斷是什麼字；和原字一樣、同一回合後送出的重複字，自動不算 */
+  function applyRules(cur){
+    var groups={},changed=[];
+    recs.forEach(function(r){if(r.s!=='o'||r.why==='img')return;r._rule=(r.ch&&r.src.indexOf(r.ch)>=0)?'orig':'';if(!r._rule&&r.rd)(groups[r.rd]=groups[r.rd]||[]).push(r);});
+    Object.keys(groups).forEach(function(k){var seen={};groups[k].sort(function(a,b){return (a.got||a.t)-(b.got||b.t);}).forEach(function(r){if(seen[r.ch])r._rule='dup';else seen[r.ch]=r;});});
+    recs.forEach(function(r){if(r.s!=='o'||r.why==='img')return;var nr=r._rule||'';delete r._rule;if((r.why||'')!==nr){r.why=nr;if(r!==cur){r.v++;changed.push(r);}}});
+    return changed;
+  }
+  function firstOf(rec,ch){var best=null;recs.forEach(function(r){if(r!==rec&&r.rd&&r.rd===rec.rd&&r.s==='o'&&r.ch===ch&&r.why!=='orig'&&(!best||(r.got||r.t)<(best.got||best.t)))best=r;});return best&&(best.got||best.t)<(rec.got||rec.t)?best:null;}
   /* 審核後通知學生 */
-  function notify(rec){var ae=document.activeElement;if(ae&&body.contains(ae))ae.blur();rec.v++;rec.rt=Date.now();save();if(rec.seat===0){var st=o.demoStates[rec.task];var res=ziApply(st,(function(){var m={};m[rec.id]=[rec.v,rec.s,rec.ch,rec.zy,rec.why];return m;})());var dm=o.demo();if(res.changed&&dm.zi&&dm.id===rec.task)dm.zi.renderMine();}else o.send(rec.seat);if(rc.cur())o.send(8);refresh();}
+  function deliver(rec){if(rec.seat===0){var st=o.demoStates[rec.task];var res=ziApply(st,(function(){var m={};m[rec.id]=[rec.v,rec.s,rec.ch,rec.zy,rec.why];return m;})());var dm=o.demo();if(res.changed&&dm.zi&&dm.id===rec.task)dm.zi.renderMine();}else o.send(rec.seat);}
+  function notify(rec){var ae=document.activeElement;if(ae&&body.contains(ae))ae.blur();rec.v++;rec.rt=Date.now();var more=applyRules(rec);save();var sent={};[rec].concat(more).forEach(function(r){var k=r.seat+':'+r.task;if(r.seat===0||!sent[k]){sent[k]=1;deliver(r);}});if(rc.cur())o.send(8);refresh();}
   function approve(rec,ch,zy){
     ch=Array.from(String(ch||'').trim())[0]||'';if(!ch)return;rec.s='o';rec.ch=ch;rec.zy=zy||'';rec.why='';notify(rec);
     if(!zy)ziMoe(ch).then(function(m){if(rec.s==='o'&&rec.ch===ch&&m.z){rec.zy=m.z;notify(rec);}},function(){});
   }
+  function approveImg(rec){rec.s='o';rec.ch='';rec.zy='';rec.why='img';notify(rec);}
   function reject(rec,why){rec.s='n';rec.ch='';rec.zy='';rec.why=why;notify(rec);}
   function reopen(rec){rec.s='w';rec.ch='';rec.zy='';rec.why='';notify(rec);}
   function pump(){
@@ -819,11 +837,12 @@ function ziTeacher(o){
   function head(rec){var t=new Date(rec.t),hm=('0'+t.getHours()).slice(-2)+':'+('0'+t.getMinutes()).slice(-2);return '<div class="zrc-h"><b>'+esc(who(rec.seat))+'</b><span>從「<span class="zi-kai">'+esc(rec.src)+'</span>」・'+hm+'・'+esc((TASK[rec.task]||{title:''}).title.replace('拆字造字 ',''))+'</span></div>';}
   function waitCard(rec){
     var c=zmk('article','zrc');c.innerHTML=head(rec)+'<div class="zrc-b"></div>';var b=c.querySelector('.zrc-b');b.appendChild(ziSvg(rec,''));
-    var a=zmk('div','zrc-a');a.innerHTML='<div class="zrc-l">電腦看起來像（點一下＝通過）：</div><div class="zrc-cs"></div><div class="zrc-notes"></div><div class="zrc-in"><input maxlength="2" placeholder="打字" aria-label="正確的字"><button class="btn" type="button">✓ 通過</button></div><div class="zrc-no"><button class="btn" type="button" data-why="nz">✗ 不是國字</button><button class="btn" type="button" data-why="cl">✗ 寫清楚一點</button></div>';
+    var a=zmk('div','zrc-a');a.innerHTML='<div class="zrc-l">電腦看起來像（點一下＝通過）：</div><div class="zrc-cs"></div><div class="zrc-notes"></div><div class="zrc-in"><input maxlength="2" placeholder="打字" aria-label="正確的字"><button class="btn" type="button">✓ 通過</button></div><div class="zrc-no"><button class="btn zimg" type="button">✓ 是字，但打不出來</button><button class="btn" type="button" data-why="nz">✗ 不是國字</button><button class="btn" type="button" data-why="cl">✗ 寫清楚一點</button></div>';
     b.appendChild(a);var inp=a.querySelector('input');
     a.querySelector('.zrc-in .btn').addEventListener('click',function(){if(inp.value.trim())approve(rec,inp.value);});
     inp.addEventListener('keydown',function(e){if(e.key==='Enter'&&inp.value.trim())approve(rec,inp.value);});
     a.querySelectorAll('[data-why]').forEach(function(x){x.addEventListener('click',function(){reject(rec,x.dataset.why);});});
+    a.querySelector('.zimg').addEventListener('click',function(){approveImg(rec);});
     c._rec=rec;fillCands(c);return c;
   }
   function fillCands(c){
@@ -831,23 +850,24 @@ function ziTeacher(o){
     if(rec.err){cs.innerHTML='<span class="zrc-l">辨識失敗：'+esc(rec.err)+'</span>';var rb=zmk('button','btn','再辨識一次');rb.type='button';rb.addEventListener('click',function(){rec.err='';fillCands(c);pump();});cs.appendChild(rb);return;}
     if(!rec.cand){cs.innerHTML='<span class="zrc-l">辨識中…</span>';return;}
     if(!rec.cand.length)cs.innerHTML='<span class="zrc-l">電腦認不出來，請老師判斷</span>';
-    rec.cand.forEach(function(x){var b=zmk('button','zc','<span class="c zi-kai">'+esc(x[0])+'</span><span class="z">'+esc(x[1]||'')+'</span>'+(dupOf(rec,x[0])?'<span class="dup">造過了</span>':''));b.type='button';b.addEventListener('click',function(){approve(rec,x[0],x[1]);});cs.appendChild(b);});
+    rec.cand.forEach(function(x){var f1=rec.rd?firstOf(rec,x[0]):null,tag=rec.src.indexOf(x[0])>=0?'原字，不算':f1?(f1.seat===rec.seat?'自己造過，不算':f1.seat+' 號先造，不算'):dupOf(rec,x[0])?'造過了':x[2]===0?'辭典沒有':'';var b=zmk('button','zc'+(x[2]===0?' nf':''),'<span class="c zi-kai">'+esc(x[0])+'</span><span class="z">'+esc(x[1]||'')+'</span>'+(tag?'<span class="dup">'+esc(tag)+'</span>':''));b.type='button';b.addEventListener('click',function(){approve(rec,x[0],x[1]);});cs.appendChild(b);});
     (rec.notes||[]).forEach(function(t){nt.appendChild(zmk('div','','⚠ '+esc(t)));});
   }
   function updCard(rec){var c=cards[key(rec)];if(c&&c._rec===rec)fillCands(c);}
   function doneCard(rec){
     var c=zmk('article','zrc '+rec.s);c.innerHTML=head(rec)+'<div class="zrc-b"></div>';var b=c.querySelector('.zrc-b');b.appendChild(ziSvg(rec,''));
-    var a=zmk('div','zrc-a');a.innerHTML='<div class="zrc-res">'+(rec.s==='o'?'<span class="zi-big zi-kai">'+esc(rec.ch)+'</span><span class="good">'+esc(rec.zy)+'　✓ 通過</span>':'<span class="warn">✗ '+esc((ZI_WHY[rec.why]||'').replace('老師說：',''))+'</span>')+'</div>';
+    var rule=rec.s==='o'&&(rec.why==='dup'||rec.why==='orig'),f1=rec.why==='dup'?firstOf(rec,rec.ch):null;
+    var a=zmk('div','zrc-a');a.innerHTML='<div class="zrc-res">'+(rec.s==='o'&&rec.why==='img'?'<span class="good">✓ 是字（打不出來）</span>':rule?'<span class="zi-big zi-kai">'+esc(rec.ch)+'</span><span class="warn">✓ 字對，但不算分：'+(rec.why==='orig'?'和原本的字一樣':(f1?f1.seat+' 號':'同學')+'先送出這個字')+'</span>':rec.s==='o'?'<span class="zi-big zi-kai">'+esc(rec.ch)+'</span><span class="good">'+esc(rec.zy)+'　✓ 通過</span>':'<span class="warn">✗ '+esc((ZI_WHY[rec.why]||'').replace('老師說：',''))+'</span>')+'</div>';
     var rb=zmk('button','btn','改判（放回待審核）');rb.type='button';rb.addEventListener('click',function(){reopen(rec);});a.appendChild(rb);b.appendChild(a);return c;
   }
   function wall(){
     var w=zmk('div','zi-wall'),any=false;
     [1,2,3,4,5,6,7,8,0].forEach(function(n){
       if(fseat&&n!==fseat)return;var seen={},list=[];
-      recs.forEach(function(r){if(r.seat===n&&r.s==='o'&&shown(r)&&!seen[r.ch]){seen[r.ch]=1;list.push(r);}});
+      recs.forEach(function(r){var k=r.ch||('#'+r.id);if(r.seat===n&&ziValid(r)&&shown(r)&&!seen[k]){seen[k]=1;list.push(r);}});
       if(!list.length&&(n===0||n===8||!o.names[n]))return;any=true;
       var row=zmk('div','zw','<b>'+esc(who(n))+'</b><span class="n">'+list.length+' 個字</span>'),cs=zmk('div','cs');
-      list.forEach(function(r){cs.appendChild(zmk('span','w','<span class="c zi-kai">'+esc(r.ch)+'</span><span class="z">'+esc(r.zy)+'</span>'));});row.appendChild(cs);w.appendChild(row);
+      list.forEach(function(r){cs.appendChild(zmk('span','w','<span class="c zi-kai">'+esc(ziShow(r.ch))+'</span><span class="z">'+esc(r.zy)+'</span>'));});row.appendChild(cs);w.appendChild(row);
     });
     if(!any)w.appendChild(zmk('div','zi-nothing','還沒有通過的字'));return w;
   }
@@ -906,6 +926,7 @@ function ziTeacher(o){
 '.zw-card{background:#fff;border-radius:1.6vh;padding:.8vh 1vw .6vh;display:flex;flex-direction:column;align-items:center;box-shadow:0 .5vh 1.4vh rgba(150,80,0,.18);min-width:11vh}'+
 '.zw-card .c{font-size:9vh;line-height:1.05}.zw-card .z{font-size:2.2vh;color:#16a34a;font-weight:800;min-height:2.6vh}'+
 '.zw-card .s{margin-top:.4vh;font-size:2.2vh;font-weight:800;color:#fff;padding:.1vh .8vw;border-radius:99px;white-space:nowrap}'+
+'.zw-card .im{display:flex;align-items:center;justify-content:center;height:9.4vh;font-size:7vh;color:#c2410c}.zw-card .zw-img{width:9vh;height:9vh;background:#fff}.zw-card .zw-img .zi-grid{display:none}'+
 '.zw-card.new{animation:zwpop .9s cubic-bezier(.2,1.6,.4,1) both}'+
 '@keyframes zwpop{0%{transform:scale(.2) rotate(-12deg);opacity:0;box-shadow:0 0 0 0 rgba(255,200,0,.9)}60%{transform:scale(1.15);opacity:1}100%{transform:none;box-shadow:0 .5vh 1.4vh rgba(150,80,0,.18)}}'+
 '.zw-board{background:rgba(255,255,255,.75);border-radius:2vh;padding:1.6vh 1.2vw;display:flex;flex-direction:column;gap:1vh;min-height:0}'+
@@ -966,7 +987,7 @@ ZiDesk.prototype.setRound=function(zr){
     var end=Date.now()+(+zr.left||0);if(!prev||prev.id!==zr.id||Math.abs((this.rEnd||0)-end)>1500)this.rEnd=end;
     if(st.rid!==zr.id&&ZI.chars[zr.ch]){st.rid=zr.id;st.cur=zr.ch;st.sel=[];this.pad.remember();st.pad.p=[];st.pad.k=[];this.loadChar([]);this.pad.load(st.pad);this.setMode('draw');this.ws.onChange(true);if(zr.st==='run')this.toast('開始！用「'+zr.ch+'」造新的字，越多越好！',true);}
     else if(zr.ch!==st.cur&&ZI.chars[zr.ch]){st.cur=zr.ch;st.sel=[];this.loadChar([]);}
-    if(prev&&prev.id===zr.id&&prev.st!=='done'&&zr.st==='done'){var mine=st.subs.filter(function(s){return s.rd===zr.id&&s.s==='o';}).length;this.toast(mine?'看投影！你這一回合造出 '+mine+' 個字 🎉':'看投影！老師公布結果了',true);}
+    if(prev&&prev.id===zr.id&&prev.st!=='done'&&zr.st==='done'){var mine=st.subs.filter(function(s){return s.rd===zr.id&&ziValid(s);}).length;this.toast(mine?'看投影！你這一回合造出 '+mine+' 個字 🎉':'看投影！老師公布結果了',true);}
   }
   if(!this.rbEl){this.rbEl=zmk('div','zi-rb');this.rbEl.hidden=true;var z=this.root.querySelector('.zi');z.insertBefore(this.rbEl,z.firstChild);var self=this;this.rT=setInterval(function(){self.syncRound();},250);}
   this.syncRound();
@@ -1015,7 +1036,7 @@ ZiWall.prototype.timer=function(){
   c.querySelector('b').textContent=run?zmmss(left):'時間到';
 };
 function zwTally(d){
-  var by={},first={};(d.items||[]).forEach(function(it){var n=it[2];if(!by[n])by[n]=[];if(by[n].indexOf(it[0])<0)by[n].push(it[0]);});
+  var by={},keys={};(d.items||[]).forEach(function(it){var n=it[2],k=it[0]||('#'+it[4]);if(!by[n]){by[n]=[];keys[n]={};}if(!keys[n][k]){keys[n][k]=1;by[n].push(ziShow(it[0]));}});
   var seats={};Object.keys(d.sub||{}).forEach(function(n){seats[n]=1;});Object.keys(by).forEach(function(n){seats[n]=1;});
   var rows=Object.keys(seats).map(Number).filter(function(n){return n>=1&&n<=8;}).map(function(n){return {n:n,c:(by[n]||[]).length,chars:by[n]||[],sub:(d.sub||{})[n]||0};});
   rows.sort(function(a,b){return b.c-a.c||a.n-b.n;});var rk=0,last=-1;rows.forEach(function(r,i){if(r.c!==last){rk=i+1;last=r.c;}r.rank=rk;});
@@ -1027,7 +1048,7 @@ ZiWall.prototype.fillLive=function(){
   if(!items.length&&!g.querySelector('.zw-card')){if(!g.querySelector('.zw-empty'))g.innerHTML='<div class="zw-empty">造好的字，老師審核通過後就會出現在這裡！</div>';}
   else{var em=g.querySelector('.zw-empty');if(em)em.remove();}
   var have={};g.querySelectorAll('.zw-card').forEach(function(c){have[c.dataset.k]=c;});
-  var want={};items.forEach(function(it){var k=it[4]||(it[2]+it[0]);want[k]=1;if(have[k])return;var c=zmk('div','zw-card'+(self.seen.init?' new':''),'<span class="c kai">'+esc(it[0])+'</span><span class="z">'+esc(it[1]||'')+'</span><span class="s" style="background:'+ZW_COL[it[2]%9]+'">'+esc(zwSeat(it[2],names))+'</span>');c.dataset.k=k;g.appendChild(c);});
+  var want={};items.forEach(function(it){var k=it[4]||(it[2]+it[0]);want[k]=1;if(have[k])return;var c=zmk('div','zw-card'+(self.seen.init?' new':''),(it[0]?'<span class="c kai">'+esc(it[0])+'</span>':'<span class="c im"></span>')+'<span class="z">'+esc(it[1]||'')+'</span><span class="s" style="background:'+ZW_COL[it[2]%9]+'">'+esc(zwSeat(it[2],names))+'</span>');c.dataset.k=k;if(!it[0]){var im=c.querySelector('.im');if(it[5]&&it[5].p)im.appendChild(ziSvg(it[5],'zw-img'));else im.textContent='◎';}g.appendChild(c);});
   Object.keys(have).forEach(function(k){if(!want[k])have[k].remove();});
   /* 太多張就縮小 */
   var cards=g.querySelectorAll('.zw-card');var sc=cards.length>40?.55:cards.length>24?.7:cards.length>14?.85:1;g.style.zoom=sc;
@@ -1037,7 +1058,7 @@ ZiWall.prototype.fillLive=function(){
   rows.forEach(function(r,i){var e=ex[r.n];if(!e){e=zmk('div','zw-row','<span class="sn" style="background:'+ZW_COL[r.n%9]+'">'+r.n+' 號</span><span class="bar"><i style="width:0;background:'+ZW_COL[r.n%9]+'"></i></span><span class="n">0</span>'+(names[r.n]?'<span class="nm">'+esc(names[r.n])+'</span>':''));e.dataset.n=r.n;R.appendChild(e);}
     e.style.order=i;e.querySelector('.n').textContent=r.c+(r.rank===1&&r.c>0?' 👑':'');setTimeout(function(){e.querySelector('i').style.width=(r.c/max*100)+'%';},30);delete ex[r.n];});
   Object.keys(ex).forEach(function(k){ex[k].remove();});R.style.display='flex';
-  var tot={};items.forEach(function(it){tot[it[0]]=1;});
+  var tot={};items.forEach(function(it){tot[it[0]||('#'+it[4])]=1;});
   this.box.querySelector('.zw-foot').innerHTML='全班已造出 <b>'+Object.keys(tot).length+'</b> 個字'+(d.st!=='run'?'<span class="p">⏳ 老師審核中…'+(d.pend?'還有 '+d.pend+' 個字':'')+'</span>':'<span class="p">送出 '+(Object.keys(d.sub||{}).reduce(function(a,k){return a+d.sub[k];},0))+' 個，老師審核中</span>');
 };
 ZiWall.prototype.countdown=function(){
@@ -1046,7 +1067,7 @@ ZiWall.prototype.countdown=function(){
 };
 ZiWall.prototype.result=function(){
   this.mode='result';var d=this.data,names=d.names||{},rows=zwTally(d),items=d.items||[];
-  var tot={},who={};items.forEach(function(it){tot[it[0]]=1;if(!who[it[0]])who[it[0]]={};who[it[0]][it[2]]=1;});var total=Object.keys(tot).length;
+  var tot={};items.forEach(function(it){tot[it[0]||('#'+it[4])]=1;});var total=Object.keys(tot).length;
   var h='<div class="zw-res"><div class="zw-in"><h1>拆<span class="kai">「'+esc(d.ch)+'」</span>造字大賽・成果發表</h1>';
   if(!items.length){h+='<div class="zw-total">這一回合還沒有通過的字，下一回合一起加油！💪</div>';}
   else{
@@ -1056,10 +1077,8 @@ ZiWall.prototype.result=function(){
     h+='<div class="zw-pod">'+order.map(function(r,i){var rr=Math.min(r.rank,3);return '<div class="zw-pd r'+rr+'" style="animation-delay:'+(rr===1?1.6:rr===2?1.0:.5)+'s"><div class="cr">'+(rr===1?'👑':rr===2?'🥈':'🥉')+'</div><div class="sn" style="background:'+ZW_COL[r.n%9]+'">'+r.n+' 號</div><div class="nm">'+esc(names[r.n]||'')+'</div><div class="ct"><b>'+r.c+'</b> 個字</div><div class="blk">'+r.rank+'</div></div>';}).join('')+'</div>';
     /* 獎項：讓更多孩子被看見 */
     var aw=[];
-    var firstIt=items.slice().sort(function(a,b){return (a[3]||0)-(b[3]||0);})[0];if(firstIt)aw.push(['⚡','最快造出第一個字',zwSeat(firstIt[2],names)+'「'+firstIt[0]+'」']);
-    var uniq={};Object.keys(who).forEach(function(ch){var s=Object.keys(who[ch]);if(s.length===1)uniq[s[0]]=(uniq[s[0]]||[]).concat(ch);});
-    var ub=Object.keys(uniq).sort(function(a,b){return uniq[b].length-uniq[a].length;})[0];if(ub)aw.push(['💡','獨家創意（只有他想到）',zwSeat(+ub,names)+'「'+uniq[ub].slice(0,4).join('」「')+'」']);
-    var pop=Object.keys(who).sort(function(a,b){return Object.keys(who[b]).length-Object.keys(who[a]).length;})[0];if(pop&&Object.keys(who[pop]).length>1)aw.push(['🤝','最多人想到的字','「'+pop+'」'+Object.keys(who[pop]).length+' 個人']);
+    var firstIt=items.slice().sort(function(a,b){return (a[3]||0)-(b[3]||0);})[0];if(firstIt)aw.push(['⚡','最快造出第一個字',zwSeat(firstIt[2],names)+'「'+ziShow(firstIt[0])+'」']);
+    var acc=rows.filter(function(r){return r.sub>=2&&r.c>0;}).sort(function(a,b){return b.c/b.sub-a.c/a.sub||b.c-a.c;})[0];if(acc)aw.push(['🎯','命中率最高',zwSeat(acc.n,names)+' '+acc.c+'/'+acc.sub]);
     var tr=rows.filter(function(r){return r.sub>0;}).sort(function(a,b){return b.sub-a.sub;})[0];if(tr&&tr.sub>=3)aw.push(['🔥','最努力嘗試',zwSeat(tr.n,names)+' 送出 '+tr.sub+' 次']);
     h+='<div class="zw-aw">'+aw.map(function(a,i){return '<div class="zw-a" style="animation-delay:'+(2.4+i*.35)+'s"><span class="i">'+a[0]+'</span><span><div class="t">'+esc(a[1])+'</div><div class="v">'+esc(a[2])+'</div></span></div>';}).join('')+'</div>';
   }
@@ -1100,8 +1119,8 @@ function ziRoundCtl(o,api){
   function roundFor(tk){if(!round||round.task!==tk)return null;return {id:round.id,ch:round.ch,st:round.st,left:Math.max(0,round.end-Date.now()),dur:round.dur};}
   function wallFor(tk){
     if(!round||round.task!==tk)return null;var items=[],sub={};
-    api.recs().forEach(function(r){if(r.rd!==round.id)return;sub[r.seat]=(sub[r.seat]||0)+1;if(r.s==='o')items.push([r.ch,r.zy,r.seat,(r.got||r.t)-round.start,r.id,r.rt||0]);});
-    items.sort(function(a,b){return a[5]-b[5];});items=items.slice(0,300).map(function(x){return x.slice(0,5);});
+    var imgs=0;api.recs().forEach(function(r){if(r.rd!==round.id)return;sub[r.seat]=(sub[r.seat]||0)+1;if(ziValid(r))items.push([r.ch,r.zy,r.seat,(r.got||r.t)-round.start,r.id,r.rt||0,r]);});
+    items.sort(function(a,b){return a[5]-b[5];});items=items.slice(0,300).map(function(x){var o2=x.slice(0,5);if(!x[0]&&imgs<4){imgs++;o2.push({p:x[6].p.map(function(pc){return {c:pc.c,ix:pc.ix,tx:pc.tx,ty:pc.ty,s:pc.s};}),k:ziSimplify(x[6].k,8)});}return o2;});
     var nm={};for(var n=1;n<=8;n++)if(o.names[n])nm[n]=String(o.names[n]).slice(0,8);
     return {id:round.id,ch:round.ch,st:round.st,left:Math.max(0,round.end-Date.now()),dur:round.dur,items:items,sub:sub,names:nm,pend:pend()};
   }
@@ -1959,7 +1978,7 @@ function StudentApp(){
     function ziCmd(z){var st=states[z.task];if(!st||st.k!=='zi'||!st.subs)return;
       (z.need||[]).forEach(function(id){for(var i=0;i<st.subs.length;i++){var sb=st.subs[i];if(sb.id===id&&!(ziSent[id]&&Date.now()-ziSent[id]<2500))ziSend(sb,z.task);}});
       var res=ziApply(st,z.r);if(!res.changed)return;dirty=true;lsSet(skey,states);
-      if(ws.zi&&ws.id===z.task){ws.zi.renderMine();if(res.ok.length)ws.zi.toast('老師說：你造出了「'+res.ok.join('」「')+'」！',true);else if(res.no)ws.zi.toast('有一個字，老師請你再想想');}}
+      if(ws.zi&&ws.id===z.task){ws.zi.renderMine();if(res.ok.length)ws.zi.toast('老師說：你造出了「'+res.ok.join('」「')+'」！',true);else if(res.dup.length)ws.zi.toast('「'+res.dup[0]+'」有同學先造出來了，換一個字試試！');else if(res.orig.length)ws.zi.toast('「'+res.orig[0]+'」就是原本的字，換一個新的字！');else if(res.no)ws.zi.toast('有一個字，老師請你再想想');}}
     function setNet(cls,t){net.className='net '+cls;net.textContent=t;var wn=wait.querySelector('.wnet');wn.className='wnet net '+cls;wn.textContent=t;}
     if(offline){
       setNet('bad','自己練習（沒有連線）');tp.hidden=false;
