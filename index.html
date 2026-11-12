@@ -112,6 +112,7 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline
 /* ---------- student ---------- */
 .bar{display:flex;align-items:center;gap:10px 16px;padding:8px 14px;background:var(--ink);color:#fff;flex-wrap:wrap}
 .bar .seat{font-size:22px;font-weight:700}
+.bar .chseat{background:transparent;color:#fff;border-color:rgba(255,255,255,.35);padding:2px 8px;font-size:13px}
 .bar .ttl{font-size:18px}
 .net{display:inline-flex;align-items:center;gap:6px;font-size:14px;margin-left:auto}
 .net::before{content:"";width:12px;height:12px;border-radius:50%;background:var(--amber)}
@@ -245,6 +246,8 @@ var LITE=true;
 var STUDENT_URL='https://alanhuangz.github.io/jiao-classroom/';
 var PAGE_IDS=['z76','z77','z78','z79','z80','z81','z82','z83','z84','z85','z86','z87','z88','z89','z90','z91','z92','z93','z94','z95','z96','z97','z98','z99','z108','z109','z110','z111','z112','z113','z114','z115','z116','z117','z118','z119','z120','z121','z122','z123','z124','z125','z126','z127','z128','z129','z130','z131','b76','b77','b78','b79','b80','b81','b82','b83','59','60','61','62','63','69','70','71','72','73','74','75','b86','b87','b88','b89','b90','b91','b92','b93','b94','b95','b96','b97'];
 var PREFIX='jiao3-wk-';
+var CLASS_CODE='0301';
+var ROSTER={};
 
 /* ================= helpers ================= */
 var NS='http://www.w3.org/2000/svg',CLIPN=0;
@@ -1923,21 +1926,24 @@ function dotsHTML(st){if(!st||st.k==='wb')return '';return (st.res||[]).map(func
 function StudentApp(){
   var root=document.getElementById('root');
   var seat=lsGet('jiao.s.seat',0),code=lsGet('jiao.s.code','');
-  var hc=(location.hash||'').replace(/[^0-9]/g,'');if(/^\d{4}$/.test(hc))code=hc;
+  var hm=/^#?(\d{4})(?:-(\d))?/.exec(location.hash||''),autoSeat=0;if(hm){code=hm[1];if(hm[2]&&+hm[2]>=1&&+hm[2]<=8)autoSeat=+hm[2];}if(!/^\d{4}$/.test(code||''))code=CLASS_CODE;
   var join=h('div',{class:'join'});
   join.innerHTML='<div class="join-card"><h1>301線上教室</h1><div class="lbl">1. 點你的座號</div><div class="seats"></div><div class="lbl">2. 輸入老師螢幕上的「班級代碼」</div><input class="codein" inputmode="numeric" maxlength="4" autocomplete="off" aria-label="班級代碼"><button class="go" type="button">進入</button></div>';
   document.body.appendChild(join);
   var seatsEl=join.querySelector('.seats'),codeIn=join.querySelector('.codein'),goBtn=join.querySelector('.go');
-  for(var i=1;i<=8;i++){(function(n){var b=h('button',{type:'button',class:n===8?'s8':''},n===8?'8<small>投影</small>':String(n));b.addEventListener('click',function(){seat=n;sync();});seatsEl.appendChild(b);})(i);}
+  for(var i=1;i<=8;i++){(function(n){var b=h('button',{type:'button',class:n===8?'s8':''},n===8?'8<small>投影</small>':String(n));b.addEventListener('click',function(){seat=n;sync();if(/^\d{4}$/.test(codeIn.value))go();});seatsEl.appendChild(b);})(i);}
   codeIn.value=code||'';
   function sync(){seatsEl.querySelectorAll('button').forEach(function(b,i){b.classList.toggle('on',i+1===seat);});goBtn.disabled=!(seat>=1&&seat<=8&&/^\d{4}$/.test(codeIn.value));}
   codeIn.addEventListener('input',function(){codeIn.value=codeIn.value.replace(/\D/g,'').slice(0,4);sync();});
   sync();
-  goBtn.addEventListener('click',function(){code=codeIn.value;lsSet('jiao.s.seat',seat);lsSet('jiao.s.code',code);join.remove();start();});
+  function go(){if(!(seat>=1&&seat<=8)||!/^\d{4}$/.test(codeIn.value))return;code=codeIn.value;lsSet('jiao.s.seat',seat);lsSet('jiao.s.code',code);join.remove();start();}
+  goBtn.addEventListener('click',go);
+  if(autoSeat){seat=autoSeat;sync();go();return;}
 
   function start(){
     var offline=code==='0000';
-    root.innerHTML='<div class="bar"><span class="seat">'+(seat===8?'8 號・老師投影':seat+' 號')+'</span><span class="ttl"></span><span class="taskpick" hidden></span><span class="net">連線中…</span></div><div class="light" hidden><span class="bulb"></span><span class="lt"></span></div><div class="wsroot" style="flex:1;min-height:0;display:flex;flex-direction:column"></div>';
+    root.innerHTML='<div class="bar"><span class="seat">'+(seat===8?'8 號・老師投影':seat+' 號')+'</span><button class="btn chseat" type="button">換座號</button><span class="ttl"></span><span class="taskpick" hidden></span><span class="net">連線中…</span></div><div class="light" hidden><span class="bulb"></span><span class="lt"></span></div><div class="wsroot" style="flex:1;min-height:0;display:flex;flex-direction:column"></div>';
+    root.querySelector('.chseat').addEventListener('click',function(){if(!confirm('要換座號嗎？（'+seat+' 號）'))return;lsSet('jiao.s.seat',0);location.hash='#'+code;location.reload();});
     var ttl=root.querySelector('.ttl'),net=root.querySelector('.net'),light=root.querySelector('.light'),lt=light.querySelector('.lt'),tp=root.querySelector('.taskpick');
     var skey='jiao.s.states.'+seat,states=lsGet(skey,{})||{};
     var dirty=true,saveT=null;
@@ -2025,12 +2031,12 @@ function StudentApp(){
 /* ================= TEACHER ================= */
 function TeacherApp(){
   var root=document.getElementById('root');
-  var code=lsGet('jiao.t.code',null);if(!/^\d{4}$/.test(code||'')||code==='0000')code=String(ri(1000,9999));lsSet('jiao.t.code',code);
-  var names=lsGet('jiao.t.names',{})||{};
+  var code=CLASS_CODE;
+  var names=lsGet('jiao.t.names',{})||{};for(var rn in ROSTER){if(!names[rn])names[rn]=ROSTER[rn];}
   var task=lsGet('jiao.t.task','p59a');if(!TASK[task])task='p59a';
   var freeze=false,view='grid',seats={},modalSeat=null;
   root.innerHTML=
-    '<div class="t-head"><h1>301線上教室・老師</h1><div class="code">班級代碼 <b class="codev"></b></div><button class="btn showqr" type="button">學生 QR code</button><button class="btn newcode" type="button">換代碼</button><span class="net">連線中…</span>'+
+    '<div class="t-head"><h1>301線上教室・老師</h1><div class="code">班級代碼 <b class="codev"></b></div><button class="btn showqr" type="button">學生 QR code</button><span class="net">連線中…</span>'+
     '<span style="flex-basis:100%;height:0"></span>'+
     '<button class="btn vgrid on" type="button">全班畫面</button><button class="btn vdemo" type="button">老師示範（投影）</button><button class="btn frz" type="button">全班看老師</button><button class="btn clrall" type="button">清除全部燈號</button><button class="btn zibtn" type="button">造字審核<b class="zin">0</b></button></div>'+
     '<div class="t-tasks"><span class="lead">派題：</span></div>'+
@@ -2112,7 +2118,6 @@ function TeacherApp(){
   $('.showqr').addEventListener('click',showQR);
   qrBox.querySelector('.qrclose').addEventListener('click',function(){qrBox.hidden=true;});
   qrBox.querySelector('.qrsave').addEventListener('click',function(){lsSet('jiao.t.surl',qrBox.querySelector('.qrin').value.trim());showQR();});
-  $('.newcode').addEventListener('click',function(){code=String(ri(1000,9999));lsSet('jiao.t.code',code);$('.codev').textContent=code;startPeer();});
   /* network */
   var peer=null,tries=0;
   function sendCmd(n){var s=seats[n];if(!s.pid)return;relay(peer,s.pid,{t:'cmd',task:task,freeze:n===8?false:freeze,light:n===8?null:(s.light||null),zi:Z?Z.cmdFor(n):undefined,zr:Z?Z.roundFor(task):null,zw:(n===8&&Z)?Z.wallFor(task):undefined});s.zt=Date.now();}
