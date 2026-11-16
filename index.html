@@ -1236,37 +1236,93 @@ var DV_CX=[
 ];
 TASKS.push(
   {id:'dvm',kind:'dv',unit:'divb div',dv:'mix',title:'想一想再分',sub:'先判斷題意・混合 12 題'},
-  {id:'dva',kind:'dv',unit:'divb div',dv:'inc',title:'每幾個分一份',sub:'包含除・分分看 8 題'},
-  {id:'dvb',kind:'dv',unit:'divb div',dv:'eq',title:'平分給幾個人',sub:'等分除・分分看 8 題'},
-  {id:'dvc',kind:'dv',unit:'divb div',dv:'rem',title:'分完還剩下',sub:'有餘數・分分看 10 題'}
+  {id:'dva',kind:'dv',unit:'divb div',dv:'inc',title:'分一分①',sub:'包含除・先判斷再分 8 題'},
+  {id:'dvb',kind:'dv',unit:'divb div',dv:'eq',title:'分一分②',sub:'等分除・先判斷再分 8 題'},
+  {id:'dvc',kind:'dv',unit:'divb div',dv:'rem',title:'分一分③',sub:'有餘數・先判斷再分 10 題'}
 );
-(function(){
-  var bk=[[98,'單元開始・暖身'],[99,'和以前學的有什麼不一樣'],[100,'7-1 除法算式'],[101,'7-1 平分'],[102,'7-1 剪彩帶'],[103,'7-2 認識餘數'],[104,'7-3 除法直式'],[105,'7-3 直式算算看'],[106,'7-3 比一比餘數'],[107,'7-3 誰說得對'],[108,'7-4 除法應用'],[109,'7-4 素養吧'],[110,'練習百分百①'],[111,'練習百分百②']];
-  bk.forEach(function(p){TASKS.push({id:'v'+p[0],unit:'divb',kind:'wb',page:'b'+p[0],box:[0,0,1241,1536],ink:true,title:'p.'+p[0],sub:p[1]});});
-  var wb=[[76,'重點整理'],[77,'7-1 看圖想一想'],[78,'7-1 用除法算式記'],[79,'7-1 連連看'],[80,'7-2 認識餘數'],[81,'7-2 分分看'],[82,'7-3 除法直式'],[83,'7-3 填填看'],[84,'7-3 誰說得對'],[85,'7-4 除法應用'],[86,'綜合練習①'],[87,'綜合練習②']];
-  wb.forEach(function(p){TASKS.push({id:'w'+p[0],unit:'div',kind:'wb',page:String(p[0]),box:[0,0,1241,1536],ink:true,title:'p.'+p[0],sub:p[1]});});
-})();
+TASKS.push(
+  {id:'v98',unit:'divb',kind:'wb',page:'b98',box:[20,1180,600,310],ink:true,title:'p.98 暖身①',sub:'九九乘法'},
+  {id:'v98b',unit:'divb',kind:'wb',page:'b98',box:[600,1180,620,310],ink:true,title:'p.98 暖身②',sub:'分裝問題'},
+  {id:'v99',unit:'divb',kind:'wb',page:'b99',box:[20,0,1200,1170],ink:true,title:'p.99 想一想',sub:'豆豆掉了哪一包'},
+  {id:'v99b',unit:'divb',kind:'wb',page:'b99',box:[20,1180,640,310],ink:true,title:'p.99 ③',sub:'平分問題'},
+  {id:'v99c',unit:'divb',kind:'wb',page:'b99',box:[660,1180,560,320],ink:true,title:'p.99 不一樣',sub:'和以前學的有什麼不一樣'},
+  {id:'v100',unit:'divb',kind:'wb',page:'b100',box:[20,60,1200,890],ink:true,title:'p.100 1①',sub:'12 個蛋糕 3 個一盤'},
+  {id:'v100b',unit:'divb',kind:'wb',page:'b100',box:[20,970,1200,380],ink:true,title:'p.100 除法算式',sub:'記成除法算式'},
+  {id:'v101',unit:'divb',kind:'wb',page:'b101',box:[20,60,1200,940],ink:true,title:'p.101 1②',sub:'15 片餅乾平分'},
+  {id:'v101b',unit:'divb',kind:'wb',page:'b101',box:[20,1070,1200,350],ink:true,title:'p.101 做做看',sub:'32 人平分 4 組'},
+  {id:'v102',unit:'divb',kind:'wb',page:'b102',box:[20,60,1200,520],ink:true,title:'p.102 2①',sub:'每 6 公分剪一段'},
+  {id:'v102b',unit:'divb',kind:'wb',page:'b102',box:[20,580,1200,440],ink:true,title:'p.102 2②',sub:'平分剪成 6 段'},
+  {id:'v102c',unit:'divb',kind:'wb',page:'b102',box:[20,1020,1200,420],ink:true,title:'p.102 做做看',sub:'28 顆水餃'},
+  {id:'v103',unit:'divb',kind:'wb',page:'b103',box:[20,60,1200,750],ink:true,title:'p.103 1',sub:'13 顆草莓・認識餘數'},
+  {id:'v103b',unit:'divb',kind:'wb',page:'b103',box:[20,820,1200,630],ink:true,title:'p.103 2',sub:'9 顆氣球平分'},
+  {id:'v104',unit:'divb',kind:'wb',page:'b104',box:[20,60,1200,860],ink:true,title:'p.104 1',sub:'7 個點心・直式步驟'},
+  {id:'v104b',unit:'divb',kind:'wb',page:'b104',box:[20,920,1200,530],ink:true,title:'p.104 2',sub:'29 顆小番茄'},
+  {id:'v105',unit:'divb',kind:'wb',page:'b105',box:[20,60,1200,720],ink:true,title:'p.105 3',sub:'50 公分緞帶・誰對'},
+  {id:'v105b',unit:'divb',kind:'wb',page:'b105',box:[20,840,1200,330],ink:true,title:'p.105 做做看①②',sub:'23÷4、47÷9'},
+  {id:'v105c',unit:'divb',kind:'wb',page:'b105',box:[20,1160,1200,320],ink:true,title:'p.105 做做看③④',sub:'59÷8、64÷7'},
+  {id:'v106',unit:'divb',kind:'wb',page:'b106',box:[20,60,1200,710],ink:true,title:'p.106 4',sub:'40 片餅乾・整除'},
+  {id:'v106b',unit:'divb',kind:'wb',page:'b106',box:[20,780,1200,640],ink:true,title:'p.106 5',sub:'餘數和除數比一比'},
+  {id:'v107',unit:'divb',kind:'wb',page:'b107',box:[20,60,1200,860],ink:true,title:'p.107 6',sub:'誰說得對'},
+  {id:'v107b',unit:'divb',kind:'wb',page:'b107',box:[20,940,1200,540],ink:true,title:'p.107 素養吧',sub:'企鵝分魚'},
+  {id:'v108',unit:'divb',kind:'wb',page:'b108',box:[20,40,1200,570],ink:true,title:'p.108 1①',sub:'32 個點心'},
+  {id:'v108b',unit:'divb',kind:'wb',page:'b108',box:[20,590,1200,450],ink:true,title:'p.108 1②',sub:'65 片餅乾'},
+  {id:'v108c',unit:'divb',kind:'wb',page:'b108',box:[20,1040,1200,430],ink:true,title:'p.108 做做看',sub:'70 元買花'},
+  {id:'v109',unit:'divb',kind:'wb',page:'b109',box:[20,60,1200,500],ink:true,title:'p.109 1③',sub:'34 人坐天鵝船'},
+  {id:'v109b',unit:'divb',kind:'wb',page:'b109',box:[20,550,1200,420],ink:true,title:'p.109 1④',sub:'46 人吃布丁'},
+  {id:'v109c',unit:'divb',kind:'wb',page:'b109',box:[20,940,1200,540],ink:true,title:'p.109 素養吧',sub:'企鵝排隊分魚'},
+  {id:'v110',unit:'divb',kind:'wb',page:'b110',box:[20,60,1200,460],ink:true,title:'p.110 1①②③',sub:'直式算算看'},
+  {id:'v110b',unit:'divb',kind:'wb',page:'b110',box:[20,510,1200,410],ink:true,title:'p.110 1④⑤⑥',sub:'直式算算看'},
+  {id:'v110c',unit:'divb',kind:'wb',page:'b110',box:[20,920,1200,530],ink:true,title:'p.110 2',sub:'回答問題'},
+  {id:'v111',unit:'divb',kind:'wb',page:'b111',box:[20,60,1200,710],ink:true,title:'p.111 3①②',sub:'記錄問題再算'},
+  {id:'v111b',unit:'divb',kind:'wb',page:'b111',box:[20,760,1200,710],ink:true,title:'p.111 3③④',sub:'記錄問題再算'},
+  {id:'w76',unit:'div',kind:'wb',page:'76',box:[20,250,1200,370],ink:true,title:'p.76 7-1・7-2',sub:'重點整理'},
+  {id:'w76b',unit:'div',kind:'wb',page:'76',box:[20,630,1200,380],ink:true,title:'p.76 7-3',sub:'重點整理・直式'},
+  {id:'w76c',unit:'div',kind:'wb',page:'76',box:[20,1000,1200,470],ink:true,title:'p.76 7-4',sub:'重點整理・應用'},
+  {id:'w77',unit:'div',kind:'wb',page:'77',box:[20,170,1200,460],ink:true,title:'p.77 1①',sub:'15 枝鉛筆'},
+  {id:'w77b',unit:'div',kind:'wb',page:'77',box:[20,630,1200,400],ink:true,title:'p.77 1②',sub:'12 瓶膠水'},
+  {id:'w77c',unit:'div',kind:'wb',page:'77',box:[20,1030,1200,430],ink:true,title:'p.77 1③',sub:'20 個橡皮擦'},
+  {id:'w78',unit:'div',kind:'wb',page:'78',box:[20,60,1200,440],ink:true,title:'p.78 2①',sub:'42 公分紙條'},
+  {id:'w78b',unit:'div',kind:'wb',page:'78',box:[20,500,1200,390],ink:true,title:'p.78 2②',sub:'36 公分木棍'},
+  {id:'w78c',unit:'div',kind:'wb',page:'78',box:[20,880,1200,570],ink:true,title:'p.78 2③',sub:'28 個花片'},
+  {id:'w79',unit:'div',kind:'wb',page:'79',box:[20,60,1200,510],ink:true,title:'p.79 3',sub:'連連看'},
+  {id:'w79b',unit:'div',kind:'wb',page:'79',box:[20,570,1200,480],ink:true,title:'p.79 4①',sub:'18 塊豆腐'},
+  {id:'w79c',unit:'div',kind:'wb',page:'79',box:[20,1050,1200,430],ink:true,title:'p.79 4②',sub:'40 瓶膠水'},
+  {id:'w80',unit:'div',kind:'wb',page:'80',box:[20,60,1200,520],ink:true,title:'p.80 1',sub:'連連看'},
+  {id:'w80b',unit:'div',kind:'wb',page:'80',box:[20,590,1200,490],ink:true,title:'p.80 2①',sub:'13 朵玫瑰'},
+  {id:'w80c',unit:'div',kind:'wb',page:'80',box:[20,1070,1200,400],ink:true,title:'p.80 2②',sub:'15 片餅乾'},
+  {id:'w81',unit:'div',kind:'wb',page:'81',box:[20,60,1200,650],ink:true,title:'p.81 3①',sub:'10 個橘子'},
+  {id:'w81b',unit:'div',kind:'wb',page:'81',box:[20,770,1200,690],ink:true,title:'p.81 3②',sub:'11 顆糖果'},
+  {id:'w82',unit:'div',kind:'wb',page:'82',box:[20,60,1200,440],ink:true,title:'p.82 1①②',sub:'27÷5、62÷8'},
+  {id:'w82b',unit:'div',kind:'wb',page:'82',box:[20,480,1200,330],ink:true,title:'p.82 1③④',sub:'46÷7、31÷4'},
+  {id:'w82c',unit:'div',kind:'wb',page:'82',box:[20,800,1200,670],ink:true,title:'p.82 2',sub:'直式對不對'},
+  {id:'w83',unit:'div',kind:'wb',page:'83',box:[20,60,1200,710],ink:true,title:'p.83 3',sub:'記錄問題再算'},
+  {id:'w83b',unit:'div',kind:'wb',page:'83',box:[20,780,1200,640],ink:true,title:'p.83 4',sub:'想一想，填填看'},
+  {id:'w84',unit:'div',kind:'wb',page:'84',box:[20,60,1200,430],ink:true,title:'p.84 5①',sub:'誰說得對①'},
+  {id:'w84b',unit:'div',kind:'wb',page:'84',box:[20,480,1200,400],ink:true,title:'p.84 5②',sub:'誰說得對②'},
+  {id:'w84c',unit:'div',kind:'wb',page:'84',box:[20,870,1200,580],ink:true,title:'p.84 6',sub:'餘數可能有哪些'},
+  {id:'w85',unit:'div',kind:'wb',page:'85',box:[20,60,1200,720],ink:true,title:'p.85 1①②',sub:'除法應用'},
+  {id:'w85b',unit:'div',kind:'wb',page:'85',box:[20,770,1200,710],ink:true,title:'p.85 1③④',sub:'除法應用'},
+  {id:'w86',unit:'div',kind:'wb',page:'86',box:[20,40,1200,830],ink:true,title:'p.86 1',sub:'幫忙畫出路線'},
+  {id:'w86b',unit:'div',kind:'wb',page:'86',box:[20,850,1200,370],ink:true,title:'p.86 2',sub:'哪些可以整除'},
+  {id:'w86c',unit:'div',kind:'wb',page:'86',box:[20,1200,1200,270],ink:true,title:'p.86 3',sub:'餘數可能是多少'},
+  {id:'w87',unit:'div',kind:'wb',page:'87',box:[20,60,1200,400],ink:true,title:'p.87 4①',sub:'53 個扯鈴'},
+  {id:'w87b',unit:'div',kind:'wb',page:'87',box:[20,440,1200,360],ink:true,title:'p.87 4②',sub:'80 公分緞帶'},
+  {id:'w87c',unit:'div',kind:'wb',page:'87',box:[20,780,1200,340],ink:true,title:'p.87 4③',sub:'60 公分紅繩'},
+  {id:'w87d',unit:'div',kind:'wb',page:'87',box:[20,1080,1200,390],ink:true,title:'p.87 4④',sub:'32 人坐巴士'}
+);
 
 function dvMode(st){var t=st&&TASK[st.id];return (t&&t.dv)||'inc';}
 function dvRem(st){return dvMode(st)==='rem';}
 function dvGen(kind){
-  var out=[],used={},tries=0,N=kind==='mix'?12:kind==='rem'?10:8;
-  if(kind==='mix'){
-    var types=[];for(var k=0;k<N;k++)types.push(k%2?'eq':'inc');types.sort(function(){return Math.random()-.5;});
-    var lastCx=-1;
-    while(out.length<N&&tries<2000){tries++;
-      var t=types[out.length],cx=ri(0,DV_CX.length-1);if(cx===lastCx)continue;
-      var vs=[];DV_CX[cx].v.forEach(function(v,i){if(v.t===t)vs.push(i);});if(!vs.length)continue;
-      var vi=vs[ri(0,vs.length-1)],d=ri(2,7),q=ri(2,7),n=d*q;
-      if(n>40||n<6)continue;var key=n+'/'+d;if(used[key])continue;used[key]=1;lastCx=cx;
-      out.push({t:t,n:n,d:d,cx:cx,v:vi,sw:Math.random()<.5});
-    }
-    return out;
-  }
-  while(out.length<N&&tries<800){tries++;
-    var t2=kind==='rem'?(out.length%2?'eq':'inc'):kind,big=kind==='rem'?7:6,d2=ri(2,big),q2=ri(2,big),r2=kind==='rem'?((out.length===3||out.length===8)?0:ri(1,d2-1)):0,n2=d2*q2+r2;
-    if(n2>40||n2<4)continue;var key2=t2+n2+'/'+d2;if(used[key2])continue;used[key2]=1;
-    out.push({t:t2,n:n2,d:d2,it:ri(0,DV_IT.length-1)});
+  var out=[],used={},tries=0,N=kind==='mix'?12:kind==='rem'?10:8,types=[];
+  for(var k=0;k<N;k++)types.push(kind==='inc'||kind==='eq'?kind:(k%2?'eq':'inc'));types=shuffle(types);
+  var lastCx=-1;
+  while(out.length<N&&tries<4000){tries++;
+    var t=types[out.length],cx=ri(0,DV_CX.length-1);if(cx===lastCx&&tries<3000)continue;
+    var vs=[];DV_CX[cx].v.forEach(function(v,i){if(v.t===t)vs.push(i);});if(!vs.length)continue;
+    var vi=vs[ri(0,vs.length-1)],big=kind==='inc'||kind==='eq'?6:7,d=ri(2,big),q=ri(2,big),r=kind==='rem'?((out.length===3||out.length===8)?0:ri(1,d-1)):0,n=d*q+r;
+    if(n>40||n<4)continue;var key=n+'/'+d;if(used[key]&&tries<3500)continue;used[key]=1;lastCx=cx;
+    out.push({t:t,n:n,d:d,cx:cx,v:vi,sw:Math.random()<.5});
   }
   return out;
 }
@@ -1292,10 +1348,10 @@ function dvX(q,st){
   return o;
 }
 function dvBoard(q){return q.t==='eq'?{g:Array.apply(null,Array(q.d)).map(function(){return 0;}),L:q.n}:{g:[],L:q.n};}
-function dvNew(id){var qs=dvGen(TASK[id].dv||'inc'),mix=TASK[id].dv==='mix';return {k:'dv',ver:2,id:id,qs:qs,i:0,ans:null,res:[],done:false,jd:null,b:mix?{g:[],L:qs[0].n}:dvBoard(qs[0])};}
+function dvNew(id){var qs=dvGen(TASK[id].dv||'inc'),mix=TASK[id].dv==='mix';return {k:'dv',ver:3,id:id,qs:qs,i:0,ans:null,res:[],done:false,jd:null,b:{g:[],L:qs[0].n}};}
 function dvWire(st){return {k:'dv',id:st.id,i:st.i,n:st.qs.length,q:st.qs[st.i]||null,ans:st.ans,res:st.res,done:st.done,b:st.b,jd:st.jd||null};}
 function dvSummary(st){
-  var res=st.res||[],ok=res.filter(function(r){return r.ok;}).length,n=nQ(st),q=curQ(st),b=st.b||{g:[],L:0},mix=dvMode(st)==='mix';
+  var res=st.res||[],ok=res.filter(function(r){return r.ok;}).length,n=nQ(st),q=curQ(st),b=st.b||{g:[],L:0},mix=true;
   var jt=mix?'・判斷第一次就對 '+res.filter(function(r){return r.j;}).length+'/'+res.length:'';
   if(st.done)return '<span class="good">完成！答對 '+ok+' / '+res.length+'</span>'+jt;
   var s='第 '+((st.i||0)+1)+'/'+n+' 題・答對 '+ok+'/'+res.length+jt;
@@ -1306,7 +1362,7 @@ function dvSummary(st){
 }
 function dvRep(X,c){var s='';for(var i=0;i<c&&i<12;i++)s+=X.len?'▮':X.ic;return s;}
 function dvTile(box,st,big){
-  var q=curQ(st),b=st.b||{g:[],L:0};if(!q){box.innerHTML='';return;}var X=dvX(q,st),mix=dvMode(st)==='mix';
+  var q=curQ(st),b=st.b||{g:[],L:0};if(!q){box.innerHTML='';return;}var X=dvX(q,st),mix=true;
   var h2='<div class="dvt'+(big?' big':'')+'"><div class="dvt-q">'+esc(X.text)+'</div>';
   if(mix&&!(st.jd&&st.jd.ok)){box.innerHTML=h2+'<div class="dvt-j">還在判斷「'+q.d+'」是什麼意思'+(st.jd&&st.jd.n?'・已經選錯 '+st.jd.n+' 次':'')+'</div></div>';return;}
   if(mix)h2+='<div class="dvt-j ok">判斷：'+esc(q.t==='inc'?X.ja:X.jb)+(st.jd&&st.jd.n?'（選錯過 '+st.jd.n+' 次）':'（第一次就對）')+'</div>';
@@ -1380,9 +1436,9 @@ function DivDesk(root,ws){
 }
 DivDesk.prototype.st=function(){return this.ws.state();};
 DivDesk.prototype.q=function(){var st=this.st();return st&&st.qs?st.qs[st.i]:null;};
-DivDesk.prototype.mix=function(){return dvMode(this.st())==='mix';};
+DivDesk.prototype.mix=function(){return true;};
 DivDesk.prototype.judged=function(){var st=this.st();return !this.mix()||!!(st.jd&&st.jd.ok);};
-DivDesk.prototype.load=function(){var st0=this.st();if(st0&&dvMode(st0)==='mix'&&st0.ver!==2&&!this.ws.locked)this.ws.states[this.ws.id]=dvNew(st0.id);this.selG=null;this.en={a:'',b:'',q:'',r:'',u:''};this.f='a';this.jmsg='';this.render();};
+DivDesk.prototype.load=function(){var st0=this.st();if(st0&&st0.k==='dv'&&(!st0.ver||(st0.qs||[]).some(function(x){return x.cx==null;}))&&!this.ws.locked)this.ws.states[this.ws.id]=dvNew(st0.id);this.selG=null;this.en={a:'',b:'',q:'',r:'',u:''};this.f='a';this.jmsg='';this.render();};
 DivDesk.prototype.changed=function(){this.render();this.ws.onChange(true);};
 DivDesk.prototype.toast=function(t){var el=this.toastEl;el.textContent=t;el.hidden=false;clearTimeout(this._toastT);this._toastT=setTimeout(function(){el.hidden=true;},2600);};
 DivDesk.prototype.maxG=function(q){return this.mix()?Math.min(q.n,24):Math.floor(q.n/q.d)+2;};
@@ -1491,7 +1547,7 @@ DivDesk.prototype.render=function(){
   /* 每一份 */
   G.innerHTML='';
   b.g.forEach(function(c,j){
-    var cls=mix?((self.selG!=null&&self.selG<b.g.length?self.selG:b.g.length-1)===j?'sel':''):q.t==='inc'?(c===q.d?'ok':c>q.d?'no':c>0?'part':''):((c>0&&b.g.every(function(x){return x===c;}))?'ok':'');
+    var cls=(mix&&!lock)?((self.selG!=null&&self.selG<b.g.length?self.selG:b.g.length-1)===j?'sel':''):q.t==='inc'?(c===q.d?'ok':c>q.d?'no':c>0?'part':''):((c>0&&b.g.every(function(x){return x===c;}))?'ok':'');
     var g=h('div',{class:'dv-grp '+cls},'<h4><span>'+esc(X.lab(j))+'</span><b>'+c+(X.len?' 公分':'')+'</b></h4><div class="dv-items"></div>');g.dataset.g=j;
     if(mix)g.addEventListener('click',function(e){if(e.target.closest('.dv-it')||lock)return;self.selG=j;self.render();});
     var gi=g.querySelector('.dv-items');for(var k=0;k<c;k++){var it2=item();it2.addEventListener('pointerdown',function(e){self.drag(e,j);});gi.appendChild(it2);}
@@ -1502,7 +1558,7 @@ DivDesk.prototype.render=function(){
   /* 算式黑板：圖 ↔ 算式 */
   var L=[],full=b.g.filter(function(c){return c===q.d;}).length,bad=b.g.some(function(c){return c!==q.d;}),u=X.u;
   L.push('<span class="lab">全部</span> <span class="hl">'+q.n+'</span> '+u+'　<span class="lab">還沒分</span> <span class="hl">'+b.L+'</span> '+u);
-  if(mix){L.push('分成 <span class="hl">'+b.g.length+'</span> '+(X.len?'段':X.g)+(b.g.length?'：'+b.g.map(function(c){return c;}).join('、')+' '+u:''));L.push('<span class="lab">自己分分看，分好了就把算式寫下來</span>');}
+  if(mix&&!st.ans){L.push('分成 <span class="hl">'+b.g.length+'</span> '+(X.len?'段':X.g)+(b.g.length?'：'+b.g.map(function(c){return c;}).join('、')+' '+u:''));L.push('<span class="lab">自己分分看，分好了就把算式寫下來</span>');}
   else if(q.t==='inc'){
     if(full){L.push('分好 '+full+' '+X.g+'，每'+X.g+' '+q.d+' '+u+'：'+q.d+' × '+full+' = '+(q.d*full));var cs=String(q.n);for(var m=0;m<full;m++)cs+=' − '+q.d;L.push('<span class="lab">連減</span> '+cs+' = '+(q.n-q.d*full));}
     else L.push('還沒有分好的'+X.g);
@@ -1763,12 +1819,39 @@ TASKS.push(
   {id:'bhm',kind:'bh',unit:'bh',subj:'soc',title:'開班會！',sub:'系統帶全班開一次班會'},
   {id:'bhp',kind:'bs',unit:'bh',subj:'soc',title:'班會小練習',sub:'排流程・配工作・好行為・公約'}
 );
-(function(){
-  var bk=[[68,'班級的自治活動'],[69,'召開班級會議'],[70,'選舉班級幹部'],[71,'幹部的責任'],[72,'訂定班級公約'],[73,'少數服從多數'],[74,'班會流程①'],[75,'班會流程②'],[76,'小小探究家①'],[77,'小小探究家②'],[78,'想一想：正確的態度']];
-  bk.forEach(function(p){PAGE_IDS.push('s'+p[0]);TASKS.push({id:'sb'+p[0],unit:'socb',subj:'soc',kind:'wb',page:'s'+p[0],box:[0,0,1241,1536],ink:true,title:'p.'+p[0],sub:p[1]});});
-  var wb=[[18,'開班會不適合的行為'],[19,'幹部的工作・尊重幹部'],[20,'班級公約①'],[21,'班級公約②']];
-  wb.forEach(function(p){PAGE_IDS.push('sw'+p[0]);TASKS.push({id:'sw'+p[0],unit:'socw',subj:'soc',kind:'wb',page:'sw'+p[0],box:[0,0,1241,1536],ink:true,title:'p.'+p[0],sub:p[1]});});
-})();
+PAGE_IDS.push('s68','s69','s70','s71','s72','s73','s74','s75','s76','s77','s78','sw18','sw19','sw20','sw21');
+TASKS.push(
+  {id:'sb68',unit:'socb',subj:'soc',kind:'wb',page:'s68',box:[20,160,1200,660],ink:true,title:'p.68 班級自治',sub:'課文'},
+  {id:'sb68b',unit:'socb',subj:'soc',kind:'wb',page:'s68',box:[20,480,1200,1050],ink:true,title:'p.68 班會示意圖',sub:'主席・司儀・記錄'},
+  {id:'sb69',unit:'socb',subj:'soc',kind:'wb',page:'s69',box:[20,80,1200,580],ink:true,title:'p.69 召開班會',sub:'課文'},
+  {id:'sb69b',unit:'socb',subj:'soc',kind:'wb',page:'s69',box:[20,650,1200,850],ink:true,title:'p.69 班會的樣子',sub:'示意圖・流程'},
+  {id:'sb70',unit:'socb',subj:'soc',kind:'wb',page:'s70',box:[20,80,1200,820],ink:true,title:'p.70 選舉幹部',sub:'課文'},
+  {id:'sb70b',unit:'socb',subj:'soc',kind:'wb',page:'s70',box:[20,870,1200,620],ink:true,title:'p.70 選舉流程①②',sub:'提名・附議'},
+  {id:'sb71',unit:'socb',subj:'soc',kind:'wb',page:'s71',box:[20,50,1200,840],ink:true,title:'p.71 幹部的責任',sub:'課文・照片'},
+  {id:'sb71b',unit:'socb',subj:'soc',kind:'wb',page:'s71',box:[20,870,1200,620],ink:true,title:'p.71 選舉流程③④',sub:'舉手表決・宣布當選人'},
+  {id:'sb72',unit:'socb',subj:'soc',kind:'wb',page:'s72',box:[20,80,1200,430],ink:true,title:'p.72 班級公約',sub:'課文'},
+  {id:'sb72b',unit:'socb',subj:'soc',kind:'wb',page:'s72',box:[20,500,1200,460],ink:true,title:'p.72 討論公約',sub:'討論班級公約'},
+  {id:'sb72c',unit:'socb',subj:'soc',kind:'wb',page:'s72',box:[20,950,1200,540],ink:true,title:'p.72 訂出・遵守',sub:'訂出公約・遵守公約'},
+  {id:'sb73',unit:'socb',subj:'soc',kind:'wb',page:'s73',box:[20,80,1200,420],ink:true,title:'p.73 應有的態度',sub:'課文'},
+  {id:'sb73b',unit:'socb',subj:'soc',kind:'wb',page:'s73',box:[20,510,1200,960],ink:true,title:'p.73 少數服從多數',sub:'多數尊重少數'},
+  {id:'sb74',unit:'socb',subj:'soc',kind:'wb',page:'s74',box:[20,250,1200,520],ink:true,title:'p.74 流程①②③',sub:'選出主席・宣布開會・報告事項'},
+  {id:'sb74b',unit:'socb',subj:'soc',kind:'wb',page:'s74',box:[20,770,1200,720],ink:true,title:'p.74 各人員的事',sub:'主席・司儀・記錄…'},
+  {id:'sb75',unit:'socb',subj:'soc',kind:'wb',page:'s75',box:[20,250,1200,520],ink:true,title:'p.75 流程④⑤⑥',sub:'討論事項・臨時動議・散會'},
+  {id:'sb75b',unit:'socb',subj:'soc',kind:'wb',page:'s75',box:[20,770,1200,720],ink:true,title:'p.75 討論・表決',sub:'提案・附議・表決'},
+  {id:'sb76',unit:'socb',subj:'soc',kind:'wb',page:'s76',box:[20,270,1200,330],ink:true,title:'p.76 步驟1',sub:'發現問題'},
+  {id:'sb76b',unit:'socb',subj:'soc',kind:'wb',page:'s76',box:[20,600,1200,870],ink:true,title:'p.76 步驟2',sub:'蒐集資料'},
+  {id:'sb77',unit:'socb',subj:'soc',kind:'wb',page:'s77',box:[20,100,1200,740],ink:true,title:'p.77 步驟3',sub:'整理分析'},
+  {id:'sb77b',unit:'socb',subj:'soc',kind:'wb',page:'s77',box:[20,810,1200,640],ink:true,title:'p.77 步驟4',sub:'行動省思'},
+  {id:'sb78',unit:'socb',subj:'soc',kind:'wb',page:'s78',box:[20,30,1200,860],ink:true,title:'p.78 ①②',sub:'正確的態度'},
+  {id:'sb78b',unit:'socb',subj:'soc',kind:'wb',page:'s78',box:[20,910,1200,570],ink:true,title:'p.78 ③④',sub:'正確的態度'},
+  {id:'sw18',unit:'socw',subj:'soc',kind:'wb',page:'sw18',box:[20,230,1200,1260],ink:true,title:'p.18 一',sub:'不適合的行為'},
+  {id:'sw19',unit:'socw',subj:'soc',kind:'wb',page:'sw19',box:[20,50,1200,580],ink:true,title:'p.19 二',sub:'幹部的名稱'},
+  {id:'sw19b',unit:'socw',subj:'soc',kind:'wb',page:'sw19',box:[20,630,1200,860],ink:true,title:'p.19 三',sub:'尊重幹部'},
+  {id:'sw20',unit:'socw',subj:'soc',kind:'wb',page:'sw20',box:[20,50,1200,620],ink:true,title:'p.20 四（一）',sub:'上課方面'},
+  {id:'sw20b',unit:'socw',subj:'soc',kind:'wb',page:'sw20',box:[20,630,1200,670],ink:true,title:'p.20 四（二）（三）',sub:'整潔・作業'},
+  {id:'sw21',unit:'socw',subj:'soc',kind:'wb',page:'sw21',box:[20,50,1200,800],ink:true,title:'p.21 四（四）（五）',sub:'下課・同學相處'},
+  {id:'sw21b',unit:'socw',subj:'soc',kind:'wb',page:'sw21',box:[20,830,1200,650],ink:true,title:'p.21 五',sub:'我們班的公約'}
+);
 
 /* ---------- 班會小練習：四關拖拖放放 ---------- */
 var BS_R=[
