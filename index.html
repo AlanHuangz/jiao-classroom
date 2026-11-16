@@ -1540,7 +1540,743 @@ DivDesk.prototype.renderAns=function(){
   var nx=A.querySelector('.dv-next');if(nx)nx.addEventListener('click',function(){self.next();});
 };
 
-var UNITS=[['angleb','角・課本','math'],['angle','角・習作','math'],['areab','面積・課本','math'],['area','面積・習作','math'],['divb','除法・課本','math'],['div','除法・習作','math'],['zh7','七 淡水小鎮','zh'],['zh8','八 安平古堡參觀記','zh'],['zh9','九 馬太鞍的巴拉告','zh'],['zh10','十 狐狸的故事','zh'],['zh11','十一 巨人的花園','zh'],['zh12','十二 模仿貓','zh'],['zizao','拆字造字','zh']];
+/* ================= 社會・第三單元：班會大冒險（系統帶全班開一次班會）＋班會小練習 ================= */
+TASKS.push(
+  {id:'bhm',kind:'bh',unit:'bh',subj:'soc',title:'開班會！',sub:'系統帶全班開一次班會'},
+  {id:'bhp',kind:'bs',unit:'bh',subj:'soc',title:'班會小練習',sub:'排流程・配工作・好行為・公約'}
+);
+(function(){
+  var bk=[[68,'班級的自治活動'],[69,'召開班級會議'],[70,'選舉班級幹部'],[71,'幹部的責任'],[72,'訂定班級公約'],[73,'少數服從多數'],[74,'班會流程①'],[75,'班會流程②'],[76,'小小探究家①'],[77,'小小探究家②'],[78,'想一想：正確的態度']];
+  bk.forEach(function(p){PAGE_IDS.push('s'+p[0]);TASKS.push({id:'sb'+p[0],unit:'socb',subj:'soc',kind:'wb',page:'s'+p[0],box:[0,0,1241,1536],ink:true,title:'p.'+p[0],sub:p[1]});});
+  var wb=[[18,'開班會不適合的行為'],[19,'幹部的工作・尊重幹部'],[20,'班級公約①'],[21,'班級公約②']];
+  wb.forEach(function(p){PAGE_IDS.push('sw'+p[0]);TASKS.push({id:'sw'+p[0],unit:'socw',subj:'soc',kind:'wb',page:'sw'+p[0],box:[0,0,1241,1536],ink:true,title:'p.'+p[0],sub:p[1]});});
+})();
+
+/* ---------- 班會小練習：四關拖拖放放 ---------- */
+var BS_R=[
+  {k:'order',t:'排一排：班會的流程',h:'把六張流程卡照順序放進 1～6',slots:['1','2','3','4','5','6'],cards:[
+    ['o1','選出主席、司儀、記錄',0],['o2','宣布開會',1],['o3','報告事項',2],['o4','討論事項',3],['o5','臨時動議',4],['o6','散會',5]]},
+  {k:'match',t:'配一配：誰負責什麼？',h:'把每一張工作卡，放到負責的人下面',slots:['🎤 主席','📢 司儀','📝 記錄','📋 班級幹部','🙋 同學','👩‍🏫 導師'],cards:[
+    ['m1','主持會議，宣布開會和散會，決定發言的順序',0],['m2','宣布、引導會議的流程',1],['m3','記錄會議內容和表決結果',2],
+    ['m4','報告工作的事項和情況',3],['m5','參與討論和表決',4],['m6','適時提醒；班會結束後提出建議或鼓勵',5]]},
+  {k:'bin',t:'分一分：開班會時，這樣做適合嗎？',h:'適合的放左邊，不適合的放右邊',slots:['👍 適合','👎 不適合'],pick:8,cards:[
+    ['b1','發言前先舉手',0,'舉手，主席才知道誰想說話'],['b2','別人發言時，專心聽',0,'專心聽，才知道別人的想法'],
+    ['b3','勇敢說出自己的想法',0,'每個人都積極參與，才能做出好的決議'],['b4','表決沒有通過，還是遵守大家的決定',0,'少數服從多數'],
+    ['b5','有不同的意見，好好說出理由',0,'說明理由，大家才聽得懂'],['b6','聽完別人說的，再補充自己的想法',0,'不打斷別人'],
+    ['b7','說「班會跟我無關」，趴下來休息',1,'每個人都要參與討論'],['b8','同學發言時，聊下課要吃什麼',1,'別人發言時，要專心聆聽'],
+    ['b9','沒有舉手，就大聲說出想法',1,'發言前要先舉手'],['b10','笑同學的意見很奇怪',1,'要尊重同學的意見'],
+    ['b11','同學還沒說完，就打斷他',1,'等別人說完，尊重別人說話的權利'],['b12','表決輸了，生氣說「我不要」',1,'少數服從多數，多數也要尊重少數']]},
+  {k:'bin',t:'選一選：哪些適合放進班級公約？',h:'適合放進班級公約的放左邊，不適合的放右邊',slots:['👍 適合放進公約','👎 不適合'],pick:8,cards:[
+    ['c1','借別人的東西，要先問過主人',0,'尊重別人的東西'],['c2','用完的東西，要放回原位',0,'教室才會整齊'],
+    ['c3','排隊時不推擠',0,'才不會有人受傷'],['c4','對同學說話要有禮貌',0,'大家相處才會愉快'],
+    ['c5','吃完午餐，把自己的桌面擦乾淨',0,'維持環境整潔'],['c6','上課鐘響，要準時進教室',0,'才不會耽誤大家上課'],
+    ['c7','誰說話最大聲，就聽誰的',1,'公約要大家一起討論、表決，每個人都可以說話'],['c8','不想掃地的人，可以不用掃',1,'每個人都有自己的責任'],
+    ['c9','作業忘了寫，抄同學的就好',1,'作業要自己完成'],['c10','班長可以決定班上所有的事',1,'班上的事要大家一起討論、表決'],
+    ['c11','老師不在的時候，可以不用遵守',1,'公約是大家一起訂的，每個人都要遵守'],['c12','下課可以在走廊上追來追去',1,'在走廊奔跑容易受傷']]}
+];
+var BS_C={};BS_R.forEach(function(r,ri2){r.cards.forEach(function(c){BS_C[c[0]]={t:c[1],s:c[2],why:c[3]||'',r:ri2};});});
+function bsNew(id){
+  var R=BS_R.map(function(r){var cs=r.cards;if(r.pick){var g=shuffle(cs.filter(function(c){return c[2]===0;})).slice(0,r.pick/2),b=shuffle(cs.filter(function(c){return c[2]===1;})).slice(0,r.pick/2);cs=g.concat(b);}
+    return {c:shuffle(cs.map(function(c){return c[0];})),p:{},n:0,ok:false,w:[]};});
+  return {k:'bs',id:id,r:0,R:R,res:[],done:false};
+}
+function bsStars(n){return n===0?'⭐⭐⭐':n===1?'⭐⭐':'⭐';}
+function bsSummary(st){
+  if(!st.R)return '';var got=st.R.filter(function(r){return r.ok;}).length;
+  if(st.done)return '<span class="good">完成！</span> '+st.R.map(function(r){return bsStars(r.n);}).join(' ');
+  var R=st.R[st.r],pl=Object.keys(R.p).length;
+  return '第 '+(st.r+1)+'/'+st.R.length+' 關・放了 '+pl+'/'+R.c.length+' 張'+(R.n?'・<span class="warn">檢查錯 '+R.n+' 次</span>':'')+(got?'・過關 '+got:'');
+}
+function bsTile(box,st,big){
+  if(!st.R){box.innerHTML='';return;}var h2='<div class="bst'+(big?' big':'')+'">';
+  st.R.forEach(function(R,i){var d=BS_R[i];h2+='<div class="bst-r'+(i===st.r&&!st.done?' cur':'')+'"><b>'+(i+1)+'</b> '+esc(d.t.split('：')[0])+' '+(R.ok?'<span class="good">'+bsStars(R.n)+'</span>':i===st.r?'放了 '+Object.keys(R.p).length+'/'+R.c.length+(R.n?' <span class="warn">錯 '+R.n+' 次</span>':''):'')+'</div>';
+    if(big&&i===st.r&&!st.done){h2+='<div class="bst-sl">';d.slots.forEach(function(sl,si){var cs=R.c.filter(function(c){return R.p[c]===si;});h2+='<div><small>'+esc(sl)+'</small>'+cs.map(function(c){return '<span>'+esc(BS_C[c].t)+'</span>';}).join('')+'</div>';});h2+='</div>';}});
+  box.innerHTML=h2+'</div>';
+}
+
+/* ---------- 班會大冒險：資料 ---------- */
+var BH_STG=[
+  {k:'role',m:0,t:'選出主席、司儀、記錄'},{k:'open',m:1,t:'宣布開會'},{k:'rep',m:2,t:'報告事項'},
+  {k:'prop',m:3,t:'討論事項：提案、附議'},{k:'disc',m:3,t:'討論事項：舉手討論'},{k:'vote',m:3,t:'討論事項：表決'},
+  {k:'tmp',m:4,t:'臨時動議'},{k:'end',m:5,t:'散會'},{k:'done',m:6,t:'班會完成！'}
+];
+var BH_MAP=['選出主席、司儀、記錄','宣布開會','報告事項','討論事項','臨時動議','散會'];
+var BH_RL={c:{ic:'🎤',n:'主席',d:'主持會議：宣布開會、散會，決定誰先發言'},h:{ic:'📢',n:'司儀',d:'宣布、引導會議的流程'},w:{ic:'📝',n:'記錄',d:'記下會議的內容和表決結果'},m:{ic:'🙋',n:'同學',d:'舉手發言，參與討論和表決'},t:{ic:'👩‍🏫',n:'老師',d:'適時提醒，最後講評'}};
+var BH_L={
+  open:[['h','班會開始，請主席宣布開會。'],['c','我宣布，301 班會開始！今天要討論的題目是『{tp}』，希望大家踴躍發言。']],
+  rep:[['h','報告事項。請主席報告。'],['c','*'],['h','接下來，請班級幹部報告。想報告的人請舉手。']],
+  prop:[['h','討論事項。請主席說明今天要討論的事。'],['c','今天要討論『{tp}』，請大家提出想法。同意別人的想法，可以說「我附議」。']],
+  disc:[['h','有人附議的提案，現在開始討論。'],['c','想發言的人請先舉手，我會請大家輪流說。']],
+  vote:[['c','討論結束，現在進行表決。']],
+  votep:[['c','{dec}'],['c','少數服從多數，多數尊重少數。沒有選到的同學，謝謝你們的想法！']],
+  tmp:[['h','臨時動議。有沒有人有臨時動議？有的人請舉手。']],
+  end:[['h','請老師講評。'],['t','（老師講評）'],['h','請主席宣布散會。'],['c','班會結束，散會！謝謝大家。']]
+};
+var BH_HAND=['rep','disc','vote','tmp'];
+var BH_TP=[
+  {t:'同樂會要玩什麼遊戲？',i:['大風吹','比手畫腳','支援前線','123 木頭人','紙飛機比賽','猜謎語','故事接龍','桌遊時間']},
+  {t:'班級公約要加上哪一條？',i:['發言前要先舉手','別人說話時要專心聽','用完的東西放回原位','下課不在教室奔跑','借東西要先問','說話要有禮貌','垃圾要分類','作業要準時交']},
+  {t:'我們班的吉祥物要叫什麼名字？',i:['三零一號','小勇士','七彩星','跳跳','小太陽','阿福','七個好朋友']},
+  {t:'下一次獎勵時間要做什麼？',i:['到操場玩','看一部影片','畫畫時間','桌遊時間','自由閱讀','說故事時間']}
+];
+var BH_CREP=['這個星期，大家上課都很認真。','這個星期，有同學主動幫忙收餐和做回收，謝謝他們。','提醒大家：下課不要在教室裡追逐。','這個星期，大家打掃都很負責。'];
+var BH_JOB=['班長','值日生','自然小老師','借體育室鑰匙','收餐幫手','回收幫手','打掃','其他'];
+var BH_RS=['這個星期，大家都做得很好。','我要提醒大家：桌椅要排整齊。','我要提醒大家：作業要準時交。','我要提醒大家：下課不要在教室奔跑。','我要謝謝 {n} 號，他主動幫忙。'];
+var BH_TM=['我提議：每個星期選一位「默默幫忙之星」','我提議：下次班會討論同樂會的時間','我提議：午餐後大家一起整理教室'];
+var BH_SH=['我支持「＿＿」，因為……','我覺得「＿＿」可能會……，所以……','我同意 ＿ 號說的，因為……','我有不同的想法：……','我想補充：……'];
+var BH_CD=[
+  {t:'沒有舉手，就直接大聲說出你的想法',ok:'發言前要先舉手'},
+  {t:'同學發言時，小聲跟旁邊的人聊『下課要玩什麼』',ok:'別人發言時，要專心聆聽'},
+  {t:'趴在桌上說：『班會跟我無關啦！』',ok:'每個人都要積極參與討論'},
+  {t:'同學說完想法後，笑著說：『好奇怪喔！』',ok:'要尊重同學的意見'},
+  {t:'同學還沒說完，就打斷他說話',ok:'等別人說完再發言，尊重別人說話的權利'},
+  {t:'表決結果出來後，生氣說：『我不要！』',ok:'少數服從多數，遵守大家的決定'}
+];
+var BH_CR=['請舉手再發言。','請專心聽同學說話。','請尊重同學的意見。','請等同學說完再發言。','請大家遵守表決的結果。'];
+var BH_LV=[[0,'暖身中'],[5,'⭐ 開會新手'],[10,'⭐⭐ 好好說話'],[15,'⭐⭐⭐ 尊重高手'],[20,'🏆 班會達人']];
+var BH_EMAX=25;
+
+/* 全頁共用：目前的班會狀態（學生：老師傳來的；老師：自己的） */
+var BH={M:null,off:0,ds:[],set:function(m){this.M=m;this.off=Date.now()-(+m.now||Date.now());this.ds.forEach(function(d){if(d.root._owner===d)d.render();});},now:function(){return Date.now()-this.off;}};
+
+function bhS(x,n){return String(x==null?'':x).replace(/[\u0000-\u001f<>]/g,'').trim().slice(0,n);}
+function bhFresh(ti,tp){var t=BH_TP[ti]||null;return {mid:Date.now().toString(36),ti:t?ti:-1,tp:tp||(t?t.t:BH_TP[0].t),s:0,ln:0,mx:0,r:{c:0,h:0,w:0},rs:0,q:[],fl:0,ft:0,P:[],V:null,dec:null,rp:[],tm:[],en:0,cr:null,crep:'',rec:null,cd:null,ST:{},ack:{}};}
+function bhK(M){return BH_STG[M.s].k;}
+function bhLines(M){var k=bhK(M),L=(BH_L[k]||[]).slice();if(k==='vote'&&M.dec)L=L.concat(BH_L.votep);return L;}
+function bhCur(M){var L=bhLines(M);return M.ln<L.length?L[M.ln]:null;}
+function bhRole(M,n){if(!n)return 't';return M.r.c===n?'c':M.r.h===n?'h':M.r.w===n?'w':'m';}
+function bhPT(M,i){if(i==='NO'){var y=M.V&&M.V.o[0];return '不贊成「'+bhPT(M,y)+'」';}for(var j=0;j<M.P.length;j++)if(M.P[j].i===i)return M.P[j].t;return '';}
+function bhOptLabel(M,i){var V=M.V;if(V&&V.o.length===2&&V.o[1]==='NO')return i==='NO'?'不贊成':'贊成「'+bhPT(M,i)+'」';return bhPT(M,i);}
+function bhDecLine(M){var d=M.dec;if(!d)return '';return d.pass?'經過表決，由多數人支持的『'+d.t+'』通過！':'經過表決，『'+d.t+'』沒有通過。';}
+function bhLineText(M,l){if(l[1]==='*')return M.crep||'（主席報告這個星期的事）';if(l[1]==='{dec}')return bhDecLine(M);return l[1].replace('{tp}',M.tp||'');}
+function bhCanNext(M){
+  if(bhCur(M)||M.fl)return false;var k=bhK(M);
+  if(k==='role')return !!(M.r.c&&M.r.h&&M.r.w);
+  if(k==='prop'||k==='disc'||k==='done')return false;
+  if(k==='vote')return !!M.dec;
+  return true;
+}
+function bhGo(M,i){
+  if(i<0||i>=BH_STG.length)return;M.s=i;M.ln=0;M.q=[];M.fl=0;M.ft=0;var k=bhK(M);
+  if(k==='vote'||k==='disc'||k==='prop'){M.V=null;M.dec=null;}
+  if(k==='disc'||k==='vote')M.P.forEach(function(p){p.out=!p.sec.length;});
+  if(k==='prop')M.P.forEach(function(p){p.out=false;});
+  if(i>(M.mx||0)){M.mx=i;M.en=Math.min(BH_EMAX,(M.en||0)+1);}
+}
+function bhSt(M,n,f){if(!n)return;var o=M.ST[n]=M.ST[n]||{};o[f]=(o[f]||0)+1;}
+function bhEndSpk(M,a){
+  var n=M.fl,k=bhK(M);if(!n)return;
+  if(a&&a.x){var x=bhS(a.x,48);if(x){if(k==='rep')M.rp.push({by:n,j:bhS(a.j,10),x:x});else if(k==='tmp')M.tm.push({by:n,x:x});}}
+  bhSt(M,n,'spk');M.en=Math.min(BH_EMAX,(M.en||0)+1);M.fl=0;M.ft=0;
+}
+function bhTally(M){
+  var V=M.V;V.open=false;V.rv=Date.now();var c=V.c,sum=0;V.o.forEach(function(i){sum+=c[i]||0;});
+  if(V.o.length===2&&V.o[1]==='NO'){var y=c[V.o[0]]||0,no=c.NO||0;if(y===no){V.tie=V.o.slice();return;}M.dec={i:V.o[0],t:bhPT(M,V.o[0]),n:y,of:sum,pass:y>no};}
+  else{var mx=-1,top=[];V.o.forEach(function(i){var k=c[i]||0;if(k>mx){mx=k;top=[i];}else if(k===mx)top.push(i);});
+    if(top.length>1){V.tie=top;return;}M.dec={i:top[0],t:bhPT(M,top[0]),n:mx,of:sum,pass:true};}
+  V.tie=null;M.ln=(BH_L.vote||[]).length;
+}
+/* 一個動作（孩子或老師 n=0）改變班會狀態；回傳 true 表示有改變 */
+function bhApply(M,n,a,ctx){
+  if(!a||typeof a!=='object')return false;
+  var k=bhK(M),T=n===0,C=T||n===M.r.c,H=T||n===M.r.h,i,p;
+  var bound=['say','next','give','fin','prop','unprop','endprop','enddisc','vm','vnext','vrev','revote','hand'];
+  if(bound.indexOf(a.a)>=0&&a.s!==M.s)return false;
+  switch(a.a){
+  case 'say':{var L=bhLines(M),l=L[M.ln];if(!l||a.ln!==M.ln)return false;
+    if(!(T||(l[0]==='c'&&n===M.r.c)||(l[0]==='h'&&n===M.r.h)||(l[0]==='t'&&H)))return false;
+    if(l[1]==='*')M.crep=bhS(a.x,60)||'（主席報告）';M.ln++;return true;}
+  case 'next':if(!H||!bhCanNext(M))return false;bhGo(M,M.s+1);return true;
+  case 'hand':if(!n||BH_HAND.indexOf(k)<0||bhCur(M))return false;i=M.q.indexOf(n);
+    if(a.on&&i<0&&M.fl!==n){M.q.push(n);return true;}if(!a.on&&i>=0){M.q.splice(i,1);return true;}return false;
+  case 'give':if(!C)return false;i=M.q.indexOf(+a.n);if(i<0)return false;M.q.splice(i,1);if(M.fl)bhEndSpk(M,null);M.fl=+a.n;M.ft=Date.now();return true;
+  case 'fin':if(!M.fl||(n!==M.fl&&!C))return false;bhEndSpk(M,n===M.fl?a:null);return true;
+  case 'prop':{if(!n||k!=='prop'||bhCur(M))return false;var x=bhS(a.x,16);if(!x)return false;var nx=x.replace(/\s/g,'');
+    for(i=0;i<M.P.length;i++){p=M.P[i];if(p.t.replace(/\s/g,'')===nx){if(p.by===n||p.sec.indexOf(n)>=0)return false;p.sec.push(n);bhSt(M,n,'sec');if(p.sec.length===1)M.en=Math.min(BH_EMAX,M.en+1);return true;}}
+    if(M.P.filter(function(q){return q.by===n;}).length>=3||M.P.length>=12)return false;
+    M.P.push({i:n+'-'+(a.t%1e7).toString(36),by:n,t:x,sec:[]});bhSt(M,n,'prop');return true;}
+  case 'unprop':if(k!=='prop')return false;for(i=0;i<M.P.length;i++)if(M.P[i].i===a.i&&M.P[i].by===n){M.P.splice(i,1);return true;}return false;
+  case 'sec':{if(!n||(k!=='prop'&&k!=='disc'))return false;for(i=0;i<M.P.length;i++){p=M.P[i];if(p.i!==a.i||p.by===n||p.out)continue;var j=p.sec.indexOf(n);
+      if(a.on&&j<0){p.sec.push(n);bhSt(M,n,'sec');if(p.sec.length===1)M.en=Math.min(BH_EMAX,M.en+1);return true;}if(!a.on&&j>=0){p.sec.splice(j,1);return true;}}return false;}
+  case 'endprop':if(!C||k!=='prop'||bhCur(M))return false;if(!T&&!M.P.some(function(q){return q.sec.length;}))return false;bhGo(M,M.s+1);return true;
+  case 'enddisc':if(!C||k!=='disc')return false;if(M.fl)bhEndSpk(M,null);bhGo(M,M.s+1);return true;
+  case 'vm':{if(!C||k!=='vote'||bhCur(M)||M.V||M.dec)return false;var o=M.P.filter(function(q){return !q.out;}).map(function(q){return q.i;});if(!o.length)return false;if(o.length===1)o.push('NO');
+    M.V={m:a.m==='hand'?'hand':'ballot',r:1,o:o,open:true,cur:0,c:{},vs:[],who:{},all:0,tie:null};return true;}
+  case 'vote':{var V=M.V;if(!n||!V||!V.open||a.r!==V.r||V.vs.indexOf(n)>=0)return false;
+    if(V.m==='hand'?a.i!==V.o[V.cur]:V.o.indexOf(a.i)<0)return false;V.c[a.i]=(V.c[a.i]||0)+1;V.vs.push(n);V.who[n]=a.i;bhSt(M,n,'vote');
+    var pp=(ctx&&ctx.pp)||[];if(!V.all&&pp.length&&pp.every(function(s){return V.vs.indexOf(s)>=0;})){V.all=1;M.en=Math.min(BH_EMAX,M.en+2);}return true;}
+  case 'vnext':if(!C||!M.V||!M.V.open||M.V.m!=='hand')return false;M.V.cur++;if(M.V.cur>=M.V.o.length){M.V.cur=M.V.o.length-1;bhTally(M);}return true;
+  case 'vrev':if(!C||!M.V||!M.V.open)return false;bhTally(M);return true;
+  case 'revote':{if(!C||!M.V||!M.V.tie||M.dec)return false;var W=M.V;M.V={m:W.m,r:W.r+1,o:W.tie,open:true,cur:0,c:{},vs:[],who:{},all:0,tie:null};return true;}
+  case 'det':{var cd=M.cd;if(!n||!cd||cd.found||n===cd.to)return false;cd.tr=cd.tr||{};if((cd.tr[n]||0)>=2)return false;
+    if(+a.n===cd.to&&+a.k===cd.k){cd.found=Date.now();cd.by=n;bhSt(M,n,'det');M.en=Math.min(BH_EMAX,M.en+2);}else cd.tr[n]=(cd.tr[n]||0)+1;return true;}
+  case 'cardok':if(!M.cd||M.cd.to!==n||M.cd.acted)return false;M.cd.acted=1;bhSt(M,n,'card');return true;
+  case 'cr':{if(!C)return false;var ck=+a.k;if(!(ck>=0&&ck<BH_CR.length))return false;M.cr={k:ck,t:Date.now()};return true;}
+  case 'rec':{if(!T&&n!==M.r.w)return false;var rp=Array.isArray(a.rp)?a.rp.map(Number).filter(function(s){return s>=1&&s<=7;}).slice(0,7):[];
+    M.rec={rp:rp,d:bhS(a.d,24),n:Math.max(0,Math.min(30,parseInt(a.n,10)||0)),nn:a.n!=null&&a.n!=='',tm:a.tm==='有'||a.tm==='無'?a.tm:''};return true;}
+  }
+  return false;
+}
+/* 老師傳給 n 號（0＝老師自己、8＝投影）的班會狀態：秘密的東西只給該給的人 */
+function bhView(M,n,pp,ak){
+  var V=M.V,o={mid:M.mid,tp:M.tp,s:M.s,ln:M.ln,r:M.r,rs:M.rs,q:M.q,fl:M.fl,ft:M.ft,P:M.P,dec:M.dec,rp:M.rp,tm:M.tm,en:M.en,cr:M.cr,crep:M.crep,rec:M.rec,now:Date.now(),pp:pp};
+  if(V)o.V={m:V.m,r:V.r,o:V.o,open:V.open,cur:V.cur,vs:V.vs,tie:V.tie,rv:V.rv||0,c:(V.m==='hand'||!V.open)?V.c:null,mine:(n>=1&&n<=7)?(V.who[n]||null):null};
+  if(n>=1&&n<=7)o.ak=ak||0;
+  var cd=M.cd;
+  if(cd){if(n>=1&&n<=7&&cd.to===n)o.card={k:cd.k,found:cd.found,by:cd.by,acted:cd.acted,t:cd.t};
+    else{o.cdOn=!cd.found;if(n>=1&&n<=7)o.dtry=(cd.tr&&cd.tr[n])||0;}
+    if(cd.found)o.cdR={to:cd.to,k:cd.k,by:cd.by,t:cd.found};}
+  if(bhK(M)==='done'||n===0)o.ST=M.ST;
+  return o;
+}
+
+/* ---------- 班會小練習：畫面 ---------- */
+function BhSort(root,ws){
+  var self=this;this.root=root;this.ws=ws;this.sel=null;this.msg='';
+  root.addEventListener('click',function(e){if(root._owner!==self||self.ws.locked)return;var b=e.target.closest('[data-a]');if(!b||!root.contains(b)||b.disabled)return;self.click(b.dataset.a,b.dataset.v);});
+  root.addEventListener('pointerdown',function(e){if(root._owner!==self||self.ws.locked)return;var c=e.target.closest('.bs-card');if(!c||!root.contains(c))return;self.drag(e,c.dataset.v);});
+}
+BhSort.prototype.st=function(){return this.ws.state();};
+BhSort.prototype.load=BhSort.prototype.mount=function(){this.root._owner=this;this.sel=null;this.msg='';this.render();};
+BhSort.prototype.changed=function(){this.render();this.ws.onChange(true);};
+BhSort.prototype.R=function(){var st=this.st();return st&&st.R?st.R[st.r]:null;};
+BhSort.prototype.place=function(c,slot){
+  var st=this.st(),R=this.R();if(!R||R.ok||st.done)return;var d=BS_R[st.r];
+  if(d.k!=='bin')for(var x in R.p)if(R.p[x]===slot&&x!==c)delete R.p[x];
+  R.p[c]=slot;R.w=R.w.filter(function(y){return y!==c;});this.sel=null;this.msg='';this.changed();
+};
+BhSort.prototype.unplace=function(c){var R=this.R();if(!R||R.ok)return;delete R.p[c];this.sel=null;this.changed();};
+BhSort.prototype.click=function(a,v){
+  var st=this.st(),R=this.R();if(!R)return;
+  if(a==='slot'){if(this.sel)this.place(this.sel,+v);return;}
+  if(a==='check'){
+    if(Object.keys(R.p).length<R.c.length||R.ok)return;
+    var wrong=R.c.filter(function(c){return R.p[c]!==BS_C[c].s;});
+    if(!wrong.length){R.ok=true;R.w=[];st.res.push({ok:true,al:R.n===0});this.msg='';}
+    else{R.n++;R.w=wrong;wrong.forEach(function(c){delete R.p[c];});this.msg='有 '+wrong.length+' 張放錯了，已經退回下面。再想想看！';}
+    this.changed();return;}
+  if(a==='next'){if(!R.ok)return;st.r++;this.sel=null;this.msg='';if(st.r>=st.R.length){st.r=st.R.length-1;st.done=true;}this.changed();return;}
+  if(a==='again'){var n2=bsNew(st.id);st.R=n2.R;st.r=0;st.res=[];st.done=false;this.sel=null;this.msg='';this.changed();return;}
+};
+BhSort.prototype.tapCard=function(c){
+  var R=this.R();if(!R||R.ok)return;
+  if(R.p[c]!=null){if(this.sel&&this.sel!==c){this.place(this.sel,R.p[c]);return;}this.unplace(c);return;}
+  this.sel=this.sel===c?null:c;this.render();
+};
+BhSort.prototype.drag=function(e,c){
+  var self=this,x0=e.clientX,y0=e.clientY,moved=false,gh=null,src=e.target.closest('.bs-card');e.preventDefault();
+  function tgt(ev){var el=document.elementFromPoint(ev.clientX,ev.clientY);return el&&el.closest?el.closest('.bs-slot,.bs-tray'):null;}
+  function clr(){self.root.querySelectorAll('.hov').forEach(function(x){x.classList.remove('hov');});}
+  function mv(ev){var dx=ev.clientX-x0,dy=ev.clientY-y0;if(!moved&&dx*dx+dy*dy<64)return;
+    if(!moved){moved=true;gh=src.cloneNode(true);gh.className='bs-card bs-ghost';gh.style.width=src.offsetWidth+'px';document.body.appendChild(gh);src.style.opacity='.3';}
+    gh.style.left=ev.clientX+'px';gh.style.top=ev.clientY+'px';clr();var t=tgt(ev);if(t&&self.root.contains(t))t.classList.add('hov');}
+  function up(ev){document.removeEventListener('pointermove',mv);document.removeEventListener('pointerup',up);document.removeEventListener('pointercancel',up);if(gh)gh.remove();src.style.opacity='';clr();
+    if(!moved){if(ev.type==='pointerup')self.tapCard(c);return;}var t=tgt(ev);if(!t||!self.root.contains(t))return;
+    if(t.classList.contains('bs-tray'))self.unplace(c);else self.place(c,+t.dataset.v);}
+  document.addEventListener('pointermove',mv);document.addEventListener('pointerup',up);document.addEventListener('pointercancel',up);
+};
+BhSort.prototype.render=function(){
+  var st=this.st(),root=this.root;if(root._owner!==this||!st||!st.R)return;
+  if(st.done){var tot=0;st.R.forEach(function(R){tot+=3-Math.min(2,R.n);});
+    root.innerHTML='<div class="bs"><div class="bs-done"><div class="big">🎉 四關全部完成！</div><div class="stars">'+st.R.map(function(R,i){return '<div>'+esc(BS_R[i].t.split('：')[0])+'　'+bsStars(R.n)+'</div>';}).join('')+'</div><div class="tot">一共拿到 '+tot+' / 12 顆星</div><button class="bs-btn" type="button" data-a="again">再玩一次（題目會換）</button></div></div>';return;}
+  var d=BS_R[st.r],R=st.R[st.r],self=this,sel=this.sel;
+  function card(c){var cls='bs-card'+(c===sel?' sel':'')+(R.ok?' ok':'')+(R.w.indexOf(c)>=0?' was':'');return '<div class="'+cls+'" data-v="'+c+'">'+esc(BS_C[c].t)+'</div>';}
+  var h2='<div class="bs"><div class="bs-head"><span class="lv">第 '+(st.r+1)+' / '+st.R.length+' 關</span><b>'+esc(d.t)+'</b><span class="got">'+st.R.map(function(x,i){return i<st.r||x.ok?bsStars(x.n):'☆';}).join(' ')+'</span></div>';
+  h2+='<div class="bs-hint'+(this.msg?' warn':'')+(R.ok?' good':'')+'">'+(R.ok?'全部正確！'+bsStars(R.n):esc(this.msg||d.h+'（點一張卡，再點要放的地方；也可以用拖的）'))+'</div>';
+  if(R.w.length&&d.k==='bin'&&!R.ok)h2+='<div class="bs-why">'+R.w.map(function(c){return '<div>・'+esc(BS_C[c].t)+'　→ 想一想：'+esc(BS_C[c].why)+'</div>';}).join('')+'</div>';
+  h2+='<div class="bs-board k-'+d.k+'">';
+  d.slots.forEach(function(sl,si){var cs=R.c.filter(function(c){return R.p[c]===si;});
+    h2+='<div class="bs-slot'+(sel?' can':'')+'" data-a="slot" data-v="'+si+'"><div class="lab">'+esc(sl)+'</div><div class="in">'+cs.map(card).join('')+'</div></div>';});
+  h2+='</div><div class="bs-tray"><div class="lab">卡片（'+R.c.filter(function(c){return R.p[c]==null;}).length+' 張）</div><div class="in">'+R.c.filter(function(c){return R.p[c]==null;}).map(card).join('')+'</div></div>';
+  var all=Object.keys(R.p).length===R.c.length;
+  h2+='<div class="bs-foot">'+(R.ok?'<button class="bs-btn go" type="button" data-a="next">'+(st.r+1<st.R.length?'下一關 ▶':'看成績 ▶')+'</button>':'<button class="bs-btn" type="button" data-a="check"'+(all?'':' disabled')+'>檢查</button>'+(all?'':'<span class="bs-left">還有 '+(R.c.length-Object.keys(R.p).length)+' 張還沒放</span>'))+'</div></div>';
+  root.innerHTML=h2;
+};
+
+/* ---------- 班會大冒險：共用畫面片段 ---------- */
+function bhMapHTML(M){
+  var cur=BH_STG[M.s].m,k=bhK(M);
+  return '<div class="bh-map">'+BH_MAP.map(function(t,i){var cls=i<cur?'done':i===cur?'cur':'';
+    var sub=i===3?'<span class="sub">'+[['prop','提案'],['disc','討論'],['vote','表決']].map(function(x){var j=['prop','disc','vote'].indexOf(x[0]),kk=['prop','disc','vote'].indexOf(k);return '<i class="'+(i<cur||(i===cur&&j<kk)?'d':i===cur&&j===kk?'c':'')+'">'+x[1]+'</i>';}).join('›')+'</span>':'';
+    return '<div class="bh-st '+cls+'"><span class="no">'+(i<cur?'✓':(i+1))+'</span><span class="tx">'+esc(t)+sub+'</span></div>';}).join('')+'</div>';
+}
+function bhEnHTML(M){var e=Math.min(BH_EMAX,M.en||0),lv=BH_LV.filter(function(l){return e>=l[0];}).pop();return '<div class="bh-en"><span class="lb">班會能量</span><div class="bar"><i style="width:'+Math.round(e/BH_EMAX*100)+'%"></i></div><b>'+esc(lv[1])+'</b></div>';}
+function bhLineHTML(M,l){var w=l[0],s=w==='t'?'':(M.r[w]?'（'+M.r[w]+' 號）':'');
+  if(w==='t')return '<div class="bh-line w-t"><div class="who">👩‍🏫 老師講評</div><div class="say">大家專心聽老師說 👂</div></div>';
+  return '<div class="bh-line w-'+w+'"><div class="who">'+BH_RL[w].ic+' '+BH_RL[w].n+s+'</div><div class="say">「'+esc(bhLineText(M,l))+'」</div></div>';}
+function bhSpotHTML(M,me){if(!M.fl)return '';var k=bhK(M),what=k==='rep'?'報告':k==='tmp'?'提臨時動議':'發言';
+  return '<div class="bh-spot'+(M.fl===me?' me':'')+'"><span class="mic">🎤</span><span><b>'+M.fl+' 號</b> '+(M.fl===me?'（你）':'')+what+'中</span><span class="bh-timer" data-ft="'+M.ft+'"></span>'+(M.fl===me?'':'<span class="ls">👂 專心聽</span>')+'</div>';}
+function bhQHTML(M){return '<div class="bh-q"><span class="lb">✋ 舉手</span>'+(M.q.length?M.q.map(function(n,i){return '<span class="h">'+(i+1)+'. '+n+' 號</span>';}).join(''):'<span class="no">還沒有人舉手</span>')+'</div>';}
+function bhNoteHTML(M,p,btn){var win=M.dec&&M.dec.i===p.i&&M.dec.pass;
+  return '<div class="bh-note'+(p.sec.length?' ok':'')+(p.out?' out':'')+(win?' win':'')+'"><div class="t">'+(win?'🏆 ':'')+esc(p.t)+'</div><div class="by">'+p.by+' 號提案</div><div class="sec">'+(p.sec.length?'🤝 附議：'+p.sec.map(function(s){return s+' 號';}).join('、'):(p.out?'沒有人附議，不討論':'等人附議…'))+'</div>'+(btn||'')+'</div>';}
+function bhVoteBoardHTML(M){
+  var V=M.V;if(!V)return bhCur(M)?'':'<div class="bh-vwait">主席要選表決的方式：<b>✋ 舉手表決</b> 或 <b>🗳️ 投票表決</b></div>';
+  var h2='<div class="bh-vt">'+(V.m==='hand'?'✋ 舉手表決':'🗳️ 投票表決')+(V.r>1?'（第 '+V.r+' 次）':'')+'</div>',pp=M.pp||[];
+  if(V.open&&V.m==='hand'){var cur=V.o[V.cur];
+    h2+='<div class="bh-vcall">贊成'+(cur==='NO'?'不贊成的':'「'+esc(bhPT(M,cur))+'」的')+'請舉手 ✋<b>'+((V.c&&V.c[cur])||0)+' 人</b></div>';
+    h2+='<div class="bh-vlist">'+V.o.map(function(i,j){return '<span class="'+(j<V.cur?'d':j===V.cur?'c':'')+'">'+esc(bhOptLabel(M,i))+(j<V.cur?'：'+((V.c&&V.c[i])||0)+' 人':'')+'</span>';}).join('')+'</div>';}
+  else if(V.open){h2+='<div class="bh-box">🗳️<div>已經投票 <b>'+V.vs.length+'</b> / '+pp.length+' 人</div><div class="papers">'+V.vs.map(function(){return '<i>📄</i>';}).join('')+'</div></div>';}
+  else{var mx=1;V.o.forEach(function(i){mx=Math.max(mx,(V.c&&V.c[i])||0);});var fresh=BH.now()-(V.rv||0)<5000;
+    h2+='<div class="bh-bars'+(fresh?' anim':'')+'">'+V.o.map(function(i){var c=(V.c&&V.c[i])||0,win=M.dec&&M.dec.i===i;return '<div class="row'+(win?' win':'')+'"><span class="lb">'+esc(bhOptLabel(M,i))+'</span><span class="bar"><i style="width:'+Math.round(c/mx*100)+'%"></i></span><b>'+c+' 票</b></div>';}).join('')+'</div>';
+    if(V.tie)h2+='<div class="bh-tie">平手！主席請大家再表決一次</div>';}
+  if(M.dec)h2+='<div class="bh-dec'+(M.dec.pass?'':' no')+'">'+(M.dec.pass?'🎉 通過！「'+esc(M.dec.t)+'」（'+M.dec.n+' / '+M.dec.of+' 票）':'「'+esc(M.dec.t)+'」沒有通過')+'</div><div class="bh-rule">少數服從多數・多數尊重少數</div>';
+  return h2;
+}
+function bhDate(){var d=new Date(BH.now());return '民國 '+(d.getFullYear()-1911)+' 年 '+(d.getMonth()+1)+' 月 '+d.getDate()+' 日';}
+function bhRecHTML(M,edit,ui){
+  var R=edit?ui.rec:(M.rec||{rp:[],d:'',n:0,tm:''}),rpReal=M.rp.map(function(r){return r.by;}),V=M.V;
+  function chk(ok){return edit?'':(ok?' <span class="ck ok">✓</span>':' <span class="ck no">（再對一對）</span>');}
+  var h2='<div class="bh-rec"><h3>📝 301 班會會議紀錄</h3><table>';
+  h2+='<tr><th>日期</th><td>'+bhDate()+'</td></tr><tr><th>出席</th><td>'+((M.pp||[]).length||'—')+' 人</td></tr>';
+  h2+='<tr><th>主席／司儀／記錄</th><td>'+(M.r.c||'—')+' 號／'+(M.r.h||'—')+' 號／'+(M.r.w||'—')+' 號</td></tr>';
+  h2+='<tr><th>報告事項<br><small>誰報告了？</small></th><td>'+(edit?'<div class="bh-chips">'+[1,2,3,4,5,6,7].map(function(n){return '<button type="button" data-a="rrp" data-v="'+n+'" class="'+(R.rp.indexOf(n)>=0?'on':'')+'">'+n+' 號</button>';}).join('')+'</div>':(R.rp.length?R.rp.slice().sort().map(function(n){return n+' 號';}).join('、'):'—')+chk(R.rp.slice().sort().join()===rpReal.slice().sort().join()))+(M.crep?'<div class="sm">主席：'+esc(M.crep)+'</div>':'')+'</td></tr>';
+  h2+='<tr><th>討論題目</th><td>'+esc(M.tp)+'</td></tr>';
+  h2+='<tr><th>提案</th><td>'+(M.P.length?M.P.map(function(p){return '<div class="sm">「'+esc(p.t)+'」'+p.by+' 號提案'+(p.sec.length?'，'+p.sec.join('、')+' 號附議':'，沒有人附議')+'</div>';}).join(''):'—')+'</td></tr>';
+  h2+='<tr><th>表決方式</th><td>'+(V?(V.m==='hand'?'舉手表決':'投票表決'):'—')+'</td></tr>';
+  h2+='<tr><th>決議</th><td>';
+  if(edit){var opts=V?V.o.filter(function(i){return i!=='NO';}):[];
+    h2+=opts.length?'<div class="bh-chips">'+opts.map(function(i){return '<button type="button" data-a="rd" data-v="'+esc(i)+'" class="'+(R.d===i?'on':'')+'">'+esc(bhPT(M,i))+'</button>';}).join('')+'</div>':'<span class="sm">（表決以後再寫）</span>';
+    if(opts.length)h2+='<div class="bh-num">得到 <input data-k="rn" inputmode="numeric" maxlength="2" value="'+esc(ui.rn)+'"> 票<button type="button" data-a="rsave">寫上去</button></div>';}
+  else h2+=R.d?'「'+esc(bhPT(M,R.d))+'」'+(R.nn?' '+R.n+' 票':'')+chk(M.dec&&R.d===M.dec.i&&R.nn&&R.n===M.dec.n)+(M.dec&&!M.dec.pass?'（沒有通過）':''):'—';
+  h2+='</td></tr><tr><th>臨時動議</th><td>'+(edit?'<div class="bh-chips"><button type="button" data-a="rtm" data-v="有" class="'+(R.tm==='有'?'on':'')+'">有</button><button type="button" data-a="rtm" data-v="無" class="'+(R.tm==='無'?'on':'')+'">無</button></div>':(R.tm||'—')+(R.tm?chk((R.tm==='有')===(M.tm.length>0)):''))+(M.tm.length?M.tm.map(function(t){return '<div class="sm">'+t.by+' 號：'+esc(t.x)+'</div>';}).join(''):'')+'</td></tr>';
+  return h2+'</table></div>';
+}
+function bhBadges(M,n){
+  var S=(M.ST&&M.ST[n])||{},b=[],rl=bhRole(M,n);
+  if(rl!=='m')b.push(BH_RL[rl].ic+' '+BH_RL[rl].n);
+  if(S.spk)b.push('🗣️ 勇敢發言 ×'+S.spk);if(S.prop)b.push('💡 提出好點子');if(M.dec&&M.dec.pass&&M.P.some(function(p){return p.i===M.dec.i&&p.by===n;}))b.push('🏆 點子通過');
+  if(S.sec)b.push('🤝 附議 ×'+S.sec);if(S.vote)b.push('🗳️ 投下一票');if(S.det)b.push('🔍 小偵探');if(S.card)b.push('🎭 演技派');
+  b.push('✅ 參加班會');return b;
+}
+
+/* ---------- 班會大冒險：孩子的畫面／投影大螢幕 ---------- */
+function BhMeet(root,ws){
+  var self=this;this.root=root;this.ws=ws;this.last='';this.ui=this.fresh();this.defer=false;this.rollSeen=0;this.rolling=false;this.tmT=0;
+  BH.ds.push(this);
+  root.addEventListener('click',function(e){if(root._owner!==self)return;var b=e.target.closest('[data-a]');if(!b||!root.contains(b)||b.disabled)return;self.click(b.dataset.a,b.dataset.v);});
+  root.addEventListener('input',function(e){var k=e.target.dataset&&e.target.dataset.k;if(k)self.ui[k]=e.target.value;});
+  root.addEventListener('keydown',function(e){var k=e.target.dataset&&e.target.dataset.k;if(k&&e.key==='Enter'&&!e.isComposing){e.preventDefault();self.click(k==='px'?'propx':k==='rn'?'rsave':'noop');}});
+  this.composing=false;
+  root.addEventListener('compositionstart',function(){self.composing=true;});
+  root.addEventListener('compositionend',function(){self.composing=false;if(self.defer){self.defer=false;setTimeout(function(){self.render();},60);}});
+  root.addEventListener('focusout',function(){self.composing=false;if(self.defer){self.defer=false;setTimeout(function(){self.render();},250);}});
+  setInterval(function(){self.tick();},250);
+}
+BhMeet.prototype.fresh=function(){return {tab:'m',det:null,rj:'',rs:-1,rn2:0,rx:'',px:'',tx:'',tc:-1,vsel:null,crk:-1,rec:{rp:[],d:'',n:'',tm:''},rn:'',seen:''};};
+BhMeet.prototype.me=function(){return this.ws.seat||0;};
+BhMeet.prototype.isBoard=function(){var s=this.me();return !s||s===8;};
+BhMeet.prototype.mount=BhMeet.prototype.load=function(){this.root._owner=this;this.last='';this.render();};
+BhMeet.prototype.st=function(){var st=this.ws.state(),M=BH.M;if(st&&M&&st.mid!==M.mid){st.mid=M.mid;st.ac=[];st.lt=0;this.ui=this.fresh();this.ws.onChange(true);}return st;};
+BhMeet.prototype.act=function(a){
+  var st=this.st(),M=BH.M;if(!st||!M||this.ws.locked||this.isBoard())return;
+  var t=Math.max(Date.now(),(st.lt||0)+1);a.t=t;a.s=M.s;st.lt=t;st.ac=st.ac||[];st.ac.push(a);if(st.ac.length>25)st.ac.splice(0,st.ac.length-25);
+  this.ws.onChange(true);this.render();
+};
+BhMeet.prototype.pend=function(type){var st=this.st(),M=BH.M,ak=(M&&M.ak)||0;return ((st&&st.ac)||[]).filter(function(a){return a.t>ak&&a.a===type;});};
+BhMeet.prototype.lastPend=function(type,f){var p=this.pend(type).filter(f||function(){return true;});return p.length?p[p.length-1]:null;};
+BhMeet.prototype.handUp=function(){var M=BH.M,me=this.me(),lp=this.lastPend('hand');if(lp)return !!lp.on;return M.q.indexOf(me)>=0;};
+BhMeet.prototype.secOn=function(p){var me=this.me(),lp=this.lastPend('sec',function(a){return a.i===p.i;});if(lp)return !!lp.on;return p.sec.indexOf(me)>=0;};
+BhMeet.prototype.voted=function(){var M=BH.M,V=M.V;if(!V)return null;if(V.mine)return V.mine;var lp=this.lastPend('vote',function(a){return a.r===V.r;});return lp?lp.i:(V.vs.indexOf(this.me())>=0?'?':null);};
+BhMeet.prototype.click=function(a,v){
+  var M=BH.M,ui=this.ui,me=this.me();if(!M)return;var cur=bhCur(M);
+  switch(a){
+  case 'say':{var x=cur&&cur[1]==='*'?(ui.crk>=0?BH_CREP[ui.crk]:''):undefined;if(cur&&cur[1]==='*'&&!x)return;this.act({a:'say',ln:M.ln,x:x});return;}
+  case 'crk':ui.crk=+v;this.render();return;
+  case 'next':if(confirm('要進到下一個流程嗎？'))this.act({a:'next'});return;
+  case 'hand':this.act({a:'hand',on:!this.handUp()});return;
+  case 'give':this.act({a:'give',n:+v});return;
+  case 'fin':{var k=bhK(M),o={a:'fin'};
+    if(M.fl===me&&k==='rep'){if(ui.rs<0){alert('先選一句要報告的話');return;}var s=BH_RS[ui.rs];if(s.indexOf('{n}')>=0){if(!ui.rn2){alert('先點要謝謝幾號');return;}s=s.replace('{n}',ui.rn2);}o.j=ui.rj||'同學';o.x=s;}
+    if(M.fl===me&&k==='tmp'){var tx=bhS(ui.tc>=0?BH_TM[ui.tc]:ui.tx,40);if(!tx){alert('先選或寫下你的臨時動議');return;}o.x=tx;}
+    this.act(o);ui.rs=-1;ui.rj='';ui.rn2=0;ui.tx='';ui.tc=-1;return;}
+  case 'rj':ui.rj=v;this.render();return;
+  case 'rs':ui.rs=+v;this.render();return;
+  case 'rn2':ui.rn2=+v;this.render();return;
+  case 'tc':ui.tc=ui.tc===+v?-1:+v;this.render();return;
+  case 'idea':this.act({a:'prop',x:v});return;
+  case 'propx':{var px=bhS(ui.px,16);if(!px)return;this.act({a:'prop',x:px});ui.px='';this.render();return;}
+  case 'unprop':this.act({a:'unprop',i:v});return;
+  case 'sec':{var p=M.P.filter(function(q){return q.i===v;})[0];if(p)this.act({a:'sec',i:v,on:!this.secOn(p)});return;}
+  case 'endprop':this.act({a:'endprop'});return;
+  case 'enddisc':if(confirm('討論結束，要開始表決了嗎？'))this.act({a:'enddisc'});return;
+  case 'vm':this.act({a:'vm',m:v});return;
+  case 'vote':if(M.V)this.act({a:'vote',i:v,r:M.V.r});return;
+  case 'vsel':ui.vsel=v;this.render();return;
+  case 'ballot':if(M.V&&ui.vsel)this.act({a:'vote',i:ui.vsel,r:M.V.r});return;
+  case 'vnext':this.act({a:'vnext'});return;
+  case 'vrev':{var V=M.V;if(V&&V.vs.length<(M.pp||[]).length&&!confirm('還有人沒投票，確定要開票嗎？'))return;this.act({a:'vrev'});return;}
+  case 'revote':this.act({a:'revote'});return;
+  case 'cr':this.act({a:'cr',k:+v});return;
+  case 'tab':ui.tab=v;this.render();return;
+  case 'rrp':{var n=+v,j=ui.rec.rp.indexOf(n);if(j>=0)ui.rec.rp.splice(j,1);else ui.rec.rp.push(n);this.sendRec();return;}
+  case 'rd':ui.rec.d=v;this.sendRec();return;
+  case 'rtm':ui.rec.tm=v;this.sendRec();return;
+  case 'rsave':ui.rec.n=String(ui.rn||'').replace(/\D/g,'');this.sendRec();return;
+  case 'det':ui.det=ui.det?null:{n:0,k:-1};this.render();return;
+  case 'dn':if(ui.det){ui.det.n=+v;this.render();}return;
+  case 'dk':if(ui.det){ui.det.k=+v;this.render();}return;
+  case 'dgo':if(ui.det&&ui.det.n&&ui.det.k>=0){this.act({a:'det',n:ui.det.n,k:ui.det.k});ui.det=null;this.render();}return;
+  case 'cardok':this.act({a:'cardok'});return;
+  }
+};
+BhMeet.prototype.sendRec=function(){var r=this.ui.rec;this.act({a:'rec',rp:r.rp.slice(),d:r.d,n:r.n,tm:r.tm});};
+BhMeet.prototype.tick=function(){
+  if(this.root._owner!==this||!BH.M)return;var now=BH.now();
+  this.root.querySelectorAll('.bh-timer').forEach(function(el){var ft=+el.dataset.ft;if(ft){var s=Math.max(0,Math.floor((now-ft)/1000));el.textContent=s+' 秒';el.classList.toggle('long',s>=60);}});
+  var M=BH.M,roll=M.rs&&now-M.rs<2600&&now-M.rs>-3000;
+  if(roll){this.rolling=true;this.root.querySelectorAll('.bh-roll').forEach(function(el){el.textContent=1+Math.floor(Math.random()*7);});}
+  else if(this.rolling){this.rolling=false;this.render();}
+  var cr=M.cr&&now-M.cr.t<6000,crf=!!this.root.querySelector('.bh-crb');if(cr!==crf)this.render();
+  var fd=M.cdR&&now-M.cdR.t<9000,fdf=!!this.root.querySelector('.bh-found');if(fd!==fdf)this.render();
+};
+BhMeet.prototype.render=function(){
+  var root=this.root;if(root._owner!==this)return;var M=BH.M;
+  var ae=document.activeElement,fk=(ae&&root.contains(ae)&&ae.dataset&&ae.dataset.k)?ae.dataset.k:null;
+  if(fk&&this.composing){this.defer=true;return;}
+  var html;if(!M)html='<div class="bh-wait">等老師打開班會…</div>';else{var st=this.st();html=this.isBoard()?this.boardHTML(M):this.meHTML(M,st);}
+  if(html===this.last)return;var ss=fk?ae.selectionStart:0;this.last=html;root.innerHTML=html;
+  if(fk){var el=root.querySelector('[data-k="'+fk+'"]');if(el){el.value=this.ui[fk]||'';el.focus();try{el.setSelectionRange(ss,ss);}catch(e){}}}
+  this.tick();
+};
+BhMeet.prototype.boardHTML=function(M){
+  var k=bhK(M),cur=bhCur(M),now=BH.now(),h2='<div class="bhb">';
+  h2+='<div class="bhb-head"><span class="ttl">🏛️ 301 班會</span><span class="tp">今天的題目：<b>「'+esc(M.tp)+'」</b></span>'+bhEnHTML(M)+'</div>'+bhMapHTML(M);
+  h2+='<div class="bhb-body"><div class="bhb-main">';
+  var roll=M.rs&&now-M.rs<2600&&now-M.rs>-3000;
+  if(k==='role'){
+    h2+='<div class="bhb-sub">① 選出主席、司儀、記錄</div><div class="bh-roles3">'+['c','h','w'].map(function(r){var n=M.r[r];return '<div class="bh-rcard r-'+r+(n&&!roll?' pop':'')+'"><div class="ic">'+BH_RL[r].ic+'</div><b>'+BH_RL[r].n+'</b><div class="n">'+(roll?'<span class="bh-roll">?</span> 號':n?n+' 號':'？')+'</div><p>'+esc(BH_RL[r].d)+'</p></div>';}).join('')+'</div>';
+    if(!(M.r.c&&M.r.h&&M.r.w))h2+='<div class="bh-wait sm">🎲 等老師抽出主席、司儀、記錄…</div>';else if(!roll)h2+='<div class="bh-nexthint">📢 司儀（'+M.r.h+' 號）按「開始開會」</div>';
+  }else if(k==='done'){
+    h2+='<div class="bh-fin">🎉 301 班會完成！<small>'+esc(bhEnHTML(M).replace(/<[^>]+>/g,' ').replace(/\s+/g,' '))+'</small></div>'+bhRecHTML(M,false);
+    h2+='<div class="bh-badges">'+(M.pp||[]).slice().sort(function(a,b){return a-b;}).map(function(n){return '<div class="bdg"><b>'+n+' 號</b>'+bhBadges(M,n).map(function(x){return '<span>'+esc(x)+'</span>';}).join('')+'</div>';}).join('')+'</div>';
+  }else{
+    if(cur)h2+=bhLineHTML(M,cur);
+    if(k==='vote')h2+=bhVoteBoardHTML(M);
+    h2+=bhSpotHTML(M,0);
+    if(k==='rep'){if(M.crep&&!(cur&&cur[1]==='*'))h2+='<div class="bh-rep"><b>🎤 主席：</b>'+esc(M.crep)+'</div>';h2+=M.rp.map(function(r){return '<div class="bh-rep"><b>'+r.by+' 號（'+esc(r.j)+'）：</b>'+esc(r.x)+'</div>';}).join('');}
+    if(k==='prop'||k==='disc')h2+='<div class="bh-notes">'+(M.P.length?M.P.filter(function(p){return k==='prop'||!p.out;}).map(function(p){return bhNoteHTML(M,p);}).join(''):'<div class="bh-wait sm">💡 等大家提案…</div>')+'</div>'+(k==='prop'?'<div class="bh-rule sm">有人提議，至少要有另一個人附議，才能拿出來討論</div>':'');
+    if(k==='tmp')h2+=M.tm.map(function(t){return '<div class="bh-rep"><b>'+t.by+' 號：</b>'+esc(t.x)+'</div>';}).join('');
+    if(!cur&&bhCanNext(M))h2+='<div class="bh-nexthint">📢 司儀（'+(M.r.h||'?')+' 號）：可以進到下一個流程了</div>';
+  }
+  h2+='</div><div class="bhb-side">'+['c','h','w'].map(function(r){return '<div class="bh-rl r-'+r+'"><span class="ic">'+BH_RL[r].ic+'</span><b>'+BH_RL[r].n+'</b><span>'+(M.r[r]&&!roll?M.r[r]+' 號':'—')+'</span></div>';}).join('');
+  if(BH_HAND.indexOf(k)>=0)h2+=bhQHTML(M);
+  if(M.cdOn)h2+='<div class="bh-cdon">🤫 有人拿到「狀況卡」了！<br>大家當小偵探 🔍</div>';
+  h2+='</div></div>';
+  if(M.cr&&now-M.cr.t<6000)h2+='<div class="bh-crb big">🎤 主席提醒：「'+esc(BH_CR[M.cr.k])+'」</div>';
+  if(M.cdR&&now-M.cdR.t<9000)h2+='<div class="bh-found"><div class="t">🔍 '+M.cdR.by+' 號抓到狀況卡了！</div><div>'+M.cdR.to+' 號剛剛演的是：「'+esc(BH_CD[M.cdR.k].t)+'」</div><div class="ok">✅ 正確的做法：'+esc(BH_CD[M.cdR.k].ok)+'</div></div>';
+  return h2+'</div>';
+};
+BhMeet.prototype.meHTML=function(M,st){
+  var me=this.me(),rl=bhRole(M,me),k=bhK(M),cur=bhCur(M),ui=this.ui,now=BH.now(),self=this;
+  var roll=M.rs&&now-M.rs<2600&&now-M.rs>-3000;
+  var h2='<div class="bhp"><div class="bhp-top"><span class="bh-me r-'+rl+'">'+(roll?'🎲':BH_RL[rl].ic)+' '+me+' 號・'+(roll?'抽籤中…':'我是'+(rl==='m'?'同學':BH_RL[rl].n))+'</span><span class="bh-stg">'+(BH_STG[M.s].m<6?(BH_STG[M.s].m+1)+'. ':'')+esc(BH_STG[M.s].t)+'</span>'+bhEnHTML(M)+'</div>';
+  if(rl==='w'&&k!=='role')h2+='<div class="bhp-tabs"><button type="button" data-a="tab" data-v="m" class="'+(ui.tab==='m'?'on':'')+'">🗣️ 開會</button><button type="button" data-a="tab" data-v="w" class="'+(ui.tab==='w'?'on':'')+'">📝 寫會議紀錄（記錄的工作）</button></div>';
+  if(M.cr&&now-M.cr.t<6000)h2+='<div class="bh-crb">🎤 主席提醒：「'+esc(BH_CR[M.cr.k])+'」</div>';
+  if(M.cdR&&now-M.cdR.t<9000)h2+='<div class="bh-found sm"><div class="t">🔍 '+M.cdR.by+' 號抓到 '+M.cdR.to+' 號的狀況卡！</div><div class="ok">✅ 正確的做法：'+esc(BH_CD[M.cdR.k].ok)+'</div></div>';
+  if(M.card)h2+=M.card.found?'<div class="bh-card2 got">🔍 你的狀況卡被 '+M.card.by+' 號發現了！<br>正確的做法：<b>'+esc(BH_CD[M.card.k].ok)+'</b></div>'
+    :'<div class="bh-card2"><div class="t">🤫 秘密狀況卡（只有你看得到）</div><div class="b">「'+esc(BH_CD[M.card.k].t)+'」</div><div class="s">找機會演一次就好，不要太誇張。看看誰會發現！</div>'+(M.card.acted||this.pend('cardok').length?'<div class="s ok">✓ 演完了，等小偵探來抓</div>':'<button type="button" data-a="cardok">我演完了</button>')+'</div>';
+  h2+='<div class="bhp-main">';
+  if(rl==='w'&&ui.tab==='w'&&k!=='role'){h2+=bhRecHTML(M,true,ui)+'<div class="sm mut">點一點就會存起來。散會的時候，大螢幕會秀出你寫的紀錄。</div></div>'+this.footHTML(M,rl)+'</div>';return h2;}
+  if(k==='role'){
+    if(roll)h2+='<div class="bh-bigcard rolling">🎲<div>抽籤中…</div></div>';
+    else if(M.r.c&&M.r.h&&M.r.w)h2+='<div class="bh-bigcard pop r-'+rl+'"><div class="ic">'+BH_RL[rl].ic+'</div><div>你是</div><b>'+(rl==='m'?'同學':BH_RL[rl].n)+'</b><p>'+esc(BH_RL[rl].d)+'</p></div><div class="bh-others">主席 '+M.r.c+' 號・司儀 '+M.r.h+' 號・記錄 '+M.r.w+' 號</div>';
+    else h2+='<div class="bh-wait">🎲 等老師抽出主席、司儀、記錄…</div>';
+  }else if(k==='done'){
+    h2+='<div class="bh-fin">🎉 散會！謝謝你參加班會</div><div class="bh-mybd">'+bhBadges(M,me).map(function(x){return '<span>'+esc(x)+'</span>';}).join('')+'</div>';
+  }else{
+    if(cur){var mine=(cur[0]==='c'&&rl==='c')||(cur[0]==='h'&&rl==='h')||(cur[0]==='t'&&rl==='h');
+      if(mine&&cur[0]==='t')h2+='<div class="bh-myline"><div class="lab">老師在講評，等老師講完，按下面的按鈕</div><button type="button" class="bh-bigbtn" data-a="say">老師講完了 ▶</button></div>';
+      else if(mine){var pk=cur[1]==='*';h2+='<div class="bh-myline"><div class="lab">'+(pk?'輪到你報告了！先選一句，再大聲唸出來：':'輪到你說了！大聲唸出來：')+'</div>';
+        if(pk)h2+='<div class="bh-picks">'+BH_CREP.map(function(s,i){return '<button type="button" data-a="crk" data-v="'+i+'" class="'+(ui.crk===i?'on':'')+'">'+esc(s)+'</button>';}).join('')+'</div>';
+        else h2+='<div class="say">「'+esc(bhLineText(M,cur))+'」</div>';
+        h2+='<button type="button" class="bh-bigbtn" data-a="say"'+(pk&&ui.crk<0?' disabled':'')+'>我說完了 ▶</button></div>';}
+      else h2+=bhLineHTML(M,cur)+'<div class="bh-listen">👂 專心聽</div>';
+    }
+    if(!cur||(k==='vote'&&M.dec))h2+=this.actHTML(M,me,rl,k);
+  }
+  h2+='</div>'+this.footHTML(M,rl)+'</div>';
+  return h2;
+};
+BhMeet.prototype.speakHTML=function(M,me,rl,k){
+  var ui=this.ui,h2='';
+  if(M.fl===me){
+    h2+='<div class="bh-myturn"><div class="lab">🎤 輪到你了！</div>';
+    if(k==='rep'){h2+='<div class="sm">我是：</div><div class="bh-picks sm2">'+BH_JOB.map(function(j){return '<button type="button" data-a="rj" data-v="'+esc(j)+'" class="'+(ui.rj===j?'on':'')+'">'+esc(j)+'</button>';}).join('')+'</div>';
+      h2+='<div class="sm">我要報告：</div><div class="bh-picks">'+BH_RS.map(function(s,i){return '<button type="button" data-a="rs" data-v="'+i+'" class="'+(ui.rs===i?'on':'')+'">'+esc(s.replace('{n}','＿'))+'</button>';}).join('')+'</div>';
+      if(ui.rs>=0&&BH_RS[ui.rs].indexOf('{n}')>=0)h2+='<div class="sm">要謝謝幾號？</div><div class="bh-chips">'+[1,2,3,4,5,6,7].filter(function(n){return n!==me;}).map(function(n){return '<button type="button" data-a="rn2" data-v="'+n+'" class="'+(ui.rn2===n?'on':'')+'">'+n+' 號</button>';}).join('')+'</div>';
+      if(ui.rs>=0)h2+='<div class="say">「我是'+esc(ui.rj||'＿＿')+'。'+esc(BH_RS[ui.rs].replace('{n}',ui.rn2||'＿'))+'」</div>';}
+    else if(k==='tmp'){h2+='<div class="bh-picks">'+BH_TM.map(function(s,i){return '<button type="button" data-a="tc" data-v="'+i+'" class="'+(ui.tc===i?'on':'')+'">'+esc(s)+'</button>';}).join('')+'</div><div class="bh-inrow">或自己寫：<input data-k="tx" maxlength="30" placeholder="我提議：……" value="'+esc(ui.tx)+'"></div>';}
+    else h2+='<div class="sm">說話小幫手（可以照著說）：</div><div class="bh-help">'+BH_SH.map(function(s){return '<div>'+esc(s)+'</div>';}).join('')+'</div>';
+    h2+='<button type="button" class="bh-bigbtn" data-a="fin">我說完了 ✓</button></div>';
+  }else{
+    h2+=bhSpotHTML(M,me);
+    var up=this.handUp(),lab={rep:'✋ 我要報告',disc:'✋ 我想發言',vote:'✋ 我想說說看',tmp:'✋ 我有臨時動議'}[k];
+    h2+='<button type="button" class="bh-hand'+(up?' up':'')+'" data-a="hand">'+(up?'✋ 舉手中…（點一下放下）':lab)+'</button>';
+    if(up){var pos=M.q.indexOf(me);h2+='<div class="sm">'+(pos>=0?'你排第 '+(pos+1)+' 個，等主席請你說話':'送出中…')+'</div>';}
+  }
+  h2+=bhQHTML(M);
+  if(rl==='c'){h2+='<div class="bh-chair"><div class="lab">🎤 主席：請舉手的人輪流說</div><div class="bh-chips">'+(M.q.length?M.q.map(function(n){return '<button type="button" data-a="give" data-v="'+n+'">請 '+n+' 號'+(k==='rep'?'報告':'發言')+'</button>';}).join(''):'<span class="sm">還沒有人舉手</span>')+'</div>'+(M.fl&&M.fl!==me?'<button type="button" data-a="fin">謝謝 '+M.fl+' 號，請下一位</button>':'')+'</div>';}
+  return h2;
+};
+BhMeet.prototype.actHTML=function(M,me,rl,k){
+  var ui=this.ui,h2='',self=this;
+  if(k==='open'||k==='end')return '';
+  if(k==='rep'||k==='tmp'||k==='disc'){
+    if(k==='rep'&&M.rp.length)h2+=M.rp.map(function(r){return '<div class="bh-rep sm"><b>'+r.by+' 號（'+esc(r.j)+'）：</b>'+esc(r.x)+'</div>';}).join('');
+    if(k==='tmp'&&M.tm.length)h2+=M.tm.map(function(t){return '<div class="bh-rep sm"><b>'+t.by+' 號：</b>'+esc(t.x)+'</div>';}).join('');
+    if(k==='disc')h2+='<div class="bh-notes sm">'+M.P.filter(function(p){return !p.out;}).map(function(p){return bhNoteHTML(M,p);}).join('')+'</div>';
+    h2+=this.speakHTML(M,me,rl,k);
+    if(k==='disc'&&rl==='c')h2+='<button type="button" class="bh-bigbtn alt" data-a="enddisc">討論結束，進行表決 ▶</button>';
+    return h2;
+  }
+  if(k==='prop'){
+    var mineN=M.P.filter(function(p){return p.by===me;}).length+this.pend('prop').length,ideas=(BH_TP.filter(function(t){return t.t===M.tp;})[0]||{i:[]}).i;
+    h2+='<div class="bh-notes">'+M.P.map(function(p){var b='';if(p.by===me)b='<button type="button" class="bh-sb un" data-a="unprop" data-v="'+esc(p.i)+'">撤回我的提案</button>';else{var on=self.secOn(p);b='<button type="button" class="bh-sb'+(on?' on':'')+'" data-a="sec" data-v="'+esc(p.i)+'">'+(on?'✓ 我附議了':'🤝 我附議')+'</button>';}return bhNoteHTML(M,p,b);}).join('')+this.pend('prop').map(function(a){return '<div class="bh-note pend"><div class="t">'+esc(a.x)+'</div><div class="by">送出中…</div></div>';}).join('')+'</div>';
+    if(mineN<3){h2+='<div class="bh-propbox"><div class="lab">💡 我要提案（最多 3 個）</div>';
+      if(ideas.length)h2+='<div class="bh-picks sm2">'+ideas.map(function(s){var ex=M.P.filter(function(p){return p.t===s;})[0];return '<button type="button" data-a="idea" data-v="'+esc(s)+'"'+(ex&&(ex.by===me||ex.sec.indexOf(me)>=0)?' disabled':'')+'>'+esc(s)+(ex?'<small>（有人提了，點了＝附議）</small>':'')+'</button>';}).join('')+'</div>';
+      h2+='<div class="bh-inrow">自己寫：<input data-k="px" maxlength="16" placeholder="我的想法" value="'+esc(ui.px)+'"><button type="button" data-a="propx">提案</button></div></div>';}
+    else h2+='<div class="sm">你已經提了 3 個，可以去附議別人的想法 🤝</div>';
+    if(rl==='c'){var any=M.P.some(function(p){return p.sec.length;});h2+='<button type="button" class="bh-bigbtn alt" data-a="endprop"'+(any?'':' disabled')+'>提案結束，開始討論 ▶</button>'+(any?'':'<div class="sm">要有提案被附議，才能開始討論</div>');}
+    return h2;
+  }
+  if(k==='vote'){
+    var V=M.V,pp=M.pp||[];
+    if(!V){if(rl==='c')h2+='<div class="bh-chair big"><div class="lab">🎤 主席：選一種表決的方式，然後說出來</div><div class="bh-two"><button type="button" data-a="vm" data-v="hand">✋ 舉手表決<small>一個一個問，贊成的舉手</small></button><button type="button" data-a="vm" data-v="ballot">🗳️ 投票表決<small>每個人偷偷投一票</small></button></div></div>';
+      else h2+='<div class="bh-wait sm">等主席選表決的方式…</div>';return h2;}
+    var my=this.voted();
+    if(V.open&&V.m==='hand'){var cu=V.o[V.cur];
+      h2+='<div class="bh-vcall">贊成'+(cu==='NO'?'不贊成的':'「'+esc(bhPT(M,cu))+'」的')+'請舉手</div>';
+      if(!my)h2+='<button type="button" class="bh-bigbtn" data-a="vote" data-v="'+esc(cu)+'">✋ 我贊成'+(cu==='NO'?'（不贊成）':'')+'</button><div class="sm">每個人只能舉手一次喔</div>';
+      else h2+='<div class="bh-ok">✓ 你已經舉手了'+(my!=='?'?'：'+esc(bhOptLabel(M,my)):'')+'</div>';
+      if(rl==='c')h2+='<button type="button" class="bh-bigbtn alt" data-a="vnext">'+(V.cur+1<V.o.length?'下一個選項 ▶':'公布結果 ▶')+'</button>';
+    }else if(V.open){
+      if(!my){h2+='<div class="lab">🗳️ 選一個，再按「投下去」（別人看不到你投誰）</div><div class="bh-opts">'+V.o.map(function(i){return '<button type="button" data-a="vsel" data-v="'+esc(i)+'" class="'+(ui.vsel===i?'on':'')+'">'+esc(bhOptLabel(M,i))+'</button>';}).join('')+'</div><button type="button" class="bh-bigbtn" data-a="ballot"'+(ui.vsel&&V.o.indexOf(ui.vsel)>=0?'':' disabled')+'>🗳️ 投下去</button>';}
+      else h2+='<div class="bh-ok">✓ 你投好了，等主席開票（已投 '+V.vs.length+' / '+pp.length+'）</div>';
+      if(rl==='c')h2+='<button type="button" class="bh-bigbtn alt" data-a="vrev">開票 ▶（已投 '+V.vs.length+' / '+pp.length+'）</button>';
+    }else{
+      h2+=bhVoteBoardHTML(M).replace(/^<div class="bh-vt">.*?<\/div>/,'');
+      if(V.tie&&rl==='c')h2+='<button type="button" class="bh-bigbtn alt" data-a="revote">平手，再表決一次 ▶</button>';
+      if(M.dec&&my&&my!=='?'&&my!==(M.dec.pass?M.dec.i:'NO')&&!(M.dec.pass===false&&my==='NO'))h2+='<div class="bh-kind">你選的沒有通過，沒關係！<br>少數服從多數：我們一起遵守大家的決定。你的想法也很重要，可以舉手說說看。</div>';
+      if(M.dec&&!bhCur(M))h2+=this.speakHTML(M,me,rl,k);
+    }
+    return h2;
+  }
+  return h2;
+};
+BhMeet.prototype.footHTML=function(M,rl){
+  var k=bhK(M),me=this.me(),ui=this.ui,h2='<div class="bhp-foot">';
+  if(rl==='c'&&k!=='role'&&k!=='done')h2+='<div class="bh-crtools"><span class="lab">🎤 主席提醒：</span>'+BH_CR.map(function(s,i){return '<button type="button" data-a="cr" data-v="'+i+'">'+esc(s)+'</button>';}).join('')+'</div>';
+  if(rl==='h'&&bhCanNext(M)){var nx=BH_STG[M.s+1];h2+='<button type="button" class="bh-next" data-a="next">'+(k==='role'?'📢 開始開會 ▶':k==='end'?'🎉 散會！':'📢 下一個流程：'+esc(nx.t)+' ▶')+'</button>';}
+  else if(rl!=='h'&&bhCanNext(M)&&k!=='role')h2+='<div class="sm mut">等 📢 司儀（'+M.r.h+' 號）宣布下一個流程</div>';
+  if(M.cdOn&&!M.card&&k!=='done'){var left=2-(M.dtry||0)-this.pend('det').length;
+    if(ui.det){h2+='<div class="bh-det"><div class="lab">🔍 誰拿到狀況卡？</div><div class="bh-chips">'+[1,2,3,4,5,6,7].filter(function(n){return n!==me;}).map(function(n){return '<button type="button" data-a="dn" data-v="'+n+'" class="'+(ui.det.n===n?'on':'')+'">'+n+' 號</button>';}).join('')+'</div><div class="lab">他做了什麼不適合的事？</div><div class="bh-picks sm2">'+BH_CD.map(function(c,i){return '<button type="button" data-a="dk" data-v="'+i+'" class="'+(ui.det.k===i?'on':'')+'">'+esc(c.t)+'</button>';}).join('')+'</div><button type="button" data-a="dgo"'+(ui.det.n&&ui.det.k>=0?'':' disabled')+'>送出（還可以猜 '+left+' 次）</button><button type="button" data-a="det">先不要</button></div>';}
+    else h2+=left>0?'<button type="button" class="bh-detb" data-a="det">🔍 我發現狀況卡！（還可以猜 '+left+' 次）</button>':'<span class="sm mut">🔍 你猜過 2 次了，看看別人會不會抓到</span>';
+    if((M.dtry||0)>0&&!ui.det)h2+='<span class="sm mut">剛剛沒猜中，再仔細觀察</span>';}
+  return h2+'</div>';
+};
+function bhSummary(st){var M=BH.M;if(!M)return '班會';return '班會：'+esc(BH_STG[M.s].t);}
+function bhTile(box,st,big,n){
+  var M=BH.M;if(!M){box.innerHTML='';return;}var rl=bhRole(M,n),b=[];
+  if(M.fl===n)b.push('<b class="g">🎤 發言中</b>');if(M.q.indexOf(n)>=0)b.push('<b class="a">✋ 舉手中（第 '+(M.q.indexOf(n)+1)+' 個）</b>');
+  var ps=M.P.filter(function(p){return p.by===n;});if(ps.length)b.push('💡 '+ps.map(function(p){return '「'+esc(p.t)+'」'+(p.sec.length?'🤝'+p.sec.length:'');}).join(' '));
+  var sc=M.P.filter(function(p){return p.sec.indexOf(n)>=0;}).length;if(sc)b.push('🤝 附議 '+sc+' 個');
+  if(M.V&&M.V.vs.indexOf(n)>=0)b.push('🗳️ 已表決');
+  var S=(M.ST&&M.ST[n])||{};if(S.spk)b.push('🗣️ 發言 '+S.spk+' 次');
+  if(M.cd&&M.cd.to===n)b.push('<b class="a">🤫 狀況卡'+(M.cd.found?'（被發現）':M.cd.acted?'（演完了）':'')+'</b>');
+  box.innerHTML='<div class="bht'+(big?' big':'')+'"><div class="rl r-'+rl+'">'+BH_RL[rl].ic+' '+(rl==='m'?'同學':BH_RL[rl].n)+'</div>'+b.map(function(x){return '<div>'+x+'</div>';}).join('')+'</div>';
+}
+
+/* ---------- 老師的班會控制台 ---------- */
+function bhTeacher(o){
+  var M=lsGet('jiao.t.bh',null);if(!M||!M.mid||!M.r||!Array.isArray(M.P))M=bhFresh(0);if(!M.ack)M.ack={};if(!M.ST)M.ST={};
+  var bar=o.bar,saveT=null,bcT=null,on=false;
+  bar.className='bh-tbar';bar.hidden=true;
+  bar.innerHTML='<div class="r"><b class="hd">🏛️ 班會控制台</b><label>題目 <select class="tp"></select></label><input class="tpc" maxlength="20" placeholder="或自己打題目"><button class="btn tpok" type="button">用這個題目</button>'+
+    '<span class="sep"></span><span class="roles"></span><button class="btn roll" type="button">🎲 抽角色</button><span class="sep"></span><button class="btn newm" type="button">↺ 新的班會</button></div>'+
+    '<div class="r"><button class="btn prev" type="button" title="回到上一個流程">◀</button><b class="stg"></b><button class="btn nxt" type="button">▶ 下一步</button><span class="ctx"></span>'+
+    '<span class="sep"></span><button class="btn card" type="button">🤫 發狀況卡</button><span class="cdst"></span><button class="btn clap" type="button">👏 能量 +1</button></div><div class="r info"></div>';
+  var $=function(s){return bar.querySelector(s);};
+  var tpSel=$('.tp');BH_TP.forEach(function(t,i){var op=document.createElement('option');op.value=i;op.textContent=t.t;tpSel.appendChild(op);});var opC=document.createElement('option');opC.value=-1;opC.textContent='（自己打的題目）';tpSel.appendChild(opC);
+  var rsel={};['c','h','w'].forEach(function(r){var l=h('label',{},BH_RL[r].ic+BH_RL[r].n+' '),s=h('select',{});l.appendChild(s);$('.roles').appendChild(l);rsel[r]=s;
+    s.addEventListener('change',function(){var n=+s.value;['c','h','w'].forEach(function(x){if(x!==r&&M.r[x]===n&&n)M.r[x]=0;});M.r[r]=n;changed();});});
+  function fillRoles(){['c','h','w'].forEach(function(r){var s=rsel[r];s.innerHTML='<option value="0">—</option>';for(var n=1;n<=7;n++){var op=document.createElement('option');op.value=n;op.textContent=n+' 號'+(o.names[n]?' '+o.names[n]:'');s.appendChild(op);}s.value=String(M.r[r]||0);});}
+  function pp(){var a=[];for(var n=1;n<=7;n++){var s=o.seats[n];if(s&&o.online(s)&&s.st&&s.st.id==='bhm')a.push(n);}return a;}
+  function publish(){BH.set(bhView(M,0,pp()));}
+  function changed(){publish();clearTimeout(saveT);saveT=setTimeout(function(){lsSet('jiao.t.bh',M);},400);if(!bcT)bcT=setTimeout(function(){bcT=null;o.broadcast();},60);render();o.render();}
+  function T(a){a.s=M.s;a.t=Date.now();if(bhApply(M,0,a,{pp:pp()}))changed();}
+  tpSel.addEventListener('change',function(){var i=+tpSel.value;if(i<0)return;M.ti=i;M.tp=BH_TP[i].t;lsSet('jiao.t.bhtp',i);changed();});
+  $('.tpok').addEventListener('click',function(){var v=bhS($('.tpc').value,20);if(!v)return;M.ti=-1;M.tp=v;$('.tpc').value='';changed();});
+  $('.roll').addEventListener('click',function(){var a=pp();if(a.length<3)a=[1,2,3,4,5,6,7];if((M.r.c||M.r.h||M.r.w)&&!confirm('重新抽主席、司儀、記錄嗎？'))return;a=shuffle(a);M.r={c:a[0],h:a[1],w:a[2]};M.rs=Date.now();changed();});
+  $('.newm').addEventListener('click',function(){if(!confirm('開一個新的班會嗎？（現在的班會紀錄會清掉）'))return;M=bhFresh(M.ti,M.tp);changed();});
+  $('.prev').addEventListener('click',function(){if(M.s>0){bhGo(M,M.s-1);changed();}});
+  $('.nxt').addEventListener('click',function(){var cur=bhCur(M);if(cur){T({a:'say',ln:M.ln});return;}
+    var k=bhK(M);if(k==='done')return;if(k==='vote'&&!M.dec&&!confirm('還沒有表決結果，確定要跳到臨時動議嗎？'))return;if(M.fl)bhEndSpk(M,null);bhGo(M,M.s+1);changed();});
+  $('.card').addEventListener('click',function(){
+    if(M.cd&&!M.cd.found&&!confirm('上一張狀況卡還沒被發現，要換一張新的嗎？'))return;
+    var a=pp().filter(function(n){return n!==M.r.c&&n!==M.r.h&&n!==M.r.w;});if(!a.length)a=pp().filter(function(n){return n!==M.r.c;});if(!a.length){alert('還沒有孩子進到班會');return;}
+    var ks=[0,1,2,3,4];if(M.s>=5)ks.push(5);M.cd={to:pick(a),k:pick(ks),t:Date.now(),found:0,by:0,tr:{},acted:0};changed();});
+  $('.clap').addEventListener('click',function(){M.en=Math.min(BH_EMAX,(M.en||0)+1);changed();});
+  bar.addEventListener('click',function(e){var b=e.target.closest('[data-ta]');if(!b||!bar.contains(b))return;var a=b.dataset.ta,v=b.dataset.v;
+    if(a==='give')T({a:'give',n:+v});else if(a==='fin')T({a:'fin'});else if(a==='vm')T({a:'vm',m:v});else T({a:a});});
+  function render(){
+    if(!on)return;var k=bhK(M),cur=bhCur(M),P=pp();
+    if(document.activeElement!==tpSel)tpSel.value=String(M.ti>=0?M.ti:-1);
+    ['c','h','w'].forEach(function(r){if(document.activeElement!==rsel[r])rsel[r].value=String(M.r[r]||0);});
+    $('.stg').textContent=(BH_STG[M.s].m<6?(BH_STG[M.s].m+1)+'. ':'')+BH_STG[M.s].t+(cur?'　｜　'+(cur[0]==='t'?'老師講評':BH_RL[cur[0]].n+'說：「'+bhLineText(M,cur).slice(0,18)+'…」'):'');
+    var c='';if(BH_HAND.indexOf(k)>=0&&!cur){M.q.forEach(function(n){c+='<button class="btn" type="button" data-ta="give" data-v="'+n+'">請 '+n+' 號說</button>';});if(M.fl)c+='<button class="btn" type="button" data-ta="fin">'+M.fl+' 號說完了</button>';}
+    if(k==='prop'&&!cur)c+='<button class="btn" type="button" data-ta="endprop">提案結束</button>';
+    if(k==='disc')c+='<button class="btn" type="button" data-ta="enddisc">討論結束</button>';
+    if(k==='vote'&&!cur){var V=M.V;if(!V&&!M.dec)c+='<button class="btn" type="button" data-ta="vm" data-v="hand">✋ 舉手表決</button><button class="btn" type="button" data-ta="vm" data-v="ballot">🗳️ 投票表決</button>';
+      else if(V&&V.open)c+=V.m==='hand'?'<button class="btn" type="button" data-ta="vnext">下一個選項</button>':'<button class="btn" type="button" data-ta="vrev">開票</button>';
+      else if(V&&V.tie)c+='<button class="btn" type="button" data-ta="revote">再表決一次</button>';}
+    $('.ctx').innerHTML=c;
+    var cd=M.cd;$('.cdst').textContent=cd?(cd.to+' 號：「'+BH_CD[cd.k].t.slice(0,10)+'…」'+(cd.found?'→ '+cd.by+' 號抓到了':cd.acted?'（演完了）':'（還沒演）')):'';
+    var inf='在班會裡：'+(P.length?P.map(function(n){return n+'號';}).join(' '):'還沒有人')+'　｜　能量 '+(M.en||0)+'/'+BH_EMAX;
+    if(M.q.length)inf+='　｜　✋ '+M.q.join('、')+' 號';if(M.fl)inf+='　｜　🎤 '+M.fl+' 號說話中';
+    if(M.P.length)inf+='　｜　提案 '+M.P.length+' 個（有附議 '+M.P.filter(function(p){return p.sec.length;}).length+'）';
+    if(M.V)inf+='　｜　表決 '+M.V.vs.length+'/'+P.length;if(M.dec)inf+='　｜　決議：「'+M.dec.t+'」'+(M.dec.pass?'通過':'沒通過');
+    $('.info').textContent=inf;
+  }
+  function merge(n,st){
+    if(!st||st.k!=='bh'||st.mid!==M.mid||!Array.isArray(st.ac))return;
+    var acs=st.ac.filter(function(a){return a&&typeof a==='object'&&+a.t>0;}).slice().sort(function(a,b){return a.t-b.t;}),a0=M.ack[n]||0,ch=false,P=pp();
+    acs.forEach(function(a){if(!(a.t>a0))return;a0=a.t;try{if(bhApply(M,n,a,{pp:P}))ch=true;}catch(e){}});
+    if(a0!==(M.ack[n]||0)){M.ack[n]=a0;ch=true;}
+    if(ch)changed();
+  }
+  var lastPP='';
+  setInterval(function(){if(!on)return;var k=pp().join();if(k!==lastPP){lastPP=k;changed();}else publish();},2000);
+  function cmdFor(n,tk){if(tk!=='bhm')return undefined;return bhView(M,n,pp(),M.ack[n]);}
+  function setTask(id){on=id==='bhm';bar.hidden=!on;if(on){fillRoles();publish();render();}}
+  fillRoles();publish();
+  return {merge:merge,cmdFor:cmdFor,setTask:setTask};
+}
+
+(function(){var css=
+/* 小練習 */
+'.bs{flex:1;min-height:0;overflow:auto;display:flex;flex-direction:column;gap:10px;padding:12px 16px;background:var(--stage)}'+
+'.bs-head{display:flex;align-items:center;gap:12px;flex-wrap:wrap;font-size:22px}.bs-head .lv{background:var(--accent);color:#fff;border-radius:999px;padding:2px 12px;font-size:16px;font-weight:700}.bs-head .got{margin-left:auto;font-size:18px}'+
+'.bs-hint{font-size:17px;color:var(--muted)}.bs-hint.warn{color:#a35f00;font-weight:700}.bs-hint.good{color:var(--green);font-weight:700;font-size:20px}'+
+'.bs-why{background:#fff6e6;border-radius:10px;padding:8px 12px;font-size:15px;line-height:1.6;color:#7a4a00}'+
+'.bs-board{display:grid;gap:10px}.bs-board.k-order{grid-template-columns:1fr}.bs-board.k-match{grid-template-columns:repeat(3,minmax(0,1fr))}.bs-board.k-bin{grid-template-columns:1fr 1fr}'+
+'.bs-slot{background:#fff;border:3px dashed #9fb0bd;border-radius:14px;padding:6px 8px;min-height:58px;display:flex;gap:8px;align-items:center}'+
+'.k-order .bs-slot .lab{font-size:24px;font-weight:800;width:40px;height:40px;border-radius:50%;background:#e8eef3;display:flex;align-items:center;justify-content:center;flex:none}'+
+'.k-match .bs-slot,.k-bin .bs-slot{flex-direction:column;align-items:stretch;min-height:120px}.k-match .bs-slot .lab,.k-bin .bs-slot .lab{font-size:19px;font-weight:800;text-align:center}'+
+'.k-bin .bs-slot{min-height:220px}.bs-slot .in{display:flex;flex-wrap:wrap;gap:6px;flex:1;align-content:flex-start}'+
+'.bs-slot.can{border-color:var(--accent);background:#f3f8fd;cursor:pointer}.bs-slot.hov,.bs-tray.hov{outline:4px solid var(--accent);outline-offset:2px}'+
+'.bs-tray{background:#fff8e8;border:2px solid #f0d9a8;border-radius:14px;padding:8px}.bs-tray .lab{font-size:14px;color:var(--muted);margin-bottom:4px}.bs-tray .in{display:flex;flex-wrap:wrap;gap:8px;min-height:50px}'+
+'.bs-card{background:#fff;border:2px solid #b9c7d2;border-radius:10px;padding:8px 12px;font-size:18px;line-height:1.35;cursor:grab;user-select:none;-webkit-user-select:none;touch-action:none;box-shadow:0 2px 0 #d5dee5;max-width:100%}'+
+'.bs-card.sel{border-color:var(--accent);background:#e8f1fb;box-shadow:0 0 0 3px rgba(42,111,176,.3)}.bs-card.ok{border-color:var(--green);background:#eefaf2;cursor:default}'+
+'.bs-card.was{border-color:var(--red);animation:bsShake .4s}@keyframes bsShake{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}'+
+'.bs-ghost{position:fixed;z-index:95;pointer-events:none;transform:translate(-50%,-50%) rotate(-2deg);opacity:.92}'+
+'.bs-foot{display:flex;align-items:center;gap:12px}.bs-left{color:var(--muted);font-size:15px}'+
+'.bs-btn{font-size:20px;font-weight:700;padding:10px 26px;border-radius:12px;border:0;background:var(--accent);color:#fff;font-family:inherit;cursor:pointer}.bs-btn:disabled{opacity:.4}.bs-btn.go{background:var(--green)}'+
+'.bs-done{margin:auto;text-align:center;display:flex;flex-direction:column;gap:14px;align-items:center}.bs-done .big{font-size:34px;font-weight:800}.bs-done .stars{font-size:20px;line-height:1.8}.bs-done .tot{font-size:22px;font-weight:700;color:var(--green)}'+
+'.bst{font-size:13px;line-height:1.5}.bst-r.cur{font-weight:700}.bst .good{color:var(--green)}.bst .warn{color:var(--red)}.bst.big{font-size:18px}'+
+'.bst-sl{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0}.bst-sl>div{border:2px dashed #9fb0bd;border-radius:8px;padding:4px 6px;min-width:120px}.bst-sl small{display:block;color:var(--muted)}.bst-sl span{display:block;font-size:14px}'+
+/* 班會：共用 */
+'.bh-root{flex:1;min-height:0;display:flex;flex-direction:column}'+
+'.bh-wait{margin:auto;font-size:26px;color:var(--muted);text-align:center;padding:30px}.bh-wait.sm{font-size:20px;margin:10px auto}'+
+'.bh-map{display:flex;gap:6px;padding:8px 12px;background:#fff;border-bottom:1px solid var(--line);overflow-x:auto}'+
+'.bh-st{flex:1;min-width:92px;display:flex;align-items:center;gap:6px;padding:6px 8px;border-radius:12px;background:#eef2f5;color:var(--muted);font-size:15px;line-height:1.25}'+
+'.bh-st .no{flex:none;width:28px;height:28px;border-radius:50%;background:#cdd8e0;color:#fff;font-weight:800;display:flex;align-items:center;justify-content:center}'+
+'.bh-st.done{background:#eaf7ef;color:#2c6b45}.bh-st.done .no{background:var(--green)}'+
+'.bh-st.cur{background:#fff3d6;color:var(--ink);font-weight:800;box-shadow:0 0 0 3px #f5b83d inset;animation:bhGlow 1.6s ease-in-out infinite}.bh-st.cur .no{background:#e8930c}'+
+'@keyframes bhGlow{50%{box-shadow:0 0 0 3px #f5b83d inset,0 0 14px #f5c86d}}'+
+'.bh-st .sub{display:block;font-size:12px;font-weight:400}.bh-st .sub i{font-style:normal;padding:0 2px}.bh-st .sub i.c{color:#c56a00;font-weight:800;text-decoration:underline}.bh-st .sub i.d{color:var(--green)}'+
+'.bh-en{display:flex;align-items:center;gap:8px;font-size:15px;white-space:nowrap}.bh-en .bar{width:130px;height:14px;border-radius:7px;background:#e3e9ee;overflow:hidden}.bh-en .bar i{display:block;height:100%;background:linear-gradient(90deg,#f5b83d,#e8590c);transition:width .6s}.bh-en .lb{color:var(--muted)}'+
+'.bh-line{background:#fff;border-radius:18px;padding:14px 18px;border:3px solid #9fb0bd;position:relative}.bh-line .who{font-size:17px;font-weight:700;color:var(--muted)}.bh-line .say{font-size:26px;font-weight:700;line-height:1.5}'+
+'.bh-line.w-c{border-color:#e8930c;background:#fff8ec}.bh-line.w-h{border-color:#2a6fb0;background:#f1f7fd}.bh-line.w-t{border-color:#7a5cc0;background:#f6f2ff}'+
+'.bh-listen{font-size:18px;color:var(--muted);text-align:center;margin:6px}'+
+'.bh-spot{display:flex;align-items:center;gap:12px;flex-wrap:wrap;background:#1c2a38;color:#fff;border-radius:16px;padding:10px 16px;font-size:22px}.bh-spot .mic{font-size:30px}.bh-spot.me{background:var(--green)}'+
+'.bh-spot .ls{margin-left:auto;font-size:17px;opacity:.85}.bh-timer{font-variant-numeric:tabular-nums;background:rgba(255,255,255,.18);border-radius:8px;padding:0 8px;font-size:18px}.bh-timer.long{background:#e8590c}'+
+'.bh-q{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:16px}.bh-q .lb{font-weight:700}.bh-q .h{background:#fff3d6;border:2px solid #f5b83d;border-radius:999px;padding:2px 10px;font-weight:700}.bh-q .no{color:var(--muted)}'+
+'.bh-notes{display:flex;flex-wrap:wrap;gap:12px;align-items:flex-start}'+
+'.bh-note{width:200px;background:#fff9c4;border-radius:4px 4px 16px 4px;padding:10px 12px;box-shadow:0 3px 8px rgba(0,0,0,.15);transform:rotate(-1deg);display:flex;flex-direction:column;gap:4px;animation:bhIn .35s}'+
+'.bh-note:nth-child(2n){transform:rotate(1.2deg);background:#ffe0ec}.bh-note:nth-child(3n){background:#dff3ff}'+
+'.bh-note .t{font-size:22px;font-weight:800;line-height:1.3}.bh-note .by{font-size:13px;color:var(--muted)}.bh-note .sec{font-size:14px;color:#8a6200}.bh-note.ok .sec{color:var(--green);font-weight:700}'+
+'.bh-note.ok{box-shadow:0 0 0 3px var(--green),0 3px 8px rgba(0,0,0,.15)}.bh-note.out{opacity:.45;filter:grayscale(.7)}.bh-note.win{box-shadow:0 0 0 4px #e8930c,0 6px 16px rgba(0,0,0,.2);transform:scale(1.05)}.bh-note.pend{opacity:.6}'+
+'.bh-notes.sm .bh-note{width:160px}.bh-notes.sm .bh-note .t{font-size:18px}'+
+'@keyframes bhIn{from{transform:scale(.6);opacity:0}}'+
+'.bh-sb{font-size:16px;font-weight:700;border-radius:10px;border:2px solid var(--green);background:#fff;color:var(--green);padding:6px;font-family:inherit;cursor:pointer}.bh-sb.on{background:var(--green);color:#fff}.bh-sb.un{border-color:#9fb0bd;color:var(--muted);font-size:13px}'+
+'.bh-rep{background:#fff;border-radius:12px;padding:8px 12px;font-size:20px;border-left:6px solid #2a6fb0}.bh-rep.sm{font-size:16px}'+
+'.bh-rule{text-align:center;font-size:24px;font-weight:800;color:#7a3c00;background:#fff3d6;border-radius:12px;padding:8px}.bh-rule.sm{font-size:16px;font-weight:700}'+
+'.bh-nexthint{font-size:18px;color:#2a6fb0;font-weight:700;text-align:center}'+
+'.bh-crb{position:fixed;left:50%;top:84px;transform:translateX(-50%);z-index:60;background:#e8930c;color:#fff;font-size:22px;font-weight:800;padding:10px 22px;border-radius:14px;box-shadow:0 6px 20px rgba(0,0,0,.25);animation:bhIn .3s}.bh-crb.big{font-size:34px;top:130px}'+
+'.bh-found{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);z-index:61;background:#fff;border:6px solid #7a5cc0;border-radius:22px;padding:22px 30px;font-size:24px;text-align:center;line-height:1.6;box-shadow:0 10px 40px rgba(0,0,0,.35);animation:bhIn .4s;max-width:90vw}'+
+'.bh-found .t{font-size:32px;font-weight:800;color:#5b3fa0}.bh-found .ok{color:var(--green);font-weight:800}.bh-found.sm{position:static;transform:none;font-size:17px;padding:10px 14px;border-width:3px;box-shadow:none}.bh-found.sm .t{font-size:20px}'+
+/* 投影大螢幕 */
+'.bhb{flex:1;min-height:0;display:flex;flex-direction:column;background:linear-gradient(#fdf8ee,#f3eadb)}'+
+'.bhb-head{display:flex;align-items:center;gap:16px;flex-wrap:wrap;padding:10px 18px;background:#24543c;color:#fff}.bhb-head .ttl{font-size:28px;font-weight:800}.bhb-head .tp{font-size:22px}.bhb-head .bh-en{margin-left:auto;font-size:17px}.bhb-head .bh-en .lb{color:#cfe6d8}'+
+'.bhb .bh-map .bh-st{font-size:17px}.bhb-body{flex:1;min-height:0;display:grid;grid-template-columns:minmax(0,1fr) 240px;gap:14px;padding:14px 18px}'+
+'.bhb-main{display:flex;flex-direction:column;gap:12px;overflow:auto;min-height:0}.bhb-main .bh-line .say{font-size:34px}'+
+'.bhb-sub{font-size:24px;font-weight:800;color:#7a3c00}'+
+'.bhb-side{display:flex;flex-direction:column;gap:8px;overflow:auto}'+
+'.bh-rl{display:flex;align-items:center;gap:8px;background:#fff;border-radius:12px;padding:8px 12px;font-size:20px}.bh-rl .ic{font-size:26px}.bh-rl span:last-child{margin-left:auto;font-weight:800}'+
+'.bhb-side .bh-q{flex-direction:column;align-items:stretch;background:#fff;border-radius:12px;padding:8px 12px;font-size:20px}'+
+'.bh-cdon{background:#f1ebff;color:#5b3fa0;border-radius:12px;padding:10px;font-size:17px;font-weight:700;text-align:center;animation:bhGlow2 2s infinite}@keyframes bhGlow2{50%{background:#e2d6ff}}'+
+'.bh-roles3{display:flex;gap:16px;flex-wrap:wrap;justify-content:center}'+
+'.bh-rcard{width:230px;background:#fff;border-radius:22px;padding:16px;text-align:center;border:4px solid #cdd8e0}.bh-rcard .ic{font-size:56px}.bh-rcard b{font-size:30px;display:block}.bh-rcard .n{font-size:44px;font-weight:800;color:#e8590c}.bh-rcard p{font-size:15px;color:var(--muted);margin:6px 0 0}'+
+'.bh-rcard.r-c{border-color:#e8930c}.bh-rcard.r-h{border-color:#2a6fb0}.bh-rcard.r-w{border-color:var(--green)}.pop{animation:bhPop .5s cubic-bezier(.3,1.6,.6,1)}@keyframes bhPop{from{transform:scale(.4) rotate(-8deg);opacity:0}}'+
+'.bh-vwait{font-size:24px;text-align:center;padding:16px}.bh-vt{font-size:24px;font-weight:800;color:#24543c}'+
+'.bh-vcall{font-size:32px;font-weight:800;text-align:center;background:#fff;border-radius:16px;padding:14px}.bh-vcall b{display:inline-block;margin-left:14px;color:#e8590c;font-size:40px}'+
+'.bh-vlist{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;font-size:18px}.bh-vlist span{background:#fff;border-radius:999px;padding:2px 12px;color:var(--muted)}.bh-vlist .c{background:#fff3d6;color:var(--ink);font-weight:800}.bh-vlist .d{color:var(--green)}'+
+'.bh-box{background:#fff;border-radius:18px;padding:16px;text-align:center;font-size:56px}.bh-box div{font-size:26px}.bh-box b{font-size:36px;color:#e8590c}.bh-box .papers{font-size:28px;letter-spacing:4px}'+
+'.bh-bars{display:flex;flex-direction:column;gap:8px;background:#fff;border-radius:16px;padding:14px}.bh-bars .row{display:grid;grid-template-columns:minmax(120px,30%) 1fr 70px;align-items:center;gap:10px;font-size:22px}'+
+'.bh-bars .bar{height:30px;background:#eef2f5;border-radius:8px;overflow:hidden}.bh-bars .bar i{display:block;height:100%;background:#9fb0bd;border-radius:8px}.bh-bars .row.win .bar i{background:linear-gradient(90deg,#f5b83d,#e8590c)}.bh-bars .row.win{font-weight:800}'+
+'.bh-bars.anim .bar i{animation:bhGrow 2.2s ease-out}@keyframes bhGrow{from{width:0}}'+
+'.bh-tie{font-size:26px;font-weight:800;color:#a35f00;text-align:center}'+
+'.bh-dec{font-size:34px;font-weight:800;text-align:center;color:#fff;background:linear-gradient(90deg,#e8930c,#e8590c);border-radius:16px;padding:12px;animation:bhPop .6s}.bh-dec.no{background:#5d6b78}'+
+'.bh-fin{font-size:38px;font-weight:800;text-align:center;color:#24543c}.bh-fin small{display:block;font-size:20px;color:var(--muted)}'+
+'.bh-rec{background:#fff;border-radius:14px;padding:10px 16px;border:2px solid #cdd8e0}.bh-rec h3{margin:0 0 6px;font-size:22px}.bh-rec table{width:100%;border-collapse:collapse;font-size:18px}'+
+'.bh-rec th{width:150px;text-align:left;vertical-align:top;padding:6px;background:#f3f6f8;border-bottom:1px solid #e3e9ee;font-size:16px}.bh-rec th small{font-weight:400;color:var(--muted)}.bh-rec td{padding:6px;border-bottom:1px solid #e3e9ee}'+
+'.bh-rec .sm{font-size:15px;color:var(--muted)}.bh-rec .ck.ok{color:var(--green);font-weight:800}.bh-rec .ck.no{color:#a35f00;font-size:14px}'+
+'.bh-badges{display:flex;flex-wrap:wrap;gap:10px}.bh-badges .bdg{background:#fff;border-radius:14px;padding:8px 10px;width:200px;display:flex;flex-wrap:wrap;gap:4px}.bh-badges .bdg b{width:100%;font-size:20px}.bh-badges span,.bh-mybd span{background:#fff3d6;border-radius:999px;padding:2px 8px;font-size:14px}'+
+'.bh-mybd{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}.bh-mybd span{font-size:22px;padding:6px 14px;animation:bhPop .6s}'+
+/* 孩子的畫面 */
+'.bhp{flex:1;min-height:0;display:flex;flex-direction:column;background:#fbf7ef}'+
+'.bhp-top{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:8px 14px;background:#fff;border-bottom:1px solid var(--line)}'+
+'.bh-me{font-size:20px;font-weight:800;padding:4px 14px;border-radius:999px;background:#eef2f5}.bh-me.r-c{background:#fff3d6;color:#a35f00}.bh-me.r-h{background:#e3effa;color:#1f5a92}.bh-me.r-w{background:#e3f5ea;color:#1d7a45}'+
+'.bh-stg{font-size:18px;font-weight:700}.bhp-top .bh-en{margin-left:auto}'+
+'.bhp-tabs{display:flex;gap:6px;padding:6px 14px 0}.bhp-tabs button{font-size:17px;font-weight:700;padding:8px 16px;border-radius:12px 12px 0 0;border:2px solid var(--line);border-bottom:0;background:#eef2f5;font-family:inherit}.bhp-tabs button.on{background:#fff;color:var(--green)}'+
+'.bhp-main{flex:1;min-height:0;overflow:auto;display:flex;flex-direction:column;gap:12px;padding:12px 16px}'+
+'.bhp-foot{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:8px 14px;background:#fff;border-top:1px solid var(--line)}.bhp-foot:empty{display:none}'+
+'.bh-myline{background:#fff;border:4px solid #e8930c;border-radius:18px;padding:14px 18px;display:flex;flex-direction:column;gap:10px;animation:bhPop .4s}.bh-myline .lab{font-size:18px;font-weight:700;color:#a35f00}.bh-myline .say,.bh-myturn .say{font-size:28px;font-weight:800;line-height:1.5}'+
+'.bh-bigbtn{font-size:22px;font-weight:800;padding:12px 22px;border-radius:14px;border:0;background:var(--green);color:#fff;font-family:inherit;cursor:pointer;align-self:flex-start}.bh-bigbtn:disabled{opacity:.4}.bh-bigbtn.alt{background:#e8930c}'+
+'.bh-picks{display:flex;flex-direction:column;gap:6px}.bh-picks.sm2{flex-direction:row;flex-wrap:wrap}.bh-picks button,.bh-chips button,.bh-opts button{font-size:18px;padding:8px 14px;border-radius:12px;border:2px solid var(--line);background:#fff;font-family:inherit;text-align:left;cursor:pointer}'+
+'.bh-picks button.on,.bh-chips button.on,.bh-opts button.on{border-color:var(--accent);background:#e8f1fb;font-weight:700}.bh-picks button:disabled{opacity:.45}.bh-picks small{font-size:13px;color:var(--muted)}'+
+'.bh-chips{display:flex;flex-wrap:wrap;gap:6px}.bh-chips button{text-align:center}'+
+'.bh-opts{display:flex;flex-wrap:wrap;gap:10px}.bh-opts button{font-size:22px;font-weight:700;padding:14px 20px}'+
+'.bh-inrow{display:flex;align-items:center;gap:8px;font-size:17px;flex-wrap:wrap}.bh-inrow input,.bh-num input{font-size:20px;padding:6px 10px;border-radius:10px;border:2px solid var(--line);font-family:inherit;min-width:0}.bh-inrow input{flex:1;max-width:340px}'+
+'.bh-inrow button,.bh-num button,.bh-chair>button,.bh-det>button,.bh-card2 button{font-size:17px;font-weight:700;padding:8px 14px;border-radius:10px;border:0;background:var(--accent);color:#fff;font-family:inherit;cursor:pointer}.bh-det>button:disabled{opacity:.4}'+
+'.bh-num{display:flex;align-items:center;gap:8px;margin-top:6px}.bh-num input{width:70px}'+
+'.bh-propbox{background:#fff;border-radius:14px;padding:10px 12px;display:flex;flex-direction:column;gap:8px}.bh-propbox .lab{font-size:18px;font-weight:800}'+
+'.bh-hand{font-size:24px;font-weight:800;padding:14px 24px;border-radius:16px;border:3px solid #f5b83d;background:#fff;font-family:inherit;cursor:pointer;align-self:flex-start}.bh-hand.up{background:#f5b83d;color:#fff;animation:bhWave 1s infinite}@keyframes bhWave{50%{transform:rotate(-2deg)}}'+
+'.bh-myturn{background:#eaf7ef;border:4px solid var(--green);border-radius:18px;padding:12px 16px;display:flex;flex-direction:column;gap:8px}.bh-myturn .lab{font-size:24px;font-weight:800;color:var(--green)}'+
+'.bh-help div{font-size:20px;padding:4px 0;border-bottom:1px dashed #b9d9c4}'+
+'.bh-chair{background:#fff8ec;border:2px solid #f5b83d;border-radius:14px;padding:10px 12px;display:flex;flex-direction:column;gap:8px}.bh-chair .lab{font-weight:800;color:#a35f00;font-size:17px}.bh-chair .bh-chips button{border-color:#f5b83d;font-weight:700}'+
+'.bh-two{display:flex;gap:14px;flex-wrap:wrap}.bh-two button{font-size:24px;font-weight:800;padding:16px 22px;border-radius:16px;border:3px solid #e8930c;background:#fff;font-family:inherit;cursor:pointer;display:flex;flex-direction:column;gap:4px}.bh-two small{font-size:14px;font-weight:400;color:var(--muted)}'+
+'.bh-ok{font-size:20px;font-weight:700;color:var(--green)}'+
+'.bh-kind{background:#eef6ff;border-radius:14px;padding:12px 16px;font-size:18px;line-height:1.6;color:#1f5a92}'+
+'.bh-bigcard{margin:10px auto;width:min(360px,90%);background:#fff;border-radius:24px;padding:22px;text-align:center;border:5px solid #cdd8e0;font-size:22px}.bh-bigcard .ic{font-size:72px}.bh-bigcard b{display:block;font-size:46px}.bh-bigcard p{font-size:18px;color:var(--muted)}'+
+'.bh-bigcard.r-c{border-color:#e8930c}.bh-bigcard.r-h{border-color:#2a6fb0}.bh-bigcard.r-w{border-color:var(--green)}.bh-bigcard.rolling{font-size:60px;animation:bhWave .3s infinite}.bh-bigcard.rolling div{font-size:22px}'+
+'.bh-others{text-align:center;font-size:18px;color:var(--muted)}'+
+'.bh-crtools{display:flex;flex-wrap:wrap;gap:6px;align-items:center;width:100%}.bh-crtools .lab{font-size:14px;font-weight:700;color:#a35f00}.bh-crtools button{font-size:14px;padding:4px 10px;border-radius:999px;border:2px solid #f5b83d;background:#fff;font-family:inherit;cursor:pointer}'+
+'.bh-next{font-size:20px;font-weight:800;padding:10px 20px;border-radius:14px;border:0;background:#2a6fb0;color:#fff;font-family:inherit;cursor:pointer;animation:bhGlow3 1.4s infinite}@keyframes bhGlow3{50%{box-shadow:0 0 0 6px rgba(42,111,176,.25)}}'+
+'.bh-detb{font-size:17px;font-weight:700;padding:8px 14px;border-radius:12px;border:2px solid #7a5cc0;background:#f6f2ff;color:#5b3fa0;font-family:inherit;cursor:pointer}'+
+'.bh-det{width:100%;background:#f6f2ff;border-radius:14px;padding:10px;display:flex;flex-direction:column;gap:6px}.bh-det .lab{font-weight:800;color:#5b3fa0}.bh-det .bh-picks button{font-size:15px}'+
+'.bh-card2{background:#2d1f4e;color:#fff;border-radius:16px;padding:12px 16px;margin:8px 14px 0;display:flex;flex-direction:column;gap:6px}.bh-card2 .t{font-size:15px;opacity:.8}.bh-card2 .b{font-size:22px;font-weight:800}.bh-card2 .s{font-size:15px;opacity:.85}.bh-card2 .s.ok{color:#9fe3b8;opacity:1}'+
+'.bh-card2 button{align-self:flex-start;background:#7a5cc0}.bh-card2.got{background:#eaf7ef;color:var(--ink);font-size:18px;line-height:1.6}'+
+'.sm{font-size:15px}.mut{color:var(--muted)}'+
+/* 老師 */
+'.bh-tbar{display:flex;flex-direction:column;gap:6px;padding:8px 16px;background:#f2f8f4;border-bottom:2px solid #9fd3b0;font-size:15px}.bh-tbar .r{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px}'+
+'.bh-tbar .hd{font-size:18px}.bh-tbar select,.bh-tbar input{font-size:15px;padding:4px 6px;border-radius:8px;border:2px solid var(--line);font-family:inherit}.bh-tbar .sep{width:1px;height:24px;background:#9fd3b0}'+
+'.bh-tbar .stg{font-size:17px}.bh-tbar .ctx{display:inline-flex;gap:6px;flex-wrap:wrap}.bh-tbar .ctx .btn{background:#fff3d6;border-color:#f5b83d}.bh-tbar .cdst{color:#5b3fa0;font-weight:700}.bh-tbar .info{color:var(--muted)}'+
+'.tile-zi.bhbox{display:block;overflow:auto;padding:8px}.bht{font-size:14px;line-height:1.6}.bht .rl{font-size:18px;font-weight:800}.bht .rl.r-c{color:#a35f00}.bht .rl.r-h{color:#1f5a92}.bht .rl.r-w{color:#1d7a45}.bht .g{color:var(--green)}.bht .a{color:#a35f00}.bht.big{font-size:20px}.bht.big .rl{font-size:28px}'+
+'@media (max-width:900px){.bhb-body{grid-template-columns:1fr}.bs-board.k-match{grid-template-columns:1fr 1fr}.bh-st .tx{font-size:13px}}';
+var s=document.createElement('style');s.textContent=css;document.head.appendChild(s);})();
+
+var UNITS=[['angleb','角・課本','math'],['angle','角・習作','math'],['areab','面積・課本','math'],['area','面積・習作','math'],['divb','除法・課本','math'],['div','除法・習作','math'],['zh7','七 淡水小鎮','zh'],['zh8','八 安平古堡參觀記','zh'],['zh9','九 馬太鞍的巴拉告','zh'],['zh10','十 狐狸的故事','zh'],['zh11','十一 巨人的花園','zh'],['zh12','十二 模仿貓','zh'],['zizao','拆字造字','zh'],['bh','班會闖關','soc'],['socb','班級自治・課本','soc'],['socw','班級自治・習作','soc']];
 var SUBJ=[['zh','國語教室'],['math','數學教室'],['soc','社會教室']];
 function unitSubj(u){for(var i=0;i<UNITS.length;i++)if(UNITS[i][0]===u)return UNITS[i][2];return 'math';}
 function isZhSt(st){return !!st&&st.k==='wb'&&!!TASK[st.id]&&(TASK[st.id].subj==='zh'||!!TASK[st.id].ink);}
@@ -1582,6 +2318,8 @@ function newState(id){
   var t=TASK[id];
   if(t.kind==='zi')return {k:'zi',id:id,cur:Array.from(t.chars)[0],sel:[],pad:{p:[],k:[]},subs:[]};
   if(t.kind==='dv')return dvNew(id);
+  if(t.kind==='bh')return {k:'bh',id:id,mid:'',ac:[],lt:0};
+  if(t.kind==='bs')return bsNew(id);
   if(t.kind==='wb'){var bx=t.box;var o={k:'wb',id:id,ink:[],copies:[],boards:[],sel:-1,zoom:{z:1,cx:bx[0]+bx[2]/2,cy:bx[1]+bx[3]/2}};if(isAreaUnit(t)){o.tiles=[];o.sheets=[];o.pieces=[];o.paint=[];o.asel=null;}return o;}
   if(t.kind==='acnt'||t.kind==='adot')return {k:t.kind,id:id,qs:genACnt(t.kind==='adot'),i:0,ans:null,res:[],paint:[],pieces:[],done:false};
   if(t.kind==='acmp')return {k:'acmp',id:id,qs:genACmp(),i:0,ans:null,res:[],paint:[],pieces:[],done:false};
@@ -1601,6 +2339,7 @@ function bLen(st,b){if(b&&b.t==='ru')return (b.n||10)*U_WB+2*RU_M;return (b&&b.L
 function wire(st){
   if(st.k==='zi')return ziWire(st);
   if(st.k==='dv')return dvWire(st);
+  if(st.k==='bh'||st.k==='bs')return st;
   if(st.k==='wb'){var w0={k:'wb',id:st.id,ink:st.ink,copies:st.copies,boards:st.boards};if(st.tiles){w0.tiles=st.tiles;w0.sheets=st.sheets;w0.pieces=st.pieces;w0.paint=st.paint;}return w0;}
   var o={k:st.k,id:st.id,i:st.i,n:st.qs.length,q:st.qs[st.i]||null,ans:st.ans,res:st.res,done:st.done};
   if(st.k==='rao')o.board=st.board;else if(st.k==='cmp')o.B=st.B;else{o.paint=st.paint;o.pieces=st.pieces;}
@@ -1657,7 +2396,7 @@ function Scene(svg,opt){
 }
 Scene.prototype.dims=function(){return this.st.k==='wb'?[WB_W,WB_H]:[PR_W,PR_H];};
 Scene.prototype.load=function(st){if(this.anim){this.anim.cancel();this.anim=null;}this.st=st;this.tr=[];this.cut=[];this.justCut=false;this.liftI=-1;this.drawBg();this.drawInk();this.drawDyn();this.view();};
-Scene.prototype.view=function(){if(!this.st||this.st.k==='zi'||this.st.k==='dv')return;
+Scene.prototype.view=function(){if(!this.st||this.st.k==='zi'||this.st.k==='dv'||this.st.k==='bh'||this.st.k==='bs')return;
   var d=this.dims(),X0=0,Y0=0,W=d[0],H=d[1];
   if(this.st.k==='wb'){var bx=TASK[this.st.id].box;X0=bx[0];Y0=bx[1];W=bx[2];H=bx[3];}
   var x=X0,y=Y0,w=W,hh=H,z=(this.ia&&this.st.zoom)?this.st.zoom:null;
@@ -2161,8 +2900,8 @@ function rightOf(st,q){if(!q)return null;if(st.k==='rao')return q.t;if(st.k==='a
 /* ================= Workspace (tools + stage + answers) ================= */
 function Workspace(root,opt){
   var self=this;this.opt=opt;this.states=opt.states;this.id=null;
-  root.innerHTML='<div class="ws"><div class="ws-tools"></div><div class="ws-main"><div class="ws-stagewrap"><svg class="ws-stage" role="img" aria-label="操作區"></svg><div class="ws-hint"></div><div class="ws-count" hidden></div></div><div class="ws-ans"></div></div></div><div class="zi-root" hidden></div><div class="dv-root" hidden style="flex:1;min-height:0;display:flex;flex-direction:column"></div>';
-  this.wsEl=root.querySelector('.ws');this.ziEl=root.querySelector('.zi-root');this.dvEl=root.querySelector('.dv-root');
+  root.innerHTML='<div class="ws"><div class="ws-tools"></div><div class="ws-main"><div class="ws-stagewrap"><svg class="ws-stage" role="img" aria-label="操作區"></svg><div class="ws-hint"></div><div class="ws-count" hidden></div></div><div class="ws-ans"></div></div></div><div class="zi-root" hidden></div><div class="dv-root" hidden style="flex:1;min-height:0;display:flex;flex-direction:column"></div><div class="bh-root" hidden></div>';
+  this.wsEl=root.querySelector('.ws');this.ziEl=root.querySelector('.zi-root');this.dvEl=root.querySelector('.dv-root');this.bhEl=root.querySelector('.bh-root');
   this.tools=root.querySelector('.ws-tools');this.ansEl=root.querySelector('.ws-ans');this.hint=root.querySelector('.ws-hint');this.countEl=root.querySelector('.ws-count');this.entry='';
   document.addEventListener('keydown',function(e){if(self.locked)return;var st=self.state();if(!st||!(st.k==='acnt'||st.k==='adot'||st.k==='apair')||st.ans||st.done)return;if(e.target&&/INPUT|TEXTAREA/.test(e.target.tagName))return;if(root.offsetParent===null)return;
     if(/^[0-9]$/.test(e.key))self.key(e.key);else if(e.key==='Backspace')self.key('⌫');else if(e.key==='Enter')self.key('確定');else return;e.preventDefault();});
@@ -2172,7 +2911,8 @@ Workspace.prototype.state=function(){return this.states[this.id];};
 Workspace.prototype.setTask=function(id){
   if(!TASK[id])return;this.id=id;var st=this.states[id];
   if(!st||st.k!==TASK[id].kind||(st.k==='wb'&&!st.boards)||(isAreaUnit(TASK[id])&&!st.pieces)){st=this.states[id]=newState(id);}
-  var isZi=st.k==='zi',isDv=st.k==='dv';this.wsEl.hidden=isZi||isDv;this.ziEl.hidden=!isZi;this.dvEl.hidden=!isDv;
+  var isZi=st.k==='zi',isDv=st.k==='dv',isBh=st.k==='bh'||st.k==='bs';this.wsEl.hidden=isZi||isDv||isBh;this.ziEl.hidden=!isZi;this.dvEl.hidden=!isDv;this.bhEl.hidden=!isBh;
+  if(isBh){this.ansEl.innerHTML='';this.nextBtn=null;this.ansBtns={};this.numDisp=null;var D=st.k==='bh'?(this.bh||(this.bh=new BhMeet(this.bhEl,this))):(this.bs||(this.bs=new BhSort(this.bhEl,this)));D.mount();this.onChange(true);return;}
   if(isDv){this.ansEl.innerHTML='';this.nextBtn=null;this.ansBtns={};this.numDisp=null;if(!this.dv)this.dv=new DivDesk(this.dvEl,this);this.dv.load();this.onChange(true);return;}
   if(isZi){this.ansEl.innerHTML='';this.nextBtn=null;this.ansBtns={};this.numDisp=null;if(!this.zi)this.zi=new ZiDesk(this.ziEl,this);this.zi.load(st);this.onChange(true);return;}
   this.scene.mode=(TASK[id].subj==='zh'||TASK[id].ink)?'pen':'move';this.scene.load(st);this.buildTools();this.buildAns();this.syncTools();this.onChange(true);
@@ -2329,6 +3069,8 @@ Workspace.prototype.updateAns=function(){
 function summary(st){
   if(!st)return '';
   if(st.k==='dv')return dvSummary(st);
+  if(st.k==='bh')return bhSummary(st);
+  if(st.k==='bs')return bsSummary(st);
   if(st.k==='zi')return '拆「'+esc(st.cur||'')+'」・送出 '+((st.subs||[]).length)+' 個';
   if(st.k==='wb'&&st.tiles){var c=areaCounts(st);return '方瓦 '+c.tiles+'・塗 '+c.paint+' 格・剪 '+c.pieces+' 片・筆 '+((st.ink||[]).length)+' 條';}
   if(isZhSt(st)){var hc=(st.ink||[]).filter(function(k){return k.h;}).length;return '筆跡 '+((st.ink||[]).length-hc)+' 條・螢光筆 '+hc+' 條';}
@@ -2372,7 +3114,7 @@ function StudentApp(){
     var picksEl=root.querySelector('.picks'),pickKey='',lastTv=null,rcbar=root.querySelector('.rcbar'),wsroot=root.querySelector('.wsroot'),rc=null,rcV=0,rcBuf=null,rcFsT=0;
     var skey='jiao.s.states.'+seat,states=lsGet(skey,{})||{};
     var dirty=true,saveT=null;
-    var ws=new Workspace(root.querySelector('.wsroot'),{states:states,canRestart:true,onZiSubmit:function(sub,task){ziSend(sub,task);},onChange:function(fin){dirty=true;if(fin){clearTimeout(saveT);saveT=setTimeout(function(){lsSet(skey,states);},400);}}});
+    var ws=new Workspace(root.querySelector('.wsroot'),{states:states,canRestart:true,onZiSubmit:function(sub,task){ziSend(sub,task);},onChange:function(fin){dirty=true;if(fin){clearTimeout(saveT);saveT=setTimeout(function(){lsSet(skey,states);},400);}}});ws.seat=seat;
     var wait=h('div',{class:'overlay'},'<div class="big">等老師派題…</div><div class="small">'+seat+' 號・班級代碼 '+esc(code)+'</div><div class="wnet">連線中…</div><button class="btn rejoin" type="button">重新輸入座號和代碼</button>');
     wait.querySelector('.rejoin').addEventListener('click',function(){location.reload();});
     var freeze=h('div',{class:'overlay'},'<div class="big">請看老師</div><div class="small">先把手離開鍵盤和觸控板</div>');freeze.hidden=true;
@@ -2412,9 +3154,9 @@ function StudentApp(){
       if(rcBuf.p[i]==null){rcBuf.p[i]=d.d;rcBuf.got++;}if(rcBuf.got<rcBuf.n)return;
       var s2=null;try{s2=JSON.parse(rcBuf.p.join(''));}catch(e){}rcBuf=null;rcV=v;
       var cur=states[ws.id];if(!s2||s2.id!==ws.id||!cur||s2.k!==cur.k)return;
-      states[s2.id]=s2;if(s2.k==='dv'){if(ws.dv)ws.dv.load();}else{ws.scene.load(s2);ws.updateAns();ws.updateCount();}dirty=true;lsSet(skey,states);
+      states[s2.id]=s2;if(s2.k==='dv'){if(ws.dv)ws.dv.load();}else if(s2.k==='bs'){if(ws.bs)ws.bs.load();}else{ws.scene.load(s2);ws.updateAns();ws.updateCount();}dirty=true;lsSet(skey,states);
     }
-    function lightG(){var t=ws&&ws.id&&TASK[ws.id];if(t&&t.subj==='zh')return '做得好！拿出國語課本，自己做做看。';if(t&&/angle/.test(t.unit||''))return '做得好！拿出習作，用真的三角板做做看。';return '做得好！拿出習作，自己做做看。';}
+    function lightG(){var t=ws&&ws.id&&TASK[ws.id];if(t&&t.subj==='zh')return '做得好！拿出國語課本，自己做做看。';if(t&&t.subj==='soc')return '做得好！拿出社會習作，自己做做看。';if(t&&/angle/.test(t.unit||''))return '做得好！拿出習作，用真的三角板做做看。';return '做得好！拿出習作，自己做做看。';}
     function setLight(l){light.hidden=!l;light.className='light '+(l||'');lt.textContent=l==='g'?lightG():l==='r'?'請帶著 Chromebook 到老師那裡。':'';}
     var ziSent={};
     function ziSend(sub,task){ziSent[sub.id]=Date.now();tx({t:'zsub',seat:seat,task:task,sub:sub});}
@@ -2439,9 +3181,10 @@ function StudentApp(){
       if(d.t==='img'){gotChunk(d);return;}
       if(d.t==='rs'){lastHeard=Date.now();rcGot(d);return;}
       if(d.t!=='cmd')return;
+      if(d.bh&&typeof d.bh==='object')BH.set(d.bh);
       if(!linked())dirty=true;
       lastHeard=Date.now();setNet('ok','已連線老師');
-      var pk=(seat!==8&&Array.isArray(d.pick))?d.pick.filter(function(x){return TASK[x]&&TASK[x].kind!=='zi';}):null;if(pk&&!pk.length)pk=null;setPick(pk);
+      var pk=(seat!==8&&Array.isArray(d.pick))?d.pick.filter(function(x){return TASK[x]&&TASK[x].kind!=='zi'&&TASK[x].kind!=='bh';}):null;if(pk&&!pk.length)pk=null;setPick(pk);
       if(d.task&&(!pk||d.tv!==lastTv||pk.indexOf(ws.id)<0))setTask(d.task);lastTv=pk?d.tv:null;
       rcCmd(seat!==8?d.ctl:null);
       if(seat===8)recCmd(d.rec);
@@ -2504,7 +3247,7 @@ function TeacherApp(){
   var freeze=false,view='grid',seats={},modalSeat=null;
   /* 個別頁面：indiv[座號]={p:[可以翻的頁],c:現在這頁,tv:老師改頁的次數} */
   var indiv=lsGet('jiao.t.indiv',{})||{};
-  (function(){for(var k in indiv){var I=indiv[k];var ok=I&&+k>=1&&+k<=7&&Array.isArray(I.p);if(ok){I.p=I.p.filter(function(x){return TASK[x]&&TASK[x].kind!=='zi';});ok=I.p.length>0;}if(!ok){delete indiv[k];continue;}if(I.p.indexOf(I.c)<0)I.c=I.p[0];I.tv=+I.tv||1;}})();
+  (function(){for(var k in indiv){var I=indiv[k];var ok=I&&+k>=1&&+k<=7&&Array.isArray(I.p);if(ok){I.p=I.p.filter(function(x){return TASK[x]&&TASK[x].kind!=='zi'&&TASK[x].kind!=='bh';});ok=I.p.length>0;}if(!ok){delete indiv[k];continue;}if(I.p.indexOf(I.c)<0)I.c=I.p[0];I.tv=+I.tv||1;}})();
   function saveIndiv(){lsSet('jiao.t.indiv',indiv);}
   function tFor(n){var I=indiv[n];return I?I.c:task;}
   function nIndiv(){return Object.keys(indiv).filter(function(k){return !indiv[k].away;}).length;}
@@ -2525,7 +3268,7 @@ function TeacherApp(){
   var subjEmpty=h('span',{class:'subj-empty'},'社會教室還在準備中，目前還沒有內容。');tbar.appendChild(subjEmpty);
   var ubar=h('span',{class:'units'});UNITS.forEach(function(u){var b=h('button',{class:'btn unit-btn',type:'button'},esc(u[1]));b.dataset.u=u[0];b.addEventListener('click',function(){unit=u[0];lsSet('jiao.t.unit',unit);lsSet('jiao.t.unit.'+u[2],unit);syncTaskBtns();});ubar.appendChild(b);});tbar.appendChild(ubar);
   TASKS.forEach(function(t){var b=h('button',{class:'btn task-btn',type:'button'},esc(t.title)+'<small>'+esc(t.sub)+'</small>');b.dataset.id=t.id;b.dataset.u=t.unit;b.addEventListener('click',function(){assign(t.id);});tbar.appendChild(b);});
-  function assign(id){for(var rn2 in seats)if(seats[rn2].ctl&&!indiv[rn2])rcStop(+rn2);task=id;lsSet('jiao.t.task',id);if(Z)Z.setTask(id);for(var n in seats)seats[n].light=null;syncTaskBtns();broadcast();demo.setTask(id);renderAllTiles();}
+  function assign(id){for(var rn2 in seats)if(seats[rn2].ctl&&!indiv[rn2])rcStop(+rn2);task=id;lsSet('jiao.t.task',id);if(Z)Z.setTask(id);if(BT)BT.setTask(id);for(var n in seats)seats[n].light=null;syncTaskBtns();broadcast();demo.setTask(id);renderAllTiles();}
   function syncTaskBtns(){var has=unitSubj(unit)===subj;tbar.querySelectorAll('.task-btn').forEach(function(b){b.classList.toggle('on',b.dataset.id===task);b.hidden=!has||b.dataset.u.split(' ').indexOf(unit)<0;});tbar.querySelectorAll('.unit-btn').forEach(function(b){b.classList.toggle('on',b.dataset.u===unit);b.hidden=unitSubj(b.dataset.u)!==subj;});tbar.querySelectorAll('.subj-btn').forEach(function(b){b.classList.toggle('on',b.dataset.s===subj);});subjEmpty.hidden=has;subjEmpty.textContent=(SUBJ.filter(function(sj){return sj[0]===subj;})[0]||['',''])[1]+'還在準備中，目前還沒有內容。';}
   /* tiles */
   var grid=$('.grid');
@@ -2549,11 +3292,11 @@ function TeacherApp(){
     t.classList.toggle('lg-g',s.light==='g');t.classList.toggle('lg-r',s.light==='r');
     t.querySelector('.gbtn').classList.toggle('on',s.light==='g');t.querySelector('.rbtn').classList.toggle('on',s.light==='r');
     var off=t.querySelector('.off');off.hidden=!!s.st&&on;off.textContent=s.st?'連線中斷':'還沒連線';
-    var isZi=!!s.st&&s.st.k==='zi',isDv=!!s.st&&s.st.k==='dv';s.tz.hidden=!(isZi||isDv);s.tz.classList.toggle('dvbox',isDv);s.scene.svg.style.visibility=(isZi||isDv)?'hidden':'';
+    var isZi=!!s.st&&s.st.k==='zi',isDv=!!s.st&&s.st.k==='dv',isBh=!!s.st&&(s.st.k==='bh'||s.st.k==='bs');s.tz.hidden=!(isZi||isDv||isBh);s.tz.classList.toggle('dvbox',isDv);s.tz.classList.toggle('bhbox',isBh);s.scene.svg.style.visibility=(isZi||isDv||isBh)?'hidden':'';
     var I=indiv[n],ind=t.querySelector('.ind');t.classList.toggle('indv',!!I);ind.hidden=!I&&!s.ctl;ind.classList.toggle('rc',!!s.ctl);ind.textContent=s.ctl?'老師操作中':I?((I.away?'別的教室・':'個別 ')+I.p.length+' 頁'):'';ind.classList.toggle('away',!!(I&&I.away)&&!s.ctl);t.classList.toggle('away',!!(I&&I.away));
     var sum='';if(s.st){sum=isZi?Z.summary(n,s.st):summary(s.st);var tg=tFor(n);if(s.st.id!==tg)sum='<span class="warn">還在 '+esc(TASK[s.st.id]?TASK[s.st.id].title:'')+'</span>・'+sum;else if(I)sum='<b>'+esc(TASK[tg].title)+'</b>・'+sum;}
     t.querySelector('.tile-sum').innerHTML=sum;t.querySelector('.dots').innerHTML=dotsHTML(s.st);
-    if(s.dirty&&s.st){if(isZi)ziTile(s.tz,s.st);else if(isDv)dvTile(s.tz,s.st);else try{s.scene.load(s.st);}catch(e){}s.dirty=false;}
+    if(s.dirty&&s.st){if(isZi)ziTile(s.tz,s.st);else if(isDv)dvTile(s.tz,s.st);else if(isBh){if(s.st.k==='bh')bhTile(s.tz,s.st,false,n);else bsTile(s.tz,s.st,false);}else try{s.scene.load(s.st);}catch(e){}s.dirty=false;}
   }
   function renderAllTiles(){for(var n in seats)renderTile(+n);}
   /* modal */
@@ -2568,7 +3311,7 @@ function TeacherApp(){
   modal.querySelector('.rcbtn').addEventListener('click',function(){var n=modalSeat;if(n==null)return;if(seats[n].ctl)rcStop(n);else rcStart(n);});
   /* 老師在孩子的畫面上操作 */
   var rws=new Workspace(modal.querySelector('.modal-ws'),{states:{},canRestart:true,onChange:function(){rcDirty=true;}}),rcDirty=false,rcLast=0,rcK=0;
-  function rcStart(n){var s=seats[n];if(n===8||!s.st||s.st.k==='zi'||!online(s))return;rcK=Math.max(rcK+1,Date.now()%1e9);s.ctl={k:rcK,id:s.st.id,ok:false};s.rcV=0;s.fsBuf=null;sendCmd(n);renderTile(n);renderModal(true);}
+  function rcStart(n){var s=seats[n];if(n===8||!s.st||s.st.k==='zi'||s.st.k==='bh'||!online(s))return;rcK=Math.max(rcK+1,Date.now()%1e9);s.ctl={k:rcK,id:s.st.id,ok:false};s.rcV=0;s.fsBuf=null;sendCmd(n);renderTile(n);renderModal(true);}
   function rcLoad(n,full){var s=seats[n];s.ctl.ok=true;s.rcV=0;var o={};o[full.id]=full;rws.states=o;if(modalSeat===n){modal.querySelector('.modal-ws').hidden=false;modal.querySelector('.modal-stage').hidden=true;}rws.setTask(full.id);rws.scene.view();rcDirty=false;s.st=fitWire(full);s.dirty=true;sendCmd(n);renderModal(true);}
   function rcSend(n){var s=seats[n];if(!s.ctl||!s.ctl.ok||!s.pid)return;var full=rws.state();if(!full)return;s.rcV=(s.rcV||0)+1;relayChunks(peer,s.pid,{t:'rs',k:s.ctl.k,v:s.rcV},JSON.stringify(full));s.st=fitWire(full);s.dirty=true;rcLast=Date.now();rcDirty=false;}
   function rcStop(n){var s=seats[n];if(!s.ctl)return;if(s.ctl.ok&&rcDirty)rcSend(n);s.ctl=null;s.fsBuf=null;sendCmd(n);modal.querySelector('.modal-ws').hidden=true;modal.querySelector('.modal-stage').hidden=false;s.mdirty=true;renderTile(n);if(modalSeat===n)renderModal(true);}
@@ -2580,11 +3323,11 @@ function TeacherApp(){
   function openModal(n){if(!seats[n].st)return;if(seats[n].st.k==='zi'){Z.open(n);return;}if(modalSeat!=null&&modalSeat!==n&&seats[modalSeat].ctl)rcStop(modalSeat);modalSeat=n;modal.hidden=false;modal.querySelector('.modal-ws').hidden=!(seats[n].ctl&&seats[n].ctl.ok);modal.querySelector('.modal-stage').hidden=!!(seats[n].ctl&&seats[n].ctl.ok);renderModal(true);}
   var mpKey='';
   function renderModal(full){if(modalSeat==null)return;var n=modalSeat,s=seats[n],I=indiv[n],c=s.ctl;modal.querySelector('.mt').textContent=n+' 號 '+(names[n]||'');modal.querySelector('.msum').innerHTML=summary(s.st);modal.querySelector('.gbtn').classList.toggle('on',s.light==='g');modal.querySelector('.rbtn').classList.toggle('on',s.light==='r');
-    var rb=modal.querySelector('.rcbtn');rb.hidden=n===8||!s.st||s.st.k==='zi';rb.classList.toggle('on',!!(c&&c.ok));rb.classList.toggle('wait',!!(c&&!c.ok));rb.textContent=!c?'✋ 我來操作':c.ok?'👉 換他自己做':'等 '+n+' 號的畫面傳過來…（按這裡取消）';
+    var rb=modal.querySelector('.rcbtn');rb.hidden=n===8||!s.st||s.st.k==='zi'||s.st.k==='bh';rb.classList.toggle('on',!!(c&&c.ok));rb.classList.toggle('wait',!!(c&&!c.ok));rb.textContent=!c?'✋ 我來操作':c.ok?'👉 換他自己做':'等 '+n+' 號的畫面傳過來…（按這裡取消）';
     modal.querySelector('.pbtn').hidden=n===8;
     var mp=modal.querySelector('.mpages'),key=I?I.p.join(',')+'|'+I.c:'';if(key!==mpKey||full){mpKey=key;mp.innerHTML='';mp.hidden=!I;if(I){mp.appendChild(h('span',{class:'pl'},'可以翻的頁（點了就幫他換頁）：'));I.p.forEach(function(id){var b=h('button',{type:'button'},esc(TASK[id].title));b.classList.toggle('on',id===I.c);b.addEventListener('click',function(){rcGoPage(n,id);});mp.appendChild(b);});}}
-    var dvm=!!s.st&&s.st.k==='dv';mdv.hidden=!dvm||!!(c&&c.ok);if(!(c&&c.ok))mstage.hidden=dvm;
-    if(c&&c.ok)return;if(s.st&&(full||s.mdirty)){if(dvm)dvTile(mdv,s.st,true);else try{mScene.load(s.st);}catch(e){}s.mdirty=false;}}
+    var dvm=!!s.st&&(s.st.k==='dv'||s.st.k==='bh'||s.st.k==='bs');mdv.hidden=!dvm||!!(c&&c.ok);if(!(c&&c.ok))mstage.hidden=dvm;
+    if(c&&c.ok)return;if(s.st&&(full||s.mdirty)){if(dvm){if(s.st.k==='bh')bhTile(mdv,s.st,true,n);else if(s.st.k==='bs')bsTile(mdv,s.st,true);else dvTile(mdv,s.st,true);}else try{mScene.load(s.st);}catch(e){}s.mdirty=false;}}
   /* 選頁面：讓孩子各自訂正 */
   var pp=h('div',{class:'pp'});pp.hidden=true;
   pp.innerHTML='<div class="pp-card"><header>選頁面：讓孩子各自訂正</header><div class="pp-body"><div class="pp-row ppseats"></div><div class="pp-row ppsubj"></div><div class="pplist"></div><label class="pp-away"><input type="checkbox" class="ppawayc"> 在別的教室（例如學習教室）：不受「全班看老師」影響，按「全部回到全班」也不會被拉回來</label></div><footer><span class="sp"></span><button class="btn ppoff" type="button">取消個別（回到全班）</button><button class="btn ppcancel" type="button">關閉</button><button class="btn ppok" type="button">設定</button></footer></div>';
@@ -2597,7 +3340,7 @@ function TeacherApp(){
     var sj=pp.querySelector('.ppsubj');sj.innerHTML='<span class="lab">可以翻哪幾頁？照順序點，孩子會先打開第 1 頁，之後自己在這幾頁之間換</span>';
     SUBJ.forEach(function(x){if(!UNITS.some(function(u){return u[2]===x[0]&&u[0]!=='zizao';}))return;var b=h('button',{class:'pp-subj'+(ppSubj===x[0]?' on':''),type:'button'},esc(x[1]));b.addEventListener('click',function(){ppSubj=x[0];renderPP();});sj.appendChild(b);});
     var L=pp.querySelector('.pplist');L.innerHTML='';
-    UNITS.forEach(function(u){if(u[2]!==ppSubj||u[0]==='zizao')return;var ts=TASKS.filter(function(t){return t.kind!=='zi'&&(t.unit||'').split(' ').indexOf(u[0])>=0;});if(!ts.length)return;
+    UNITS.forEach(function(u){if(u[2]!==ppSubj||u[0]==='zizao')return;var ts=TASKS.filter(function(t){return t.kind!=='zi'&&t.kind!=='bh'&&(t.unit||'').split(' ').indexOf(u[0])>=0;});if(!ts.length)return;
       L.appendChild(h('div',{class:'pp-unit'},esc(u[1])));var r=h('div',{class:'pp-row'});
       ts.forEach(function(t){var k=ppSel.indexOf(t.id),b=h('button',{class:'pp-pg'+(k>=0?' on':''),type:'button',title:t.sub},(k>=0?'<i>'+(k+1)+'</i>':'')+esc(t.title));b.addEventListener('click',function(){var j=ppSel.indexOf(t.id);if(j>=0)ppSel.splice(j,1);else ppSel.push(t.id);renderPP();});r.appendChild(b);});L.appendChild(r);});
     var ns=Object.keys(ppSeats).length;pp.querySelector('.sp').textContent=!ns?'請先選要給誰':!ppSel.length?'請點要訂正的頁面':('給 '+ns+' 個人・'+ppSel.length+' 頁');pp.querySelector('.ppok').disabled=!ns||!ppSel.length;pp.querySelector('.ppoff').disabled=!Object.keys(ppSeats).some(function(k){return indiv[k];});
@@ -2614,6 +3357,8 @@ function TeacherApp(){
   var zrb=h('div',{class:'zi-rbar'});zrb.hidden=true;$('.t-main').insertBefore(zrb,$('.grid'));
   var Z=ziTeacher({names:names,seats:seats,bar:zrb,broadcast:function(){broadcast();},demoStates:demoStates,demo:function(){return demo;},send:function(n){sendCmd(n);},onCount:function(c){var b=$('.zibtn');b.querySelector('.zin').textContent=c;b.classList.toggle('has',c>0);}});
   $('.zibtn').addEventListener('click',function(){Z.open(0);});
+  var bhbar=h('div',{});$('.t-main').insertBefore(bhbar,$('.grid'));
+  var BT=bhTeacher({bar:bhbar,seats:seats,names:names,online:online,broadcast:function(){broadcast();},render:function(){for(var k in seats){var ss=seats[k];if(ss.st&&ss.st.k==='bh'){ss.dirty=true;ss.mdirty=true;}}renderAllTiles();if(modalSeat!=null)renderModal();}});
   function setView(v){view=v;$('.grid').hidden=v!=='grid';$('.legend').hidden=v!=='grid';$('.demo').hidden=v!=='demo';$('.vgrid').classList.toggle('on',v==='grid');$('.vdemo').classList.toggle('on',v==='demo');if(v==='demo')demo.scene.view();}
   $('.vgrid').addEventListener('click',function(){setView('grid');});
   $('.vdemo').addEventListener('click',function(){setView('demo');});
@@ -2635,7 +3380,7 @@ function TeacherApp(){
   qrBox.querySelector('.qrsave').addEventListener('click',function(){lsSet('jiao.t.surl',qrBox.querySelector('.qrin').value.trim());showQR();});
   /* network */
   var peer=null,tries=0;
-  function sendCmd(n){var s=seats[n];if(!s.pid)return;var I=n===8?null:indiv[n];relay(peer,s.pid,{t:'cmd',rec:n===8?(recId||null):undefined,task:I?I.c:task,pick:I?I.p:undefined,tv:I?I.tv:undefined,ctl:s.ctl?{k:s.ctl.k,id:s.ctl.id,ok:s.ctl.ok}:undefined,freeze:(n===8||(I&&I.away))?false:freeze,light:n===8?null:(s.light||null),zi:Z?Z.cmdFor(n):undefined,zr:Z?Z.roundFor(task):null,zw:(n===8&&Z)?Z.wallFor(task):undefined});s.zt=Date.now();}
+  function sendCmd(n){var s=seats[n];if(!s.pid)return;var I=n===8?null:indiv[n];relay(peer,s.pid,{t:'cmd',rec:n===8?(recId||null):undefined,task:I?I.c:task,pick:I?I.p:undefined,tv:I?I.tv:undefined,ctl:s.ctl?{k:s.ctl.k,id:s.ctl.id,ok:s.ctl.ok}:undefined,freeze:(n===8||(I&&I.away))?false:freeze,light:n===8?null:(s.light||null),zi:Z?Z.cmdFor(n):undefined,zr:Z?Z.roundFor(task):null,zw:(n===8&&Z)?Z.wallFor(task):undefined,bh:BT?BT.cmdFor(n,I?I.c:task):undefined});s.zt=Date.now();}
   function broadcast(){for(var n in seats)sendCmd(+n);}
   function onMsg(m){
     if(!m||!m.src||!m.payload||typeof m.payload.jiao!=='object')return;
@@ -2646,7 +3391,7 @@ function TeacherApp(){
     if(d.t==='rec'&&n===8&&typeof d.s==='string'){rec8=d.s;recLabel();}
     if(d.t==='fs'&&s.ctl&&!s.ctl.ok&&d.k===s.ctl.k&&d.id===s.ctl.id){var fn=+d.n,fi=+d.i;if(fn>0&&fn<300&&fi>=0&&fi<fn&&typeof d.d==='string'){var fb=s.fsBuf;if(!fb||fb.k!==d.k||fb.id!==d.id||fb.n!==fn)fb=s.fsBuf={k:d.k,id:d.id,n:fn,p:[],got:0};if(fb.p[fi]==null){fb.p[fi]=d.d;fb.got++;}if(fb.got===fb.n){s.fsBuf=null;var full=null;try{full=JSON.parse(fb.p.join(''));}catch(e){}if(full&&full.id===s.ctl.id&&TASK[full.id])rcLoad(n,full);}}}
     if(d.t==='st'&&d.st&&typeof d.st==='object'&&TASK[d.st.id]&&s.ctl&&s.ctl.ok){}
-    else if(d.t==='st'&&d.st&&typeof d.st==='object'&&TASK[d.st.id]){var I=indiv[n];if(I&&d.tv===I.tv&&I.p.indexOf(d.st.id)>=0&&I.c!==d.st.id){I.c=d.st.id;saveIndiv();}s.st=d.st;s.dirty=true;s.mdirty=true;if(d.st.k==='zi'&&Date.now()-s.zt>1500&&Z.needs(n,d.st))sendCmd(n);}
+    else if(d.t==='st'&&d.st&&typeof d.st==='object'&&TASK[d.st.id]){var I=indiv[n];if(I&&d.tv===I.tv&&I.p.indexOf(d.st.id)>=0&&I.c!==d.st.id){I.c=d.st.id;saveIndiv();}s.st=d.st;s.dirty=true;s.mdirty=true;if(d.st.k==='bh'&&BT)BT.merge(n,d.st);if(d.st.k==='zi'&&Date.now()-s.zt>1500&&Z.needs(n,d.st))sendCmd(n);}
     if(d.t==='zsub'&&d.sub&&typeof d.sub==='object'&&TASK[d.task]&&TASK[d.task].kind==='zi'){Z.onSub(n,d.sub,d.task);sendCmd(n);}
   }
   var outQ=[];
@@ -2696,7 +3441,7 @@ function TeacherApp(){
   $('.recbtn').addEventListener('click',function(){if(recR){if(confirm('要停止錄影並存檔嗎？'))recStop();}else recStart();});
   setInterval(function(){if(recR)recLabel();},1000);
   window.addEventListener('beforeunload',function(e){if(recR){e.preventDefault();e.returnValue='';}});
-  syncTaskBtns();syncIndAll();demo.setTask(task);Z.setTask(task);setView('grid');startPeer();
+  syncTaskBtns();syncIndAll();demo.setTask(task);Z.setTask(task);BT.setTask(task);setView('grid');startPeer();
 }
 
 if(ROLE==='teacher')TeacherApp();else StudentApp();
