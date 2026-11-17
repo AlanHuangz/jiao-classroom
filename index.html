@@ -1906,16 +1906,22 @@ function bsTile(box,st,big){
 
 /* ---------- 班會大冒險：資料 ---------- */
 var BH_STG=[
-  {k:'role',m:0,t:'選出主席、司儀、記錄'},{k:'open',m:1,t:'宣布開會'},{k:'rep',m:2,t:'報告事項'},
+  {k:'role',m:0,t:'抽出主席、司儀、記錄'},{k:'open',m:1,t:'宣布開會'},{k:'rep',m:2,t:'報告事項'},
   {k:'prop',m:3,t:'討論事項：提案、附議'},{k:'disc',m:3,t:'討論事項：舉手討論'},{k:'vote',m:3,t:'討論事項：表決'},
-  {k:'tmp',m:4,t:'臨時動議'},{k:'end',m:5,t:'散會'},{k:'done',m:6,t:'班會完成！'}
+  {k:'tmp',m:4,t:'臨時動議'},{k:'end',m:5,t:'散會'},{k:'done',m:6,t:'這一場班會完成！'}
 ];
 var BH_MAP=['選出主席、司儀、記錄','宣布開會','報告事項','討論事項','臨時動議','散會'];
-var BH_RL={c:{ic:'🎤',n:'主席',d:'主持會議：宣布開會、散會，決定誰先發言'},h:{ic:'📢',n:'司儀',d:'宣布、引導會議的流程'},w:{ic:'📝',n:'記錄',d:'記下會議的內容和表決結果'},m:{ic:'🙋',n:'同學',d:'舉手發言，參與討論和表決'},t:{ic:'👩‍🏫',n:'老師',d:'適時提醒，最後講評'}};
+var BH_RL={
+  c:{ic:'🎤',n:'主席',d:'主持會議：宣布開會、散會，決定誰先發言',pw:['🎡 抽今天的題目','🎤 點人發言（大家的畫面會變）','🗳️ 開始表決、開票','🔨 敲槌宣布決議','📣 提醒大家']},
+  h:{ic:'📢',n:'司儀',d:'宣布、引導會議的流程',pw:['▶ 換到下一個流程（全班畫面一起換）','⏱ 開計時器（全班都看到倒數）','🔔 搖鈴請大家安靜']},
+  w:{ic:'📝',n:'記錄',d:'記下會議的內容和表決結果',pw:['✍️ 把重要的事寫進全班看得到的紀錄','✋ 舉手表決時數票（數對了才公布）','📌 在決議上蓋章']},
+  m:{ic:'🙋',n:'同學',d:'舉手發言，參與討論和表決',pw:['💡 提案','🤝 附議','✋ 舉手發言','👏 給說話的人鼓勵','🗳️ 表決','🔍 當小偵探']},
+  t:{ic:'👩‍🏫',n:'老師',d:'適時提醒，最後講評'}
+};
 var BH_L={
-  open:[['h','班會開始，請主席宣布開會。'],['c','我宣布，301 班會開始！今天要討論的題目是『{tp}』，希望大家踴躍發言。']],
-  rep:[['h','報告事項。請主席報告。'],['c','*'],['h','接下來，請班級幹部報告。想報告的人請舉手。']],
-  prop:[['h','討論事項。請主席說明今天要討論的事。'],['c','今天要討論『{tp}』，請大家提出想法。同意別人的想法，可以說「我附議」。']],
+  open:[['h','班會開始，請主席宣布開會。'],['c','#']],
+  rep:[['h','報告事項。請主席報告。'],['c','*'],['h','還有人要報告嗎？想報告的人請舉手。']],
+  prop:[['h','討論事項。請主席說明今天的題目。'],['c','今天要討論『{tp}』，請大家提出想法。同意別人的想法，可以按「我附議」。']],
   disc:[['h','有人附議的提案，現在開始討論。'],['c','想發言的人請先舉手，我會請大家輪流說。']],
   vote:[['c','討論結束，現在進行表決。']],
   votep:[['c','{dec}'],['c','少數服從多數，多數尊重少數。沒有選到的同學，謝謝你們的想法！']],
@@ -1924,15 +1930,26 @@ var BH_L={
 };
 var BH_HAND=['rep','disc','vote','tmp'];
 var BH_TP=[
-  {t:'同樂會要玩什麼遊戲？',i:['大風吹','比手畫腳','支援前線','123 木頭人','紙飛機比賽','猜謎語','故事接龍','桌遊時間']},
-  {t:'班級公約要加上哪一條？',i:['發言前要先舉手','別人說話時要專心聽','用完的東西放回原位','下課不在教室奔跑','借東西要先問','說話要有禮貌','垃圾要分類','作業要準時交']},
-  {t:'我們班的吉祥物要叫什麼名字？',i:['三零一號','小勇士','七彩星','跳跳','小太陽','阿福','七個好朋友']},
-  {t:'下一次獎勵時間要做什麼？',i:['到操場玩','看一部影片','畫畫時間','桌遊時間','自由閱讀','說故事時間']}
+  {ic:'🐰',t:'如果我們班可以養一隻寵物，要養什麼？',i:['兔子','烏龜','金魚','倉鼠','獨角仙','蠶寶寶','寄居蟹','鸚鵡']},
+  {ic:'🎢',t:'教室變成主題樂園一天，要變成什麼？',i:['海底世界','恐龍公園','太空站','糖果屋','鬼屋','叢林探險','魔法學校']},
+  {ic:'🚌',t:'戶外教學最想去哪裡？',i:['動物園','海生館','牧場','科學館','遊樂園','植物園','海邊']},
+  {ic:'🍮',t:'下次「神秘點心日」要吃什麼？',i:['布丁','雞蛋糕','冰淇淋','鬆餅','爆米花','水果拼盤','豆花']},
+  {ic:'🦸',t:'我們班的超級任務：一起挑戰什麼？',i:['全班跳繩 100 下','一星期準時交作業','掃地比賽第一名','一起種一盆花','每天說一句讚美']},
+  {ic:'🌧️',t:'下雨天的下課，可以在教室玩什麼？',i:['摺紙','畫畫接力','桌遊','說笑話','翻花繩','猜謎語','故事接龍']},
+  {ic:'🎉',t:'同樂會要玩什麼遊戲？',i:['大風吹','比手畫腳','支援前線','123 木頭人','紙飛機比賽','猜謎語','桌遊時間']},
+  {ic:'🐾',t:'我們班的吉祥物要叫什麼名字？',i:['三零一號','小勇士','七彩星','跳跳','小太陽','阿福','七個好朋友']},
+  {ic:'📣',t:'我們班的加油口號是什麼？',i:['301 第一名！','七個好朋友，一起加油！','301 衝衝衝！','團結力量大！','我們最棒！']},
+  {ic:'🎂',t:'同學生日，全班要怎麼慶祝？',i:['唱生日快樂歌','一起做卡片','全班拍照','每人送一句祝福','當一天小國王']},
+  {ic:'🏅',t:'「默默幫忙之星」要送什麼獎品？',i:['獎狀','貼紙','當一天班長','自己選座位','下課多五分鐘','老師的擁抱']},
+  {ic:'🪴',t:'教室後面的空位，要布置成什麼？',i:['閱讀角','植物角','作品展示牆','遊戲角','休息角']},
+  {ic:'🧙',t:'全班變成超能力者一天，要做什麼好事？',i:['幫全校打掃','讓雨天變晴天','幫流浪動物找家','讓大家不吵架','幫老師改作業']},
+  {ic:'🎵',t:'午餐時間要放什麼音樂？',i:['卡通歌','安靜的鋼琴','大自然的聲音','英文歌','不放音樂']},
+  {ic:'📏',t:'班級公約要加上哪一條？',i:['發言前要先舉手','別人說話時要專心聽','用完的東西放回原位','下課不在教室奔跑','借東西要先問','說話要有禮貌']}
 ];
 var BH_CREP=['這個星期，大家上課都很認真。','這個星期，有同學主動幫忙收餐和做回收，謝謝他們。','提醒大家：下課不要在教室裡追逐。','這個星期，大家打掃都很負責。'];
 var BH_JOB=['班長','值日生','自然小老師','借體育室鑰匙','收餐幫手','回收幫手','打掃','其他'];
 var BH_RS=['這個星期，大家都做得很好。','我要提醒大家：桌椅要排整齊。','我要提醒大家：作業要準時交。','我要提醒大家：下課不要在教室奔跑。','我要謝謝 {n} 號，他主動幫忙。'];
-var BH_TM=['我提議：每個星期選一位「默默幫忙之星」','我提議：下次班會討論同樂會的時間','我提議：午餐後大家一起整理教室'];
+var BH_TM=['我提議：每個星期選一位「默默幫忙之星」','我提議：下次班會再討論一次','我提議：午餐後大家一起整理教室'];
 var BH_SH=['我支持「＿＿」，因為……','我覺得「＿＿」可能會……，所以……','我同意 ＿ 號說的，因為……','我有不同的想法：……','我想補充：……'];
 var BH_CD=[
   {t:'沒有舉手，就直接大聲說出你的想法',ok:'發言前要先舉手'},
@@ -1943,14 +1960,17 @@ var BH_CD=[
   {t:'表決結果出來後，生氣說：『我不要！』',ok:'少數服從多數，遵守大家的決定'}
 ];
 var BH_CR=['請舉手再發言。','請專心聽同學說話。','請尊重同學的意見。','請等同學說完再發言。','請大家遵守表決的結果。'];
+var BH_RX=['👏','👍','💡'];
 var BH_LV=[[0,'暖身中'],[5,'⭐ 開會新手'],[10,'⭐⭐ 好好說話'],[15,'⭐⭐⭐ 尊重高手'],[20,'🏆 班會達人']];
 var BH_EMAX=25;
+var BH_RV=1600; /* 抽籤：每個角色間隔幾毫秒揭曉 */
 
 /* 全頁共用：目前的班會狀態（學生：老師傳來的；老師：自己的） */
 var BH={M:null,off:0,ds:[],set:function(m){this.M=m;this.off=Date.now()-(+m.now||Date.now());this.ds.forEach(function(d){if(d.root._owner===d)d.render();});},now:function(){return Date.now()-this.off;}};
 
 function bhS(x,n){return String(x==null?'':x).replace(/[\u0000-\u001f<>]/g,'').trim().slice(0,n);}
-function bhFresh(ti,tp){var t=BH_TP[ti]||null;return {mid:Date.now().toString(36),ti:t?ti:-1,tp:tp||(t?t.t:BH_TP[0].t),s:0,ln:0,mx:0,r:{c:0,h:0,w:0},rs:0,q:[],fl:0,ft:0,P:[],V:null,dec:null,rp:[],tm:[],en:0,cr:null,crep:'',rec:null,cd:null,ST:{},ack:{}};}
+function bhFresh(prev){prev=prev||{};return {mid:Date.now().toString(36),round:prev.round||1,hist:prev.hist||[],tp:'',tpOk:0,tc:[],tcr:0,s:0,ln:0,mx:0,gt:0,r:{c:0,h:0,w:0},rs:0,q:[],fl:0,ft:0,P:[],V:null,dec:null,rp:[],tm:[],en:0,cr:null,crep:'',rb:[],stp:0,gv:0,tmr:null,bell:0,rx:[],cd:null,ST:{},ack:{}};}
+function bhTopicPick(M){var used={};(M.hist||[]).forEach(function(h){used[h.tp]=1;});var all=BH_TP.map(function(t,i){return i;}),fresh=all.filter(function(i){return !used[BH_TP[i].t];});if(fresh.length<3)fresh=all;return shuffle(fresh).slice(0,3);}
 function bhK(M){return BH_STG[M.s].k;}
 function bhLines(M){var k=bhK(M),L=(BH_L[k]||[]).slice();if(k==='vote'&&M.dec)L=L.concat(BH_L.votep);return L;}
 function bhCur(M){var L=bhLines(M);return M.ln<L.length?L[M.ln]:null;}
@@ -1958,7 +1978,7 @@ function bhRole(M,n){if(!n)return 't';return M.r.c===n?'c':M.r.h===n?'h':M.r.w==
 function bhPT(M,i){if(i==='NO'){var y=M.V&&M.V.o[0];return '不贊成「'+bhPT(M,y)+'」';}for(var j=0;j<M.P.length;j++)if(M.P[j].i===i)return M.P[j].t;return '';}
 function bhOptLabel(M,i){var V=M.V;if(V&&V.o.length===2&&V.o[1]==='NO')return i==='NO'?'不贊成':'贊成「'+bhPT(M,i)+'」';return bhPT(M,i);}
 function bhDecLine(M){var d=M.dec;if(!d)return '';return d.pass?'經過表決，由多數人支持的『'+d.t+'』通過！':'經過表決，『'+d.t+'』沒有通過。';}
-function bhLineText(M,l){if(l[1]==='*')return M.crep||'（主席報告這個星期的事）';if(l[1]==='{dec}')return bhDecLine(M);return l[1].replace('{tp}',M.tp||'');}
+function bhLineText(M,l){if(l[1]==='*')return M.crep||'（主席報告這個星期的事）';if(l[1]==='#')return M.tpOk?'我宣布，301 第 '+M.round+' 場班會開始！今天要討論的題目是『'+M.tp+'』，希望大家踴躍發言。':'（主席正在抽今天的題目……）';if(l[1]==='{dec}')return bhDecLine(M);return l[1].replace('{tp}',M.tp||'');}
 function bhCanNext(M){
   if(bhCur(M)||M.fl)return false;var k=bhK(M);
   if(k==='role')return !!(M.r.c&&M.r.h&&M.r.w);
@@ -1967,7 +1987,8 @@ function bhCanNext(M){
   return true;
 }
 function bhGo(M,i){
-  if(i<0||i>=BH_STG.length)return;M.s=i;M.ln=0;M.q=[];M.fl=0;M.ft=0;var k=bhK(M);
+  if(i<0||i>=BH_STG.length)return;M.s=i;M.ln=0;M.q=[];M.fl=0;M.ft=0;M.tmr=null;M.gt=Date.now();var k=bhK(M);
+  if(k==='open'&&!M.tpOk&&!M.tc.length)M.tc=bhTopicPick(M);
   if(k==='vote'||k==='disc'||k==='prop'){M.V=null;M.dec=null;}
   if(k==='disc'||k==='vote')M.P.forEach(function(p){p.out=!p.sec.length;});
   if(k==='prop')M.P.forEach(function(p){p.out=false;});
@@ -1986,21 +2007,42 @@ function bhTally(M){
     if(top.length>1){V.tie=top;return;}M.dec={i:top[0],t:bhPT(M,top[0]),n:mx,of:sum,pass:true};}
   V.tie=null;M.ln=(BH_L.vote||[]).length;
 }
+/* 記錄可以寫進紀錄的事（還沒寫的） */
+function bhRecItems(M){
+  var it=[];
+  if(M.crep&&M.s>2)it.push({k:'cr',t:'主席報告：'+M.crep});
+  M.rp.forEach(function(r,i){it.push({k:'rp'+i,t:r.by+' 號（'+r.j+'）報告：'+r.x});});
+  M.P.forEach(function(p){if(p.sec.length)it.push({k:'p'+p.i,t:'提案「'+p.t+'」：'+p.by+' 號提案，'+p.sec.join('、')+' 號附議'});});
+  if(M.V&&!M.V.open&&!M.V.tie){var V=M.V;it.push({k:'v',t:(V.m==='hand'?'舉手表決':'投票表決')+'：'+V.o.map(function(i){return bhOptLabel(M,i)+' '+((V.c&&V.c[i])||0)+' 票';}).join('，')});}
+  if(M.dec)it.push({k:'d',t:'決議：「'+M.dec.t+'」'+(M.dec.pass?'通過':'沒有通過')});
+  M.tm.forEach(function(t,i){it.push({k:'tm'+i,t:'臨時動議：'+t.by+' 號 '+t.x});});
+  var have={};M.rb.forEach(function(r){have[r.k]=1;});
+  return it.map(function(x){x.done=!!have[x.k];return x;});
+}
 /* 一個動作（孩子或老師 n=0）改變班會狀態；回傳 true 表示有改變 */
 function bhApply(M,n,a,ctx){
   if(!a||typeof a!=='object')return false;
-  var k=bhK(M),T=n===0,C=T||n===M.r.c,H=T||n===M.r.h,i,p;
-  var bound=['say','next','give','fin','prop','unprop','endprop','enddisc','vm','vnext','vrev','revote','hand'];
+  var k=bhK(M),T=n===0,C=T||n===M.r.c,H=T||n===M.r.h,Wr=T||n===M.r.w,i,p,now=Date.now();
+  var bound=['say','next','give','fin','prop','unprop','endprop','enddisc','vm','vnext','vrev','revote','hand','tp','tpr','tmr'];
   if(bound.indexOf(a.a)>=0&&a.s!==M.s)return false;
   switch(a.a){
   case 'say':{var L=bhLines(M),l=L[M.ln];if(!l||a.ln!==M.ln)return false;
     if(!(T||(l[0]==='c'&&n===M.r.c)||(l[0]==='h'&&n===M.r.h)||(l[0]==='t'&&H)))return false;
-    if(l[1]==='*')M.crep=bhS(a.x,60)||'（主席報告）';M.ln++;return true;}
+    if(l[1]==='#'&&!M.tpOk){if(!T)return false;var ti=M.tc[0]||0;M.tp=BH_TP[ti].t;M.tpOk=1;}
+    if(l[1]==='*')M.crep=bhS(a.x,60)||'（主席報告）';
+    if(l[1]==='{dec}')M.gv=now;
+    M.ln++;return true;}
+  case 'tp':{if(!C||k!=='open'||M.tpOk)return false;var cur=bhCur(M);if(!cur||cur[1]!=='#')return false;var ix=+a.i;if(M.tc.indexOf(ix)<0||!BH_TP[ix])return false;M.tp=BH_TP[ix].t;M.tpOk=1;M.tpt=now;return true;}
+  case 'tpr':{if(!C||k!=='open'||M.tpOk||(M.tcr||0)>=2)return false;M.tcr=(M.tcr||0)+1;M.tc=bhTopicPick(M);return true;}
   case 'next':if(!H||!bhCanNext(M))return false;bhGo(M,M.s+1);return true;
+  case 'tmr':{if(!H||['rep','prop','disc','tmp'].indexOf(k)<0)return false;var sec=+a.v;if(sec===0){M.tmr=null;return true;}if([60,120,180].indexOf(sec)<0)return false;M.tmr={e:now+sec*1000,s:sec};return true;}
+  case 'bell':if(!H)return false;if(now-(M.bell||0)<2500)return false;M.bell=now;return true;
   case 'hand':if(!n||BH_HAND.indexOf(k)<0||bhCur(M))return false;i=M.q.indexOf(n);
     if(a.on&&i<0&&M.fl!==n){M.q.push(n);return true;}if(!a.on&&i>=0){M.q.splice(i,1);return true;}return false;
-  case 'give':if(!C)return false;i=M.q.indexOf(+a.n);if(i<0)return false;M.q.splice(i,1);if(M.fl)bhEndSpk(M,null);M.fl=+a.n;M.ft=Date.now();return true;
+  case 'give':if(!C)return false;i=M.q.indexOf(+a.n);if(i<0)return false;M.q.splice(i,1);if(M.fl)bhEndSpk(M,null);M.fl=+a.n;M.ft=now;M.rx=[];return true;
   case 'fin':if(!M.fl||(n!==M.fl&&!C))return false;bhEndSpk(M,n===M.fl?a:null);return true;
+  case 'rx':{if(!n||!M.fl||n===M.fl)return false;var e=+a.e;if(!(e>=0&&e<BH_RX.length))return false;M.rxT=M.rxT||{};if(now-(M.rxT[n]||0)<1500)return false;M.rxT[n]=now;
+    M.rx.push({e:e,by:n,t:now});if(M.rx.length>12)M.rx.splice(0,M.rx.length-12);var so=M.ST[M.fl]=M.ST[M.fl]||{};so.cheer=(so.cheer||0)+1;bhSt(M,n,'rx');return true;}
   case 'prop':{if(!n||k!=='prop'||bhCur(M))return false;var x=bhS(a.x,16);if(!x)return false;var nx=x.replace(/\s/g,'');
     for(i=0;i<M.P.length;i++){p=M.P[i];if(p.t.replace(/\s/g,'')===nx){if(p.by===n||p.sec.indexOf(n)>=0)return false;p.sec.push(n);bhSt(M,n,'sec');if(p.sec.length===1)M.en=Math.min(BH_EMAX,M.en+1);return true;}}
     if(M.P.filter(function(q){return q.by===n;}).length>=3||M.P.length>=12)return false;
@@ -2011,26 +2053,31 @@ function bhApply(M,n,a,ctx){
   case 'endprop':if(!C||k!=='prop'||bhCur(M))return false;if(!T&&!M.P.some(function(q){return q.sec.length;}))return false;bhGo(M,M.s+1);return true;
   case 'enddisc':if(!C||k!=='disc')return false;if(M.fl)bhEndSpk(M,null);bhGo(M,M.s+1);return true;
   case 'vm':{if(!C||k!=='vote'||bhCur(M)||M.V||M.dec)return false;var o=M.P.filter(function(q){return !q.out;}).map(function(q){return q.i;});if(!o.length)return false;if(o.length===1)o.push('NO');
-    M.V={m:a.m==='hand'?'hand':'ballot',r:1,o:o,open:true,cur:0,c:{},vs:[],who:{},all:0,tie:null};return true;}
+    M.V={m:a.m==='hand'?'hand':'ballot',r:1,o:o,open:true,cur:0,c:{},vs:[],who:{},all:0,tie:null,k:{},kx:{}};return true;}
   case 'vote':{var V=M.V;if(!n||!V||!V.open||a.r!==V.r||V.vs.indexOf(n)>=0)return false;
-    if(V.m==='hand'?a.i!==V.o[V.cur]:V.o.indexOf(a.i)<0)return false;V.c[a.i]=(V.c[a.i]||0)+1;V.vs.push(n);V.who[n]=a.i;bhSt(M,n,'vote');
+    if(V.m==='hand'){if(a.i!==V.o[V.cur]||V.k[a.i]!=null)return false;}else if(V.o.indexOf(a.i)<0)return false;
+    V.c[a.i]=(V.c[a.i]||0)+1;V.vs.push(n);V.who[n]=a.i;bhSt(M,n,'vote');
     var pp=(ctx&&ctx.pp)||[];if(!V.all&&pp.length&&pp.every(function(s){return V.vs.indexOf(s)>=0;})){V.all=1;M.en=Math.min(BH_EMAX,M.en+2);}return true;}
-  case 'vnext':if(!C||!M.V||!M.V.open||M.V.m!=='hand')return false;M.V.cur++;if(M.V.cur>=M.V.o.length){M.V.cur=M.V.o.length-1;bhTally(M);}return true;
-  case 'vrev':if(!C||!M.V||!M.V.open)return false;bhTally(M);return true;
-  case 'revote':{if(!C||!M.V||!M.V.tie||M.dec)return false;var W=M.V;M.V={m:W.m,r:W.r+1,o:W.tie,open:true,cur:0,c:{},vs:[],who:{},all:0,tie:null};return true;}
+  case 'cnt':{var V2=M.V;if(!Wr||!V2||!V2.open||V2.m!=='hand')return false;var oi=V2.o[V2.cur];if(a.i!==oi||V2.k[oi]!=null)return false;var cn=+a.v,real=V2.c[oi]||0;
+    if(cn===real){V2.k[oi]=cn;bhSt(M,n,'cnt');}else{V2.kx[oi]=(V2.kx[oi]||0)+1;if(V2.kx[oi]>=2)V2.k[oi]=real;}return true;}
+  case 'vnext':{var V3=M.V;if(!C||!V3||!V3.open||V3.m!=='hand')return false;var co=V3.o[V3.cur];if(V3.k[co]==null){if(!T&&M.r.w)return false;V3.k[co]=V3.c[co]||0;}
+    V3.cur++;if(V3.cur>=V3.o.length){V3.cur=V3.o.length-1;bhTally(M);}return true;}
+  case 'vrev':if(!C||!M.V||!M.V.open||M.V.m!=='ballot')return false;bhTally(M);return true;
+  case 'revote':{if(!C||!M.V||!M.V.tie||M.dec)return false;var W=M.V;M.V={m:W.m,r:W.r+1,o:W.tie,open:true,cur:0,c:{},vs:[],who:{},all:0,tie:null,k:{},kx:{}};return true;}
+  case 'rb':{if(!Wr)return false;var its=bhRecItems(M),f=its.filter(function(x){return x.k===a.k&&!x.done;})[0];if(!f)return false;M.rb.push({k:f.k,t:f.t});bhSt(M,n,'rb');if(f.k==='d')M.stp=now;return true;}
   case 'det':{var cd=M.cd;if(!n||!cd||cd.found||n===cd.to)return false;cd.tr=cd.tr||{};if((cd.tr[n]||0)>=2)return false;
-    if(+a.n===cd.to&&+a.k===cd.k){cd.found=Date.now();cd.by=n;bhSt(M,n,'det');M.en=Math.min(BH_EMAX,M.en+2);}else cd.tr[n]=(cd.tr[n]||0)+1;return true;}
+    if(+a.n===cd.to&&+a.k===cd.k){cd.found=now;cd.by=n;bhSt(M,n,'det');M.en=Math.min(BH_EMAX,M.en+2);}else cd.tr[n]=(cd.tr[n]||0)+1;return true;}
   case 'cardok':if(!M.cd||M.cd.to!==n||M.cd.acted)return false;M.cd.acted=1;bhSt(M,n,'card');return true;
-  case 'cr':{if(!C)return false;var ck=+a.k;if(!(ck>=0&&ck<BH_CR.length))return false;M.cr={k:ck,t:Date.now()};return true;}
-  case 'rec':{if(!T&&n!==M.r.w)return false;var rp=Array.isArray(a.rp)?a.rp.map(Number).filter(function(s){return s>=1&&s<=7;}).slice(0,7):[];
-    M.rec={rp:rp,d:bhS(a.d,24),n:Math.max(0,Math.min(30,parseInt(a.n,10)||0)),nn:a.n!=null&&a.n!=='',tm:a.tm==='有'||a.tm==='無'?a.tm:''};return true;}
+  case 'cr':{if(!C)return false;var ck=+a.k;if(!(ck>=0&&ck<BH_CR.length))return false;M.cr={k:ck,t:now};return true;}
   }
   return false;
 }
 /* 老師傳給 n 號（0＝老師自己、8＝投影）的班會狀態：秘密的東西只給該給的人 */
 function bhView(M,n,pp,ak){
-  var V=M.V,o={mid:M.mid,tp:M.tp,s:M.s,ln:M.ln,r:M.r,rs:M.rs,q:M.q,fl:M.fl,ft:M.ft,P:M.P,dec:M.dec,rp:M.rp,tm:M.tm,en:M.en,cr:M.cr,crep:M.crep,rec:M.rec,now:Date.now(),pp:pp};
-  if(V)o.V={m:V.m,r:V.r,o:V.o,open:V.open,cur:V.cur,vs:V.vs,tie:V.tie,rv:V.rv||0,c:(V.m==='hand'||!V.open)?V.c:null,mine:(n>=1&&n<=7)?(V.who[n]||null):null};
+  var V=M.V,o={mid:M.mid,round:M.round,hist:M.hist,tp:M.tp,tpOk:M.tpOk,tpt:M.tpt||0,tc:M.tc,tcr:M.tcr,s:M.s,ln:M.ln,gt:M.gt,r:M.r,rs:M.rs,q:M.q,fl:M.fl,ft:M.ft,P:M.P,dec:M.dec,rp:M.rp,tm:M.tm,en:M.en,cr:M.cr,crep:M.crep,rb:M.rb,stp:M.stp,gv:M.gv,tmr:M.tmr,bell:M.bell,rx:M.rx,now:Date.now(),pp:pp};
+  if(V){var hide=V.open&&V.m==='ballot',vc=null;
+    if(!hide){vc={};V.o.forEach(function(i){if(V.m!=='hand'||!V.open||V.k[i]!=null||(n===M.r.w&&false))vc[i]=V.c[i]||0;});}
+    o.V={m:V.m,r:V.r,o:V.o,open:V.open,cur:V.cur,vs:V.vs,tie:V.tie,rv:V.rv||0,c:vc,k:V.k,kx:V.kx,mine:(n>=1&&n<=7)?(V.who[n]||null):null};}
   if(n>=1&&n<=7)o.ak=ak||0;
   var cd=M.cd;
   if(cd){if(n>=1&&n<=7&&cd.to===n)o.card={k:cd.k,found:cd.found,by:cd.by,acted:cd.acted,t:cd.t};
@@ -2111,20 +2158,21 @@ function bhMapHTML(M){
     return '<div class="bh-st '+cls+'"><span class="no">'+(i<cur?'✓':(i+1))+'</span><span class="tx">'+esc(t)+sub+'</span></div>';}).join('')+'</div>';
 }
 function bhEnHTML(M){var e=Math.min(BH_EMAX,M.en||0),lv=BH_LV.filter(function(l){return e>=l[0];}).pop();return '<div class="bh-en"><span class="lb">班會能量</span><div class="bar"><i style="width:'+Math.round(e/BH_EMAX*100)+'%"></i></div><b>'+esc(lv[1])+'</b></div>';}
+function bhTmrHTML(M){var t=M.tmr;if(!t)return '';return '<div class="bh-tmr" data-e="'+t.e+'" data-s="'+t.s+'"><span class="ic">⏱</span><span class="bar"><i></i></span><b class="tx"></b></div>';}
 function bhLineHTML(M,l){var w=l[0],s=w==='t'?'':(M.r[w]?'（'+M.r[w]+' 號）':'');
   if(w==='t')return '<div class="bh-line w-t"><div class="who">👩‍🏫 老師講評</div><div class="say">大家專心聽老師說 👂</div></div>';
   return '<div class="bh-line w-'+w+'"><div class="who">'+BH_RL[w].ic+' '+BH_RL[w].n+s+'</div><div class="say">「'+esc(bhLineText(M,l))+'」</div></div>';}
-function bhSpotHTML(M,me){if(!M.fl)return '';var k=bhK(M),what=k==='rep'?'報告':k==='tmp'?'提臨時動議':'發言';
-  return '<div class="bh-spot'+(M.fl===me?' me':'')+'"><span class="mic">🎤</span><span><b>'+M.fl+' 號</b> '+(M.fl===me?'（你）':'')+what+'中</span><span class="bh-timer" data-ft="'+M.ft+'"></span>'+(M.fl===me?'':'<span class="ls">👂 專心聽</span>')+'</div>';}
+function bhSpotHTML(M,me){if(!M.fl)return '';var k=bhK(M),what=k==='rep'?'報告':k==='tmp'?'提臨時動議':'發言',ch=(M.rx||[]).length;
+  return '<div class="bh-spot'+(M.fl===me?' me':'')+'"><span class="mic">🎤</span><span><b>'+M.fl+' 號</b> '+(M.fl===me?'（你）':'')+what+'中</span><span class="bh-timer" data-ft="'+M.ft+'"></span>'+(ch?'<span class="cheer">收到鼓勵 '+ch+'</span>':'')+(M.fl===me?'':'<span class="ls">👂 專心聽</span>')+'</div>';}
 function bhQHTML(M){return '<div class="bh-q"><span class="lb">✋ 舉手</span>'+(M.q.length?M.q.map(function(n,i){return '<span class="h">'+(i+1)+'. '+n+' 號</span>';}).join(''):'<span class="no">還沒有人舉手</span>')+'</div>';}
 function bhNoteHTML(M,p,btn){var win=M.dec&&M.dec.i===p.i&&M.dec.pass;
   return '<div class="bh-note'+(p.sec.length?' ok':'')+(p.out?' out':'')+(win?' win':'')+'"><div class="t">'+(win?'🏆 ':'')+esc(p.t)+'</div><div class="by">'+p.by+' 號提案</div><div class="sec">'+(p.sec.length?'🤝 附議：'+p.sec.map(function(s){return s+' 號';}).join('、'):(p.out?'沒有人附議，不討論':'等人附議…'))+'</div>'+(btn||'')+'</div>';}
 function bhVoteBoardHTML(M){
   var V=M.V;if(!V)return bhCur(M)?'':'<div class="bh-vwait">主席要選表決的方式：<b>✋ 舉手表決</b> 或 <b>🗳️ 投票表決</b></div>';
   var h2='<div class="bh-vt">'+(V.m==='hand'?'✋ 舉手表決':'🗳️ 投票表決')+(V.r>1?'（第 '+V.r+' 次）':'')+'</div>',pp=M.pp||[];
-  if(V.open&&V.m==='hand'){var cur=V.o[V.cur];
-    h2+='<div class="bh-vcall">贊成'+(cur==='NO'?'不贊成的':'「'+esc(bhPT(M,cur))+'」的')+'請舉手 ✋<b>'+((V.c&&V.c[cur])||0)+' 人</b></div>';
-    h2+='<div class="bh-vlist">'+V.o.map(function(i,j){return '<span class="'+(j<V.cur?'d':j===V.cur?'c':'')+'">'+esc(bhOptLabel(M,i))+(j<V.cur?'：'+((V.c&&V.c[i])||0)+' 人':'')+'</span>';}).join('')+'</div>';}
+  if(V.open&&V.m==='hand'){var cur=V.o[V.cur],kc=V.k&&V.k[cur];
+    h2+='<div class="bh-vcall">'+(cur==='NO'?'不贊成的':'贊成「'+esc(bhPT(M,cur))+'」的')+'請舉手 ✋'+(kc!=null?'<b>'+kc+' 人</b>':'<span class="cnt">📝 記錄（'+(M.r.w||'?')+' 號）正在數…</span>')+'</div>';
+    h2+='<div class="bh-vlist">'+V.o.map(function(i,j){var kk=V.k&&V.k[i];return '<span class="'+(j<V.cur?'d':j===V.cur?'c':'')+'">'+esc(bhOptLabel(M,i))+(kk!=null?'：'+kk+' 人':'')+'</span>';}).join('')+'</div>';}
   else if(V.open){h2+='<div class="bh-box">🗳️<div>已經投票 <b>'+V.vs.length+'</b> / '+pp.length+' 人</div><div class="papers">'+V.vs.map(function(){return '<i>📄</i>';}).join('')+'</div></div>';}
   else{var mx=1;V.o.forEach(function(i){mx=Math.max(mx,(V.c&&V.c[i])||0);});var fresh=BH.now()-(V.rv||0)<5000;
     h2+='<div class="bh-bars'+(fresh?' anim':'')+'">'+V.o.map(function(i){var c=(V.c&&V.c[i])||0,win=M.dec&&M.dec.i===i;return '<div class="row'+(win?' win':'')+'"><span class="lb">'+esc(bhOptLabel(M,i))+'</span><span class="bar"><i style="width:'+Math.round(c/mx*100)+'%"></i></span><b>'+c+' 票</b></div>';}).join('')+'</div>';
@@ -2133,46 +2181,61 @@ function bhVoteBoardHTML(M){
   return h2;
 }
 function bhDate(){var d=new Date(BH.now());return '民國 '+(d.getFullYear()-1911)+' 年 '+(d.getMonth()+1)+' 月 '+d.getDate()+' 日';}
-function bhRecHTML(M,edit,ui){
-  var R=edit?ui.rec:(M.rec||{rp:[],d:'',n:0,tm:''}),rpReal=M.rp.map(function(r){return r.by;}),V=M.V;
-  function chk(ok){return edit?'':(ok?' <span class="ck ok">✓</span>':' <span class="ck no">（再對一對）</span>');}
-  var h2='<div class="bh-rec"><h3>📝 301 班會會議紀錄</h3><table>';
+function bhRbHTML(M,big){
+  var rb=M.rb||[],list=big?rb:rb.slice(-5);
+  return '<div class="bh-rb'+(big?' big':'')+'"><div class="hd">📝 會議紀錄<small>（記錄 '+(M.r.w||'?')+' 號寫的）</small></div>'+(rb.length?list.map(function(r){return '<div class="it'+(r.k==='d'?' d':'')+'">'+esc(r.t)+'</div>';}).join(''):'<div class="no">還沒有寫…</div>')+'</div>';
+}
+function bhRecHTML(M){
+  var h2='<div class="bh-rec"><h3>📝 301 第 '+M.round+' 場班會・會議紀錄</h3><table>';
   h2+='<tr><th>日期</th><td>'+bhDate()+'</td></tr><tr><th>出席</th><td>'+((M.pp||[]).length||'—')+' 人</td></tr>';
   h2+='<tr><th>主席／司儀／記錄</th><td>'+(M.r.c||'—')+' 號／'+(M.r.h||'—')+' 號／'+(M.r.w||'—')+' 號</td></tr>';
-  h2+='<tr><th>報告事項<br><small>誰報告了？</small></th><td>'+(edit?'<div class="bh-chips">'+[1,2,3,4,5,6,7].map(function(n){return '<button type="button" data-a="rrp" data-v="'+n+'" class="'+(R.rp.indexOf(n)>=0?'on':'')+'">'+n+' 號</button>';}).join('')+'</div>':(R.rp.length?R.rp.slice().sort().map(function(n){return n+' 號';}).join('、'):'—')+chk(R.rp.slice().sort().join()===rpReal.slice().sort().join()))+(M.crep?'<div class="sm">主席：'+esc(M.crep)+'</div>':'')+'</td></tr>';
-  h2+='<tr><th>討論題目</th><td>'+esc(M.tp)+'</td></tr>';
-  h2+='<tr><th>提案</th><td>'+(M.P.length?M.P.map(function(p){return '<div class="sm">「'+esc(p.t)+'」'+p.by+' 號提案'+(p.sec.length?'，'+p.sec.join('、')+' 號附議':'，沒有人附議')+'</div>';}).join(''):'—')+'</td></tr>';
-  h2+='<tr><th>表決方式</th><td>'+(V?(V.m==='hand'?'舉手表決':'投票表決'):'—')+'</td></tr>';
-  h2+='<tr><th>決議</th><td>';
-  if(edit){var opts=V?V.o.filter(function(i){return i!=='NO';}):[];
-    h2+=opts.length?'<div class="bh-chips">'+opts.map(function(i){return '<button type="button" data-a="rd" data-v="'+esc(i)+'" class="'+(R.d===i?'on':'')+'">'+esc(bhPT(M,i))+'</button>';}).join('')+'</div>':'<span class="sm">（表決以後再寫）</span>';
-    if(opts.length)h2+='<div class="bh-num">得到 <input data-k="rn" inputmode="numeric" maxlength="2" value="'+esc(ui.rn)+'"> 票<button type="button" data-a="rsave">寫上去</button></div>';}
-  else h2+=R.d?'「'+esc(bhPT(M,R.d))+'」'+(R.nn?' '+R.n+' 票':'')+chk(M.dec&&R.d===M.dec.i&&R.nn&&R.n===M.dec.n)+(M.dec&&!M.dec.pass?'（沒有通過）':''):'—';
-  h2+='</td></tr><tr><th>臨時動議</th><td>'+(edit?'<div class="bh-chips"><button type="button" data-a="rtm" data-v="有" class="'+(R.tm==='有'?'on':'')+'">有</button><button type="button" data-a="rtm" data-v="無" class="'+(R.tm==='無'?'on':'')+'">無</button></div>':(R.tm||'—')+(R.tm?chk((R.tm==='有')===(M.tm.length>0)):''))+(M.tm.length?M.tm.map(function(t){return '<div class="sm">'+t.by+' 號：'+esc(t.x)+'</div>';}).join(''):'')+'</td></tr>';
+  h2+='<tr><th>討論題目</th><td>'+esc(M.tp||'—')+'</td></tr>';
+  var its=bhRecItems(M),done=its.filter(function(x){return x.done;}).length;
+  h2+='<tr><th>記錄寫的</th><td>'+((M.rb||[]).length?M.rb.map(function(r){return '<div class="sm'+(r.k==='d'?' d':'')+'">'+esc(r.t)+'</div>';}).join(''):'—')+'<div class="ck">記下了 '+done+' / '+its.length+' 件重要的事</div></td></tr>';
   return h2+'</table></div>';
 }
+function bhHistHTML(M){var H=M.hist||[];if(!H.length)return '';return '<div class="bh-hist"><div class="hd">📚 之前的班會</div>'+H.slice(-6).map(function(x){return '<div>第 '+x.n+' 場：🎤'+x.r.c+'・📢'+x.r.h+'・📝'+x.r.w+'　'+esc(x.tp||'')+(x.dec?'　→ '+esc(x.dec):'')+'</div>';}).join('')+'</div>';}
 function bhBadges(M,n){
   var S=(M.ST&&M.ST[n])||{},b=[],rl=bhRole(M,n);
   if(rl!=='m')b.push(BH_RL[rl].ic+' '+BH_RL[rl].n);
-  if(S.spk)b.push('🗣️ 勇敢發言 ×'+S.spk);if(S.prop)b.push('💡 提出好點子');if(M.dec&&M.dec.pass&&M.P.some(function(p){return p.i===M.dec.i&&p.by===n;}))b.push('🏆 點子通過');
-  if(S.sec)b.push('🤝 附議 ×'+S.sec);if(S.vote)b.push('🗳️ 投下一票');if(S.det)b.push('🔍 小偵探');if(S.card)b.push('🎭 演技派');
+  if(S.spk)b.push('🗣️ 勇敢發言 ×'+S.spk);if(S.cheer)b.push('🌟 被鼓勵 ×'+S.cheer);if(S.prop)b.push('💡 提出好點子');if(M.dec&&M.dec.pass&&M.P.some(function(p){return p.i===M.dec.i&&p.by===n;}))b.push('🏆 點子通過');
+  if(S.sec)b.push('🤝 附議 ×'+S.sec);if(S.rx)b.push('👏 鼓勵別人 ×'+S.rx);if(S.vote)b.push('🗳️ 投下一票');if(S.cnt)b.push('🔢 數票高手');if(S.rb)b.push('✍️ 寫紀錄 ×'+S.rb);if(S.det)b.push('🔍 小偵探');if(S.card)b.push('🎭 演技派');
   b.push('✅ 參加班會');return b;
 }
+/* 全班一起看到的特效：換流程、搖鈴、敲槌、蓋章、時間到、主席提醒、抓到狀況卡、選好題目 */
+/* 特效：從這台第一次看到那一刻起播一段時間（網路慢也看得到），太舊的就不播 */
+var BH_SEEN={};
+function bhSeen(key,t,dur){if(!t)return false;var now=BH.now();if(now-t>12000)return false;var id=key+':'+t,L=Date.now();if(!BH_SEEN[id])BH_SEEN[id]=L;return L-BH_SEEN[id]<dur;}
+function bhFx(M,big){
+  var now=BH.now(),o=[];
+  if(M.s>0&&bhSeen('stg',M.gt,2600))o.push(['stg','<div class="bh-fx stg"><small>📢 司儀：下一個流程</small>'+(BH_STG[M.s].m<6?(BH_STG[M.s].m+1)+'. ':'')+esc(BH_STG[M.s].t)+'</div>']);
+  if(bhSeen('bell',M.bell,2800))o.push(['bell','<div class="bh-fx bell">🔔<div>請安靜，聽司儀說！</div></div>']);
+  if(bhSeen('tp',M.tpt,3000))o.push(['tp','<div class="bh-fx tp"><small>🎡 主席選好了今天的題目</small>'+esc(M.tp)+'</div>']);
+  if(bhSeen('gv',M.gv,3200))o.push(['gv','<div class="bh-fx gv"><span class="ham">🔨</span><div>'+esc(bhDecLine(M))+'</div></div>']);
+  if(bhSeen('stp',M.stp,2800))o.push(['stp','<div class="bh-fx stp"><span>📌</span>記錄蓋章：決議寫進紀錄了</div>']);
+  if(M.tmr&&now>=M.tmr.e&&now-M.tmr.e<4000)o.push(['tu','<div class="bh-fx tu">⏰ 時間到！</div>']);
+  if(bhSeen('cr',M.cr&&M.cr.t,5000))o.push(['cr','<div class="bh-crb'+(big?' big':'')+'">🎤 主席提醒：「'+esc(BH_CR[M.cr.k])+'」</div>']);
+  if(bhSeen('fd',M.cdR&&M.cdR.t,8000))o.push(['fd','<div class="bh-found'+(big?'':' sm')+'"><div class="t">🔍 '+M.cdR.by+' 號抓到 '+M.cdR.to+' 號的狀況卡！</div>'+(big?'<div>'+M.cdR.to+' 號剛剛演的是：「'+esc(BH_CD[M.cdR.k].t)+'」</div>':'')+'<div class="ok">✅ 正確的做法：'+esc(BH_CD[M.cdR.k].ok)+'</div></div>']);
+  var rx=(M.rx||[]).filter(function(r){return bhSeen('rx'+r.by,r.t,3200);});
+  if(rx.length&&big)o.push(['rx'+rx.map(function(r){return r.t;}).join('.'),'<div class="bh-rxf">'+rx.map(function(r,i){return '<span style="left:'+(10+((r.by*13+i*7)%80))+'%">'+BH_RX[r.e]+'</span>';}).join('')+'</div>']);
+  return {key:o.map(function(x){return x[0];}).join(','),html:o.map(function(x){return x[1];}).join('')};
+}
+function bhRollState(M,now){var st={},rolling=false;['c','h','w'].forEach(function(r,i){var at=(M.rs||0)+(i+1)*BH_RV,on=M.rs&&now<at&&now-M.rs>-3000;st[r]=on;if(on)rolling=true;});st.any=rolling;return st;}
 
 /* ---------- 班會大冒險：孩子的畫面／投影大螢幕 ---------- */
 function BhMeet(root,ws){
-  var self=this;this.root=root;this.ws=ws;this.last='';this.ui=this.fresh();this.defer=false;this.rollSeen=0;this.rolling=false;this.tmT=0;
+  var self=this;this.root=root;this.ws=ws;this.last='';this.ui=this.fresh();this.defer=false;this.fxKey='';this.rollKey='';
   BH.ds.push(this);
   root.addEventListener('click',function(e){if(root._owner!==self)return;var b=e.target.closest('[data-a]');if(!b||!root.contains(b)||b.disabled)return;self.click(b.dataset.a,b.dataset.v);});
   root.addEventListener('input',function(e){var k=e.target.dataset&&e.target.dataset.k;if(k)self.ui[k]=e.target.value;});
-  root.addEventListener('keydown',function(e){var k=e.target.dataset&&e.target.dataset.k;if(k&&e.key==='Enter'&&!e.isComposing){e.preventDefault();self.click(k==='px'?'propx':k==='rn'?'rsave':'noop');}});
+  root.addEventListener('keydown',function(e){var k=e.target.dataset&&e.target.dataset.k;if(k&&e.key==='Enter'&&!e.isComposing){e.preventDefault();self.click(k==='px'?'propx':'noop');}});
   this.composing=false;
   root.addEventListener('compositionstart',function(){self.composing=true;});
   root.addEventListener('compositionend',function(){self.composing=false;if(self.defer){self.defer=false;setTimeout(function(){self.render();},60);}});
   root.addEventListener('focusout',function(){self.composing=false;if(self.defer){self.defer=false;setTimeout(function(){self.render();},250);}});
   setInterval(function(){self.tick();},250);
 }
-BhMeet.prototype.fresh=function(){return {tab:'m',det:null,rj:'',rs:-1,rn2:0,rx:'',px:'',tx:'',tc:-1,vsel:null,crk:-1,rec:{rp:[],d:'',n:'',tm:''},rn:'',seen:''};};
+BhMeet.prototype.fresh=function(){return {det:null,rj:'',rs:-1,rn2:0,px:'',tx:'',tc:-1,vsel:null,crk:-1};};
 BhMeet.prototype.me=function(){return this.ws.seat||0;};
 BhMeet.prototype.isBoard=function(){var s=this.me();return !s||s===8;};
 BhMeet.prototype.mount=BhMeet.prototype.load=function(){this.root._owner=this;this.last='';this.render();};
@@ -2190,11 +2253,16 @@ BhMeet.prototype.voted=function(){var M=BH.M,V=M.V;if(!V)return null;if(V.mine)r
 BhMeet.prototype.click=function(a,v){
   var M=BH.M,ui=this.ui,me=this.me();if(!M)return;var cur=bhCur(M);
   switch(a){
-  case 'say':{var x=cur&&cur[1]==='*'?(ui.crk>=0?BH_CREP[ui.crk]:''):undefined;if(cur&&cur[1]==='*'&&!x)return;this.act({a:'say',ln:M.ln,x:x});return;}
+  case 'say':{var x=cur&&cur[1]==='*'?(ui.crk>=0?BH_CREP[ui.crk]:''):undefined;if(cur&&cur[1]==='*'&&!x)return;if(cur&&cur[1]==='#'&&!M.tpOk)return;this.act({a:'say',ln:M.ln,x:x});return;}
   case 'crk':ui.crk=+v;this.render();return;
-  case 'next':if(confirm('要進到下一個流程嗎？'))this.act({a:'next'});return;
+  case 'tp':this.act({a:'tp',i:+v});return;
+  case 'tpr':this.act({a:'tpr'});return;
+  case 'next':if(confirm('要進到下一個流程嗎？（全班的畫面會一起換）'))this.act({a:'next'});return;
+  case 'tmr':this.act({a:'tmr',v:+v});return;
+  case 'bell':this.act({a:'bell'});return;
   case 'hand':this.act({a:'hand',on:!this.handUp()});return;
   case 'give':this.act({a:'give',n:+v});return;
+  case 'rx':this.act({a:'rx',e:+v});return;
   case 'fin':{var k=bhK(M),o={a:'fin'};
     if(M.fl===me&&k==='rep'){if(ui.rs<0){alert('先選一句要報告的話');return;}var s=BH_RS[ui.rs];if(s.indexOf('{n}')>=0){if(!ui.rn2){alert('先點要謝謝幾號');return;}s=s.replace('{n}',ui.rn2);}o.j=ui.rj||'同學';o.x=s;}
     if(M.fl===me&&k==='tmp'){var tx=bhS(ui.tc>=0?BH_TM[ui.tc]:ui.tx,40);if(!tx){alert('先選或寫下你的臨時動議');return;}o.x=tx;}
@@ -2213,15 +2281,12 @@ BhMeet.prototype.click=function(a,v){
   case 'vote':if(M.V)this.act({a:'vote',i:v,r:M.V.r});return;
   case 'vsel':ui.vsel=v;this.render();return;
   case 'ballot':if(M.V&&ui.vsel)this.act({a:'vote',i:ui.vsel,r:M.V.r});return;
+  case 'cnt':if(M.V)this.act({a:'cnt',i:M.V.o[M.V.cur],v:+v});return;
   case 'vnext':this.act({a:'vnext'});return;
   case 'vrev':{var V=M.V;if(V&&V.vs.length<(M.pp||[]).length&&!confirm('還有人沒投票，確定要開票嗎？'))return;this.act({a:'vrev'});return;}
   case 'revote':this.act({a:'revote'});return;
   case 'cr':this.act({a:'cr',k:+v});return;
-  case 'tab':ui.tab=v;this.render();return;
-  case 'rrp':{var n=+v,j=ui.rec.rp.indexOf(n);if(j>=0)ui.rec.rp.splice(j,1);else ui.rec.rp.push(n);this.sendRec();return;}
-  case 'rd':ui.rec.d=v;this.sendRec();return;
-  case 'rtm':ui.rec.tm=v;this.sendRec();return;
-  case 'rsave':ui.rec.n=String(ui.rn||'').replace(/\D/g,'');this.sendRec();return;
+  case 'rb':this.act({a:'rb',k:v});return;
   case 'det':ui.det=ui.det?null:{n:0,k:-1};this.render();return;
   case 'dn':if(ui.det){ui.det.n=+v;this.render();}return;
   case 'dk':if(ui.det){ui.det.k=+v;this.render();}return;
@@ -2229,38 +2294,40 @@ BhMeet.prototype.click=function(a,v){
   case 'cardok':this.act({a:'cardok'});return;
   }
 };
-BhMeet.prototype.sendRec=function(){var r=this.ui.rec;this.act({a:'rec',rp:r.rp.slice(),d:r.d,n:r.n,tm:r.tm});};
 BhMeet.prototype.tick=function(){
-  if(this.root._owner!==this||!BH.M)return;var now=BH.now();
+  if(this.root._owner!==this||!BH.M)return;var now=BH.now(),M=BH.M;
   this.root.querySelectorAll('.bh-timer').forEach(function(el){var ft=+el.dataset.ft;if(ft){var s=Math.max(0,Math.floor((now-ft)/1000));el.textContent=s+' 秒';el.classList.toggle('long',s>=60);}});
-  var M=BH.M,roll=M.rs&&now-M.rs<2600&&now-M.rs>-3000;
-  if(roll){this.rolling=true;this.root.querySelectorAll('.bh-roll').forEach(function(el){el.textContent=1+Math.floor(Math.random()*7);});}
-  else if(this.rolling){this.rolling=false;this.render();}
-  var cr=M.cr&&now-M.cr.t<6000,crf=!!this.root.querySelector('.bh-crb');if(cr!==crf)this.render();
-  var fd=M.cdR&&now-M.cdR.t<9000,fdf=!!this.root.querySelector('.bh-found');if(fd!==fdf)this.render();
+  this.root.querySelectorAll('.bh-tmr').forEach(function(el){var e=+el.dataset.e,s=+el.dataset.s,left=Math.max(0,e-now),sec=Math.ceil(left/1000);el.querySelector('.tx').textContent=left>0?Math.floor(sec/60)+':'+('0'+sec%60).slice(-2):'時間到';el.querySelector('i').style.width=(s?left/(s*1000)*100:0)+'%';el.classList.toggle('low',left<15000);});
+  var rs=bhRollState(M,now),rk=JSON.stringify(rs);
+  this.root.querySelectorAll('.bh-roll').forEach(function(el){if(rs[el.dataset.r])el.textContent=1+Math.floor(Math.random()*7);});
+  if(rk!==this.rollKey){this.rollKey=rk;this.render();return;}
+  var fx=bhFx(M,this.isBoard());if(fx.key!==this.fxKey)this.render();
 };
 BhMeet.prototype.render=function(){
   var root=this.root;if(root._owner!==this)return;var M=BH.M;
   var ae=document.activeElement,fk=(ae&&root.contains(ae)&&ae.dataset&&ae.dataset.k)?ae.dataset.k:null;
   if(fk&&this.composing){this.defer=true;return;}
-  var html;if(!M)html='<div class="bh-wait">等老師打開班會…</div>';else{var st=this.st();html=this.isBoard()?this.boardHTML(M):this.meHTML(M,st);}
-  if(html===this.last)return;var ss=fk?ae.selectionStart:0;this.last=html;root.innerHTML=html;
+  var html;if(!M)html='<div class="bh-wait">等老師打開班會…</div>';else{var st=this.st();html=this.isBoard()?this.boardHTML(M):this.meHTML(M,st);var fx=bhFx(M,this.isBoard());this.fxKey=fx.key;html+=fx.html;}
+  if(html===this.last){this.tick2();return;}var ss=fk?ae.selectionStart:0;this.last=html;root.innerHTML=html;
   if(fk){var el=root.querySelector('[data-k="'+fk+'"]');if(el){el.value=this.ui[fk]||'';el.focus();try{el.setSelectionRange(ss,ss);}catch(e){}}}
-  this.tick();
+  this.tick2();
 };
+BhMeet.prototype.tick2=function(){var now=BH.now();this.root.querySelectorAll('.bh-tmr').forEach(function(el){var e=+el.dataset.e,s=+el.dataset.s,left=Math.max(0,e-now),sec=Math.ceil(left/1000);el.querySelector('.tx').textContent=left>0?Math.floor(sec/60)+':'+('0'+sec%60).slice(-2):'時間到';el.querySelector('i').style.width=(s?left/(s*1000)*100:0)+'%';});};
 BhMeet.prototype.boardHTML=function(M){
-  var k=bhK(M),cur=bhCur(M),now=BH.now(),h2='<div class="bhb">';
-  h2+='<div class="bhb-head"><span class="ttl">🏛️ 301 班會</span><span class="tp">今天的題目：<b>「'+esc(M.tp)+'」</b></span>'+bhEnHTML(M)+'</div>'+bhMapHTML(M);
+  var k=bhK(M),cur=bhCur(M),now=BH.now(),h2='<div class="bhb">',rs=bhRollState(M,now);
+  h2+='<div class="bhb-head"><span class="ttl">🏛️ 301 第 '+M.round+' 場班會</span><span class="tp">'+(M.tpOk?'今天的題目：<b>「'+esc(M.tp)+'」</b>':'題目：等主席抽')+'</span>'+bhTmrHTML(M)+bhEnHTML(M)+'</div>'+bhMapHTML(M);
   h2+='<div class="bhb-body"><div class="bhb-main">';
-  var roll=M.rs&&now-M.rs<2600&&now-M.rs>-3000;
   if(k==='role'){
-    h2+='<div class="bhb-sub">① 選出主席、司儀、記錄</div><div class="bh-roles3">'+['c','h','w'].map(function(r){var n=M.r[r];return '<div class="bh-rcard r-'+r+(n&&!roll?' pop':'')+'"><div class="ic">'+BH_RL[r].ic+'</div><b>'+BH_RL[r].n+'</b><div class="n">'+(roll?'<span class="bh-roll">?</span> 號':n?n+' 號':'？')+'</div><p>'+esc(BH_RL[r].d)+'</p></div>';}).join('')+'</div>';
-    if(!(M.r.c&&M.r.h&&M.r.w))h2+='<div class="bh-wait sm">🎲 等老師抽出主席、司儀、記錄…</div>';else if(!roll)h2+='<div class="bh-nexthint">📢 司儀（'+M.r.h+' 號）按「開始開會」</div>';
+    h2+='<div class="bhb-sub">🎲 抽籤：誰當主席、司儀、記錄？<small>當過的人，會先讓給還沒當過的人</small></div><div class="bh-roles3">'+['c','h','w'].map(function(r){var n=M.r[r],roll=rs[r];return '<div class="bh-rcard r-'+r+(n&&!roll?' pop':'')+(roll?' spin':'')+'"><div class="ic">'+BH_RL[r].ic+'</div><b>'+BH_RL[r].n+'</b><div class="n">'+(roll?'<span class="bh-roll" data-r="'+r+'">?</span> 號':n?n+' 號':'？')+'</div><p>'+esc(BH_RL[r].pw.slice(0,3).join('、'))+'</p></div>';}).join('')+'</div>';
+    if(!(M.r.c&&M.r.h&&M.r.w))h2+='<div class="bh-wait sm">🎲 等老師按「抽籤」…</div>';else if(!rs.any)h2+='<div class="bh-nexthint">📢 司儀（'+M.r.h+' 號）按「開始開會」</div>';
+    h2+=bhHistHTML(M);
   }else if(k==='done'){
-    h2+='<div class="bh-fin">🎉 301 班會完成！<small>'+esc(bhEnHTML(M).replace(/<[^>]+>/g,' ').replace(/\s+/g,' '))+'</small></div>'+bhRecHTML(M,false);
+    h2+='<div class="bh-fin">🎉 第 '+M.round+' 場班會完成！<small>'+esc(bhEnHTML(M).replace(/<[^>]+>/g,' ').replace(/\s+/g,' '))+'</small></div>'+bhRecHTML(M);
     h2+='<div class="bh-badges">'+(M.pp||[]).slice().sort(function(a,b){return a-b;}).map(function(n){return '<div class="bdg"><b>'+n+' 號</b>'+bhBadges(M,n).map(function(x){return '<span>'+esc(x)+'</span>';}).join('')+'</div>';}).join('')+'</div>';
+    h2+='<div class="bh-nexthint">下一場會換人當主席、司儀、記錄！</div>'+bhHistHTML(M);
   }else{
-    if(cur)h2+=bhLineHTML(M,cur);
+    if(k==='open'&&cur&&cur[1]==='#'&&!M.tpOk){h2+='<div class="bhb-sub">🎡 主席（'+M.r.c+' 號）正在選今天的題目…</div><div class="bh-tcs">'+M.tc.map(function(i){var t=BH_TP[i];return '<div class="bh-tcard"><div class="ic">'+t.ic+'</div><div>'+esc(t.t)+'</div></div>';}).join('')+'</div>';}
+    else if(cur)h2+=bhLineHTML(M,cur);
     if(k==='vote')h2+=bhVoteBoardHTML(M);
     h2+=bhSpotHTML(M,0);
     if(k==='rep'){if(M.crep&&!(cur&&cur[1]==='*'))h2+='<div class="bh-rep"><b>🎤 主席：</b>'+esc(M.crep)+'</div>';h2+=M.rp.map(function(r){return '<div class="bh-rep"><b>'+r.by+' 號（'+esc(r.j)+'）：</b>'+esc(r.x)+'</div>';}).join('');}
@@ -2268,38 +2335,34 @@ BhMeet.prototype.boardHTML=function(M){
     if(k==='tmp')h2+=M.tm.map(function(t){return '<div class="bh-rep"><b>'+t.by+' 號：</b>'+esc(t.x)+'</div>';}).join('');
     if(!cur&&bhCanNext(M))h2+='<div class="bh-nexthint">📢 司儀（'+(M.r.h||'?')+' 號）：可以進到下一個流程了</div>';
   }
-  h2+='</div><div class="bhb-side">'+['c','h','w'].map(function(r){return '<div class="bh-rl r-'+r+'"><span class="ic">'+BH_RL[r].ic+'</span><b>'+BH_RL[r].n+'</b><span>'+(M.r[r]&&!roll?M.r[r]+' 號':'—')+'</span></div>';}).join('');
+  h2+='</div><div class="bhb-side">'+['c','h','w'].map(function(r){return '<div class="bh-rl r-'+r+'"><span class="ic">'+BH_RL[r].ic+'</span><b>'+BH_RL[r].n+'</b><span>'+(M.r[r]&&!rs[r]?M.r[r]+' 號':'—')+'</span></div>';}).join('');
   if(BH_HAND.indexOf(k)>=0)h2+=bhQHTML(M);
+  if(k!=='role'&&k!=='done')h2+=bhRbHTML(M,false);
   if(M.cdOn)h2+='<div class="bh-cdon">🤫 有人拿到「狀況卡」了！<br>大家當小偵探 🔍</div>';
-  h2+='</div></div>';
-  if(M.cr&&now-M.cr.t<6000)h2+='<div class="bh-crb big">🎤 主席提醒：「'+esc(BH_CR[M.cr.k])+'」</div>';
-  if(M.cdR&&now-M.cdR.t<9000)h2+='<div class="bh-found"><div class="t">🔍 '+M.cdR.by+' 號抓到狀況卡了！</div><div>'+M.cdR.to+' 號剛剛演的是：「'+esc(BH_CD[M.cdR.k].t)+'」</div><div class="ok">✅ 正確的做法：'+esc(BH_CD[M.cdR.k].ok)+'</div></div>';
-  return h2+'</div>';
+  return h2+'</div></div></div>';
 };
 BhMeet.prototype.meHTML=function(M,st){
-  var me=this.me(),rl=bhRole(M,me),k=bhK(M),cur=bhCur(M),ui=this.ui,now=BH.now(),self=this;
-  var roll=M.rs&&now-M.rs<2600&&now-M.rs>-3000;
-  var h2='<div class="bhp"><div class="bhp-top"><span class="bh-me r-'+rl+'">'+(roll?'🎲':BH_RL[rl].ic)+' '+me+' 號・'+(roll?'抽籤中…':'我是'+(rl==='m'?'同學':BH_RL[rl].n))+'</span><span class="bh-stg">'+(BH_STG[M.s].m<6?(BH_STG[M.s].m+1)+'. ':'')+esc(BH_STG[M.s].t)+'</span>'+bhEnHTML(M)+'</div>';
-  if(rl==='w'&&k!=='role')h2+='<div class="bhp-tabs"><button type="button" data-a="tab" data-v="m" class="'+(ui.tab==='m'?'on':'')+'">🗣️ 開會</button><button type="button" data-a="tab" data-v="w" class="'+(ui.tab==='w'?'on':'')+'">📝 寫會議紀錄（記錄的工作）</button></div>';
-  if(M.cr&&now-M.cr.t<6000)h2+='<div class="bh-crb">🎤 主席提醒：「'+esc(BH_CR[M.cr.k])+'」</div>';
-  if(M.cdR&&now-M.cdR.t<9000)h2+='<div class="bh-found sm"><div class="t">🔍 '+M.cdR.by+' 號抓到 '+M.cdR.to+' 號的狀況卡！</div><div class="ok">✅ 正確的做法：'+esc(BH_CD[M.cdR.k].ok)+'</div></div>';
+  var me=this.me(),rl=bhRole(M,me),k=bhK(M),cur=bhCur(M),ui=this.ui,now=BH.now(),rs=bhRollState(M,now),myRoll=rs.any&&(rl==='m'?rs.w:rs[rl]);
+  var h2='<div class="bhp"><div class="bhp-top"><span class="bh-me r-'+(myRoll?'m':rl)+'">'+(myRoll?'🎲':BH_RL[rl].ic)+' '+me+' 號・'+(myRoll?'抽籤中…':'我是'+(rl==='m'?'同學':BH_RL[rl].n))+'</span><span class="bh-stg">第 '+M.round+' 場・'+(BH_STG[M.s].m<6?(BH_STG[M.s].m+1)+'. ':'')+esc(BH_STG[M.s].t)+'</span>'+bhTmrHTML(M)+bhEnHTML(M)+'</div>';
   if(M.card)h2+=M.card.found?'<div class="bh-card2 got">🔍 你的狀況卡被 '+M.card.by+' 號發現了！<br>正確的做法：<b>'+esc(BH_CD[M.card.k].ok)+'</b></div>'
     :'<div class="bh-card2"><div class="t">🤫 秘密狀況卡（只有你看得到）</div><div class="b">「'+esc(BH_CD[M.card.k].t)+'」</div><div class="s">找機會演一次就好，不要太誇張。看看誰會發現！</div>'+(M.card.acted||this.pend('cardok').length?'<div class="s ok">✓ 演完了，等小偵探來抓</div>':'<button type="button" data-a="cardok">我演完了</button>')+'</div>';
   h2+='<div class="bhp-main">';
-  if(rl==='w'&&ui.tab==='w'&&k!=='role'){h2+=bhRecHTML(M,true,ui)+'<div class="sm mut">點一點就會存起來。散會的時候，大螢幕會秀出你寫的紀錄。</div></div>'+this.footHTML(M,rl)+'</div>';return h2;}
   if(k==='role'){
-    if(roll)h2+='<div class="bh-bigcard rolling">🎲<div>抽籤中…</div></div>';
-    else if(M.r.c&&M.r.h&&M.r.w)h2+='<div class="bh-bigcard pop r-'+rl+'"><div class="ic">'+BH_RL[rl].ic+'</div><div>你是</div><b>'+(rl==='m'?'同學':BH_RL[rl].n)+'</b><p>'+esc(BH_RL[rl].d)+'</p></div><div class="bh-others">主席 '+M.r.c+' 號・司儀 '+M.r.h+' 號・記錄 '+M.r.w+' 號</div>';
-    else h2+='<div class="bh-wait">🎲 等老師抽出主席、司儀、記錄…</div>';
+    if(myRoll||rs.any&&!M.r.c)h2+='<div class="bh-bigcard rolling">🎲<div>抽籤中…看大螢幕！</div></div>';
+    else if(M.r.c&&M.r.h&&M.r.w)h2+='<div class="bh-bigcard pop r-'+rl+'"><div class="ic">'+BH_RL[rl].ic+'</div><div>這一場你是</div><b>'+(rl==='m'?'同學':BH_RL[rl].n)+'</b><p>'+esc(BH_RL[rl].d)+'</p><div class="pw"><div class="lb">你的超能力：</div>'+BH_RL[rl].pw.map(function(x){return '<span>'+esc(x)+'</span>';}).join('')+'</div></div><div class="bh-others">主席 '+(rs.c?'?':M.r.c)+' 號・司儀 '+(rs.h?'?':M.r.h)+' 號・記錄 '+(rs.w?'?':M.r.w)+' 號</div>';
+    else h2+='<div class="bh-wait">🎲 等老師抽籤…</div>';
   }else if(k==='done'){
-    h2+='<div class="bh-fin">🎉 散會！謝謝你參加班會</div><div class="bh-mybd">'+bhBadges(M,me).map(function(x){return '<span>'+esc(x)+'</span>';}).join('')+'</div>';
+    h2+='<div class="bh-fin">🎉 散會！謝謝你參加第 '+M.round+' 場班會</div><div class="bh-mybd">'+bhBadges(M,me).map(function(x){return '<span>'+esc(x)+'</span>';}).join('')+'</div><div class="bh-others">下一場會換人當主席、司儀、記錄，等老師抽籤！</div>';
   }else{
+    if(rl==='w')h2+=this.recHTML(M);
     if(cur){var mine=(cur[0]==='c'&&rl==='c')||(cur[0]==='h'&&rl==='h')||(cur[0]==='t'&&rl==='h');
       if(mine&&cur[0]==='t')h2+='<div class="bh-myline"><div class="lab">老師在講評，等老師講完，按下面的按鈕</div><button type="button" class="bh-bigbtn" data-a="say">老師講完了 ▶</button></div>';
-      else if(mine){var pk=cur[1]==='*';h2+='<div class="bh-myline"><div class="lab">'+(pk?'輪到你報告了！先選一句，再大聲唸出來：':'輪到你說了！大聲唸出來：')+'</div>';
+      else if(mine&&cur[1]==='#'&&!M.tpOk){h2+='<div class="bh-myline"><div class="lab">🎡 主席的超能力：選今天要討論的題目！全班的畫面會跟著你換。</div><div class="bh-tcs me">'+M.tc.map(function(i){var t=BH_TP[i];return '<button type="button" class="bh-tcard" data-a="tp" data-v="'+i+'"><div class="ic">'+t.ic+'</div><div>'+esc(t.t)+'</div></button>';}).join('')+'</div>'+((M.tcr||0)<2?'<button type="button" class="bh-sb" data-a="tpr">🎡 都不喜歡，換一批（還可以換 '+(2-(M.tcr||0))+' 次）</button>':'')+'</div>';}
+      else if(mine){var pk=cur[1]==='*',dec=cur[1]==='{dec}';h2+='<div class="bh-myline"><div class="lab">'+(pk?'輪到你報告了！先選一句，再大聲唸出來：':dec?'🔨 主席：大聲宣布決議，再按「敲槌」，全班的畫面都會看到！':'輪到你說了！大聲唸出來：')+'</div>';
         if(pk)h2+='<div class="bh-picks">'+BH_CREP.map(function(s,i){return '<button type="button" data-a="crk" data-v="'+i+'" class="'+(ui.crk===i?'on':'')+'">'+esc(s)+'</button>';}).join('')+'</div>';
         else h2+='<div class="say">「'+esc(bhLineText(M,cur))+'」</div>';
-        h2+='<button type="button" class="bh-bigbtn" data-a="say"'+(pk&&ui.crk<0?' disabled':'')+'>我說完了 ▶</button></div>';}
+        h2+='<button type="button" class="bh-bigbtn'+(dec?' gavel':'')+'" data-a="say"'+(pk&&ui.crk<0?' disabled':'')+'>'+(dec?'🔨 敲槌！':'我說完了 ▶')+'</button></div>';}
+      else if(cur[1]==='#'&&!M.tpOk)h2+='<div class="bh-wait sm">🎡 主席（'+M.r.c+' 號）正在選今天的題目…</div>';
       else h2+=bhLineHTML(M,cur)+'<div class="bh-listen">👂 專心聽</div>';
     }
     if(!cur||(k==='vote'&&M.dec))h2+=this.actHTML(M,me,rl,k);
@@ -2307,10 +2370,21 @@ BhMeet.prototype.meHTML=function(M,st){
   h2+='</div>'+this.footHTML(M,rl)+'</div>';
   return h2;
 };
+/* 記錄的工作區：把事情寫進全班看得到的紀錄、數舉手票 */
+BhMeet.prototype.recHTML=function(M){
+  var its=bhRecItems(M),todo=its.filter(function(x){return !x.done;}),pend=this.pend('rb').map(function(a){return a.k;}),V=M.V,h2='<div class="bh-wrec"><div class="lab">📝 記錄的超能力：你寫的紀錄，全班的畫面都看得到</div>';
+  if(V&&V.open&&V.m==='hand'){var oi=V.o[V.cur],kc=V.k&&V.k[oi];
+    if(kc==null){var mx=(M.pp||[]).length||7,nums=[];for(var i=0;i<=mx;i++)nums.push(i);
+      h2+='<div class="bh-cnt"><b>✋ 數一數：'+(oi==='NO'?'不贊成':'贊成「'+esc(bhPT(M,oi))+'」')+'的有幾個人舉手？</b><div class="bh-chips">'+nums.map(function(x){return '<button type="button" data-a="cnt" data-v="'+x+'">'+x+' 人</button>';}).join('')+'</div>'+(V.kx&&V.kx[oi]?'<div class="warn">好像不對喔，再仔細數一次！</div>':'<div class="sm">看大家真的舉起來的手，數好再按（數對了全班才會看到數字）</div>')+'</div>';}
+    else h2+='<div class="sm ok">✓ 數好了：'+kc+' 人</div>';}
+  if(todo.length)h2+='<div class="bh-todo">'+todo.map(function(x){var p=pend.indexOf(x.k)>=0;return '<button type="button" class="'+(x.k==='d'?'d':'')+'" data-a="rb" data-v="'+esc(x.k)+'"'+(p?' disabled':'')+'>'+(p?'寫上去中…':x.k==='d'?'📌 蓋章：':'✍️ 記下來：')+esc(x.t)+'</button>';}).join('')+'</div>';
+  else h2+='<div class="sm mut">目前的重要事情都記好了 👍 有新的事會跳出來</div>';
+  return h2+'</div>';
+};
 BhMeet.prototype.speakHTML=function(M,me,rl,k){
   var ui=this.ui,h2='';
   if(M.fl===me){
-    h2+='<div class="bh-myturn"><div class="lab">🎤 輪到你了！</div>';
+    h2+='<div class="bh-myturn"><div class="lab">🎤 輪到你了！'+((M.rx||[]).length?'<span class="cheer">收到鼓勵 '+(M.rx||[]).map(function(r){return BH_RX[r.e];}).join('')+'</span>':'')+'</div>';
     if(k==='rep'){h2+='<div class="sm">我是：</div><div class="bh-picks sm2">'+BH_JOB.map(function(j){return '<button type="button" data-a="rj" data-v="'+esc(j)+'" class="'+(ui.rj===j?'on':'')+'">'+esc(j)+'</button>';}).join('')+'</div>';
       h2+='<div class="sm">我要報告：</div><div class="bh-picks">'+BH_RS.map(function(s,i){return '<button type="button" data-a="rs" data-v="'+i+'" class="'+(ui.rs===i?'on':'')+'">'+esc(s.replace('{n}','＿'))+'</button>';}).join('')+'</div>';
       if(ui.rs>=0&&BH_RS[ui.rs].indexOf('{n}')>=0)h2+='<div class="sm">要謝謝幾號？</div><div class="bh-chips">'+[1,2,3,4,5,6,7].filter(function(n){return n!==me;}).map(function(n){return '<button type="button" data-a="rn2" data-v="'+n+'" class="'+(ui.rn2===n?'on':'')+'">'+n+' 號</button>';}).join('')+'</div>';
@@ -2320,12 +2394,13 @@ BhMeet.prototype.speakHTML=function(M,me,rl,k){
     h2+='<button type="button" class="bh-bigbtn" data-a="fin">我說完了 ✓</button></div>';
   }else{
     h2+=bhSpotHTML(M,me);
+    if(M.fl)h2+='<div class="bh-rxbar"><span class="lb">給 '+M.fl+' 號鼓勵：</span>'+BH_RX.map(function(e,i){return '<button type="button" data-a="rx" data-v="'+i+'">'+e+'</button>';}).join('')+'</div>';
     var up=this.handUp(),lab={rep:'✋ 我要報告',disc:'✋ 我想發言',vote:'✋ 我想說說看',tmp:'✋ 我有臨時動議'}[k];
     h2+='<button type="button" class="bh-hand'+(up?' up':'')+'" data-a="hand">'+(up?'✋ 舉手中…（點一下放下）':lab)+'</button>';
     if(up){var pos=M.q.indexOf(me);h2+='<div class="sm">'+(pos>=0?'你排第 '+(pos+1)+' 個，等主席請你說話':'送出中…')+'</div>';}
   }
   h2+=bhQHTML(M);
-  if(rl==='c'){h2+='<div class="bh-chair"><div class="lab">🎤 主席：請舉手的人輪流說</div><div class="bh-chips">'+(M.q.length?M.q.map(function(n){return '<button type="button" data-a="give" data-v="'+n+'">請 '+n+' 號'+(k==='rep'?'報告':'發言')+'</button>';}).join(''):'<span class="sm">還沒有人舉手</span>')+'</div>'+(M.fl&&M.fl!==me?'<button type="button" data-a="fin">謝謝 '+M.fl+' 號，請下一位</button>':'')+'</div>';}
+  if(rl==='c'){h2+='<div class="bh-chair"><div class="lab">🎤 主席的超能力：點誰說話，全班的畫面就會亮出他</div><div class="bh-chips">'+(M.q.length?M.q.map(function(n){return '<button type="button" data-a="give" data-v="'+n+'">請 '+n+' 號'+(k==='rep'?'報告':'發言')+'</button>';}).join(''):'<span class="sm">還沒有人舉手</span>')+'</div>'+(M.fl&&M.fl!==me?'<button type="button" data-a="fin">謝謝 '+M.fl+' 號，請下一位</button>':'')+'</div>';}
   return h2;
 };
 BhMeet.prototype.actHTML=function(M,me,rl,k){
@@ -2340,9 +2415,10 @@ BhMeet.prototype.actHTML=function(M,me,rl,k){
     return h2;
   }
   if(k==='prop'){
-    var mineN=M.P.filter(function(p){return p.by===me;}).length+this.pend('prop').length,ideas=(BH_TP.filter(function(t){return t.t===M.tp;})[0]||{i:[]}).i;
+    var mineN=M.P.filter(function(p){return p.by===me;}).length+this.pend('prop').length,ideas=(BH_TP.filter(function(t){return t.t===M.tp;})[0]||{i:[]}).i,tu=M.tmr&&BH.now()>=M.tmr.e;
     h2+='<div class="bh-notes">'+M.P.map(function(p){var b='';if(p.by===me)b='<button type="button" class="bh-sb un" data-a="unprop" data-v="'+esc(p.i)+'">撤回我的提案</button>';else{var on=self.secOn(p);b='<button type="button" class="bh-sb'+(on?' on':'')+'" data-a="sec" data-v="'+esc(p.i)+'">'+(on?'✓ 我附議了':'🤝 我附議')+'</button>';}return bhNoteHTML(M,p,b);}).join('')+this.pend('prop').map(function(a){return '<div class="bh-note pend"><div class="t">'+esc(a.x)+'</div><div class="by">送出中…</div></div>';}).join('')+'</div>';
-    if(mineN<3){h2+='<div class="bh-propbox"><div class="lab">💡 我要提案（最多 3 個）</div>';
+    if(tu)h2+='<div class="sm warn">⏰ 提案時間到了，還可以附議別人的想法</div>';
+    else if(mineN<3){h2+='<div class="bh-propbox"><div class="lab">💡 我要提案（最多 3 個）</div>';
       if(ideas.length)h2+='<div class="bh-picks sm2">'+ideas.map(function(s){var ex=M.P.filter(function(p){return p.t===s;})[0];return '<button type="button" data-a="idea" data-v="'+esc(s)+'"'+(ex&&(ex.by===me||ex.sec.indexOf(me)>=0)?' disabled':'')+'>'+esc(s)+(ex?'<small>（有人提了，點了＝附議）</small>':'')+'</button>';}).join('')+'</div>';
       h2+='<div class="bh-inrow">自己寫：<input data-k="px" maxlength="16" placeholder="我的想法" value="'+esc(ui.px)+'"><button type="button" data-a="propx">提案</button></div></div>';}
     else h2+='<div class="sm">你已經提了 3 個，可以去附議別人的想法 🤝</div>';
@@ -2351,18 +2427,19 @@ BhMeet.prototype.actHTML=function(M,me,rl,k){
   }
   if(k==='vote'){
     var V=M.V,pp=M.pp||[];
-    if(!V){if(rl==='c')h2+='<div class="bh-chair big"><div class="lab">🎤 主席：選一種表決的方式，然後說出來</div><div class="bh-two"><button type="button" data-a="vm" data-v="hand">✋ 舉手表決<small>一個一個問，贊成的舉手</small></button><button type="button" data-a="vm" data-v="ballot">🗳️ 投票表決<small>每個人偷偷投一票</small></button></div></div>';
+    if(!V){if(rl==='c')h2+='<div class="bh-chair big"><div class="lab">🎤 主席的超能力：選一種表決的方式，全班的畫面會一起換</div><div class="bh-two"><button type="button" data-a="vm" data-v="hand">✋ 舉手表決<small>一個一個問，記錄要數舉手的人</small></button><button type="button" data-a="vm" data-v="ballot">🗳️ 投票表決<small>每個人偷偷投一票，主席開票</small></button></div></div>';
       else h2+='<div class="bh-wait sm">等主席選表決的方式…</div>';return h2;}
     var my=this.voted();
-    if(V.open&&V.m==='hand'){var cu=V.o[V.cur];
-      h2+='<div class="bh-vcall">贊成'+(cu==='NO'?'不贊成的':'「'+esc(bhPT(M,cu))+'」的')+'請舉手</div>';
-      if(!my)h2+='<button type="button" class="bh-bigbtn" data-a="vote" data-v="'+esc(cu)+'">✋ 我贊成'+(cu==='NO'?'（不贊成）':'')+'</button><div class="sm">每個人只能舉手一次喔</div>';
-      else h2+='<div class="bh-ok">✓ 你已經舉手了'+(my!=='?'?'：'+esc(bhOptLabel(M,my)):'')+'</div>';
-      if(rl==='c')h2+='<button type="button" class="bh-bigbtn alt" data-a="vnext">'+(V.cur+1<V.o.length?'下一個選項 ▶':'公布結果 ▶')+'</button>';
+    if(V.open&&V.m==='hand'){var cu=V.o[V.cur],kc=V.k&&V.k[cu];
+      h2+='<div class="bh-vcall">'+(cu==='NO'?'不贊成的':'贊成「'+esc(bhPT(M,cu))+'」的')+'請舉手'+(kc!=null?'<b>'+kc+' 人</b>':'')+'</div>';
+      if(!my&&kc==null)h2+='<div class="sm">贊成的人：把手真的舉起來，再按下面的按鈕（每個人只能舉手一次）</div><button type="button" class="bh-bigbtn" data-a="vote" data-v="'+esc(cu)+'">✋ 我贊成'+(cu==='NO'?'（不贊成）':'')+'</button>';
+      else if(my)h2+='<div class="bh-ok">✓ 你舉手了'+(my!=='?'?'：'+esc(bhOptLabel(M,my)):'')+'</div>';
+      if(kc==null&&rl!=='w')h2+='<div class="sm mut">📝 記錄（'+(M.r.w||'?')+' 號）正在數…</div>';
+      if(rl==='c')h2+='<button type="button" class="bh-bigbtn alt" data-a="vnext"'+(kc==null&&M.r.w?' disabled':'')+'>'+(kc==null&&M.r.w?'等記錄數完…':(V.cur+1<V.o.length?'下一個選項 ▶':'公布結果 ▶'))+'</button>';
     }else if(V.open){
       if(!my){h2+='<div class="lab">🗳️ 選一個，再按「投下去」（別人看不到你投誰）</div><div class="bh-opts">'+V.o.map(function(i){return '<button type="button" data-a="vsel" data-v="'+esc(i)+'" class="'+(ui.vsel===i?'on':'')+'">'+esc(bhOptLabel(M,i))+'</button>';}).join('')+'</div><button type="button" class="bh-bigbtn" data-a="ballot"'+(ui.vsel&&V.o.indexOf(ui.vsel)>=0?'':' disabled')+'>🗳️ 投下去</button>';}
       else h2+='<div class="bh-ok">✓ 你投好了，等主席開票（已投 '+V.vs.length+' / '+pp.length+'）</div>';
-      if(rl==='c')h2+='<button type="button" class="bh-bigbtn alt" data-a="vrev">開票 ▶（已投 '+V.vs.length+' / '+pp.length+'）</button>';
+      if(rl==='c')h2+='<button type="button" class="bh-bigbtn alt" data-a="vrev">🎁 開票！（已投 '+V.vs.length+' / '+pp.length+'）</button>';
     }else{
       h2+=bhVoteBoardHTML(M).replace(/^<div class="bh-vt">.*?<\/div>/,'');
       if(V.tie&&rl==='c')h2+='<button type="button" class="bh-bigbtn alt" data-a="revote">平手，再表決一次 ▶</button>';
@@ -2375,49 +2452,61 @@ BhMeet.prototype.actHTML=function(M,me,rl,k){
 };
 BhMeet.prototype.footHTML=function(M,rl){
   var k=bhK(M),me=this.me(),ui=this.ui,h2='<div class="bhp-foot">';
-  if(rl==='c'&&k!=='role'&&k!=='done')h2+='<div class="bh-crtools"><span class="lab">🎤 主席提醒：</span>'+BH_CR.map(function(s,i){return '<button type="button" data-a="cr" data-v="'+i+'">'+esc(s)+'</button>';}).join('')+'</div>';
-  if(rl==='h'&&bhCanNext(M)){var nx=BH_STG[M.s+1];h2+='<button type="button" class="bh-next" data-a="next">'+(k==='role'?'📢 開始開會 ▶':k==='end'?'🎉 散會！':'📢 下一個流程：'+esc(nx.t)+' ▶')+'</button>';}
+  if(rl==='h'&&k!=='done'){var tOk=['rep','prop','disc','tmp'].indexOf(k)>=0&&!bhCur(M);
+    h2+='<div class="bh-htools"><span class="lab">📢 司儀的超能力：</span>'+(tOk?'<button type="button" data-a="tmr" data-v="60">⏱ 1 分</button><button type="button" data-a="tmr" data-v="120">⏱ 2 分</button><button type="button" data-a="tmr" data-v="180">⏱ 3 分</button>'+(M.tmr?'<button type="button" data-a="tmr" data-v="0">停</button>':''):'')+(k!=='role'?'<button type="button" data-a="bell">🔔 搖鈴請安靜</button>':'')+'</div>';
+    if(bhCanNext(M)){var nx=BH_STG[M.s+1];h2+='<button type="button" class="bh-next" data-a="next">'+(k==='role'?'📢 開始開會 ▶':k==='end'?'🎉 散會！':'📢 下一個流程：'+esc(nx.t)+' ▶')+'</button>';}}
   else if(rl!=='h'&&bhCanNext(M)&&k!=='role')h2+='<div class="sm mut">等 📢 司儀（'+M.r.h+' 號）宣布下一個流程</div>';
+  if(rl==='c'&&k!=='role'&&k!=='done')h2+='<div class="bh-crtools"><span class="lab">🎤 主席提醒：</span>'+BH_CR.map(function(s,i){return '<button type="button" data-a="cr" data-v="'+i+'">'+esc(s)+'</button>';}).join('')+'</div>';
   if(M.cdOn&&!M.card&&k!=='done'){var left=2-(M.dtry||0)-this.pend('det').length;
     if(ui.det){h2+='<div class="bh-det"><div class="lab">🔍 誰拿到狀況卡？</div><div class="bh-chips">'+[1,2,3,4,5,6,7].filter(function(n){return n!==me;}).map(function(n){return '<button type="button" data-a="dn" data-v="'+n+'" class="'+(ui.det.n===n?'on':'')+'">'+n+' 號</button>';}).join('')+'</div><div class="lab">他做了什麼不適合的事？</div><div class="bh-picks sm2">'+BH_CD.map(function(c,i){return '<button type="button" data-a="dk" data-v="'+i+'" class="'+(ui.det.k===i?'on':'')+'">'+esc(c.t)+'</button>';}).join('')+'</div><button type="button" data-a="dgo"'+(ui.det.n&&ui.det.k>=0?'':' disabled')+'>送出（還可以猜 '+left+' 次）</button><button type="button" data-a="det">先不要</button></div>';}
     else h2+=left>0?'<button type="button" class="bh-detb" data-a="det">🔍 我發現狀況卡！（還可以猜 '+left+' 次）</button>':'<span class="sm mut">🔍 你猜過 2 次了，看看別人會不會抓到</span>';
     if((M.dtry||0)>0&&!ui.det)h2+='<span class="sm mut">剛剛沒猜中，再仔細觀察</span>';}
   return h2+'</div>';
 };
-function bhSummary(st){var M=BH.M;if(!M)return '班會';return '班會：'+esc(BH_STG[M.s].t);}
+function bhSummary(st){var M=BH.M;if(!M)return '班會';return '第 '+M.round+' 場・'+esc(BH_STG[M.s].t);}
 function bhTile(box,st,big,n){
   var M=BH.M;if(!M){box.innerHTML='';return;}var rl=bhRole(M,n),b=[];
   if(M.fl===n)b.push('<b class="g">🎤 發言中</b>');if(M.q.indexOf(n)>=0)b.push('<b class="a">✋ 舉手中（第 '+(M.q.indexOf(n)+1)+' 個）</b>');
   var ps=M.P.filter(function(p){return p.by===n;});if(ps.length)b.push('💡 '+ps.map(function(p){return '「'+esc(p.t)+'」'+(p.sec.length?'🤝'+p.sec.length:'');}).join(' '));
   var sc=M.P.filter(function(p){return p.sec.indexOf(n)>=0;}).length;if(sc)b.push('🤝 附議 '+sc+' 個');
   if(M.V&&M.V.vs.indexOf(n)>=0)b.push('🗳️ 已表決');
-  var S=(M.ST&&M.ST[n])||{};if(S.spk)b.push('🗣️ 發言 '+S.spk+' 次');
+  var S=(M.ST&&M.ST[n])||{};if(S.spk)b.push('🗣️ 發言 '+S.spk+' 次');if(S.rx)b.push('👏 鼓勵 '+S.rx);
+  if(rl==='w'){var its=bhRecItems(M);b.push('✍️ 紀錄 '+its.filter(function(x){return x.done;}).length+'/'+its.length);}
   if(M.cd&&M.cd.to===n)b.push('<b class="a">🤫 狀況卡'+(M.cd.found?'（被發現）':M.cd.acted?'（演完了）':'')+'</b>');
   box.innerHTML='<div class="bht'+(big?' big':'')+'"><div class="rl r-'+rl+'">'+BH_RL[rl].ic+' '+(rl==='m'?'同學':BH_RL[rl].n)+'</div>'+b.map(function(x){return '<div>'+x+'</div>';}).join('')+'</div>';
 }
 
 /* ---------- 老師的班會控制台 ---------- */
 function bhTeacher(o){
-  var M=lsGet('jiao.t.bh',null);if(!M||!M.mid||!M.r||!Array.isArray(M.P))M=bhFresh(0);if(!M.ack)M.ack={};if(!M.ST)M.ST={};
+  var M=lsGet('jiao.t.bh',null);if(!M||!M.mid||!M.r||!Array.isArray(M.P)||!Array.isArray(M.rb))M=bhFresh();if(!M.ack)M.ack={};if(!M.ST)M.ST={};
+  var cnt=lsGet('jiao.t.bhcnt',{})||{};
   var bar=o.bar,saveT=null,bcT=null,on=false;
   bar.className='bh-tbar';bar.hidden=true;
-  bar.innerHTML='<div class="r"><b class="hd">🏛️ 班會控制台</b><label>題目 <select class="tp"></select></label><input class="tpc" maxlength="20" placeholder="或自己打題目"><button class="btn tpok" type="button">用這個題目</button>'+
-    '<span class="sep"></span><span class="roles"></span><button class="btn roll" type="button">🎲 抽角色</button><span class="sep"></span><button class="btn newm" type="button">↺ 新的班會</button></div>'+
+  bar.innerHTML='<div class="r"><b class="hd">🏛️ 班會控制台</b><b class="rnd"></b><button class="btn draw" type="button">🎲 抽籤（輪流）</button><span class="roles"></span>'+
+    '<span class="sep"></span><button class="btn nround" type="button">▶ 下一場（換人＋抽籤）</button><button class="btn newm" type="button">↺ 全部重來</button></div>'+
     '<div class="r"><button class="btn prev" type="button" title="回到上一個流程">◀</button><b class="stg"></b><button class="btn nxt" type="button">▶ 下一步</button><span class="ctx"></span>'+
-    '<span class="sep"></span><button class="btn card" type="button">🤫 發狀況卡</button><span class="cdst"></span><button class="btn clap" type="button">👏 能量 +1</button></div><div class="r info"></div>';
+    '<span class="sep"></span><button class="btn card" type="button">🤫 發狀況卡</button><span class="cdst"></span><button class="btn clap" type="button">👏 能量 +1</button></div>'+
+    '<div class="r"><label>老師指定題目 <select class="tp"></select></label><input class="tpc" maxlength="22" placeholder="或自己打題目"><button class="btn tpok" type="button">用這個題目</button><span class="sep"></span><span class="cntv"></span><button class="btn cntclr" type="button">清除輪流紀錄</button></div><div class="r info"></div>';
   var $=function(s){return bar.querySelector(s);};
-  var tpSel=$('.tp');BH_TP.forEach(function(t,i){var op=document.createElement('option');op.value=i;op.textContent=t.t;tpSel.appendChild(op);});var opC=document.createElement('option');opC.value=-1;opC.textContent='（自己打的題目）';tpSel.appendChild(opC);
+  var tpSel=$('.tp');tpSel.innerHTML='<option value="-1">（讓主席抽）</option>'+BH_TP.map(function(t,i){return '<option value="'+i+'">'+esc(t.ic+' '+t.t)+'</option>';}).join('');
   var rsel={};['c','h','w'].forEach(function(r){var l=h('label',{},BH_RL[r].ic+BH_RL[r].n+' '),s=h('select',{});l.appendChild(s);$('.roles').appendChild(l);rsel[r]=s;
-    s.addEventListener('change',function(){var n=+s.value;['c','h','w'].forEach(function(x){if(x!==r&&M.r[x]===n&&n)M.r[x]=0;});M.r[r]=n;changed();});});
+    s.addEventListener('change',function(){var n=+s.value;['c','h','w'].forEach(function(x){if(x!==r&&M.r[x]===n&&n)M.r[x]=0;});M.r[r]=n;M.rs=0;changed();});});
   function fillRoles(){['c','h','w'].forEach(function(r){var s=rsel[r];s.innerHTML='<option value="0">—</option>';for(var n=1;n<=7;n++){var op=document.createElement('option');op.value=n;op.textContent=n+' 號'+(o.names[n]?' '+o.names[n]:'');s.appendChild(op);}s.value=String(M.r[r]||0);});}
   function pp(){var a=[];for(var n=1;n<=7;n++){var s=o.seats[n];if(s&&o.online(s)&&s.st&&s.st.id==='bhm')a.push(n);}return a;}
   function publish(){BH.set(bhView(M,0,pp()));}
-  function changed(){publish();clearTimeout(saveT);saveT=setTimeout(function(){lsSet('jiao.t.bh',M);},400);if(!bcT)bcT=setTimeout(function(){bcT=null;o.broadcast();},60);render();o.render();}
+  function countRoles(){if(M.rc||M.s<1)return;M.rc=1;['c','h','w'].forEach(function(r){var n=M.r[r];if(!n)return;var c=cnt[n]=cnt[n]||{c:0,h:0,w:0};c[r]=(c[r]||0)+1;});lsSet('jiao.t.bhcnt',cnt);}
+  function changed(){countRoles();publish();clearTimeout(saveT);saveT=setTimeout(function(){lsSet('jiao.t.bh',M);},400);if(!bcT)bcT=setTimeout(function(){bcT=null;o.broadcast();},60);render();o.render();}
   function T(a){a.s=M.s;a.t=Date.now();if(bhApply(M,0,a,{pp:pp()}))changed();}
-  tpSel.addEventListener('change',function(){var i=+tpSel.value;if(i<0)return;M.ti=i;M.tp=BH_TP[i].t;lsSet('jiao.t.bhtp',i);changed();});
-  $('.tpok').addEventListener('click',function(){var v=bhS($('.tpc').value,20);if(!v)return;M.ti=-1;M.tp=v;$('.tpc').value='';changed();});
-  $('.roll').addEventListener('click',function(){var a=pp();if(a.length<3)a=[1,2,3,4,5,6,7];if((M.r.c||M.r.h||M.r.w)&&!confirm('重新抽主席、司儀、記錄嗎？'))return;a=shuffle(a);M.r={c:a[0],h:a[1],w:a[2]};M.rs=Date.now();changed();});
-  $('.newm').addEventListener('click',function(){if(!confirm('開一個新的班會嗎？（現在的班會紀錄會清掉）'))return;M=bhFresh(M.ti,M.tp);changed();});
+  /* 輪流抽籤：當過越少次的人越先；這個角色當過的人最後 */
+  function draw(){var a=pp();if(a.length<3)a=[1,2,3,4,5,6,7];var pick={},used={};
+    ['c','h','w'].forEach(function(r){var best=null,bs=1e9;shuffle(a).forEach(function(n){if(used[n])return;var c=cnt[n]||{},tot=(c.c||0)+(c.h||0)+(c.w||0),sc=tot*10+(c[r]||0)*6;if(sc<bs){bs=sc;best=n;}});pick[r]=best;used[best]=1;});
+    M.r=pick;M.rs=Date.now();M.rc=0;if(M.s!==0)bhGo(M,0);}
+  $('.draw').addEventListener('click',function(){if(M.s>0&&!confirm('這一場已經開始了，要重新抽籤嗎？'))return;draw();changed();});
+  $('.nround').addEventListener('click',function(){if(bhK(M)!=='done'&&!confirm('這一場還沒散會，確定要開下一場嗎？'))return;
+    var hist=(M.hist||[]).slice();if(M.rc)hist.push({n:M.round,r:M.r,tp:M.tp,dec:M.dec?('「'+M.dec.t+'」'+(M.dec.pass?'通過':'沒通過')):''});
+    M=bhFresh({round:M.round+(M.rc?1:0),hist:hist});draw();changed();});
+  $('.newm').addEventListener('click',function(){if(!confirm('全部重來嗎？（班會紀錄和之前的場次都會清掉，輪流紀錄會留著）'))return;M=bhFresh();changed();});
+  $('.cntclr').addEventListener('click',function(){if(!confirm('清除「誰當過主席、司儀、記錄」的紀錄嗎？'))return;cnt={};lsSet('jiao.t.bhcnt',cnt);render();});
   $('.prev').addEventListener('click',function(){if(M.s>0){bhGo(M,M.s-1);changed();}});
   $('.nxt').addEventListener('click',function(){var cur=bhCur(M);if(cur){T({a:'say',ln:M.ln});return;}
     var k=bhK(M);if(k==='done')return;if(k==='vote'&&!M.dec&&!confirm('還沒有表決結果，確定要跳到臨時動議嗎？'))return;if(M.fl)bhEndSpk(M,null);bhGo(M,M.s+1);changed();});
@@ -2426,22 +2515,29 @@ function bhTeacher(o){
     var a=pp().filter(function(n){return n!==M.r.c&&n!==M.r.h&&n!==M.r.w;});if(!a.length)a=pp().filter(function(n){return n!==M.r.c;});if(!a.length){alert('還沒有孩子進到班會');return;}
     var ks=[0,1,2,3,4];if(M.s>=5)ks.push(5);M.cd={to:pick(a),k:pick(ks),t:Date.now(),found:0,by:0,tr:{},acted:0};changed();});
   $('.clap').addEventListener('click',function(){M.en=Math.min(BH_EMAX,(M.en||0)+1);changed();});
+  tpSel.addEventListener('change',function(){var i=+tpSel.value;if(i<0){if(M.s<=1&&!(bhK(M)==='open'&&M.ln>1)){M.tpOk=0;M.tp='';M.tc=bhTopicPick(M);}changed();return;}M.tp=BH_TP[i].t;M.tpOk=1;M.tpt=Date.now();changed();});
+  $('.tpok').addEventListener('click',function(){var v=bhS($('.tpc').value,22);if(!v)return;M.tp=v;M.tpOk=1;M.tpt=Date.now();$('.tpc').value='';changed();});
   bar.addEventListener('click',function(e){var b=e.target.closest('[data-ta]');if(!b||!bar.contains(b))return;var a=b.dataset.ta,v=b.dataset.v;
-    if(a==='give')T({a:'give',n:+v});else if(a==='fin')T({a:'fin'});else if(a==='vm')T({a:'vm',m:v});else T({a:a});});
+    if(a==='give')T({a:'give',n:+v});else if(a==='fin')T({a:'fin'});else if(a==='vm')T({a:'vm',m:v});else if(a==='tp')T({a:'tp',i:+v});else T({a:a});});
   function render(){
     if(!on)return;var k=bhK(M),cur=bhCur(M),P=pp();
-    if(document.activeElement!==tpSel)tpSel.value=String(M.ti>=0?M.ti:-1);
+    $('.rnd').textContent='第 '+M.round+' 場';
+    if(document.activeElement!==tpSel){var ti=-1;BH_TP.forEach(function(t,i){if(M.tpOk&&t.t===M.tp)ti=i;});tpSel.value=String(ti);}
     ['c','h','w'].forEach(function(r){if(document.activeElement!==rsel[r])rsel[r].value=String(M.r[r]||0);});
     $('.stg').textContent=(BH_STG[M.s].m<6?(BH_STG[M.s].m+1)+'. ':'')+BH_STG[M.s].t+(cur?'　｜　'+(cur[0]==='t'?'老師講評':BH_RL[cur[0]].n+'說：「'+bhLineText(M,cur).slice(0,18)+'…」'):'');
-    var c='';if(BH_HAND.indexOf(k)>=0&&!cur){M.q.forEach(function(n){c+='<button class="btn" type="button" data-ta="give" data-v="'+n+'">請 '+n+' 號說</button>';});if(M.fl)c+='<button class="btn" type="button" data-ta="fin">'+M.fl+' 號說完了</button>';}
+    var c='';
+    if(k==='open'&&cur&&cur[1]==='#'&&!M.tpOk)c+=M.tc.map(function(i){return '<button class="btn" type="button" data-ta="tp" data-v="'+i+'">選：'+esc(BH_TP[i].t.slice(0,8))+'…</button>';}).join('');
+    if(BH_HAND.indexOf(k)>=0&&!cur){M.q.forEach(function(n){c+='<button class="btn" type="button" data-ta="give" data-v="'+n+'">請 '+n+' 號說</button>';});if(M.fl)c+='<button class="btn" type="button" data-ta="fin">'+M.fl+' 號說完了</button>';}
     if(k==='prop'&&!cur)c+='<button class="btn" type="button" data-ta="endprop">提案結束</button>';
     if(k==='disc')c+='<button class="btn" type="button" data-ta="enddisc">討論結束</button>';
     if(k==='vote'&&!cur){var V=M.V;if(!V&&!M.dec)c+='<button class="btn" type="button" data-ta="vm" data-v="hand">✋ 舉手表決</button><button class="btn" type="button" data-ta="vm" data-v="ballot">🗳️ 投票表決</button>';
-      else if(V&&V.open)c+=V.m==='hand'?'<button class="btn" type="button" data-ta="vnext">下一個選項</button>':'<button class="btn" type="button" data-ta="vrev">開票</button>';
+      else if(V&&V.open)c+=V.m==='hand'?'<button class="btn" type="button" data-ta="vnext">下一個選項（記錄沒數就直接公布）</button>':'<button class="btn" type="button" data-ta="vrev">開票</button>';
       else if(V&&V.tie)c+='<button class="btn" type="button" data-ta="revote">再表決一次</button>';}
     $('.ctx').innerHTML=c;
     var cd=M.cd;$('.cdst').textContent=cd?(cd.to+' 號：「'+BH_CD[cd.k].t.slice(0,10)+'…」'+(cd.found?'→ '+cd.by+' 號抓到了':cd.acted?'（演完了）':'（還沒演）')):'';
-    var inf='在班會裡：'+(P.length?P.map(function(n){return n+'號';}).join(' '):'還沒有人')+'　｜　能量 '+(M.en||0)+'/'+BH_EMAX;
+    var cv=[];['c','h','w'].forEach(function(r){var ns=[];for(var n=1;n<=7;n++)if(cnt[n]&&cnt[n][r])ns.push(n+(cnt[n][r]>1?'×'+cnt[n][r]:''));cv.push(BH_RL[r].n+'：'+(ns.length?ns.join(' '):'—'));});
+    $('.cntv').textContent='當過的人｜'+cv.join('｜');
+    var inf='在班會裡：'+(P.length?P.map(function(n){return n+'號';}).join(' '):'還沒有人')+'　｜　能量 '+(M.en||0)+'/'+BH_EMAX+(M.tpOk?'　｜　題目：'+M.tp:'');
     if(M.q.length)inf+='　｜　✋ '+M.q.join('、')+' 號';if(M.fl)inf+='　｜　🎤 '+M.fl+' 號說話中';
     if(M.P.length)inf+='　｜　提案 '+M.P.length+' 個（有附議 '+M.P.filter(function(p){return p.sec.length;}).length+'）';
     if(M.V)inf+='　｜　表決 '+M.V.vs.length+'/'+P.length;if(M.dec)inf+='　｜　決議：「'+M.dec.t+'」'+(M.dec.pass?'通過':'沒通過');
@@ -2584,6 +2680,33 @@ function bhTeacher(o){
 '.bh-tbar .stg{font-size:17px}.bh-tbar .ctx{display:inline-flex;gap:6px;flex-wrap:wrap}.bh-tbar .ctx .btn{background:#fff3d6;border-color:#f5b83d}.bh-tbar .cdst{color:#5b3fa0;font-weight:700}.bh-tbar .info{color:var(--muted)}'+
 '.tile-zi.bhbox{display:block;overflow:auto;padding:8px}.bht{font-size:14px;line-height:1.6}.bht .rl{font-size:18px;font-weight:800}.bht .rl.r-c{color:#a35f00}.bht .rl.r-h{color:#1f5a92}.bht .rl.r-w{color:#1d7a45}.bht .g{color:var(--green)}.bht .a{color:#a35f00}.bht.big{font-size:20px}.bht.big .rl{font-size:28px}'+
 '@media (max-width:900px){.bhb-body{grid-template-columns:1fr}.bs-board.k-match{grid-template-columns:1fr 1fr}.bh-st .tx{font-size:13px}}';
+var s=document.createElement('style');s.textContent=css;document.head.appendChild(s);})();
+
+(function(){var css=
+'.bh-tmr{display:inline-flex;align-items:center;gap:6px;background:#fff;border:2px solid #2a6fb0;border-radius:999px;padding:2px 10px;font-size:16px;color:var(--ink)}.bh-tmr .bar{width:90px;height:10px;background:#e3e9ee;border-radius:5px;overflow:hidden}.bh-tmr .bar i{display:block;height:100%;background:#2a6fb0;transition:width .25s linear}.bh-tmr .tx{font-variant-numeric:tabular-nums;min-width:40px}.bh-tmr.low{border-color:#e8590c}.bh-tmr.low .bar i{background:#e8590c}'+
+'.bhb-head .bh-tmr{font-size:22px}.bhb-head .bh-tmr .bar{width:160px;height:14px}'+
+'.bh-fx{position:fixed;left:50%;top:42%;transform:translate(-50%,-50%);z-index:70;background:#fff;border-radius:24px;padding:22px 36px;font-size:34px;font-weight:800;text-align:center;box-shadow:0 12px 40px rgba(0,0,0,.3);animation:bhFxIn .45s cubic-bezier(.3,1.6,.6,1);max-width:90vw;pointer-events:none}'+
+'.bh-fx small{display:block;font-size:17px;font-weight:700;color:var(--muted)}@keyframes bhFxIn{from{transform:translate(-50%,-50%) scale(.3);opacity:0}}'+
+'.bh-fx.stg{background:#24543c;color:#fff}.bh-fx.stg small{color:#cfe6d8}.bh-fx.bell{background:#fff3d6;font-size:30px}.bh-fx.bell:first-letter{font-size:70px}'+
+'.bh-fx.tp{background:#2a6fb0;color:#fff}.bh-fx.tp small{color:#dbe9f7}.bh-fx.gv{background:#fff8ec;border:5px solid #e8930c}.bh-fx.gv .ham{display:inline-block;font-size:80px;animation:bhHam .5s ease-in 2}@keyframes bhHam{50%{transform:rotate(-35deg)}}'+
+'.bh-fx.stp{background:#eaf7ef;color:#1d7a45;font-size:26px}.bh-fx.stp span{font-size:50px;display:block;animation:bhPop .4s}.bh-fx.tu{background:#e8590c;color:#fff;font-size:44px}'+
+'.bh-rxf{position:fixed;left:0;right:0;bottom:0;height:70vh;pointer-events:none;z-index:65;overflow:hidden}.bh-rxf span{position:absolute;bottom:-40px;font-size:46px;animation:bhRise 3.2s ease-out forwards}@keyframes bhRise{to{transform:translateY(-62vh);opacity:0}}'+
+'.bh-rb{background:#fff;border-radius:12px;padding:8px 10px;font-size:15px;border:2px dashed #9fd3b0}.bh-rb .hd{font-weight:800;color:#1d7a45}.bh-rb .hd small{font-weight:400;color:var(--muted);margin-left:4px}.bh-rb .it{padding:3px 0;border-bottom:1px dotted #cdd8e0;animation:bhIn .4s}.bh-rb .it.d{font-weight:800;color:#a35f00}.bh-rb .no{color:var(--muted)}'+
+'.bh-hist{background:#fff;border-radius:12px;padding:8px 12px;font-size:16px;line-height:1.6}.bh-hist .hd{font-weight:800}'+
+'.bhb-sub small{display:block;font-size:15px;font-weight:400;color:var(--muted)}'+
+'.bh-rcard.spin{animation:bhShakeR .25s infinite}@keyframes bhShakeR{50%{transform:rotate(2deg) scale(1.03)}}'+
+'.bh-tcs{display:flex;gap:14px;flex-wrap:wrap;justify-content:center}.bh-tcard{width:220px;background:#fff;border:4px solid #2a6fb0;border-radius:20px;padding:14px;text-align:center;font-size:19px;font-weight:700;line-height:1.4;font-family:inherit;color:var(--ink);animation:bhPop .5s}.bh-tcard .ic{font-size:52px}'+
+'.bh-tcs.me .bh-tcard{cursor:pointer;width:200px}.bh-tcs.me .bh-tcard:hover{background:#eef4fb;transform:translateY(-3px)}'+
+'.bh-bigcard .pw{margin-top:10px;display:flex;flex-direction:column;gap:6px;text-align:left}.bh-bigcard .pw .lb{font-weight:800;color:var(--ink);font-size:17px}.bh-bigcard .pw span{background:#f3f6f8;border-radius:10px;padding:6px 10px;font-size:16px}'+
+'.bh-wrec{background:#eaf7ef;border:3px solid #1d7a45;border-radius:16px;padding:10px 12px;display:flex;flex-direction:column;gap:8px}.bh-wrec .lab{font-weight:800;color:#1d7a45}.bh-wrec .ok{color:var(--green);font-weight:700}'+
+'.bh-todo{display:flex;flex-direction:column;gap:6px}.bh-todo button{font-size:16px;text-align:left;padding:8px 12px;border-radius:10px;border:2px solid #1d7a45;background:#fff;font-family:inherit;cursor:pointer;animation:bhIn .35s}.bh-todo button.d{border-color:#e8930c;background:#fff8ec;font-weight:800}.bh-todo button:disabled{opacity:.5}'+
+'.bh-cnt{background:#fff;border-radius:12px;padding:8px 10px;display:flex;flex-direction:column;gap:6px}.bh-cnt .warn{color:#a35f00;font-weight:700}.bh-cnt .bh-chips button{font-size:20px;font-weight:700;min-width:64px}'+
+'.bh-rxbar{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.bh-rxbar .lb{font-size:15px;color:var(--muted)}.bh-rxbar button{font-size:30px;width:58px;height:52px;border-radius:14px;border:2px solid var(--line);background:#fff;cursor:pointer}.bh-rxbar button:active{transform:scale(.9)}'+
+'.bh-htools{display:flex;flex-wrap:wrap;gap:6px;align-items:center;width:100%}.bh-htools .lab{font-size:14px;font-weight:700;color:#1f5a92}.bh-htools button{font-size:15px;padding:5px 12px;border-radius:999px;border:2px solid #2a6fb0;background:#fff;font-family:inherit;cursor:pointer}'+
+'.cheer{background:#fff3d6;color:#a35f00;border-radius:999px;padding:0 10px;font-size:15px;margin-left:6px}.bh-spot .cheer{color:#a35f00}'+
+'.bh-bigbtn.gavel{background:#8a5a14;font-size:26px}'+
+'.bh-rec .ck{margin-top:6px;font-size:15px;color:#1d7a45;font-weight:700}.bh-rec .sm.d{color:#a35f00;font-weight:700}'+
+'.warn{color:#a35f00}';
 var s=document.createElement('style');s.textContent=css;document.head.appendChild(s);})();
 
 var UNITS=[['angleb','角・課本','math'],['angle','角・習作','math'],['areab','面積・課本','math'],['area','面積・習作','math'],['divb','除法・課本','math'],['div','除法・習作','math'],['zh7','七 淡水小鎮','zh'],['zh8','八 安平古堡參觀記','zh'],['zh9','九 馬太鞍的巴拉告','zh'],['zh10','十 狐狸的故事','zh'],['zh11','十一 巨人的花園','zh'],['zh12','十二 模仿貓','zh'],['zizao','拆字造字','zh'],['bh','班會闖關','soc'],['socb','班級自治・課本','soc'],['socw','班級自治・習作','soc']];
