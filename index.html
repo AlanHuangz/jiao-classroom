@@ -1349,12 +1349,15 @@ function dvX(q,st){
 }
 function dvBoard(q){return q.t==='eq'?{g:Array.apply(null,Array(q.d)).map(function(){return 0;}),L:q.n}:{g:[],L:q.n};}
 function dvNew(id){var qs=dvGen(TASK[id].dv||'inc'),mix=TASK[id].dv==='mix';return {k:'dv',ver:3,id:id,qs:qs,i:0,ans:null,res:[],done:false,jd:null,b:{g:[],L:qs[0].n}};}
-function dvWire(st){return {k:'dv',id:st.id,i:st.i,n:st.qs.length,q:st.qs[st.i]||null,ans:st.ans,res:st.res,done:st.done,b:st.b,jd:st.jd||null};}
+function dvWire(st){return {k:'dv',add:st.add||0,id:st.id,i:st.i,n:st.qs.length,q:st.qs[st.i]||null,ans:st.ans,res:st.res,done:st.done,b:st.b,jd:st.jd||null};}
+function dvExtra(st,q){var kind=dvMode(st),have={};st.qs.forEach(function(x){have[x.n+'/'+x.d]=1;});
+  for(var k=0;k<6;k++){var c=dvGen(kind).filter(function(x){return x.t===q.t&&!have[x.n+'/'+x.d]&&x.cx!==q.cx;});if(c.length)return c[0];}
+  var c2=dvGen(kind).filter(function(x){return x.t===q.t;});return c2[0]||null;}
 function dvSummary(st){
   var res=st.res||[],ok=res.filter(function(r){return r.ok;}).length,n=nQ(st),q=curQ(st),b=st.b||{g:[],L:0},mix=true;
   var jt=mix?'・判斷第一次就對 '+res.filter(function(r){return r.j;}).length+'/'+res.length:'';
-  if(st.done)return '<span class="good">完成！答對 '+ok+' / '+res.length+'</span>'+jt;
-  var s='第 '+((st.i||0)+1)+'/'+n+' 題・答對 '+ok+'/'+res.length+jt;
+  if(st.done)return '<span class="good">完成！答對 '+ok+' / '+res.length+'</span>'+jt+(st.add?'・加練 '+st.add+' 題':'');
+  var s='第 '+((st.i||0)+1)+'/'+n+' 題・答對 '+ok+'/'+res.length+jt+(st.add?'・<span class="warn">加練 '+st.add+' 題</span>':'');
   if(mix&&!(st.jd&&st.jd.ok))s+='・<span class="warn">判斷題意中'+(st.jd&&st.jd.n?'（選錯 '+st.jd.n+' 次）':'')+'</span>';
   else if(!st.ans){var X=q?dvX(q,st):{gw:'份'};s+='・分了 '+b.g.length+' '+X.g+'・還沒分 '+b.L;}
   else{var last=res[res.length-1];s+=last&&last.ok?'・<span class="good">這題對</span>':'・<span class="warn">這題錯</span>';}
@@ -1370,7 +1373,8 @@ function dvTile(box,st,big){
   b.g.forEach(function(c,i){var cls=q.t==='inc'?(c===q.d?'ok':c>q.d?'no':'part'):'';h2+='<span class="dvt-c '+cls+'"><small>'+esc(X.lab(i))+'</small><b>'+c+'</b>'+(big?'<i>'+dvRep(X,c)+'</i>':'')+'</span>';});
   h2+='<span class="dvt-l">還沒分 <b>'+b.L+'</b>'+(big?'<i>'+dvRep(X,b.L)+'</i>':'')+'</span></div>';
   if(st.ans){var p=String(st.ans).split(','),R=q.n%q.d,rem=dvRem(st),okA=+p[0]===q.n&&+p[1]===q.d&&+p[2]===Math.floor(q.n/q.d)&&(!rem||+p[3]===R)&&(!mix||p[4]===X.au);
-    h2+='<div class="dvt-a '+(okA?'ok':'no')+'">'+esc(p[0])+' ÷ '+esc(p[1])+' = '+esc(p[2])+(rem?' … '+esc(p[3]):'')+(mix?'　答：'+esc(p[2])+' '+esc(p[4]||''):'')+(okA?' ✓':' ✗')+'</div>';}
+    var lastR=st.res&&st.res[st.res.length-1],picOk=!lastR||lastR.al!==false;okA=okA&&picOk;
+    h2+='<div class="dvt-a '+(okA?'ok':'no')+'">'+esc(p[0])+' ÷ '+esc(p[1])+' = '+esc(p[2])+(rem?' … '+esc(p[3]):'')+(mix?'　答：'+esc(p[2])+' '+esc(p[4]||''):'')+(okA?' ✓':' ✗')+(picOk?'':'（圖沒分對）')+'</div>';}
   box.innerHTML=h2+'</div>';
 }
 
@@ -1487,9 +1491,11 @@ DivDesk.prototype.key=function(k){
 };
 DivDesk.prototype.submit=function(){
   var st=this.st(),q=this.q(),e=this.en,rem=dvRem(st),mix=this.mix();if(!q||st.ans||st.done||!this.judged())return;if(!e.a||!e.b||!e.q||(rem&&!e.r)||(mix&&!e.u))return;
-  var X=dvX(q,st),Q=Math.floor(q.n/q.d),R=q.n%q.d,ok=+e.a===q.n&&+e.b===q.d&&+e.q===Q&&(!rem||+e.r===R)&&(!mix||e.u===X.au);
-  var b=st.b,al=b.L===R&&(q.t==='inc'?(b.g.length===Q&&b.g.every(function(c){return c===q.d;})):b.g.every(function(c){return c===Q;}));
-  var rec={ok:ok,al:al};if(mix)rec.j=!!(st.jd&&st.jd.n===0);
+  var X=dvX(q,st),Q=Math.floor(q.n/q.d),R=q.n%q.d,eq=+e.a===q.n&&+e.b===q.d&&+e.q===Q&&(!rem||+e.r===R)&&(!mix||e.u===X.au);
+  var b=st.b,al=b.L===R&&(q.t==='inc'?(b.g.length===Q&&b.g.every(function(c){return c===q.d;})):(b.g.length===q.d&&b.g.every(function(c){return c===Q;})));
+  /* 圖要分對、算式也要對，才算完整的對；錯了就在後面多加一題同樣類型的 */
+  var ok=eq&&al,rec={ok:ok,al:al,eq:eq};if(mix)rec.j=!!(st.jd&&st.jd.n===0);
+  if(!ok&&(st.add||0)<20){var nq=dvExtra(st,q);if(nq){st.qs.push(nq);st.add=(st.add||0)+1;rec.add=1;}}
   st.ans=[e.a,e.b,e.q,rem?e.r:'',mix?e.u:''].join(',');st.res.push(rec);this.changed();
 };
 DivDesk.prototype.next=function(){
@@ -1589,8 +1595,11 @@ DivDesk.prototype.renderAns=function(){
   var stat='';
   if(st.done)stat='<span class="good">全部做完了！</span>';
   else if(ans){var last=st.res[st.res.length-1];
-    if(last&&last.ok)stat='<span class="good">答對了！</span>'+esc(X.answer)+(last.al?'':'<br><small>下次先分分看，再寫算式</small>');
-    else{var hint=+ans[0]!==q.n?'被除數是「全部有多少」':+ans[1]!==q.d?(q.t==='inc'?'除數是「每一份有多少」':'除數是「一共分成幾份」'):+ans[2]!==Q?(q.t==='inc'?'商是「可以分成幾'+X.g+'」':'商是「一'+X.gw+'有幾'+X.u+'」'):(rem&&+ans[3]!==Rm)?'餘數是「分完剩下的」，而且一定比除數小':(q.t==='inc'?'商算的是「幾'+X.g+'」，單位是'+X.g:'商算的是「一'+X.gw+'有幾'+X.u+'」，單位是'+X.u);stat='<span class="warn">再想想：</span>'+esc(hint);}
+    var picH=q.t==='inc'?'圖要分對才算對：每一'+X.gw.replace(/^個/,'')+'要剛好 '+q.d+' '+X.u+'，分到剩下的不夠再分一'+X.gw.replace(/^個/,'')+'為止。':'圖要分對才算對：要分成 '+q.d+' '+X.g+'，每一'+X.gw.replace(/^個/,'')+'一樣多，分到不夠每一'+X.gw.replace(/^個/,'')+'再分 1 '+X.u+'為止。';
+    var addH=last&&last.add?'<br><small class="warn">後面多加了一題同樣的，再練一次。</small>':'';
+    if(last&&last.ok)stat='<span class="good">答對了！圖和算式都對 ✓</span>'+esc(X.answer);
+    else if(last&&last.eq)stat='<span class="warn">算式對了，可是圖沒有分對。</span>'+esc(picH)+addH;
+    else{var hint=+ans[0]!==q.n?'被除數是「全部有多少」':+ans[1]!==q.d?(q.t==='inc'?'除數是「每一份有多少」':'除數是「一共分成幾份」'):+ans[2]!==Q?(q.t==='inc'?'商是「可以分成幾'+X.g+'」':'商是「一'+X.gw+'有幾'+X.u+'」'):(rem&&+ans[3]!==Rm)?'餘數是「分完剩下的」，而且一定比除數小':(q.t==='inc'?'商算的是「幾'+X.g+'」，單位是'+X.g:'商算的是「一'+X.gw+'有幾'+X.u+'」，單位是'+X.u);stat='<span class="warn">再想想：</span>'+esc(hint)+(last&&!last.al?'<br>'+esc(picH):'')+addH;}
     html+='<button type="button" class="dv-next">'+(st.i+1>=st.qs.length?'看結果':'下一題 →')+'</button>';}
   else stat='<small style="color:var(--muted)">先在左邊分一分，再把算式寫下來</small>';
   html+='<div class="dv-stat">'+stat+'</div>';
