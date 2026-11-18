@@ -1613,7 +1613,9 @@ DivDesk.prototype.renderAns=function(){
 
 /* ================= 除法直式工廠：試商・寫商・乘・減・抓錯（課本 p.104～107） ================= */
 TASKS.push({id:'dvv',kind:'vt',unit:'divb div',title:'直式工廠',sub:'試商・寫商・乘・減・抓錯 20 題'});
-var VT_LV=['','第 1 關：跟著做','第 2 關：自己算','第 3 關：抓錯誤'];
+var VT_QUIZ='dvt';
+TASKS.push({id:VT_QUIZ,kind:'vt',unit:'divb',title:'除法直式測驗',sub:'全班每人 10 題'});
+var VT_LV=['','第 1 關：跟著做','第 2 關：自己算','第 3 關：抓錯誤','直式測驗'];
 var VT_ERR={
   pos:'商寫錯位置了：商要寫在被除數「個位」的上面。',
   small:'商太小了：剩下的比除數大（或一樣），還可以再分一份。',
@@ -1624,6 +1626,13 @@ var VT_ERR={
 };
 function vtDig(v){v=String(v);return v.length>1?{t:v.charAt(0),o:v.charAt(1)}:{t:'',o:v};}
 function vtRight(q){var Q=Math.floor(q.n/q.d),P=q.d*Q,R=q.n-P,D=vtDig(q.n),PP=vtDig(P);return {V:String(q.d),D1:D.t,D0:D.o,Q1:'',Q0:String(Q),P1:PP.t,P0:PP.o,M1:'',M0:String(R)};}
+function vtQuizGen(){
+  var exact=[],withRemainder=[];
+  for(var d=2;d<=9;d++)for(var n=10;n<10*d;n++){
+    (n%d?withRemainder:exact).push({n:n,d:d,lv:4});
+  }
+  return shuffle(shuffle(exact).slice(0,5).concat(shuffle(withRemainder).slice(0,5)));
+}
 function vtGen(){
   var qs=[],used={};
   function mk(lv,o){for(var t=0;t<800;t++){var d=o.d?ri(o.d[0],o.d[1]):ri(2,9),Q=o.Q?ri(o.Q[0],o.Q[1]):ri(1,9),R=o.r0?0:o.r?ri(1,d-1):(Math.random()<.3?0:ri(0,d-1)),n=d*Q+R;
@@ -1649,16 +1658,18 @@ function vtWrong(q){
 }
 function vtW(q){
   var r=vtRight(q),w={s:0,c:{},fix:{},g:1,miss:0,bad:[],msg:'',sel:null};
+  if(q.lv===4){w.s=30;['V','D1','D0'].forEach(function(k){w.c[k]=r[k];w.fix[k]=1;});w.draft='';return w;}
   if(q.lv===1){w.s=0;}
   else if(q.lv===2){w.s=10;['V','D1','D0'].forEach(function(k){w.c[k]=r[k];w.fix[k]=1;});}
   else{w.s=20;var W=vtWrong(q);w.c=W.c;['V','D1','D0','Q1','Q0','P1','P0','M1','M0'].forEach(function(k){w.fix[k]=1;});}
   return w;
 }
-function vtNew(id){var qs=vtGen();return {k:'vt',id:id,qs:qs,i:0,w:vtW(qs[0]),res:[],done:false};}
+function vtNew(id){var qs=id===VT_QUIZ?vtQuizGen():vtGen();return {k:'vt',id:id,qs:qs,i:0,w:vtW(qs[0]),res:[],done:false};}
 function vtEdit(w,q){var s=w.s;if(s===0)return ['V','D1','D0'];if(s===3)return ['P1','P0'];if(s===4)return ['M1','M0'];if(s===10||s===21)return ['Q1','Q0','P1','P0','M1','M0'];return [];}
-function vtStepName(st){var q=st.qs[st.i],w=st.w;if(!q||!w)return '';return ({0:'擺直式',1:'試商',2:'寫商',3:'乘',4:'減',5:'寫答案',10:'自己算',20:'找錯誤',21:'改正',99:'做對了'})[w.s]||'';}
+function vtStepName(st){var q=st.qs[st.i],w=st.w;if(!q||!w)return '';return ({0:'擺直式',1:'試商',2:'寫商',3:'乘',4:'減',5:'寫答案',10:'自己算',20:'找錯誤',21:'改正',30:'試商',31:'相乘',32:'相減',33:'重新試商',99:'做對了'})[w.s]||'';}
 function vtSummary(st){
   if(!st.qs)return '';var ok=st.res.filter(function(r){return r.ok;}).length,clean=st.res.filter(function(r){return r.al;}).length;
+  if(st.id===VT_QUIZ)return (st.done?'<span class="good">已交卷</span>':'第 '+(st.i+1)+'/'+st.qs.length+' 題・'+esc(st.w.msg||vtStepName(st)))+'・完成 '+ok+'/'+st.qs.length+' 題・未出現計算錯誤 '+clean+' 題';
   if(st.done)return '<span class="good">完成！'+st.res.length+' 題，一次就對 '+clean+' 題</span>';
   var q=st.qs[st.i];return '第 '+(st.i+1)+'/'+st.qs.length+' 題（'+VT_LV[q.lv].slice(0,5)+'）'+q.n+' ÷ '+q.d+'・'+vtStepName(st)+(st.w.miss?'・<span class="warn">錯 '+st.w.miss+' 次</span>':'')+'・一次就對 '+clean+'/'+st.res.length;
 }
@@ -1711,6 +1722,7 @@ VtDesk.prototype.cell=function(k){
 };
 VtDesk.prototype.click=function(a,v){
   var st=this.st(),q=this.q(),w=st&&st.w;if(!st||st.done&&a!=='again')return;
+  if(st.id===VT_QUIZ)return this.quizClick(a,v);
   if(a==='again'){var n2=vtNew(st.id);st.qs=n2.qs;st.i=0;st.w=n2.w;st.res=[];st.done=false;this.ans={q:'',r:''};this.changed();return;}
   if(a==='k'){
     if(w.s===5){var f=this.af;if(v==='⌫')this.ans[f]=this.ans[f].slice(0,-1);else if(this.ans[f].length<2)this.ans[f]=(this.ans[f]==='0'?'':this.ans[f])+v;this.render();return;}
@@ -1762,6 +1774,7 @@ VtDesk.prototype.finish=function(){var st=this.st(),w=st.w;st.res.push({ok:true,
 VtDesk.prototype.next=function(){var st=this.st();if(st.w.s!==99)return;st.i++;if(st.i>=st.qs.length){st.i=st.qs.length-1;st.done=true;}else st.w=vtW(st.qs[st.i]);this.ans={q:'',r:''};this.af='q';this.changed();};
 VtDesk.prototype.render=function(){
   var root=this.root;if(root._owner!==this)return;var st=this.st();if(!st||st.k!=='vt')return;
+  if(st.id===VT_QUIZ)return this.renderQuiz(st);
   if(st.done){var cl=st.res.filter(function(r){return r.al;}).length;root.innerHTML='<div class="vt"><div class="vt-done"><div class="big">🏭 直式工廠完成！</div><div>做了 '+st.res.length+' 題，一次就對 <b>'+cl+'</b> 題</div><button type="button" class="vt-btn" data-a="again">再玩一輪（題目會換）</button></div></div>';return;}
   var q=st.qs[st.i],w=st.w,r=vtRight(q),ed=vtEdit(w,q),Q=+r.Q0,P=q.d*Q,h2='<div class="vt">';
   h2+='<div class="vt-head"><span class="lv">'+esc(VT_LV[q.lv])+'</span><b>'+(q.lv===3?'小明算 '+q.n+' ÷ '+q.d+'，他的直式有一個地方錯了':'用直式算 '+q.n+' ÷ '+q.d)+'</b><span class="no">第 '+(st.i+1)+' / '+st.qs.length+' 題</span></div>';
@@ -1798,6 +1811,65 @@ VtDesk.prototype.render=function(){
   h2+='</div></div></div>';
   root.innerHTML=h2;
 };
+
+VtDesk.prototype.quizClick=function(action,digit){
+  var st=this.st(),q=this.q(),w=st.w;
+  if(st.done)return;
+  if(w.s===99){if(action==='next')this.next();return;}
+  if(w.s===33){
+    if(action!=='retry')return;
+    ['Q0','P1','P0','M1','M0'].forEach(function(k){delete w.c[k];});
+    w.s=30;w.draft='';w.bad=[];w.msg='';this.changed();return;
+  }
+  if(w.s===30){
+    if(action!=='k'||!/^\d$/.test(digit))return;
+    w.c.Q0=digit;w.s=31;this.changed();return;
+  }
+  var multiply=w.s===31,cols=multiply?['P1','P0']:['M1','M0'];
+  var product=q.d*Number(w.c.Q0),remainder=q.n-product;
+  if(action==='k'){
+    if(digit==='⌫')w.draft=w.draft.slice(0,-1);
+    else if(/^\d$/.test(digit)){
+      if(w.msg)w.draft='';
+      if(w.draft.length>=2)return;
+      w.draft=(w.draft==='0'?'':w.draft)+digit;
+    }else return;
+    var digits=w.draft?vtDig(w.draft):{t:'',o:''};
+    w.c[cols[0]]=digits.t;w.c[cols[1]]=digits.o;w.bad=[];w.msg='';this.changed();return;
+  }
+  if(action!=='check'||!w.draft||w.msg)return;
+  if(Number(w.draft)!==(multiply?product:remainder)){
+    w.miss++;w.bad=cols;w.msg=multiply?'乘法錯誤':'減法錯誤';this.changed();return;
+  }
+  w.draft='';
+  if(multiply){
+    if(remainder<0){w.s=33;w.miss++;w.bad=['M0'];w.c.M0='×';w.msg='無法相減';}
+    else w.s=32;
+  }else if(remainder>=q.d){
+    w.s=33;w.msg='餘數還可以再除';w.prior={quotient:w.c.Q0,product:product,remainder:remainder};
+  }else{
+    w.prior=null;this.finish();return;
+  }
+  this.changed();
+};
+
+VtDesk.prototype.renderQuiz=function(st){
+  var q=this.q(),w=st.w;
+  if(st.done){this.root.innerHTML='<div class="vt"><div class="vt-done">'+vtSummary(st)+'</div></div>';return;}
+  var editing=w.s===30?['Q0']:w.s===31?['P1','P0']:w.s===32?['M1','M0']:[];
+  var html='<div class="vt vt-quiz"><div class="vt-head"><b>除法直式測驗</b><span class="no">第 '+(st.i+1)+' / '+st.qs.length+' 題</span></div>'+
+    '<div class="vt-say" role="status">'+esc(w.msg||(w.s===99?'做對了':vtStepName(st)))+'</div>'+
+    vtGridHTML(q,w,{ed:editing});
+  if(w.prior)html+='<details><summary>上一次試算</summary>商 '+esc(w.prior.quotient)+'，'+q.n+' − '+w.prior.product+' ＝ '+w.prior.remainder+'</details>';
+  if(w.s===33)html+='<button type="button" class="vt-btn" data-a="retry">重新試商</button>';
+  else if(w.s===99)html+='<button type="button" class="vt-btn go" data-a="next">'+(st.i+1===st.qs.length?'交卷':'下一題')+'</button>';
+  else{
+    html+='<div class="vt-pad">'+['1','2','3','4','5','6','7','8','9','0'].map(function(k){return '<button type="button" data-a="k" data-v="'+k+'">'+k+'</button>';}).join('');
+    if(w.s!==30)html+='<button type="button" data-a="k" data-v="⌫" aria-label="刪一位">⌫</button><button type="button" class="ok" data-a="check"'+(!w.draft||w.msg?' disabled':'')+'>確認</button>';
+    html+='</div>';
+  }
+  this.root.innerHTML=html+'</div>';
+};
 (function(){var css=
 '.vt{flex:1;min-height:0;overflow:auto;display:flex;flex-direction:column;gap:10px;padding:12px 16px;background:var(--stage)}'+
 '.vt-head{display:flex;align-items:center;gap:12px;flex-wrap:wrap;font-size:22px}.vt-head .lv{background:#2a6fb0;color:#fff;border-radius:999px;padding:2px 12px;font-size:15px;font-weight:700}.vt-head .no{margin-left:auto;font-size:15px;color:var(--muted)}'+
@@ -1820,7 +1892,9 @@ VtDesk.prototype.render=function(){
 '.vt-dots b{width:14px;height:14px;border-radius:50%;background:#e8930c;display:inline-block}.vt-grp b{background:#2a6fb0}.vt-grp.hl{border-color:var(--green);background:#eaf7ef}.vt-grp.no{border-color:var(--red);border-style:dashed}.vt-grp b.miss{background:transparent;border:2px dashed var(--red);width:10px;height:10px}'+
 '.vt-rest{display:inline-flex;flex-wrap:wrap;gap:3px;max-width:96px;padding:4px;border-radius:10px}.vt-rest.hl{outline:3px solid #e8930c}'+
 '.vt-re{margin-top:auto}.vt-done{margin:auto;text-align:center;display:flex;flex-direction:column;gap:14px;align-items:center;font-size:22px}.vt-done .big{font-size:34px;font-weight:800}'+
-'.tile-zi.bhbox .vtt{font-size:13px}.vtt.big{font-size:20px}';
+'.tile-zi.bhbox .vtt{font-size:13px}.vtt.big{font-size:20px}'+
+'.vt-quiz{align-items:center}.vt-quiz .vt-head{width:min(100%,530px)}.vt-quiz .vt-say{font-weight:700;text-align:center;min-width:152px;padding:6px 12px}.vt-quiz .vt-g{background:#fff;border-radius:12px}.vt-quiz .vt-c.ed{cursor:default}.vt-quiz .vt-btn{align-self:center}.vt-quiz .vt-pad{grid-template-columns:repeat(5,minmax(44px,58px));max-width:100%}.vt-quiz .vt-pad button{min-height:44px}.vt-quiz .vt-pad .ok{grid-column:span 4}.vt-quiz .vt-pad button:disabled{opacity:.45;cursor:default}.vt-quiz summary{padding:8px;cursor:pointer}'+
+'@media(max-height:740px){.vt-quiz{gap:8px;padding:8px 10px}.vt-quiz .vt-g{font-size:33px}.vt-quiz .vt-g td{height:45px;width:48px}.vt-quiz .vt-g .hd td{height:20px}}';
 var s=document.createElement('style');s.textContent=css;document.head.appendChild(s);})();
 
 /* ================= 社會・第三單元：班會大冒險（系統帶全班開一次班會）＋班會小練習 ================= */
@@ -3549,7 +3623,13 @@ function StudentApp(){
     var picksEl=root.querySelector('.picks'),pickKey='',lastTv=null,rcbar=root.querySelector('.rcbar'),wsroot=root.querySelector('.wsroot'),rc=null,rcV=0,rcBuf=null,rcFsT=0;
     var skey='jiao.s.states.'+seat,states=lsGet(skey,{})||{};
     var dirty=true,saveT=null;
-    var ws=new Workspace(root.querySelector('.wsroot'),{states:states,canRestart:true,onZiSubmit:function(sub,task){ziSend(sub,task);},onChange:function(fin){dirty=true;if(fin){clearTimeout(saveT);saveT=setTimeout(function(){lsSet(skey,states);},400);}}});ws.seat=seat;
+    function saveStates(){clearTimeout(saveT);saveT=null;lsSet(skey,states);}
+    var ws=new Workspace(root.querySelector('.wsroot'),{states:states,canRestart:true,onZiSubmit:function(sub,task){ziSend(sub,task);},onChange:function(fin){
+      dirty=true;if(!fin)return;
+      clearTimeout(saveT);
+      if(ws&&ws.id===VT_QUIZ&&ws.state().done)saveStates();else saveT=setTimeout(saveStates,400);
+    }});ws.seat=seat;
+    window.addEventListener('pagehide',function(){if(saveT)saveStates();});
     var wait=h('div',{class:'overlay'},'<div class="big">等老師派題…</div><div class="small">'+seat+' 號・班級代碼 '+esc(code)+'</div><div class="wnet">連線中…</div><button class="btn rejoin" type="button">重新輸入座號和代碼</button>');
     wait.querySelector('.rejoin').addEventListener('click',function(){location.reload();});
     var freeze=h('div',{class:'overlay'},'<div class="big">請看老師</div><div class="small">先把手離開鍵盤和觸控板</div>');freeze.hidden=true;
@@ -3619,6 +3699,11 @@ function StudentApp(){
       if(d.bh&&typeof d.bh==='object')BH.set(d.bh);
       if(!linked())dirty=true;
       lastHeard=Date.now();setNet('ok','已連線老師');
+      if(d.task===VT_QUIZ&&typeof d.vr==='string'&&(!states[VT_QUIZ]||states[VT_QUIZ].run!==d.vr)){
+        states[VT_QUIZ]=vtNew(VT_QUIZ);states[VT_QUIZ].run=d.vr;
+        if(ws.id===VT_QUIZ)ws.setTask(VT_QUIZ);
+        dirty=true;lsSet(skey,states);
+      }
       var pk=(seat!==8&&Array.isArray(d.pick))?d.pick.filter(function(x){return TASK[x]&&TASK[x].kind!=='zi'&&TASK[x].kind!=='bh';}):null;if(pk&&!pk.length)pk=null;setPick(pk);
       if(d.task&&(!pk||d.tv!==lastTv||pk.indexOf(ws.id)<0))setTask(d.task);lastTv=pk?d.tv:null;
       rcCmd(seat!==8?d.ctl:null);
@@ -3679,12 +3764,16 @@ function TeacherApp(){
   var code=CLASS_CODE;
   var names=lsGet('jiao.t.names',{})||{};for(var rn in ROSTER){if(!names[rn])names[rn]=ROSTER[rn];}
   var task=lsGet('jiao.t.task','p59a');if(!TASK[task])task='p59a';
+  var quizRun=lsGet('jiao.t.vtRun','');
+  function newQuizRun(){quizRun=Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,10);lsSet('jiao.t.vtRun',quizRun);}
+  if(task===VT_QUIZ&&!quizRun)newQuizRun();
   var freeze=false,view='grid',seats={},modalSeat=null;
   /* 個別頁面：indiv[座號]={p:[可以翻的頁],c:現在這頁,tv:老師改頁的次數} */
   var indiv=lsGet('jiao.t.indiv',{})||{};
   (function(){for(var k in indiv){var I=indiv[k];var ok=I&&+k>=1&&+k<=7&&Array.isArray(I.p);if(ok){I.p=I.p.filter(function(x){return TASK[x]&&TASK[x].kind!=='zi'&&TASK[x].kind!=='bh';});ok=I.p.length>0;}if(!ok){delete indiv[k];continue;}if(I.p.indexOf(I.c)<0)I.c=I.p[0];I.tv=+I.tv||1;}})();
   function saveIndiv(){lsSet('jiao.t.indiv',indiv);}
-  function tFor(n){var I=indiv[n];return I?I.c:task;}
+  function assignedPages(n){return task===VT_QUIZ||n===8?null:indiv[n];}
+  function tFor(n){var I=assignedPages(n);return I?I.c:task;}
   function nIndiv(){return Object.keys(indiv).filter(function(k){return !indiv[k].away;}).length;}
   root.innerHTML=
     '<div class="t-head"><h1>301線上教室・老師</h1><div class="code">班級代碼 <b class="codev"></b></div><button class="btn showqr" type="button">學生 QR code</button><span class="net">連線中…</span>'+
@@ -3703,7 +3792,18 @@ function TeacherApp(){
   var subjEmpty=h('span',{class:'subj-empty'},'社會教室還在準備中，目前還沒有內容。');tbar.appendChild(subjEmpty);
   var ubar=h('span',{class:'units'});UNITS.forEach(function(u){var b=h('button',{class:'btn unit-btn',type:'button'},esc(u[1]));b.dataset.u=u[0];b.addEventListener('click',function(){unit=u[0];lsSet('jiao.t.unit',unit);lsSet('jiao.t.unit.'+u[2],unit);syncTaskBtns();});ubar.appendChild(b);});tbar.appendChild(ubar);
   TASKS.forEach(function(t){var b=h('button',{class:'btn task-btn',type:'button'},esc(t.title)+'<small>'+esc(t.sub)+'</small>');b.dataset.id=t.id;b.dataset.u=t.unit;b.addEventListener('click',function(){assign(t.id);});tbar.appendChild(b);});
-  function assign(id){for(var rn2 in seats)if(seats[rn2].ctl&&!indiv[rn2])rcStop(+rn2);task=id;lsSet('jiao.t.task',id);if(Z)Z.setTask(id);if(BT)BT.setTask(id);for(var n in seats)seats[n].light=null;syncTaskBtns();broadcast();demo.setTask(id);renderAllTiles();}
+  function assign(id){
+    var quiz=id===VT_QUIZ;
+    if(quiz&&task===id&&!confirm('重新派題？全班會各拿到新的一組 10 題。'))return;
+    for(var rn2 in seats)if(seats[rn2].ctl&&(quiz||task===VT_QUIZ||!indiv[rn2]))rcStop(+rn2);
+    if(quiz){
+      newQuizRun();delete demoStates[id];
+      for(var seatNo in seats)seats[seatNo].st=null;
+    }
+    task=id;lsSet('jiao.t.task',id);if(Z)Z.setTask(id);if(BT)BT.setTask(id);
+    for(var n in seats)seats[n].light=null;
+    syncTaskBtns();syncIndAll();broadcast();demo.setTask(id);renderAllTiles();
+  }
   function syncTaskBtns(){var has=unitSubj(unit)===subj;tbar.querySelectorAll('.task-btn').forEach(function(b){b.classList.toggle('on',b.dataset.id===task);b.hidden=!has||b.dataset.u.split(' ').indexOf(unit)<0;});tbar.querySelectorAll('.unit-btn').forEach(function(b){b.classList.toggle('on',b.dataset.u===unit);b.hidden=unitSubj(b.dataset.u)!==subj;});tbar.querySelectorAll('.subj-btn').forEach(function(b){b.classList.toggle('on',b.dataset.s===subj);});subjEmpty.hidden=has;subjEmpty.textContent=(SUBJ.filter(function(sj){return sj[0]===subj;})[0]||['',''])[1]+'還在準備中，目前還沒有內容。';}
   /* tiles */
   var grid=$('.grid');
@@ -3728,7 +3828,8 @@ function TeacherApp(){
     t.querySelector('.gbtn').classList.toggle('on',s.light==='g');t.querySelector('.rbtn').classList.toggle('on',s.light==='r');
     var off=t.querySelector('.off');off.hidden=!!s.st&&on;off.textContent=s.st?'連線中斷':'還沒連線';
     var isZi=!!s.st&&s.st.k==='zi',isDv=!!s.st&&s.st.k==='dv',isBh=!!s.st&&(s.st.k==='bh'||s.st.k==='bs'||s.st.k==='vt');s.tz.hidden=!(isZi||isDv||isBh);s.tz.classList.toggle('dvbox',isDv);s.tz.classList.toggle('bhbox',isBh);s.scene.svg.style.visibility=(isZi||isDv||isBh)?'hidden':'';
-    var I=indiv[n],ind=t.querySelector('.ind');t.classList.toggle('indv',!!I);ind.hidden=!I&&!s.ctl;ind.classList.toggle('rc',!!s.ctl);ind.textContent=s.ctl?'老師操作中':I?((I.away?'別的教室・':'個別 ')+I.p.length+' 頁'):'';ind.classList.toggle('away',!!(I&&I.away)&&!s.ctl);t.classList.toggle('away',!!(I&&I.away));
+    var I=assignedPages(n),ind=t.querySelector('.ind');t.classList.toggle('indv',!!I);ind.hidden=!I&&!s.ctl;ind.classList.toggle('rc',!!s.ctl);ind.textContent=s.ctl?'老師操作中':I?((I.away?'別的教室・':'個別 ')+I.p.length+' 頁'):'';ind.classList.toggle('away',!!(I&&I.away)&&!s.ctl);t.classList.toggle('away',!!(I&&I.away));
+    if(n!==8)t.querySelector('.pbtn2').hidden=task===VT_QUIZ;
     var sum='';if(s.st){sum=isZi?Z.summary(n,s.st):summary(s.st);var tg=tFor(n);if(s.st.id!==tg)sum='<span class="warn">還在 '+esc(TASK[s.st.id]?TASK[s.st.id].title:'')+'</span>・'+sum;else if(I)sum='<b>'+esc(TASK[tg].title)+'</b>・'+sum;}
     t.querySelector('.tile-sum').innerHTML=sum;t.querySelector('.dots').innerHTML=dotsHTML(s.st);
     if(s.dirty&&s.st){if(isZi)ziTile(s.tz,s.st);else if(isDv)dvTile(s.tz,s.st);else if(isBh){if(s.st.k==='bh')bhTile(s.tz,s.st,false,n);else if(s.st.k==='vt')vtTile(s.tz,s.st,false);else bsTile(s.tz,s.st,false);}else try{s.scene.load(s.st);}catch(e){}s.dirty=false;}
@@ -3757,9 +3858,9 @@ function TeacherApp(){
   modal.querySelector('.cbtn').addEventListener('click',function(){setLight(modalSeat,null);});
   function openModal(n){if(!seats[n].st)return;if(seats[n].st.k==='zi'){Z.open(n);return;}if(modalSeat!=null&&modalSeat!==n&&seats[modalSeat].ctl)rcStop(modalSeat);modalSeat=n;modal.hidden=false;modal.querySelector('.modal-ws').hidden=!(seats[n].ctl&&seats[n].ctl.ok);modal.querySelector('.modal-stage').hidden=!!(seats[n].ctl&&seats[n].ctl.ok);renderModal(true);}
   var mpKey='';
-  function renderModal(full){if(modalSeat==null)return;var n=modalSeat,s=seats[n],I=indiv[n],c=s.ctl;modal.querySelector('.mt').textContent=n+' 號 '+(names[n]||'');modal.querySelector('.msum').innerHTML=summary(s.st);modal.querySelector('.gbtn').classList.toggle('on',s.light==='g');modal.querySelector('.rbtn').classList.toggle('on',s.light==='r');
+  function renderModal(full){if(modalSeat==null)return;var n=modalSeat,s=seats[n],I=assignedPages(n),c=s.ctl;modal.querySelector('.mt').textContent=n+' 號 '+(names[n]||'');modal.querySelector('.msum').innerHTML=summary(s.st);modal.querySelector('.gbtn').classList.toggle('on',s.light==='g');modal.querySelector('.rbtn').classList.toggle('on',s.light==='r');
     var rb=modal.querySelector('.rcbtn');rb.hidden=n===8||!s.st||s.st.k==='zi'||s.st.k==='bh';rb.classList.toggle('on',!!(c&&c.ok));rb.classList.toggle('wait',!!(c&&!c.ok));rb.textContent=!c?'✋ 我來操作':c.ok?'👉 換他自己做':'等 '+n+' 號的畫面傳過來…（按這裡取消）';
-    modal.querySelector('.pbtn').hidden=n===8;
+    modal.querySelector('.pbtn').hidden=n===8||task===VT_QUIZ;
     var mp=modal.querySelector('.mpages'),key=I?I.p.join(',')+'|'+I.c:'';if(key!==mpKey||full){mpKey=key;mp.innerHTML='';mp.hidden=!I;if(I){mp.appendChild(h('span',{class:'pl'},'可以翻的頁（點了就幫他換頁）：'));I.p.forEach(function(id){var b=h('button',{type:'button'},esc(TASK[id].title));b.classList.toggle('on',id===I.c);b.addEventListener('click',function(){rcGoPage(n,id);});mp.appendChild(b);});}}
     var dvm=!!s.st&&(s.st.k==='dv'||s.st.k==='bh'||s.st.k==='bs'||s.st.k==='vt');mdv.hidden=!dvm||!!(c&&c.ok);if(!(c&&c.ok))mstage.hidden=dvm;
     if(c&&c.ok)return;if(s.st&&(full||s.mdirty)){if(dvm){if(s.st.k==='bh')bhTile(mdv,s.st,true,n);else if(s.st.k==='bs')bsTile(mdv,s.st,true);else if(s.st.k==='vt')vtTile(mdv,s.st,true);else dvTile(mdv,s.st,true);}else try{mScene.load(s.st);}catch(e){}s.mdirty=false;}}
@@ -3775,7 +3876,7 @@ function TeacherApp(){
     var sj=pp.querySelector('.ppsubj');sj.innerHTML='<span class="lab">可以翻哪幾頁？照順序點，孩子會先打開第 1 頁，之後自己在這幾頁之間換</span>';
     SUBJ.forEach(function(x){if(!UNITS.some(function(u){return u[2]===x[0]&&u[0]!=='zizao';}))return;var b=h('button',{class:'pp-subj'+(ppSubj===x[0]?' on':''),type:'button'},esc(x[1]));b.addEventListener('click',function(){ppSubj=x[0];renderPP();});sj.appendChild(b);});
     var L=pp.querySelector('.pplist');L.innerHTML='';
-    UNITS.forEach(function(u){if(u[2]!==ppSubj||u[0]==='zizao')return;var ts=TASKS.filter(function(t){return t.kind!=='zi'&&t.kind!=='bh'&&(t.unit||'').split(' ').indexOf(u[0])>=0;});if(!ts.length)return;
+    UNITS.forEach(function(u){if(u[2]!==ppSubj||u[0]==='zizao')return;var ts=TASKS.filter(function(t){return t.id!==VT_QUIZ&&t.kind!=='zi'&&t.kind!=='bh'&&(t.unit||'').split(' ').indexOf(u[0])>=0;});if(!ts.length)return;
       L.appendChild(h('div',{class:'pp-unit'},esc(u[1])));var r=h('div',{class:'pp-row'});
       ts.forEach(function(t){var k=ppSel.indexOf(t.id),b=h('button',{class:'pp-pg'+(k>=0?' on':''),type:'button',title:t.sub},(k>=0?'<i>'+(k+1)+'</i>':'')+esc(t.title));b.addEventListener('click',function(){var j=ppSel.indexOf(t.id);if(j>=0)ppSel.splice(j,1);else ppSel.push(t.id);renderPP();});r.appendChild(b);});L.appendChild(r);});
     var ns=Object.keys(ppSeats).length;pp.querySelector('.sp').textContent=!ns?'請先選要給誰':!ppSel.length?'請點要訂正的頁面':('給 '+ns+' 個人・'+ppSel.length+' 頁');pp.querySelector('.ppok').disabled=!ns||!ppSel.length;pp.querySelector('.ppoff').disabled=!Object.keys(ppSeats).some(function(k){return indiv[k];});
@@ -3784,7 +3885,7 @@ function TeacherApp(){
   pp.addEventListener('click',function(e){if(e.target===pp)pp.hidden=true;});
   pp.querySelector('.ppok').addEventListener('click',function(){if(!ppSel.length)return;for(var k in ppSeats){var old=indiv[k],c=old&&ppSel.indexOf(old.c)>=0?old.c:ppSel[0];if(seats[k].ctl&&(!old||old.c!==c))rcStop(+k);indiv[k]={p:ppSel.slice(),c:c,tv:(old?old.tv:0)+(old&&old.c===c?0:1)};if(pp.querySelector('.ppawayc').checked)indiv[k].away=true;}saveIndiv();pp.hidden=true;broadcast();renderAllTiles();syncIndAll();if(modalSeat!=null)renderModal(true);});
   pp.querySelector('.ppoff').addEventListener('click',function(){for(var k in ppSeats){if(seats[k].ctl)rcStop(+k);delete indiv[k];}saveIndiv();pp.hidden=true;broadcast();renderAllTiles();syncIndAll();if(modalSeat!=null)renderModal(true);});
-  function syncIndAll(){var c=nIndiv(),b=$('.indall');b.hidden=!c;b.textContent='個別進度 '+c+' 人・全部回到全班';}
+  function syncIndAll(){var c=nIndiv(),b=$('.indall');b.hidden=!c||task===VT_QUIZ;b.textContent='個別進度 '+c+' 人・全部回到全班';}
   $('.indall').addEventListener('click',function(){if(!confirm('讓所有孩子都回到全班同一頁嗎？（在別的教室的孩子不會被拉回來）'))return;for(var k in indiv){if(indiv[k].away)continue;if(seats[k].ctl)rcStop(+k);delete indiv[k];}saveIndiv();broadcast();renderAllTiles();syncIndAll();if(modalSeat!=null)renderModal(true);});
   /* demo */
   var demoStates={};
@@ -3815,7 +3916,7 @@ function TeacherApp(){
   qrBox.querySelector('.qrsave').addEventListener('click',function(){lsSet('jiao.t.surl',qrBox.querySelector('.qrin').value.trim());showQR();});
   /* network */
   var peer=null,tries=0;
-  function sendCmd(n){var s=seats[n];if(!s.pid)return;var I=n===8?null:indiv[n];relay(peer,s.pid,{t:'cmd',rec:n===8?(recId||null):undefined,task:I?I.c:task,pick:I?I.p:undefined,tv:I?I.tv:undefined,ctl:s.ctl?{k:s.ctl.k,id:s.ctl.id,ok:s.ctl.ok}:undefined,freeze:(n===8||(I&&I.away))?false:freeze,light:n===8?null:(s.light||null),zi:Z?Z.cmdFor(n):undefined,zr:Z?Z.roundFor(task):null,zw:(n===8&&Z)?Z.wallFor(task):undefined,bh:BT?BT.cmdFor(n,I?I.c:task):undefined});s.zt=Date.now();}
+  function sendCmd(n){var s=seats[n];if(!s.pid)return;var I=assignedPages(n);relay(peer,s.pid,{t:'cmd',rec:n===8?(recId||null):undefined,task:I?I.c:task,vr:task===VT_QUIZ?quizRun:undefined,pick:I?I.p:undefined,tv:I?I.tv:undefined,ctl:s.ctl?{k:s.ctl.k,id:s.ctl.id,ok:s.ctl.ok}:undefined,freeze:(n===8||(I&&I.away))?false:freeze,light:n===8?null:(s.light||null),zi:Z?Z.cmdFor(n):undefined,zr:Z?Z.roundFor(task):null,zw:(n===8&&Z)?Z.wallFor(task):undefined,bh:BT?BT.cmdFor(n,I?I.c:task):undefined});s.zt=Date.now();}
   function broadcast(){for(var n in seats)sendCmd(+n);}
   function onMsg(m){
     if(!m||!m.src||!m.payload||typeof m.payload.jiao!=='object')return;
@@ -3825,6 +3926,7 @@ function TeacherApp(){
     if(d.t==='img?')queueImg(m.src,String(d.page),Array.isArray(d.miss)?d.miss:null);
     if(d.t==='rec'&&n===8&&typeof d.s==='string'){rec8=d.s;recLabel();}
     if(d.t==='fs'&&s.ctl&&!s.ctl.ok&&d.k===s.ctl.k&&d.id===s.ctl.id){var fn=+d.n,fi=+d.i;if(fn>0&&fn<300&&fi>=0&&fi<fn&&typeof d.d==='string'){var fb=s.fsBuf;if(!fb||fb.k!==d.k||fb.id!==d.id||fb.n!==fn)fb=s.fsBuf={k:d.k,id:d.id,n:fn,p:[],got:0};if(fb.p[fi]==null){fb.p[fi]=d.d;fb.got++;}if(fb.got===fb.n){s.fsBuf=null;var full=null;try{full=JSON.parse(fb.p.join(''));}catch(e){}if(full&&full.id===s.ctl.id&&TASK[full.id])rcLoad(n,full);}}}
+    if(d.t==='st'&&task===VT_QUIZ&&(!d.st||d.st.id!==VT_QUIZ||d.st.run!==quizRun))return;
     if(d.t==='st'&&d.st&&typeof d.st==='object'&&TASK[d.st.id]&&s.ctl&&s.ctl.ok){}
     else if(d.t==='st'&&d.st&&typeof d.st==='object'&&TASK[d.st.id]){var I=indiv[n];if(I&&d.tv===I.tv&&I.p.indexOf(d.st.id)>=0&&I.c!==d.st.id){I.c=d.st.id;saveIndiv();}s.st=d.st;s.dirty=true;s.mdirty=true;if(d.st.k==='bh'&&BT)BT.merge(n,d.st);if(d.st.k==='zi'&&Date.now()-s.zt>1500&&Z.needs(n,d.st))sendCmd(n);}
     if(d.t==='zsub'&&d.sub&&typeof d.sub==='object'&&TASK[d.task]&&TASK[d.task].kind==='zi'){Z.onSub(n,d.sub,d.task);sendCmd(n);}
