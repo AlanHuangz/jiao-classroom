@@ -1863,6 +1863,278 @@ VtDesk.prototype.render=function(){
   var style=document.createElement('style');style.textContent=css;document.head.appendChild(style);
 })();
 
+/* ================= 習作 p.82～84 訂正：直式偵探、多一個少一個、餘數實驗室（都用盤子操作） ================= */
+TASKS.push(
+  {id:'rm82',kind:'rm',unit:'div divb',title:'p.82 直式偵探',sub:'用盤子檢查直式，再訂正'},
+  {id:'rm83',kind:'rm',unit:'div divb',title:'p.83 多一個・少一個',sub:'加一個、拿走一個，商和餘數怎麼變'},
+  {id:'rm84',kind:'rm',unit:'div divb',title:'p.84 餘數實驗室',sub:'最多會剩幾個？做實驗找答案'}
+);
+var RM_IT=[['🍪','片','餅乾','盤'],['🍬','顆','糖果','包'],['🍓','顆','草莓','盤'],['🧁','個','杯子蛋糕','盒'],['🍊','個','橘子','籃'],['✏️','枝','鉛筆','盒']];
+var RM_NM=['小明','小美','阿德','小芬','大雄','小安','阿傑','小婷'];
+function rmIt(i){return RM_IT[i]||RM_IT[0];}
+/* ---------- 直式格子（自己一份，不依賴 vt.js） ---------- */
+function rmDig(v){v=String(v);return v.length>1?{t:v.charAt(0),o:v.charAt(1)}:{t:'',o:v};}
+function rmRight(q){var Q=Math.floor(q.n/q.d),P=q.d*Q,R=q.n-P,D=rmDig(q.n),PP=rmDig(P);return {V:String(q.d),D1:D.t,D0:D.o,Q1:'',Q0:String(Q),P1:PP.t,P0:PP.o,M1:'',M0:String(R)};}
+function rmGridHTML(q,w,o){
+  o=o||{};var r=rmRight(q),ed=o.ed||[],bad=w.bad||[],pv=o.pv||{};
+  function cell(k,cls){var v=w.c[k],p=pv[k],c='rm-vc'+(cls?' '+cls:'');
+    if(v==null||v===''){if(p!=null&&p!==''){v=p;c+=' pv';}else v='';}else if(!w.fix[k])c+=' kid';
+    if(ed.indexOf(k)>=0)c+=' ed';if(w.sel===k&&ed.indexOf(k)>=0)c+=' sel';if(bad.indexOf(k)>=0)c+=' bad';if((o.hit||[]).indexOf(k)>=0)c+=' hit';
+    return '<td class="'+c+'" data-c="'+k+'">'+esc(v)+'</td>';}
+  return '<table class="rm-vg'+(o.small?' sm':'')+'"><tr class="hd"><td></td><td></td><td>十</td><td>個</td><td class="nt"></td></tr>'+
+    '<tr><td></td><td></td>'+cell('Q1')+cell('Q0')+'<td class="nt">'+(o.notes?'……商':'')+'</td></tr>'+
+    '<tr>'+cell('V','vv')+'<td class="br">)</td>'+cell('D1','top')+cell('D0','top')+'<td class="nt">'+(o.notes?'……被除數':'')+'</td></tr>'+
+    '<tr><td></td><td></td>'+cell('P1','lin')+cell('P0','lin')+'<td class="nt">'+(o.notes&&o.pn?'……'+o.pn:'')+'</td></tr>'+
+    '<tr><td></td><td></td>'+cell('M1')+cell('M0')+'<td class="nt">'+(o.notes&&o.mn?'……'+o.mn:'')+'</td></tr></table>';
+}
+/* ---------- 共用：畫盤子和剩下的 ---------- */
+function rmPicHTML(o){
+  /* o:{ic, g:[每一份的個數], need:每一份應該有幾個(0=不畫空位), L:剩下, gw:'盤', hl:'left'|'g'|'', big} */
+  var h2='<div class="rm-pic"><div class="rm-gs">';
+  o.g.forEach(function(c,i){var miss=o.need&&c<o.need?o.need-c:0;h2+='<div class="rm-g'+(miss?' short':'')+(o.hl==='g'?' hl':'')+'"><div class="hd">第 '+(i+1)+' '+esc(o.gw)+'<b>'+c+'</b></div><div class="in">';for(var k=0;k<c;k++)h2+='<i>'+o.ic+'</i>';for(var m=0;m<miss;m++)h2+='<i class="miss"></i>';h2+='</div>'+(miss?'<div class="nt">少 '+miss+' 個，不夠！</div>':'')+'</div>';});
+  if(!o.g.length)h2+='<div class="rm-empty">還沒有'+esc(o.gw)+'</div>';
+  h2+='</div><div class="rm-left'+(o.hl==='left'?' hl':'')+'"><div class="hd">剩下的<b>'+o.L+'</b></div><div class="in">';for(var j=0;j<o.L;j++)h2+='<i>'+o.ic+'</i>';h2+='</div></div></div>';
+  return h2;
+}
+function rmPadHTML(){return '<div class="rm-pad">'+['1','2','3','4','5','6','7','8','9','0','⌫'].map(function(k){return '<button type="button" data-a="k" data-v="'+k+'">'+k+'</button>';}).join('')+'</div>';}
+
+/* ---------- 出題 ---------- */
+function rm82Gen(){
+  var qs=[{n:41,d:5,Q:7,it:0,wb:1},{n:58,d:7,Q:6,it:2,wb:1}],used={'41/5':1,'58/7':1};
+  shuffle(['ok','small','ok','small','big','small']).forEach(function(t){for(var k=0;k<300;k++){var d=ri(3,9),Q=ri(3,8),R=t==='small'?ri(0,d-1):ri(0,d-1),n=d*Q+R,Qw=t==='ok'?Q:t==='small'?Q-1:Q+1;if(n<10||n>81||used[n+'/'+d])continue;if(t==='small'&&n-d*Qw<d)continue;used[n+'/'+d]=1;qs.push({n:n,d:d,Q:Qw,it:ri(0,RM_IT.length-1)});return;}});
+  return qs;
+}
+function rm83Set(d,n0,dir,wb){return {d:d,n0:n0,dir:dir,it:ri(0,RM_IT.length-1),wb:wb?1:0};}
+function rm83Gen(){var s=[rm83Set(8,57,1,1),rm83Set(6,46,-1,1)];for(var k=0;k<2;k++){var d=ri(4,9),dir=k?-1:1,m=ri(3,7)*d,n0=dir>0?m-ri(2,d-2):m+ri(1,d-2);s.push(rm83Set(d,n0,dir));}return s;}
+var RM_CX=[
+  {ic:'🍞',u:'個',nm:'麵包',g:'袋',t:'eq'},{ic:'🎈',u:'個',nm:'氣球',g:'束',t:'inc'},{ic:'🧁',u:'個',nm:'雞蛋糕',g:'人',t:'eq'},{ic:'🍓',u:'顆',nm:'草莓',g:'盤',t:'inc'},
+  {ic:'🍬',u:'顆',nm:'糖果',g:'包',t:'inc'},{ic:'🍪',u:'片',nm:'餅乾',g:'人',t:'eq'},{ic:'✏️',u:'枝',nm:'鉛筆',g:'盒',t:'inc'},{ic:'🍊',u:'個',nm:'橘子',g:'籃',t:'eq'}];
+function rm84Q(c,d,kind,claims,names,opts){
+  var C=RM_CX[c],q=C.t==='eq'?(C.g==='人'?'把一些'+C.nm+'平分給 '+d+' 個人':'有一些'+C.nm+'，平分裝成 '+d+' '+C.g):('有一些'+C.nm+'，每 '+d+' '+C.u+(C.g==='束'?'綁成一束':'裝一'+C.g));
+  q+='，盡量分完，'+(kind==='max'?'最多會剩下幾'+C.u+C.nm+'？':'最後可能剩下幾'+C.u+C.nm+'？');
+  return {c:c,d:d,kind:kind,q:q,claims:claims||null,names:names||null,opts:opts||null};
+}
+function rm84Gen(){
+  var ex=[rm84Q(0,5,'max',[4,5,9],['子儀','宥全','政宇']),rm84Q(1,9,'max',[9,8,7],['嘉榕','映澄','承恩']),rm84Q(2,3,'poss',null,null,[0,1,2,3,4,5,6]),rm84Q(3,6,'poss',null,null,[0,1,2,3,4,5,6])];
+  for(var k=0;k<2;k++)ex.push(rm84Extra(k%2?'poss':'max'));return ex;
+}
+function rm84Extra(kind){var c=ri(4,RM_CX.length-1),d=ri(3,8);if(kind==='max'){var nm=shuffle(RM_NM).slice(0,3);return rm84Q(c,d,'max',shuffle([d-1,d,d+ri(1,3)]),nm);}var o=[];for(var i=0;i<=Math.min(9,d+2);i++)o.push(i);return rm84Q(c,d,'poss',null,null,o);}
+
+/* ---------- 狀態 ---------- */
+function rmNew(id){
+  if(id==='rm82'){var qs=rm82Gen();return {k:'rm',id:id,qs:qs,i:0,w:rm82W(qs[0]),res:[],add:0,done:false};}
+  if(id==='rm83'){var ss=rm83Gen();return {k:'rm',id:id,qs:ss,i:0,w:rm83W(ss[0]),res:[],add:0,done:false};}
+  var ex=rm84Gen();return {k:'rm',id:id,qs:ex,i:0,w:rm84W(ex[0]),res:[],add:0,done:false};
+}
+function rm82W(q){return {s:0,pg:q.Q,jn:0,c:{},sel:null,miss:0,msg:'',tried:0};}
+function rm83W(s){return {row:0,n:s.n0,pg:Math.floor(s.n0/s.d),L:s.n0%s.d,rows:[],en:{q:'',r:''},f:'q',msg:'',miss:0,need:true,fin:0,mx:''};}
+function rm84W(x){var N=rm84N(x);return {ph:'lab',N:N,g:[],L:N,set:1,tr:[],ch:null,pick:[],msg:'',miss:0,ok:{}};}
+function rm84N(x){return ri(x.d*2,x.d*5+x.d-1);}
+function rmSummary(st){
+  if(!st.qs)return '';var ok=st.res.filter(function(r){return r.al;}).length;
+  var head=st.id==='rm82'?'直式偵探':st.id==='rm83'?'多一個少一個':'餘數實驗室';
+  if(st.done)return '<span class="good">'+head+'完成！</span>一次就對 '+ok+'/'+st.res.length+(st.add?'・加練 '+st.add+' 題':'');
+  var w=st.w,s='第 '+(st.i+1)+'/'+st.qs.length+' 題';
+  if(st.id==='rm82'){var q=st.qs[st.i];s+='・'+q.n+'÷'+q.d+'（小明寫商 '+q.Q+'）・'+(w.s===0?'檢查中':w.s===1?'訂正中':'做完');}
+  else if(st.id==='rm83'){var S=st.qs[st.i];s+='・÷'+S.d+' '+(S.dir>0?'一個一個加':'一個一個拿走')+'・第 '+(w.row+1)+'/7 行';}
+  else{var x=st.qs[st.i];s+='・'+(x.kind==='max'?'最多剩幾個':'可能剩幾個')+'（÷'+x.d+'）・實驗 '+w.tr.length+' 次'+(w.ph==='ch'?'・挑戰中':w.ph==='ans'?'・回答中':'');}
+  return s+(w.miss?'・<span class="warn">錯 '+w.miss+' 次</span>':'')+(st.add?'・加練 '+st.add:'');
+}
+function rmTile(box,st,big){
+  if(!st.qs){box.innerHTML='';return;}var h2='<div class="rmt'+(big?' big':'')+'">'+rmSummary(st);
+  if(!st.done&&st.id==='rm83'){var w=st.w,S=st.qs[st.i];h2+='<div class="rmt-rows">'+w.rows.map(function(r){return '<span class="'+(r.bad?'no':'')+'">'+r.n+'÷'+S.d+'='+r.q+'…'+r.r+'</span>';}).join('')+'</div>';}
+  if(!st.done&&st.id==='rm84'){var w2=st.w;h2+='<div class="rmt-rows">'+w2.tr.map(function(t){return '<span>'+t.N+'→剩 '+t.L+'</span>';}).join('')+'</div>';}
+  box.innerHTML=h2+'</div>';
+}
+
+/* ---------- 畫面 ---------- */
+function RmDesk(root,ws){
+  var self=this;this.root=root;this.ws=ws;
+  root.addEventListener('click',function(e){if(root._owner!==self||self.ws.locked)return;var c=e.target.closest('[data-c]');if(c&&root.contains(c)){self.cell(c.dataset.c);return;}var b=e.target.closest('[data-a]');if(!b||!root.contains(b)||b.disabled)return;self.click(b.dataset.a,b.dataset.v);});
+  document.addEventListener('keydown',function(e){if(root._owner!==self||self.ws.locked||root.hidden||root.offsetParent===null)return;if(e.target&&/INPUT|TEXTAREA/.test(e.target.tagName))return;var st=self.st();if(!st||st.k!=='rm'||st.done)return;
+    if(/^[0-9]$/.test(e.key))self.click('k',e.key);else if(e.key==='Backspace')self.click('k','⌫');else if(e.key==='Enter')self.click('check');else return;e.preventDefault();});
+}
+RmDesk.prototype.st=function(){return this.ws.state();};
+RmDesk.prototype.load=RmDesk.prototype.mount=function(){this.root._owner=this;this.render();};
+RmDesk.prototype.changed=function(){this.render();this.ws.onChange(true);};
+RmDesk.prototype.finish=function(al){var st=this.st();st.res.push({ok:true,al:!!al});
+  if(!al&&(st.add||0)<4){var x=st.id==='rm82'?rm82Gen()[ri(2,7)]:st.id==='rm83'?rm83Gen()[ri(2,3)]:rm84Extra(st.qs[st.i].kind);if(x){st.qs.push(x);st.add=(st.add||0)+1;}}
+  st.w.done=1;};
+RmDesk.prototype.next=function(){var st=this.st();st.i++;if(st.i>=st.qs.length){st.i=st.qs.length-1;st.done=true;}else{var x=st.qs[st.i];st.w=st.id==='rm82'?rm82W(x):st.id==='rm83'?rm83W(x):rm84W(x);}this.changed();};
+RmDesk.prototype.click=function(a,v){
+  var st=this.st();if(!st)return;
+  if(a==='again'){var n=rmNew(st.id);st.qs=n.qs;st.i=0;st.w=n.w;st.res=[];st.add=0;st.done=false;this.changed();return;}
+  if(st.done)return;if(a==='next'){if(st.w.done)this.next();return;}
+  if(st.id==='rm82')return this.c82(a,v);if(st.id==='rm83')return this.c83(a,v);return this.c84(a,v);
+};
+RmDesk.prototype.cell=function(k){var st=this.st();if(st.id!=='rm82'||st.w.s!==1)return;if(['Q0','Q1','P1','P0','M1','M0'].indexOf(k)<0)return;st.w.sel=k;this.render();};
+RmDesk.prototype.render=function(){
+  var root=this.root;if(root._owner!==this)return;var st=this.st();if(!st||st.k!=='rm')return;
+  if(st.done){var cl=st.res.filter(function(r){return r.al;}).length;root.innerHTML='<div class="rm"><div class="rm-done"><div class="big">🎉 完成了！</div><div>做了 '+st.res.length+' 題，一次就對 <b>'+cl+'</b> 題'+(st.add?'（有 '+st.add+' 題是錯了以後加練的）':'')+'</div><button type="button" class="rm-btn" data-a="again">再玩一輪</button></div></div>';return;}
+  root.innerHTML='<div class="rm">'+(st.id==='rm82'?this.h82(st):st.id==='rm83'?this.h83(st):this.h84(st))+'</div>';
+};
+
+/* ===== p.82 直式偵探：照著直式分，看剩下的還能不能再分；錯了就訂正 ===== */
+RmDesk.prototype.h82=function(st){
+  var q=st.qs[st.i],w=st.w,I=rmIt(q.it),R=q.n-q.d*q.Q,pg=w.pg,used=Math.min(q.n,q.d*pg),L=q.n-used,g=[];for(var i=0;i<pg;i++)g.push(Math.max(0,Math.min(q.d,q.n-q.d*i)));
+  var wc={c:{},fix:{},bad:w.bad||[],sel:w.sel},D=rmDig(q.n),Pd=rmDig(q.d*q.Q);
+  if(w.s===0){wc.c={V:String(q.d),D1:D.t,D0:D.o,Q1:'',Q0:String(q.Q),P1:Pd.t,P0:Pd.o,M1:'',M0:String(Math.abs(R))};if(R>=10){var Md=rmDig(R);wc.c.M1=Md.t;wc.c.M0=Md.o;}}
+  else{wc.c={V:String(q.d),D1:D.t,D0:D.o};['Q1','Q0','P1','P0','M1','M0'].forEach(function(k){wc.c[k]=w.c[k]||'';});}
+  ['V','D1','D0'].forEach(function(k){wc.fix[k]=1;});if(w.s===0)['Q1','Q0','P1','P0','M1','M0'].forEach(function(k){wc.fix[k]=1;});
+  var h2='<div class="rm-head"><span class="lv">p.82 第 2 題・直式偵探'+(q.wb?'（習作原題）':'')+'</span><b>'+(w.s===0?'小明算 '+q.n+' ÷ '+q.d+'，寫了下面的直式。他寫得對嗎？':'把 '+q.n+' ÷ '+q.d+' 的直式訂正好')+'</b><span class="no">第 '+(st.i+1)+' / '+st.qs.length+' 題</span></div>';
+  h2+='<div class="rm-body"><div class="rm-col">'+rmGridHTML(q,wc,{ed:w.s===1?['Q1','Q0','P1','P0','M1','M0']:[]})+(w.s===1?rmPadHTML()+'<button type="button" class="rm-btn" data-a="check">檢查</button>':'')+'</div><div class="rm-col grow">';
+  h2+='<div class="rm-say">'+(w.s===0?'🔍 用盤子檢查：照著小明的直式，'+q.n+' '+I[1]+I[2]+'每 '+q.d+' '+I[1]+'裝一'+I[3]+'，裝了 '+q.Q+' '+I[3]+'。<br><small>看看下面，'+(L>=q.d?'剩下的還能不能再裝一'+I[3]+'？試試看！':'小明的分法對不對？')+'</small>':'看著下面的盤子，把直式寫正確（點格子再按數字）。')+'</div>';
+  h2+=rmPicHTML({ic:I[0],g:g,need:q.d,L:L,gw:I[3]});
+  if(!w.done){h2+='<div class="rm-tools"><button type="button" data-a="more">＋ 再裝一'+I[3]+'（'+q.d+' '+I[1]+'）</button><button type="button" data-a="less">拆開一'+I[3]+'</button></div>';
+    if(w.s===0)h2+='<div class="rm-judge"><span>小明的直式：</span><button type="button" data-a="ok">✓ 正確</button><button type="button" data-a="bad">✗ 錯誤</button></div>';}
+  if(w.msg)h2+='<div class="rm-msg'+(w.good?' ok':'')+'">'+esc(w.msg)+'</div>';
+  if(w.done)h2+='<button type="button" class="rm-btn go" data-a="next">'+(st.i+1<st.qs.length?'下一題 ▶':'看結果 ▶')+'</button>';
+  return h2+'</div></div>';
+};
+RmDesk.prototype.c82=function(a,v){
+  var st=this.st(),q=st.qs[st.i],w=st.w,I=rmIt(q.it),trueQ=Math.floor(q.n/q.d),R=q.n%q.d;if(w.done)return;
+  if(a==='more'){if(q.n-q.d*w.pg>=q.d){w.pg++;w.msg='裝好了！'+(q.n-q.d*w.pg>=q.d?'還有好多呢。':'');w.good=0;w.tried=1;}else{w.msg='剩下 '+Math.max(0,q.n-q.d*w.pg)+' '+I[1]+'，不夠再裝一'+I[3]+'了。';w.good=0;}this.changed();return;}
+  if(a==='less'){if(w.pg>0){w.pg--;w.msg='';}this.changed();return;}
+  if(a==='ok'||a==='bad'){var right=q.Q===trueQ?'ok':'bad';
+    if(a===right){if(right==='ok'){w.msg='對！小明分到剩下 '+R+' '+I[1]+'，不夠再裝一'+I[3]+'了，直式是正確的。';w.good=1;this.finish(w.jn===0);}else{w.msg=(q.Q<trueQ?'對，小明的直式錯了：剩下的還可以再裝一'+I[3]+'，商太小了。':'對，小明的直式錯了：'+q.d+' × '+q.Q+' 比 '+q.n+' 還多，不夠裝，商太大了。')+'現在把直式訂正好。';w.good=1;w.s=1;w.sel='Q0';}}
+    else{w.jn++;w.miss++;w.good=0;w.msg=right==='bad'?(q.Q<trueQ?'再檢查一次：小明剩下 '+(q.n-q.d*q.Q)+' '+I[1]+'，按「＋ 再裝一'+I[3]+'」試試看，還裝得下嗎？':'再檢查一次：小明說可以裝 '+q.Q+' '+I[3]+'，看看最後一'+I[3]+'裝得滿嗎？'):'再看一次：小明剩下 '+R+' '+I[1]+'，按「＋ 再裝一'+I[3]+'」試試看，裝得下嗎？';}
+    this.changed();return;}
+  if(a==='k'){if(w.s!==1||!w.sel)return;if(v==='⌫')w.c[w.sel]='';else{w.c[w.sel]=v;var ord=['Q1','Q0','P1','P0','M1','M0'],i2=ord.indexOf(w.sel);if(i2>=0&&i2+1<ord.length&&ord[i2+1].charAt(0)===w.sel.charAt(0))w.sel=ord[i2+1];}w.bad=(w.bad||[]).filter(function(x){return x!==w.sel;});this.changed();return;}
+  if(a==='check'){if(w.s!==1)return;var r=rmRight(q),bad=[];['Q1','Q0'].forEach(function(k){if((w.c[k]||'')!==(r[k]||''))bad.push(k);});if(!bad.length){['P1','P0'].forEach(function(k){if((w.c[k]||'')!==(r[k]||''))bad.push(k);});}if(!bad.length){['M1','M0'].forEach(function(k){if((w.c[k]||'')!==(r[k]||''))bad.push(k);});}
+    if(!bad.length){w.msg='訂正好了！'+q.n+' ÷ '+q.d+' = '+trueQ+(R?' … '+R:'')+'。剩下的 '+R+' 個不夠再裝一'+I[3]+'了。';w.good=1;w.bad=[];this.finish(w.miss===0);}
+    else{w.miss++;w.good=0;w.bad=bad;var k0=bad[0].charAt(0);w.msg=k0==='Q'?(w.pg!==trueQ?'先用盤子分到不能再分，數數看有幾'+I[3]+'，那就是商。':'商是盤子的數量，要寫在個位的上面。'):k0==='P'?'一共裝掉幾個？'+q.d+' × '+(w.c.Q0||'商')+' = ？個位對個位。':'剩下幾個？看盤子外面剩下的。';}
+    this.changed();return;}
+};
+
+/* ===== p.83 多一個・少一個：一次加（拿走）1 個，看商和餘數怎麼變 ===== */
+RmDesk.prototype.h83=function(st){
+  var S=st.qs[st.i],w=st.w,I=rmIt(S.it),g=[];for(var i=0;i<w.pg;i++)g.push(S.d);var up=S.dir>0;
+  var h2='<div class="rm-head"><span class="lv">p.83 第 4 題'+(S.wb?'（習作原題）':'')+'</span><b>'+(up?'一次多 1 '+I[1]+'，每 '+S.d+' '+I[1]+'裝一'+I[3]+'：商和餘數會怎麼變？':'一次拿走 1 '+I[1]+'，每 '+S.d+' '+I[1]+'裝一'+I[3]+'：商和餘數會怎麼變？')+'</b><span class="no">第 '+(st.i+1)+' / '+st.qs.length+' 組</span></div>';
+  h2+='<div class="rm-body"><div class="rm-col"><div class="rm-tbl"><div class="r first">'+S.n0+' ÷ '+S.d+' = '+Math.floor(S.n0/S.d)+' … '+(S.n0%S.d)+'</div>';
+  w.rows.forEach(function(r){h2+='<div class="r'+(r.bad?' bad':' ok')+'">'+r.n+' ÷ '+S.d+' = '+r.q+' … '+r.r+' ✓</div>';});
+  if(w.row<7&&!w.need)h2+='<div class="r cur">'+w.n+' ÷ '+S.d+' = <button type="button" class="rm-ab'+(w.f==='q'?' f':'')+'" data-a="f" data-v="q">'+esc(w.en.q)+'</button> … <button type="button" class="rm-ab'+(w.f==='r'?' f':'')+'" data-a="f" data-v="r">'+esc(w.en.r)+'</button></div>';
+  else if(w.row<7)h2+='<div class="r wait">'+(S.n0+(w.row+1)*S.dir)+' ÷ '+S.d+' = ( ) … ( )</div>';
+  h2+='</div>'+(w.row<7&&!w.need?rmPadHTML()+'<button type="button" class="rm-btn" data-a="check">檢查</button>':'')+'</div><div class="rm-col grow">';
+  var say;if(w.row>=7){say=w.fin?'🎉 這一組做完了！':'👀 看看左邊表格的<b>餘數</b>，你發現了什麼？<br>除以 '+S.d+' 的時候，餘數最大是幾？';}
+  else if(w.need)say=up?'按「＋ 多 1 '+I[1]+'」，變成 '+(w.n+1)+' '+I[1]+'。':'按「拿走 1 '+I[1]+'」，變成 '+(w.n-1)+' '+I[1]+'。';
+  else say='現在有 <b>'+w.n+'</b> '+I[1]+'。看看盤子，把 '+w.n+' ÷ '+S.d+' 寫出來。';
+  h2+='<div class="rm-say">'+say+'</div>'+rmPicHTML({ic:I[0],g:g,need:S.d,L:w.L,gw:I[3]});
+  if(w.row<7)h2+='<div class="rm-tools">'+(w.need?(up?'<button type="button" class="big" data-a="add">＋ 多 1 '+I[1]+'</button>':'<button type="button" class="big" data-a="sub">拿走 1 '+I[1]+'</button>'):'')+'<button type="button" data-a="pack">裝成一'+I[3]+'</button><button type="button" data-a="open">拆開一'+I[3]+'</button></div>';
+  if(w.row>=7&&!w.fin)h2+='<div class="rm-chips">'+[0,1,2,3,4,5,6,7,8,9].map(function(x){return '<button type="button" data-a="mx" data-v="'+x+'">'+x+'</button>';}).join('')+'</div>';
+  if(w.msg)h2+='<div class="rm-msg'+(w.good?' ok':'')+'">'+esc(w.msg)+'</div>';
+  if(w.done)h2+='<button type="button" class="rm-btn go" data-a="next">'+(st.i+1<st.qs.length?'下一組 ▶':'看結果 ▶')+'</button>';
+  return h2+'</div></div>';
+};
+RmDesk.prototype.c83=function(a,v){
+  var st=this.st(),S=st.qs[st.i],w=st.w,I=rmIt(S.it);if(w.done)return;
+  if(a==='add'){if(!w.need)return;w.n++;w.L++;w.need=false;w.en={q:'',r:''};w.f='q';w.msg='';this.changed();return;}
+  if(a==='sub'){if(!w.need)return;if(w.L<=0){w.msg='盤子外面沒有了，要先「拆開一'+I[3]+'」，才拿得到。';w.good=0;this.changed();return;}w.n--;w.L--;w.need=false;w.en={q:'',r:''};w.f='q';w.msg='';this.changed();return;}
+  if(a==='pack'){if(w.L<S.d){w.msg='剩下 '+w.L+' '+I[1]+'，不夠裝一'+I[3]+'（要 '+S.d+' '+I[1]+'）。';w.good=0;}else{w.L-=S.d;w.pg++;w.msg='';}this.changed();return;}
+  if(a==='open'){if(w.pg<=0)return;w.pg--;w.L+=S.d;w.msg='';this.changed();return;}
+  if(a==='f'){w.f=v;this.render();return;}
+  if(a==='k'){if(w.need||w.row>=7)return;var f=w.f;if(v==='⌫')w.en[f]=w.en[f].slice(0,-1);else if(w.en[f].length<2)w.en[f]=(w.en[f]==='0'?'':w.en[f])+v;if(f==='q'&&w.en.q.length>=1&&v!=='⌫')w.f='r';this.render();return;}
+  if(a==='check'){if(w.need||w.row>=7||w.en.q===''||w.en.r==='')return;var Q=Math.floor(w.n/S.d),R=w.n%S.d,eq=+w.en.q===Q&&+w.en.r===R,pic=w.pg===Q&&w.L===R;
+    if(eq&&pic){w.rows.push({n:w.n,q:Q,r:R,bad:w.rb?1:0});if(w.rb)w.miss++;w.rb=0;w.row++;w.need=true;w.msg='';}
+    else{w.rb=1;w.good=0;w.msg=w.L>=S.d?'看看盤子外面剩下的 '+w.L+' '+I[1]+'，還能不能再裝一'+I[3]+'？':'數數看：有幾'+I[3]+'（商）？盤子外面剩幾'+I[1]+'（餘數）？';}
+    this.changed();return;}
+  if(a==='mx'){if(w.row<7||w.fin)return;if(+v===S.d-1){w.fin=1;w.good=1;w.msg='對！除以 '+S.d+' 的時候，餘數最大是 '+(S.d-1)+'。剩下 '+S.d+' 個的時候，就可以再裝一'+I[3]+'了。';this.finish(w.miss===0);}
+    else{w.miss++;w.good=0;w.msg=+v>=S.d?'剩下 '+v+' 個的時候，還能不能再裝一'+I[3]+'？看看表格，餘數有出現過 '+v+' 嗎？':'看看表格，有沒有比 '+v+' 更大的餘數？';}
+    this.changed();return;}
+};
+
+/* ===== p.84 餘數實驗室：自己分很多次，看最後剩下幾個；挑戰「讓剩下 ○ 個」 ===== */
+RmDesk.prototype.h84=function(st){
+  var x=st.qs[st.i],w=st.w,C=RM_CX[x.c],eq=C.t==='eq',gw=C.g==='人'?'人':C.g,ch=w.ph==='ch';
+  var h2='<div class="rm-head"><span class="lv">p.84 '+(x.kind==='max'?'第 5 題':'第 6 題')+'・餘數實驗室</span><b>'+esc(x.q)+'</b><span class="no">第 '+(st.i+1)+' / '+st.qs.length+' 題</span></div>';
+  if(x.kind==='max'&&x.claims)h2+='<div class="rm-claims">'+x.claims.map(function(c,i){var t=w.ok[c];return '<span class="cl'+(t==='y'?' y':t==='n'?' n':'')+'"><b>'+esc(x.names[i])+'</b>：「最多剩 '+c+' '+C.u+'」'+(t==='y'?' ✓做得到':t==='n'?' ✗做不到':'')+'</span>';}).join('')+'</div>';
+  h2+='<div class="rm-body"><div class="rm-col grow">';
+  var say='';
+  if(w.ph==='lab')say='🧪 <b>做實驗</b>：這裡有 <b>'+w.N+'</b> '+C.u+C.nm+'。'+(eq?'要平分給 '+x.d+' '+(gw==='人'?'個人':gw)+'，先拿出 '+x.d+' '+(gw==='人'?'個人':gw)+'，再「每'+(gw==='人'?'人':gw)+'各放 1 '+C.u+'」。':'每 '+x.d+' '+C.u+(gw==='束'?'綁成一束':'裝一'+gw)+'。')+'分到不能再分，按「分完了」。';
+  else if(ch)say='🎯 <b>挑戰：想辦法讓最後剩下 '+w.ch.T+' '+C.u+'！</b><br>先選要放幾'+C.u+C.nm+'（上下鍵），再分分看。'+(w.ch.tries?'<small>（試了 '+w.ch.tries+' 次）</small>':'');
+  else say=x.kind==='max'?'想好了嗎？上面誰說得對？點他的名字。也可以點別人的說法，做實驗試試看。':'哪些數字是「可能剩下」的？都點起來，再按「確定」。點不確定的數字，可以做實驗試試看。';
+  h2+='<div class="rm-say">'+say+'</div>';
+  if(w.ph!=='ans'){
+    if(ch&&!w.set)h2+='<div class="rm-step"><button type="button" data-a="nd">▼</button><span>放 <b>'+w.N+'</b> '+C.u+'</span><button type="button" data-a="nu">▲</button><button type="button" class="rm-btn" data-a="nset">就放這麼多，開始分</button></div>';
+    else{var need=eq?0:x.d;h2+=rmPicHTML({ic:C.ic,g:w.g,need:need,L:w.L,gw:gw==='人'?'人':gw});
+      h2+='<div class="rm-tools">'+(eq?'<button type="button" data-a="bag">＋ 多一'+(gw==='人'?'個人':gw)+'</button><button type="button" data-a="deal">每'+(gw==='人'?'人':gw)+'各放 1 '+C.u+'</button><button type="button" data-a="undeal">每'+(gw==='人'?'人':gw)+'各拿回 1 '+C.u+'</button><button type="button" data-a="unbag">拿掉一'+(gw==='人'?'個人':gw)+'</button>':'<button type="button" data-a="fill">'+(gw==='束'?'綁成一束（'+x.d+' 個）':'裝一'+gw+'（'+x.d+' '+C.u+'）')+'</button><button type="button" data-a="unfill">拆開一'+gw+'</button>')+'<button type="button" class="go" data-a="fin">分完了 ✓</button></div>';}
+  }
+  if(w.msg)h2+='<div class="rm-msg'+(w.good?' ok':'')+'">'+esc(w.msg)+'</div>';
+  if(w.ph==='ans'){
+    if(x.kind==='max')h2+='<div class="rm-claims pick">'+x.claims.map(function(c,i){return '<button type="button" data-a="who" data-v="'+i+'">'+esc(x.names[i])+'說得對</button><button type="button" class="try" data-a="try" data-v="'+c+'">🧪 試試「剩 '+c+' 個」</button>';}).join('')+'</div>';
+    else h2+='<div class="rm-chips poss">'+x.opts.map(function(o){var on=w.pick.indexOf(o)>=0,t=w.ok[o];return '<span class="pc"><button type="button" class="'+(on?'on':'')+'" data-a="pk" data-v="'+o+'">'+o+' '+C.u+(t==='y'?' ✓':t==='n'?' ✗':'')+'</button><button type="button" class="try" data-a="try" data-v="'+o+'">🧪</button></span>';}).join('')+'</div><button type="button" class="rm-btn" data-a="poss">確定</button>';
+  }
+  if(w.ph==='lab'&&w.tr.length>=3)h2+='<button type="button" class="rm-btn alt" data-a="toans">我想好了，去回答 ▶</button>';
+  if(w.ph==='ch')h2+='<button type="button" class="rm-btn alt" data-a="toans">回去回答 ▶</button>';
+  if(w.done)h2+='<button type="button" class="rm-btn go" data-a="next">'+(st.i+1<st.qs.length?'下一題 ▶':'看結果 ▶')+'</button>';
+  h2+='</div><div class="rm-col side"><div class="rm-log"><div class="hd">📒 實驗紀錄</div>'+(w.tr.length?w.tr.map(function(t){return '<div class="'+(t.c?'c':'')+'">'+t.N+' '+C.u+' → 剩下 <b>'+t.L+'</b> '+C.u+(t.c?'（挑戰'+(t.c==='y'?'成功':'')+'）':'')+'</div>';}).join(''):'<div class="no">還沒有</div>')+'</div>';
+  if(w.tr.length){var seen={};w.tr.forEach(function(t){seen[t.L]=1;});h2+='<div class="rm-seen"><div class="hd">剩下過的數字</div>'+Object.keys(seen).map(Number).sort(function(a,b){return a-b;}).map(function(n){return '<span>'+n+'</span>';}).join('')+'</div>';}
+  return h2+'</div></div>';
+};
+RmDesk.prototype.c84=function(a,v){
+  var st=this.st(),x=st.qs[st.i],w=st.w,C=RM_CX[x.c],eq=C.t==='eq',gw=C.g==='人'?'人':C.g,d=x.d,i;if(w.done)return;
+  function reset(N){w.N=N;w.L=N;w.g=eq?w.g.map(function(){return 0;}):[];w.set=1;}
+  if(a==='nu'){w.N=Math.min(70,w.N+1);this.render();return;}
+  if(a==='nd'){w.N=Math.max(1,w.N-1);this.render();return;}
+  if(a==='nset'){reset(w.N);w.msg='';this.changed();return;}
+  if(a==='bag'){if(w.g.length>=10)return;w.g.push(0);this.changed();return;}
+  if(a==='unbag'){if(!w.g.length)return;w.L+=w.g.pop();this.changed();return;}
+  if(a==='deal'){if(!w.g.length){w.msg='先按「＋ 多一'+(gw==='人'?'個人':gw)+'」';w.good=0;this.changed();return;}if(w.L<w.g.length){w.msg='剩下 '+w.L+' '+C.u+'，不夠每'+(gw==='人'?'人':gw)+'再放 1 '+C.u+'了。';w.good=0;this.changed();return;}for(i=0;i<w.g.length;i++)w.g[i]++;w.L-=w.g.length;w.msg='';this.changed();return;}
+  if(a==='undeal'){if(!w.g.length||Math.min.apply(null,w.g)<1)return;for(i=0;i<w.g.length;i++)w.g[i]--;w.L+=w.g.length;this.changed();return;}
+  if(a==='fill'){if(w.L<d){w.msg='剩下 '+w.L+' '+C.u+'，不夠'+(gw==='束'?'再綁一束':'再裝一'+gw)+'了。';w.good=0;this.changed();return;}w.g.push(d);w.L-=d;w.msg='';this.changed();return;}
+  if(a==='unfill'){if(!w.g.length)return;w.L+=w.g.pop();this.changed();return;}
+  if(a==='fin'){
+    if(eq&&w.g.length!==d){w.msg='題目說要分給 '+d+' '+(gw==='人'?'個人':gw)+'喔，現在有 '+w.g.length+' '+(gw==='人'?'個人':gw)+'。';w.good=0;this.changed();return;}
+    if(eq?w.L>=d:w.L>=d){w.msg=eq?'剩下 '+w.L+' '+C.u+'，還夠每'+(gw==='人'?'人':gw)+'再放 1 '+C.u+'喔，再分分看！':'剩下 '+w.L+' '+C.u+'，還可以'+(gw==='束'?'再綁一束':'再裝一'+gw)+'喔，再分分看！';w.good=0;this.changed();return;}
+    var rec={N:w.N,L:w.L};
+    if(w.ph==='ch'){var T=w.ch.T;w.ch.tries++;if(w.L===T){rec.c='y';w.ok[T]='y';w.msg='挑戰成功！真的可以剩下 '+T+' '+C.u+'。';w.good=1;w.ph='ans';}
+      else{rec.c='n';w.good=0;if(T>=d&&w.ch.tries>=2){w.ok[T]='n';w.msg='還是沒辦法剩下 '+T+' '+C.u+'……想一想：如果剩下 '+T+' '+C.u+'，還能不能'+(eq?'每'+(gw==='人'?'人':gw)+'再放 1 '+C.u:(gw==='束'?'再綁一束':'再裝一'+gw))+'？';w.ph='ans';}
+        else w.msg='分完剩下 '+w.L+' '+C.u+'，不是 '+T+' '+C.u+'。換一個數量再試試！';}
+      w.tr.push(rec);w.set=0;w.L=0;this.changed();return;}
+    w.tr.push(rec);w.ok[w.L]='y';w.msg='記下來了：'+w.N+' '+C.u+' 分完剩下 '+w.L+' '+C.u+'。換一個數量再做一次！';w.good=1;reset(rm84N(x));this.changed();return;}
+  if(a==='toans'){w.ph='ans';w.msg='';this.changed();return;}
+  if(a==='try'){var T2=+v;w.ph='ch';w.ch={T:T2,tries:0};w.set=0;w.N=Math.max(d,T2+d);w.L=0;if(eq)w.g=w.g.map(function(){return 0;});else w.g=[];w.msg='';this.changed();return;}
+  if(a==='pk'){var o=+v,j=w.pick.indexOf(o);if(j>=0)w.pick.splice(j,1);else w.pick.push(o);this.render();this.ws.onChange(true);return;}
+  if(a==='who'){var c=x.claims[+v];if(c===d-1){w.msg='對！'+x.names[+v]+'說得對：最多剩下 '+(d-1)+' '+C.u+'。';w.good=1;this.finish(w.miss===0);}
+    else{w.miss++;w.good=0;var T3=c;w.msg=c>=d?'真的可以剩下 '+c+' '+C.u+'嗎？來挑戰看看！':'只能剩 '+c+' '+C.u+'嗎？能不能剩更多？挑戰「剩下 '+(c+1)+' '+C.u+'」看看！';if(c<d)T3=c+1;w.ph='ch';w.ch={T:T3,tries:0};w.set=0;w.N=T3+d;w.L=0;if(eq)w.g=w.g.map(function(){return 0;});else w.g=[];}
+    this.changed();return;}
+  if(a==='poss'){var right=x.opts.filter(function(o){return o<d;}),wrongIn=w.pick.filter(function(o){return o>=d;}).sort(function(a,b){return a-b;}),miss=right.filter(function(o){return w.pick.indexOf(o)<0;});
+    if(!w.pick.length){w.msg='先把可能剩下的數字點起來。';this.changed();return;}
+    if(!wrongIn.length&&!miss.length){w.msg='對！最後可能剩下 '+right.join('、')+' '+C.u+'。';w.good=1;this.finish(w.miss===0);this.changed();return;}
+    w.miss++;w.good=0;var T4=wrongIn.length?wrongIn[0]:miss[0];w.msg=wrongIn.length?'真的可能剩下 '+T4+' '+C.u+'嗎？來挑戰看看！':'可不可能剩下 '+T4+' '+C.u+'？來挑戰看看！';
+    w.ph='ch';w.ch={T:T4,tries:0};w.set=0;w.N=T4+d;w.L=0;if(eq)w.g=w.g.map(function(){return 0;});else w.g=[];this.changed();return;}
+};
+(function(){var css=
+'.rm{flex:1;min-height:0;overflow:auto;display:flex;flex-direction:column;gap:10px;padding:12px 16px;background:var(--stage)}'+
+'.rm-head{display:flex;align-items:center;gap:12px;flex-wrap:wrap;font-size:21px}.rm-head .lv{background:#2a6fb0;color:#fff;border-radius:999px;padding:2px 12px;font-size:15px;font-weight:700}.rm-head .no{margin-left:auto;font-size:15px;color:var(--muted)}'+
+'.rm-body{display:flex;gap:16px;flex-wrap:wrap;align-items:flex-start}.rm-col{display:flex;flex-direction:column;gap:10px;background:#fff;border-radius:16px;padding:12px 14px}.rm-col.grow{flex:1;min-width:320px;background:transparent;padding:0}.rm-col.side{width:220px}'+
+'.rm-say{background:#fff;border-radius:14px;padding:12px 16px;font-size:20px;line-height:1.6}.rm-say small{font-size:16px;color:var(--muted)}'+
+'.rm-msg{background:#fff6e6;color:#8a4b00;border-radius:12px;padding:10px 14px;font-size:18px;line-height:1.5}.rm-msg.ok{background:#eaf7ef;color:#1d7a45}'+
+'.rm-pic{display:flex;gap:12px;flex-wrap:wrap;align-items:flex-start;background:#fff;border-radius:14px;padding:10px}.rm-gs{display:flex;flex-wrap:wrap;gap:8px;flex:1;min-width:0}'+
+'.rm-g{width:118px;border:3px solid #9fb0bd;border-radius:16px;padding:4px 6px;background:#fbfcfd}.rm-g .hd,.rm-left .hd{font-size:13px;color:var(--muted);display:flex;justify-content:space-between}.rm-g .hd b,.rm-left .hd b{font-size:17px;color:var(--ink)}'+
+'.rm-g .in,.rm-left .in{display:flex;flex-wrap:wrap;gap:1px}.rm-g i,.rm-left i{font-style:normal;font-size:19px;width:24px;height:24px;display:flex;align-items:center;justify-content:center}.rm-g i.miss{border:2px dashed var(--red);border-radius:50%;width:18px;height:18px;margin:2px}'+
+'.rm-g.short{border-color:var(--red);background:#fdeeee}.rm-g .nt{font-size:13px;color:var(--red);font-weight:700}.rm-empty{color:var(--muted);font-size:15px;padding:10px}'+
+'.rm-left{width:170px;border:3px dashed #e8930c;border-radius:16px;padding:4px 6px;background:#fff8ec}'+
+'.rm-tools{display:flex;gap:8px;flex-wrap:wrap}.rm-tools button{font-size:17px;font-weight:700;padding:8px 14px;border-radius:12px;border:2px solid var(--accent);background:#fff;font-family:inherit;cursor:pointer}.rm-tools button.big{font-size:20px;background:#eef4fb}.rm-tools button.go{border-color:var(--green);background:var(--green);color:#fff}'+
+'.rm-judge{display:flex;gap:10px;align-items:center;font-size:19px;font-weight:700}.rm-judge button{font-size:20px;font-weight:800;padding:10px 22px;border-radius:12px;border:3px solid var(--line);background:#fff;font-family:inherit;cursor:pointer}'+
+'.rm-btn{font-size:19px;font-weight:700;padding:10px 20px;border-radius:12px;border:0;background:var(--accent);color:#fff;font-family:inherit;cursor:pointer;align-self:flex-start}.rm-btn.go{background:var(--green)}.rm-btn.alt{background:#e8930c}'+
+'.rm-pad{display:grid;grid-template-columns:repeat(4,50px);gap:6px}.rm-pad button{font-size:21px;padding:8px 0;border-radius:10px;border:2px solid var(--line);background:#fff;font-family:inherit;cursor:pointer}'+
+'.rm-tbl{display:flex;flex-direction:column;gap:4px;font-size:22px;font-weight:700;font-variant-numeric:tabular-nums}.rm-tbl .r{padding:4px 8px;border-radius:8px}.rm-tbl .first{color:var(--muted)}.rm-tbl .ok{color:#1d7a45}.rm-tbl .bad{color:#a35f00}.rm-tbl .cur{background:#eef4fb}.rm-tbl .wait{color:#b9c7d2}'+
+'.rm-ab{min-width:48px;height:42px;font-size:22px;font-weight:700;border:3px solid var(--line);border-radius:10px;background:#fff;vertical-align:middle;font-family:inherit}.rm-ab.f{border-color:var(--accent);box-shadow:0 0 0 3px rgba(42,111,176,.2)}'+
+'.rm-chips{display:flex;flex-wrap:wrap;gap:8px}.rm-chips button{font-size:20px;font-weight:700;min-width:54px;padding:8px 12px;border-radius:12px;border:2px solid var(--line);background:#fff;font-family:inherit;cursor:pointer}.rm-chips button.on{border-color:var(--accent);background:#e3effa}'+
+'.rm-chips.poss .pc{display:inline-flex;gap:2px}.rm-chips button.try,.rm-claims button.try{font-size:15px;min-width:0;padding:6px 8px;border-color:#7a5cc0;color:#5b3fa0;background:#f6f2ff}'+
+'.rm-claims{display:flex;gap:10px;flex-wrap:wrap}.rm-claims .cl{background:#fff;border-radius:12px;padding:6px 12px;font-size:17px;border:2px solid var(--line)}.rm-claims .cl.y{border-color:var(--green)}.rm-claims .cl.n{border-color:var(--red)}'+
+'.rm-claims.pick button{font-size:18px;font-weight:700;padding:8px 14px;border-radius:12px;border:2px solid var(--accent);background:#fff;font-family:inherit;cursor:pointer}'+
+'.rm-step{display:flex;align-items:center;gap:10px;font-size:22px}.rm-step>button:not(.rm-btn){font-size:22px;width:50px;height:46px;border-radius:12px;border:2px solid var(--accent);background:#fff;cursor:pointer}.rm-step b{font-size:32px;color:#e8590c}'+
+'.rm-log,.rm-seen{display:flex;flex-direction:column;gap:3px;font-size:15px}.rm-log .hd,.rm-seen .hd{font-weight:800}.rm-log .c{color:#5b3fa0}.rm-log .no{color:var(--muted)}.rm-seen{flex-direction:row;flex-wrap:wrap;gap:4px;margin-top:6px}.rm-seen .hd{width:100%}.rm-seen span{background:#fff3d6;border-radius:8px;padding:2px 10px;font-size:18px;font-weight:700}'+
+'.rm-done{margin:auto;text-align:center;display:flex;flex-direction:column;gap:14px;align-items:center;font-size:22px}.rm-done .big{font-size:34px;font-weight:800}'+
+'.rm-vg{border-collapse:collapse;font-size:40px;font-weight:700;font-family:"Microsoft JhengHei",sans-serif}.rm-vg td{width:56px;height:60px;text-align:center;padding:0}.rm-vg .hd td{height:24px;font-size:15px;color:var(--muted);font-weight:400}'+
+'.rm-vc{border:1px dashed #cdd8e0}.rm-vc.top{border-top:4px solid var(--ink)}.rm-vc.lin{border-bottom:4px solid var(--ink)}.rm-vc.vv{border:1px dashed #cdd8e0}.rm-vg .br{font-size:48px;font-weight:300;width:20px;color:var(--ink)}'+
+'.rm-vc.kid{color:#1f5a92}.rm-vc.pv{color:#9fb0bd;font-style:italic}.rm-vc.ed{background:#f3f8fd;cursor:pointer}.rm-vc.sel{outline:4px solid var(--accent);outline-offset:-4px;background:#e3effa}'+
+'.rm-vc.bad{background:#fdeeee;color:var(--red)}.rm-vc.hit{background:#fff3d6}.rm-vg .nt{width:auto;font-size:14px;font-weight:400;color:var(--muted);text-align:left;padding-left:6px;white-space:nowrap}'+
+'.rm-vg.sm{font-size:20px}.rm-vg.sm td{width:28px;height:30px}.rm-vg.sm .br{font-size:24px;width:10px}.rm-vg.sm .hd td{height:14px;font-size:11px}'+
+'.rmt{font-size:13px;line-height:1.5}.rmt.big{font-size:18px}.rmt-rows{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px}.rmt-rows span{background:#f3f6f8;border-radius:6px;padding:0 6px}.rmt-rows .no{color:var(--red)}';
+var s=document.createElement('style');s.textContent=css;document.head.appendChild(s);})();
+
 /* ================= 社會・第三單元：班會大冒險（系統帶全班開一次班會）＋班會小練習 ================= */
 TASKS.push(
   {id:'bhm',kind:'bh',unit:'bh',subj:'soc',title:'開班會！',sub:'系統帶全班開一次班會'},
@@ -2794,6 +3066,7 @@ function newState(id){
   if(t.kind==='bh')return {k:'bh',id:id,mid:'',ac:[],lt:0};
   if(t.kind==='bs')return bsNew(id);
   if(t.kind==='vt')return vtNew(id);
+  if(t.kind==='rm')return rmNew(id);
   if(t.kind==='wb'){var bx=t.box;var o={k:'wb',id:id,ink:[],copies:[],boards:[],sel:-1,zoom:{z:1,cx:bx[0]+bx[2]/2,cy:bx[1]+bx[3]/2}};if(isAreaUnit(t)){o.tiles=[];o.sheets=[];o.pieces=[];o.paint=[];o.asel=null;}return o;}
   if(t.kind==='acnt'||t.kind==='adot')return {k:t.kind,id:id,qs:genACnt(t.kind==='adot'),i:0,ans:null,res:[],paint:[],pieces:[],done:false};
   if(t.kind==='acmp')return {k:'acmp',id:id,qs:genACmp(),i:0,ans:null,res:[],paint:[],pieces:[],done:false};
@@ -2813,7 +3086,7 @@ function bLen(st,b){if(b&&b.t==='ru')return (b.n||10)*U_WB+2*RU_M;return (b&&b.L
 function wire(st){
   if(st.k==='zi')return ziWire(st);
   if(st.k==='dv')return dvWire(st);
-  if(st.k==='bh'||st.k==='bs'||st.k==='vt')return st;
+  if(st.k==='bh'||st.k==='bs'||st.k==='vt'||st.k==='rm')return st;
   if(st.k==='wb'){var w0={k:'wb',id:st.id,ink:st.ink,copies:st.copies,boards:st.boards};if(st.tiles){w0.tiles=st.tiles;w0.sheets=st.sheets;w0.pieces=st.pieces;w0.paint=st.paint;}return w0;}
   var o={k:st.k,id:st.id,i:st.i,n:st.qs.length,q:st.qs[st.i]||null,ans:st.ans,res:st.res,done:st.done};
   if(st.k==='rao')o.board=st.board;else if(st.k==='cmp')o.B=st.B;else{o.paint=st.paint;o.pieces=st.pieces;}
@@ -2870,7 +3143,7 @@ function Scene(svg,opt){
 }
 Scene.prototype.dims=function(){return this.st.k==='wb'?[WB_W,WB_H]:[PR_W,PR_H];};
 Scene.prototype.load=function(st){if(this.anim){this.anim.cancel();this.anim=null;}this.st=st;this.tr=[];this.cut=[];this.justCut=false;this.liftI=-1;this.drawBg();this.drawInk();this.drawDyn();this.view();};
-Scene.prototype.view=function(){if(!this.st||this.st.k==='zi'||this.st.k==='dv'||this.st.k==='bh'||this.st.k==='bs'||this.st.k==='vt')return;
+Scene.prototype.view=function(){if(!this.st||this.st.k==='zi'||this.st.k==='dv'||this.st.k==='bh'||this.st.k==='bs'||this.st.k==='vt'||this.st.k==='rm')return;
   var d=this.dims(),X0=0,Y0=0,W=d[0],H=d[1];
   if(this.st.k==='wb'){var bx=TASK[this.st.id].box;X0=bx[0];Y0=bx[1];W=bx[2];H=bx[3];}
   var x=X0,y=Y0,w=W,hh=H,z=(this.ia&&this.st.zoom)?this.st.zoom:null;
@@ -3385,8 +3658,8 @@ Workspace.prototype.state=function(){return this.states[this.id];};
 Workspace.prototype.setTask=function(id){
   if(!TASK[id])return;this.id=id;var st=this.states[id];
   if(!st||st.k!==TASK[id].kind||(st.k==='wb'&&!st.boards)||(isAreaUnit(TASK[id])&&!st.pieces)){st=this.states[id]=newState(id);}
-  var isZi=st.k==='zi',isDv=st.k==='dv',isBh=st.k==='bh'||st.k==='bs'||st.k==='vt';this.wsEl.hidden=isZi||isDv||isBh;this.ziEl.hidden=!isZi;this.dvEl.hidden=!isDv;this.bhEl.hidden=!isBh;
-  if(isBh){this.ansEl.innerHTML='';this.nextBtn=null;this.ansBtns={};this.numDisp=null;var D=st.k==='bh'?(this.bh||(this.bh=new BhMeet(this.bhEl,this))):st.k==='vt'?(this.vt||(this.vt=new VtDesk(this.bhEl,this))):(this.bs||(this.bs=new BhSort(this.bhEl,this)));D.mount();this.onChange(true);return;}
+  var isZi=st.k==='zi',isDv=st.k==='dv',isBh=st.k==='bh'||st.k==='bs'||st.k==='vt'||st.k==='rm';this.wsEl.hidden=isZi||isDv||isBh;this.ziEl.hidden=!isZi;this.dvEl.hidden=!isDv;this.bhEl.hidden=!isBh;
+  if(isBh){this.ansEl.innerHTML='';this.nextBtn=null;this.ansBtns={};this.numDisp=null;var D=st.k==='bh'?(this.bh||(this.bh=new BhMeet(this.bhEl,this))):st.k==='vt'?(this.vt||(this.vt=new VtDesk(this.bhEl,this))):st.k==='rm'?(this.rm||(this.rm=new RmDesk(this.bhEl,this))):(this.bs||(this.bs=new BhSort(this.bhEl,this)));D.mount();this.onChange(true);return;}
   if(isDv){this.ansEl.innerHTML='';this.nextBtn=null;this.ansBtns={};this.numDisp=null;if(!this.dv)this.dv=new DivDesk(this.dvEl,this);this.dv.load();this.onChange(true);return;}
   if(isZi){this.ansEl.innerHTML='';this.nextBtn=null;this.ansBtns={};this.numDisp=null;if(!this.zi)this.zi=new ZiDesk(this.ziEl,this);this.zi.load(st);this.onChange(true);return;}
   this.scene.mode=(TASK[id].subj==='zh'||TASK[id].ink)?'pen':'move';this.scene.load(st);this.buildTools();this.buildAns();this.syncTools();this.onChange(true);
@@ -3546,6 +3819,7 @@ function summary(st){
   if(st.k==='bh')return bhSummary(st);
   if(st.k==='bs')return bsSummary(st);
   if(st.k==='vt')return vtSummary(st);
+  if(st.k==='rm')return rmSummary(st);
   if(st.k==='zi')return '拆「'+esc(st.cur||'')+'」・送出 '+((st.subs||[]).length)+' 個';
   if(st.k==='wb'&&st.tiles){var c=areaCounts(st);return '方瓦 '+c.tiles+'・塗 '+c.paint+' 格・剪 '+c.pieces+' 片・筆 '+((st.ink||[]).length)+' 條';}
   if(isZhSt(st)){var hc=(st.ink||[]).filter(function(k){return k.h;}).length;return '筆跡 '+((st.ink||[]).length-hc)+' 條・螢光筆 '+hc+' 條';}
@@ -3635,7 +3909,7 @@ function StudentApp(){
       if(rcBuf.p[i]==null){rcBuf.p[i]=d.d;rcBuf.got++;}if(rcBuf.got<rcBuf.n)return;
       var s2=null;try{s2=JSON.parse(rcBuf.p.join(''));}catch(e){}rcBuf=null;rcV=v;
       var cur=states[ws.id];if(!s2||s2.id!==ws.id||!cur||s2.k!==cur.k)return;
-      states[s2.id]=s2;if(s2.k==='dv'){if(ws.dv)ws.dv.load();}else if(s2.k==='bs'){if(ws.bs)ws.bs.load();}else if(s2.k==='vt'){if(ws.vt)ws.vt.load();}else{ws.scene.load(s2);ws.updateAns();ws.updateCount();}dirty=true;lsSet(skey,states);
+      states[s2.id]=s2;if(s2.k==='dv'){if(ws.dv)ws.dv.load();}else if(s2.k==='bs'){if(ws.bs)ws.bs.load();}else if(s2.k==='vt'){if(ws.vt)ws.vt.load();}else if(s2.k==='rm'){if(ws.rm)ws.rm.load();}else{ws.scene.load(s2);ws.updateAns();ws.updateCount();}dirty=true;lsSet(skey,states);
     }
     function lightG(){var t=ws&&ws.id&&TASK[ws.id];if(t&&t.subj==='zh')return '做得好！拿出國語課本，自己做做看。';if(t&&t.subj==='soc')return '做得好！拿出社會習作，自己做做看。';if(t&&/angle/.test(t.unit||''))return '做得好！拿出習作，用真的三角板做做看。';return '做得好！拿出習作，自己做做看。';}
     function setLight(l){light.hidden=!l;light.className='light '+(l||'');lt.textContent=l==='g'?lightG():l==='r'?'請帶著 Chromebook 到老師那裡。':'';}
@@ -3793,12 +4067,12 @@ function TeacherApp(){
     t.classList.toggle('lg-g',s.light==='g');t.classList.toggle('lg-r',s.light==='r');
     t.querySelector('.gbtn').classList.toggle('on',s.light==='g');t.querySelector('.rbtn').classList.toggle('on',s.light==='r');
     var off=t.querySelector('.off');off.hidden=!!s.st&&on;off.textContent=s.st?'連線中斷':'還沒連線';
-    var isZi=!!s.st&&s.st.k==='zi',isDv=!!s.st&&s.st.k==='dv',isBh=!!s.st&&(s.st.k==='bh'||s.st.k==='bs'||s.st.k==='vt');s.tz.hidden=!(isZi||isDv||isBh);s.tz.classList.toggle('dvbox',isDv);s.tz.classList.toggle('bhbox',isBh);s.scene.svg.style.visibility=(isZi||isDv||isBh)?'hidden':'';
+    var isZi=!!s.st&&s.st.k==='zi',isDv=!!s.st&&s.st.k==='dv',isBh=!!s.st&&(s.st.k==='bh'||s.st.k==='bs'||s.st.k==='vt'||s.st.k==='rm');s.tz.hidden=!(isZi||isDv||isBh);s.tz.classList.toggle('dvbox',isDv);s.tz.classList.toggle('bhbox',isBh);s.scene.svg.style.visibility=(isZi||isDv||isBh)?'hidden':'';
     var I=assignedPages(n),ind=t.querySelector('.ind');t.classList.toggle('indv',!!I);ind.hidden=!I&&!s.ctl;ind.classList.toggle('rc',!!s.ctl);ind.textContent=s.ctl?'老師操作中':I?((I.away?'別的教室・':'個別 ')+I.p.length+' 頁'):'';ind.classList.toggle('away',!!(I&&I.away)&&!s.ctl);t.classList.toggle('away',!!(I&&I.away));
     if(n!==8)t.querySelector('.pbtn2').hidden=isVtQuiz(task);
     var sum='';if(s.st){sum=isZi?Z.summary(n,s.st):summary(s.st);var tg=tFor(n);if(s.st.id!==tg)sum='<span class="warn">還在 '+esc(TASK[s.st.id]?TASK[s.st.id].title:'')+'</span>・'+sum;else if(I)sum='<b>'+esc(TASK[tg].title)+'</b>・'+sum;}
     t.querySelector('.tile-sum').innerHTML=sum;t.querySelector('.dots').innerHTML=dotsHTML(s.st);
-    if(s.dirty&&s.st){if(isZi)ziTile(s.tz,s.st);else if(isDv)dvTile(s.tz,s.st);else if(isBh){if(s.st.k==='bh')bhTile(s.tz,s.st,false,n);else if(s.st.k==='vt')vtTile(s.tz,s.st,false);else bsTile(s.tz,s.st,false);}else try{s.scene.load(s.st);}catch(e){}s.dirty=false;}
+    if(s.dirty&&s.st){if(isZi)ziTile(s.tz,s.st);else if(isDv)dvTile(s.tz,s.st);else if(isBh){if(s.st.k==='bh')bhTile(s.tz,s.st,false,n);else if(s.st.k==='vt')vtTile(s.tz,s.st,false);else if(s.st.k==='rm')rmTile(s.tz,s.st,false);else bsTile(s.tz,s.st,false);}else try{s.scene.load(s.st);}catch(e){}s.dirty=false;}
   }
   function renderAllTiles(){for(var n in seats)renderTile(+n);}
   /* modal */
@@ -3828,8 +4102,8 @@ function TeacherApp(){
     var rb=modal.querySelector('.rcbtn');rb.hidden=n===8||!s.st||s.st.k==='zi'||s.st.k==='bh';rb.classList.toggle('on',!!(c&&c.ok));rb.classList.toggle('wait',!!(c&&!c.ok));rb.textContent=!c?'✋ 我來操作':c.ok?'👉 換他自己做':'等 '+n+' 號的畫面傳過來…（按這裡取消）';
     modal.querySelector('.pbtn').hidden=n===8||isVtQuiz(task);
     var mp=modal.querySelector('.mpages'),key=I?I.p.join(',')+'|'+I.c:'';if(key!==mpKey||full){mpKey=key;mp.innerHTML='';mp.hidden=!I;if(I){mp.appendChild(h('span',{class:'pl'},'可以翻的頁（點了就幫他換頁）：'));I.p.forEach(function(id){var b=h('button',{type:'button'},esc(TASK[id].title));b.classList.toggle('on',id===I.c);b.addEventListener('click',function(){rcGoPage(n,id);});mp.appendChild(b);});}}
-    var dvm=!!s.st&&(s.st.k==='dv'||s.st.k==='bh'||s.st.k==='bs'||s.st.k==='vt');mdv.hidden=!dvm||!!(c&&c.ok);if(!(c&&c.ok))mstage.hidden=dvm;
-    if(c&&c.ok)return;if(s.st&&(full||s.mdirty)){if(dvm){if(s.st.k==='bh')bhTile(mdv,s.st,true,n);else if(s.st.k==='bs')bsTile(mdv,s.st,true);else if(s.st.k==='vt')vtTile(mdv,s.st,true);else dvTile(mdv,s.st,true);}else try{mScene.load(s.st);}catch(e){}s.mdirty=false;}}
+    var dvm=!!s.st&&(s.st.k==='dv'||s.st.k==='bh'||s.st.k==='bs'||s.st.k==='vt'||s.st.k==='rm');mdv.hidden=!dvm||!!(c&&c.ok);if(!(c&&c.ok))mstage.hidden=dvm;
+    if(c&&c.ok)return;if(s.st&&(full||s.mdirty)){if(dvm){if(s.st.k==='bh')bhTile(mdv,s.st,true,n);else if(s.st.k==='bs')bsTile(mdv,s.st,true);else if(s.st.k==='vt')vtTile(mdv,s.st,true);else if(s.st.k==='rm')rmTile(mdv,s.st,true);else dvTile(mdv,s.st,true);}else try{mScene.load(s.st);}catch(e){}s.mdirty=false;}}
   /* 選頁面：讓孩子各自訂正 */
   var pp=h('div',{class:'pp'});pp.hidden=true;
   pp.innerHTML='<div class="pp-card"><header>選頁面：讓孩子各自訂正</header><div class="pp-body"><div class="pp-row ppseats"></div><div class="pp-row ppsubj"></div><div class="pplist"></div><label class="pp-away"><input type="checkbox" class="ppawayc"> 在別的教室（例如學習教室）：不受「全班看老師」影響，按「全部回到全班」也不會被拉回來</label></div><footer><span class="sp"></span><button class="btn ppoff" type="button">取消個別（回到全班）</button><button class="btn ppcancel" type="button">關閉</button><button class="btn ppok" type="button">設定</button></footer></div>';
