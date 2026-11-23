@@ -60,7 +60,7 @@ main{flex:1;display:flex;min-height:0}
 </head>
 <body>
 <header>
-  <h1>線上教室 體驗館<small>15 分鐘，當一次學生、也當一次老師</small></h1>
+  <h1>線上教室 體驗館<small>20 分鐘，當一次學生、也當一次老師</small></h1>
   <button class="vbtn" data-v="stu" type="button">🧒 學生平板（1 號）</button>
   <button class="vbtn" data-v="tea" type="button">👩‍🏫 老師畫面</button>
   <button class="vbtn" data-v="both" type="button">⬌ 並排</button>
@@ -111,7 +111,7 @@ main{flex:1;display:flex;min-height:0}
     {chap:'開始',title:'歡迎來到 7 個人的小教室',view:'both',html:
       '<p>這是一間 <b>7 個人的小班</b>。你是 <b>1 號學生</b>，2～7 號是電腦<b>模擬的同學</b>：有人很快、有人常常錯、有人會卡住，就像真的教室。</p>'+
       '<p>右邊的老師畫面，是<b>真正上課用的老師版</b>。每個孩子在平板上的每一個動作，都會即時出現在老師的格子裡。</p>'+
-      '<div class="do"><b class="h">這次體驗三站</b><ul><li>📐 角度：把角描下來、疊上去比大小</li><li>🟦 面積：把半格拼成一平方公分，再數一數</li><li>🍰 除法：「8 ÷ 2」是平分給 2 人，還是每人 2 片？</li></ul></div>'+
+      '<div class="do"><b class="h">這次體驗四站</b><ul><li>📐 角度：把角描下來、疊上去比大小</li><li>🟦 面積：把半格拼成一平方公分，再數一數</li><li>🍰 除法：「8 ÷ 2」是平分給 2 人，還是每人 2 片？</li><li>🍕 分數：自己平分、塗色，把兩條分數條排在一起比大小</li></ul></div>'+
       '<p>每一站都是：<span class="who s">先當學生</span> → <span class="who t">再換老師看全班</span>。左邊這個框會一步一步帶你做。</p>'+
       '<div class="note">上方三個按鈕可以隨時切換：只看學生平板、只看老師畫面、或兩個並排。</div>'},
     {chap:'📐 角度',who:'s',title:'描角比大小：邊長越長，角就越大嗎？',view:'stu',go:function(){assign('xa1');},html:
@@ -144,6 +144,17 @@ main{flex:1;display:flex;min-height:0}
       '<div class="do"><b class="h">找找看</b><ul><li>誰把「平分給 2 人」和「每人 2 片」搞混了？（格子上會寫「判斷題意中・選錯 1 次」）</li><li>誰判斷對了，但盤子分錯了？</li><li>誰一直停在同一題沒有動？（5 號小葵會卡住——在真的教室裡，這種孩子最容易被忽略）</li></ul></div>'+
       '<div class="do"><b class="h">試試看老師的按鈕</b><ul><li>上方按<b>「全班看老師」</b>：所有孩子的平板會停住、顯示「請看老師」，模擬同學也會停下來。再按一次解除。</li><li>點一格放大 → 按<b>「✋ 我來操作」</b>，直接在孩子的盤子上示範怎麼分。</li></ul></div>',
       acts:[['放大看 5 號小葵',function(){setView('tea');openSeat(5);flash('tea');}],['放大看 3 號阿哲',function(){setView('tea');openSeat(3);flash('tea');}]]},
+    {chap:'🍕 分數',who:'s',title:'分數板：自己平分、自己塗，排在一起比',view:'stu',go:function(){closeModal();assign('fr2');},html:
+      '<p>分數最難的是「<b>平分</b>」和「<b>比大小</b>」。孩子常以為 1/5 比 1/3 大，因為「5 比 3 大」。</p>'+
+      '<p>這個分數板參考了國外很受歡迎的 Polypad 分數條：每一條都是「1 整條」，孩子<b>自己決定平分成幾塊、自己塗</b>，兩條上下對齊，誰長誰短一看就知道。</p>'+
+      '<div class="do"><b class="h">做做看（在學生平板上）</b><ol><li>甲、乙各按 <b>「＋」</b>，平分成題目說的塊數（每一塊都一樣大，上面會寫 1/幾）。</li><li><b>點一塊就塗色</b>，塗出題目的分數；再點一次可以擦掉。</li><li>看看兩條塗色的部分誰比較長，按「甲 比較多／一樣多／乙 比較多」。</li></ol></div>'+
+      '<div class="note">另外兩個活動：<b>「幾分之幾」</b>（平分、塗色、寫分數，也有蛋糕、披薩的圓形）和<b>「合起來、吃掉」</b>（同分母加減，用兩種顏色＋「吃掉」）。圖和寫的分數都要對才算對。</div>',
+      acts:[['換成「幾分之幾」',function(){assign('fr1');setView('stu');}],['換成「合起來、吃掉」',function(){assign('fr3');setView('stu');}]]},
+    {chap:'🍕 分數',who:'t',title:'圖是對的，答案卻錯了——老師一眼就看到',view:'tea',html:
+      '<p>老師的格子會畫出每個孩子的分數板：切成幾塊、塗了幾塊、寫了什麼。</p>'+
+      '<div class="do"><b class="h">找找看</b><ul><li><b>3 號阿哲</b>：遇到「1/幾」比大小時，兩條都排對了，卻說分母大的比較多（例如說 1/5 比 1/3 多）——他的圖和他的想法打架了，這是最好的教學時機。格子上會出現「錯 1 次」。</li><li>派「幾分之幾」時，阿哲會把分母寫成「沒塗的塊數」（部分比部分的迷思）。</li><li>派「合起來、吃掉」時，<b>6 號阿寶</b>會寫 2/8 ＋ 3/8 ＝ 5/16（把分母也加起來）。</li></ul></div>'+
+      '<div class="note">點一格放大，按「✋ 我來操作」，就能在孩子自己的分數板上示範：「每一塊合起來以後，還是一樣大嗎？」</div>',
+      acts:[['放大看 3 號阿哲',function(){setView('tea');openSeat(3);flash('tea');}],['派「合起來、吃掉」給全班',function(){closeModal();assign('fr3');setView('tea');}],['放大看 6 號阿寶',function(){setView('tea');openSeat(6);flash('tea');}]]},
     {chap:'總整理',title:'這間教室，老師多了哪些「眼睛」和「手」？',view:'both',go:function(){closeModal();},html:
       '<div class="do"><b class="h">👀 看得到</b><ul><li>全班每個孩子的操作過程，<b>即時</b>出現在一個畫面上</li><li>誰是真的會、誰是猜對的（空心小圓點）</li><li>誰卡在「判斷題意」、誰一直沒動</li></ul></div>'+
       '<div class="do"><b class="h">✋ 幫得到</b><ul><li>點開放大、直接在孩子的平板上示範</li><li>紅綠燈、全班看老師</li><li>錯了自動加練同類型的題目，不能混過去</li></ul></div>'+
