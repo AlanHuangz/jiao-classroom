@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AI Agent 是什麼</title>
+<style>
+:root{--bg:#f4f6f8;--paper:#fff;--ink:#1d2b36;--muted:#5f6f7c;--line:#dde4ea;--brand:#2a6fb0;--warm:#e8930c;--f:"Microsoft JhengHei","PingFang TC","Noto Sans TC",sans-serif}
+*{box-sizing:border-box}
+body{margin:0;font-family:var(--f);background:var(--bg);color:var(--ink);line-height:1.75;font-size:17px}
+.wrap{max-width:880px;margin:0 auto;padding:0 16px 60px}
+.hero{background:linear-gradient(135deg,#fff7e6,#e9f3fb);border-bottom:1px solid var(--line);padding:42px 16px 34px}
+.hero .wrap{padding-bottom:0}
+.hero .k{font-size:14px;font-weight:800;color:var(--warm);letter-spacing:2px}
+h1{font-size:34px;line-height:1.3;margin:6px 0 12px}
+.hero p{font-size:19px;color:#34495e;margin:0;max-width:720px}
+h2{font-size:25px;margin:44px 0 12px;line-height:1.35}
+h2 .n{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:50%;background:var(--brand);color:#fff;font-size:18px;margin-right:10px;vertical-align:3px}
+.cmp{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.cmp>div{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:16px 18px}
+.cmp h3{margin:0 0 6px;font-size:19px}
+.cmp .tag{font-size:13px;font-weight:800;border-radius:6px;padding:1px 8px}
+.cmp .a .tag{background:#eef2f5;color:var(--muted)}.cmp .b{border:2px solid var(--brand)}.cmp .b .tag{background:#e3f1ff;color:#1d5c99}
+.cmp ul{margin:8px 0 0;padding-left:20px}.cmp li{margin:4px 0}
+.say{font-size:15px;color:var(--muted);margin-top:8px}
+.flow{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:14px 0}
+.flow div{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:12px;text-align:center;font-size:15.5px;line-height:1.5}
+.flow b{display:block;font-size:26px}
+.quote{background:var(--paper);border-left:5px solid var(--warm);border-radius:10px;padding:12px 16px;margin:12px 0}
+.quote .q{font-weight:700}
+.quote .r{color:#1d7a45;margin-top:6px}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.cards div{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:12px 14px;font-size:15.5px;line-height:1.55}
+.cards b{display:block;font-size:17px;margin-bottom:2px}
+.cards .e{font-size:26px}
+.steps{counter-reset:s;list-style:none;padding:0;margin:0}
+.steps li{counter-increment:s;background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:12px 16px 12px 62px;position:relative;margin:10px 0}
+.steps li::before{content:counter(s);position:absolute;left:16px;top:12px;width:32px;height:32px;border-radius:50%;background:var(--warm);color:#fff;font-weight:800;display:flex;align-items:center;justify-content:center}
+.steps small{color:var(--muted);display:block}
+.prompt{background:#1f2a33;color:#f3f6f8;border-radius:12px;padding:12px 16px;margin:10px 0;font-size:16px;line-height:1.7}
+.prompt::before{content:"你可以這樣說：";display:block;font-size:13px;color:#9fb3c2;margin-bottom:2px}
+.tips li{margin:6px 0}
+.warn{background:#fff6f0;border:1px solid #f3c7a8;border-radius:14px;padding:12px 18px}
+.warn li{margin:6px 0}
+a{color:var(--brand)}
+.back{display:inline-block;margin-top:16px;font-weight:800;text-decoration:none;border:2px solid var(--brand);border-radius:999px;padding:6px 16px}
+.src{font-size:13.5px;color:var(--muted);margin-top:30px}
+@media (max-width:720px){h1{font-size:27px}.cmp,.cards{grid-template-columns:1fr}.flow{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<div class="hero"><div class="wrap">
+  <div class="k">線上教室 體驗館・幕後</div>
+  <h1>這間教室，是一位國小老師<br>和 AI agent 一起做出來的</h1>
+  <p>老師沒有寫程式。老師做的是：說出孩子需要什麼、試用、挑毛病、再說一次。<br>剩下寫程式、測試、修錯的工作，是 AI agent 做的。</p>
+  <a class="back" href="./">◀ 回體驗館</a>
+</div></div>
+<div class="wrap">
+
+<h2><span class="n">1</span>聊天 AI 和 AI agent 差在哪？</h2>
+<p>很多老師用過 ChatGPT、Gemini 這類<b>聊天 AI</b>：問它問題、請它出題、改文章。AI agent 是另一種用法——它不只回答，<b>它會自己動手把事情做完</b>。</p>
+<div class="cmp">
+  <div class="a"><span class="tag">聊天 AI</span><h3>很會回答問題的顧問</h3>
+    <ul><li>你問，它回答一段文字、一張圖、一段程式碼</li><li>要自己複製、存檔、打開試試看</li><li>壞掉了，要自己把錯誤訊息貼回去問</li></ul>
+    <div class="say">適合：出題、寫通知單、改作文、找資料</div></div>
+  <div class="b"><span class="tag">AI agent</span><h3>坐在你電腦前的助教</h3>
+    <ul><li>你說「我要什麼」，它<b>自己建檔案、寫程式</b></li><li>它會<b>自己打開來測試</b>，發現錯誤自己修</li><li>做好了告訴你檔案在哪，直接就能用</li></ul>
+    <div class="say">適合：互動教具、班級網頁、學習單、整理資料、剪影片</div></div>
+</div>
+
+<h2><span class="n">2</span>這間教室是怎麼長出來的？</h2>
+<div class="flow"><div><b>🗣️</b>老師用說的<br>描述想要的教具</div><div><b>🤖</b>agent 做出來<br>自己測試過</div><div><b>🧒</b>老師帶孩子試用<br>挑出毛病</div><div><b>🔁</b>再說一次<br>agent 修改、上線</div></div>
+<p>每一個活動都是這樣來回好幾次。例如：</p>
+<div class="quote"><div class="q">老師：「題目說一排坐 9 個人，你卻排成兩排；披薩應該是一整圈，不是一片一片排成兩排。要跟題意吻合，孩子才看得懂。」</div><div class="r">→ agent 把表演廳改成一排 9 個座位排成一直線、披薩改成整個圓切 8 片、小火車加上車頭和車廂，自己逐題操作測試後交回。</div></div>
+<div class="quote"><div class="q">老師：「我不想直接告訴孩子『餘數一定要比除數小』，我想要透過操作讓孩子自己發現。」</div><div class="r">→ agent 做了「餘數實驗室」：孩子自己把草莓裝盤，裝到不能再裝時，自己看見剩下的一定比一盤少。</div></div>
+<p><b>教學的判斷，全部是老師做的</b>——要不要給提示、什麼時候加題、哪裡會有迷思。agent 負責把這些想法變成真的能用的東西。</p>
+
+<h2><span class="n">3</span>老師可以用 agent 做什麼？</h2>
+<div class="cards">
+  <div><span class="e">🧩</span><b>互動教具</b>拖拉、拼貼、分東西的練習網頁，孩子在平板上操作</div>
+  <div><span class="e">🎮</span><b>闖關小遊戲</b>字母、九九乘法、生字，做成可以分享連結的遊戲</div>
+  <div><span class="e">📝</span><b>學習單、作業單</b>照你的版面做成 PDF，直接列印</div>
+  <div><span class="e">🎬</span><b>課堂影片</b>錄影整理成精華、加字幕、遮掉孩子姓名</div>
+  <div><span class="e">📊</span><b>整理資料</b>成績、回條、名單，自動整理成表格</div>
+  <div><span class="e">🖥️</span><b>上課簡報</b>做成全螢幕網頁簡報，可以放影片和動畫</div>
+</div>
+
+<h2><span class="n">4</span>怎麼開始？（以 Claude 為例）</h2>
+<ol class="steps">
+  <li><b>到 <a href="https://claude.ai" target="_blank" rel="noopener">claude.ai</a> 註冊帳號</b><small>可以用 Google 帳號登入。</small></li>
+  <li><b>訂閱付費方案（Pro）</b><small>agent 功能（Claude Code）包含在付費方案裡，免費方案沒有。Pro 每月 20 美元，年繳約每月 17 美元；價格以<a href="https://claude.com/pricing" target="_blank" rel="noopener">官網</a>為準。</small></li>
+  <li><b>下載 Claude 桌面版並登入</b><small>Windows、Mac 都有，在官網就能下載。</small></li>
+  <li><b>打開「Code」分頁，選一個資料夾</b><small>例如在桌面新增一個「我的教具」資料夾，agent 做的檔案都會放在這裡。</small></li>
+  <li><b>用中文打字，說你想做什麼</b><small>它做的時候會告訴你在做什麼；需要用到你的電腦（例如開瀏覽器測試）時會先問你。</small></li>
+</ol>
+<p class="say">其他公司也有類似的 agent 工具，用法大同小異。</p>
+
+<h2><span class="n">5</span>第一次怎麼開口？</h2>
+<div class="prompt">我是國小三年級老師。幫我做一個網頁小遊戲，讓孩子練習 2 到 5 的乘法。要用拖拉積木的方式讓孩子自己排出來，不要選擇題。做成一個 HTML 檔，存在這個資料夾，做好告訴我怎麼打開。</div>
+<div class="prompt">孩子說第一關太難了。第一關改成只有 2 和 3 的乘法，按鈕再大一點，答錯的時候不要直接給答案，請他再數一次積木。</div>
+<ul class="tips">
+  <li><b>說清楚三件事：</b>給誰用（幾年級）、要學什麼、孩子要怎麼操作。</li>
+  <li><b>一次改一件事。</b>做好一定自己先試玩，哪裡怪就直接說「這裡怪」。</li>
+  <li><b>不懂就問它：</b>「這是什麼意思？」「要怎麼打開？」「怎麼分享給學生？」</li>
+  <li><b>先從小東西開始：</b>一張學習單、一個抽籤工具，做成功一次，就知道它能做到什麼。</li>
+</ul>
+
+<h2><span class="n">6</span>要注意的事</h2>
+<div class="warn"><ul>
+  <li><b>學生個資：</b>孩子的真實姓名、照片不要放到公開的網頁上。這個體驗館裡的名字都是虛構的。</li>
+  <li><b>版權：</b>課本、習作的掃描頁有版權，自己班上用和放到公開網站是兩回事。</li>
+  <li><b>AI 也會做錯：</b>一定要自己試過再給孩子用。老師的專業判斷，永遠是最重要的那一環。</li>
+</ul></div>
+
+<h2><span class="n">7</span>想在自己班上用這套教室？</h2>
+<p>這套教室是為一個 7 人的班級量身做的（座號、班級代碼、教材進度都是那個班的）。如果你想用在自己班上，有兩條路：</p>
+<ul class="tips">
+  <li><b>研習或共備時：</b>用這個體驗館示範給其他老師看，不用連線、不用學生。</li>
+  <li><b>自己做一套：</b>有了 agent，你可以請它照你的班級人數、你的教材，做出屬於你班上的版本——就像這位老師一樣。</li>
+</ul>
+<a class="back" href="./">◀ 回體驗館</a>
+<p class="src">方案與價格資料來源：<a href="https://claude.com/pricing" target="_blank" rel="noopener">Claude 方案與價格</a>、<a href="https://support.claude.com/en/articles/11145838-use-claude-code-with-your-pro-or-max-plan" target="_blank" rel="noopener">Use Claude Code with your Pro, Max, or Ultra plan</a>（2026 年 11 月查詢）。</p>
+</div>
+</body>
+</html>
