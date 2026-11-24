@@ -4074,6 +4074,582 @@ var s=document.createElement('style');s.textContent=css;document.head.appendChil
 '.bh-rec .ck{margin-top:6px;font-size:15px;color:#1d7a45;font-weight:700}.bh-rec .sm.d{color:#a35f00;font-weight:700}'+
 '.warn{color:#a35f00}';
 var s=document.createElement('style');s.textContent=css;document.head.appendChild(s);})();
+/* 班會用的注音字典（臺灣讀音；一、不標本調，和課本一樣）。KM_ZC：單字預設讀音；KM_ZW：要看詞的破音字 */
+var KM_ZC='班ㄅㄢ 會ㄏㄨㄟˋ 推ㄊㄨㄟ 派ㄆㄞˋ 國ㄍㄨㄛˊ 語ㄩˇ 文ㄨㄣˊ 競ㄐㄧㄥˋ 賽ㄙㄞˋ 代ㄉㄞˋ 表ㄅㄧㄠˇ 主ㄓㄨˇ 席ㄒㄧˊ 司ㄙ 儀ㄧˊ 記ㄐㄧˋ 錄ㄌㄨˋ 同ㄊㄨㄥˊ 學ㄒㄩㄝˊ '+
+'各ㄍㄜˋ 自ㄗˋ 用ㄩㄥˋ 開ㄎㄞ 一ㄧ 次ㄘˋ 真ㄓㄣ 的˙ㄉㄜ 朗ㄌㄤˇ 讀ㄉㄨˊ 拿ㄋㄚˊ 到ㄉㄠˋ 篇ㄆㄧㄢ 章ㄓㄤ 大ㄉㄚˋ 聲ㄕㄥ 清ㄑㄧㄥ 楚ㄔㄨˇ 念ㄋㄧㄢˋ 出ㄔㄨ 來ㄌㄞˊ '+
+'他ㄊㄚ 課ㄎㄜˋ 很ㄏㄣˇ 音ㄧㄣ 有ㄧㄡˇ 感ㄍㄢˇ 情ㄑㄧㄥˊ 說ㄕㄨㄛ 話ㄏㄨㄚˋ 閩ㄇㄧㄣˇ 南ㄋㄢˊ 家ㄐㄧㄚ 裡ㄌㄧˇ 人ㄖㄣˊ 上ㄕㄤˋ 認ㄖㄣˋ 作ㄗㄨㄛˋ 看ㄎㄢˋ 題ㄊㄧˊ 目ㄇㄨˋ '+
+'以ㄧˇ 後ㄏㄡˋ 寫ㄒㄧㄝˇ 句ㄐㄩˋ 子˙ㄗ 想ㄒㄧㄤˇ 故ㄍㄨˋ 事ㄕˋ 喜ㄒㄧˇ 歡ㄏㄨㄢ 書ㄕㄨ 日ㄖˋ 得˙ㄉㄜ 好ㄏㄠˇ 字ㄗˋ 形ㄒㄧㄥˊ 注ㄓㄨˋ 多ㄉㄨㄛ 漂ㄆㄧㄠˋ 亮ㄌㄧㄤˋ '+
+'聽ㄊㄧㄥ 常ㄔㄤˊ 百ㄅㄞˇ 分ㄈㄣ 厲ㄌㄧˋ 害ㄏㄞˋ 我ㄨㄛˇ 試ㄕˋ 這ㄓㄜˋ 個ㄍㄜˋ 項ㄒㄧㄤˋ 幫ㄅㄤ 爭ㄓㄥ 取ㄑㄩˇ 榮ㄖㄨㄥˊ 譽ㄩˋ 參ㄘㄢ 加ㄐㄧㄚ 比ㄅㄧˇ 下ㄒㄧㄚˋ '+
+'可ㄎㄜˇ 在ㄗㄞˋ 教ㄐㄧㄠˋ 室ㄕˋ 練ㄌㄧㄢˋ 習ㄒㄧˊ 起ㄑㄧˇ 做ㄗㄨㄛˋ 油ㄧㄡˊ 卡ㄎㄚˇ 片ㄆㄧㄢˋ 前ㄑㄧㄢˊ 先ㄒㄧㄢ 演ㄧㄢˇ 給ㄍㄟˇ 請ㄑㄧㄥˇ 老ㄌㄠˇ 師ㄕ 找ㄓㄠˇ '+
+'二ㄦˋ 三ㄙㄢ 四ㄙˋ 五ㄨˇ 六ㄌㄧㄡˋ 七ㄑㄧ 持ㄔˊ 議ㄧˋ 宣ㄒㄩㄢ 布ㄅㄨˋ 散ㄙㄢˋ 決ㄐㄩㄝˊ 定ㄉㄧㄥˋ 誰ㄕㄟˊ 發ㄈㄚ 言ㄧㄢˊ 點ㄉㄧㄢˇ 結ㄐㄧㄝˊ 果ㄍㄨㄛˇ '+
+'引ㄧㄣˇ 導ㄉㄠˇ 流ㄌㄧㄡˊ 程ㄔㄥˊ 每ㄇㄟˇ 始ㄕˇ 時ㄕˊ 候ㄏㄡˋ 由ㄧㄡˊ 你ㄋㄧˇ 還ㄏㄞˊ 計ㄐㄧˋ 器ㄑㄧˋ 安ㄢ 靜ㄐㄧㄥˋ 鈴ㄌㄧㄥˊ 提ㄊㄧˊ 醒ㄒㄧㄥˇ 內ㄋㄟˋ 容ㄖㄨㄥˊ '+
+'數ㄕㄨˇ 票ㄆㄧㄠˋ 最ㄗㄨㄟˋ 報ㄅㄠˋ 告ㄍㄠˋ 今ㄐㄧㄣ 天ㄊㄧㄢ 與ㄩˇ 討ㄊㄠˇ 論ㄌㄨㄣˋ 舉ㄐㄩˇ 手ㄕㄡˇ 附ㄈㄨˋ 按ㄢˋ 贊ㄗㄢˋ 成ㄔㄥˊ 或ㄏㄨㄛˋ 不ㄅㄨˋ 選ㄒㄩㄢˇ '+
+'平ㄆㄧㄥˊ 要ㄧㄠˋ 全ㄑㄩㄢˊ 是ㄕˋ 們˙ㄇㄣ 第ㄉㄧˋ 抽ㄔㄡ 籤ㄑㄧㄢ 級ㄐㄧˊ 幹ㄍㄢˋ 部ㄅㄨˋ 名ㄇㄧㄥˊ 臨ㄌㄧㄣˊ 動ㄉㄨㄥˋ 號ㄏㄠˋ 已ㄧˇ 經ㄐㄧㄥ 正ㄓㄥˋ 被ㄅㄟˋ '+
+'願ㄩㄢˋ 因ㄧㄣ 為ㄨㄟˋ 薦ㄐㄧㄢˋ 沒ㄇㄟˊ 通ㄊㄨㄥ 過ㄍㄨㄛˋ 位ㄨㄟˋ 間ㄐㄧㄢ 了˙ㄌㄜ 應ㄧㄥ 實ㄕˊ 校ㄒㄧㄠˋ 希ㄒㄧ 望ㄨㄤˋ 踴ㄩㄥˇ 躍ㄩㄝˋ 辦ㄅㄢˋ 共ㄍㄨㄥˋ '+
+'至ㄓˋ 少ㄕㄠˇ 只ㄓˇ 能ㄋㄥˊ 也ㄧㄝˇ 工ㄍㄨㄥ 所ㄙㄨㄛˇ 省ㄕㄥˇ 略ㄌㄩㄝˋ 覺ㄐㄩㄝˊ 適ㄕˋ 合ㄏㄜˊ 原ㄩㄢˊ 才ㄘㄞˊ 算ㄙㄨㄢˋ 現ㄒㄧㄢˋ 就ㄐㄧㄡˋ 別ㄅㄧㄝˊ 並ㄅㄧㄥˋ '+
+'且ㄑㄧㄝˇ 束ㄕㄨˋ 恭ㄍㄨㄥ 拍ㄆㄞ 超ㄔㄠ 半ㄅㄢˋ 重ㄔㄨㄥˊ 新ㄒㄧㄣ 都ㄉㄡ 如ㄖㄨˊ 其ㄑㄧˊ 謝ㄒㄧㄝˋ 中ㄓㄨㄥ 再ㄗㄞˋ 紀ㄐㄧˋ 期ㄑㄧˊ 知ㄓ 道ㄉㄠˋ 嗎˙ㄇㄚ '+
+'停ㄊㄧㄥˊ 止ㄓˇ 等ㄉㄥˇ 打ㄉㄚˇ 輪ㄌㄨㄣˊ 坐ㄗㄨㄛˋ 問ㄨㄣˋ 己ㄐㄧˇ 畫ㄏㄨㄚˋ 面ㄇㄧㄢˋ 旁ㄆㄤˊ 邊ㄅㄧㄢ 建ㄐㄧㄢˋ 鼓ㄍㄨˇ 勵ㄌㄧˋ 連ㄌㄧㄢˊ 線ㄒㄧㄢˋ 意ㄧˋ '+
+'擔ㄉㄢ 心ㄒㄧㄣ 把ㄅㄚˇ 右ㄧㄡˋ 單ㄉㄢ 完ㄨㄢˊ 格ㄍㄜˊ 著˙ㄓㄜ 角ㄐㄧㄠˇ 色ㄙㄜˋ 確ㄑㄩㄝˋ 幾ㄐㄧˇ 包ㄅㄠ 括ㄎㄨㄛˋ 放ㄈㄤˋ 消ㄒㄧㄠ 台ㄊㄞˊ 詞ㄘˊ 投ㄊㄡˊ '+
+'影ㄧㄥˇ 幕ㄇㄨˋ 具ㄐㄩˋ 示ㄕˋ 場ㄔㄤˇ 留ㄌㄧㄡˊ 掉ㄉㄧㄠˋ 跳ㄊㄧㄠˋ 鐘ㄓㄨㄥ 搖ㄧㄠˊ 太ㄊㄞˋ 吵ㄔㄠˇ 候ㄏㄡˋ 誰ㄕㄟˊ 快ㄎㄨㄞˋ 張ㄓㄤ 遍ㄅㄧㄢˋ 對ㄉㄨㄟˋ 次ㄘˋ 鈕ㄋㄧㄡˇ 喔ㄛ';
+var KM_ZW='成為=ㄔㄥˊ ㄨㄟˊ|人數=ㄖㄣˊ ㄕㄨˋ|算數=ㄙㄨㄢˋ ㄕㄨˋ|數字=ㄕㄨˋ ㄗˋ|這個=ㄓㄜˋ ˙ㄍㄜ|謝謝=ㄒㄧㄝˋ ˙ㄒㄧㄝ|看看=ㄎㄢˋ ˙ㄎㄢ|角色=ㄐㄩㄝˊ ㄙㄜˋ|自己=ㄗˋ ㄐㄧˇ|句子=ㄐㄩˋ ˙ㄗ';
+/* ================= 社會：班會「推派國語文競賽代表」（每個角色都有腳本、全部注音、不用老師介入） ================= */
+TASKS.unshift({id:'kmg',kind:'km',unit:'bh',subj:'soc',title:'班會：推派國語文競賽代表',sub:'主席・司儀・記錄・同學，各自用 Chromebook 開一次真的班會'});
+
+/* ---------- 比賽項目 ---------- */
+var KM_IT=[
+  {n:'國語朗讀',ic:'📖',d:'拿到一篇文章，用國語大聲、清楚的念出來。',w:['他念課文很清楚','他的聲音很大聲','他念課文很有感情','他說話很清楚']},
+  {n:'閩南語朗讀',ic:'🗣️',d:'拿到一篇文章，用閩南語念出來。',w:['他會說閩南語','他家裡有人說閩南語','他上閩南語課很認真','他念課文很清楚']},
+  {n:'作文',ic:'✏️',d:'看到題目以後，寫出一篇文章。',w:['他很會寫句子','他很會想故事','他很喜歡看書','他的日記寫得很好']},
+  {n:'字音字形',ic:'🔤',d:'看注音寫國字，看國字寫注音。',w:['他認得很多字','他的字寫得很漂亮','他聽寫常常一百分','他的注音很厲害']}
+];
+var KM_SELF=['我想試試看','我很喜歡這個項目','我想幫班上爭取榮譽'];
+var KM_TM=['參加比賽的同學，下課可以在教室練習。','大家一起幫參加比賽的同學做加油卡片。','比賽前，參加的同學先在班上表演一次給大家聽。','請老師幫參加比賽的同學找練習的文章。'];
+var KM_CN=['一','二','三','四','五','六','七'];
+var KM_RL={
+  c:{ic:'🎤',n:'主席',d:'主持會議：宣布開會、散會；決定誰先發言（點人說話）；主持表決，宣布結果。'},
+  h:{ic:'📢',n:'司儀',d:'宣布、引導會議的流程：每一個流程開始的時候，由你先說。你還可以用計時器、安靜鈴、提醒卡。'},
+  w:{ic:'📝',n:'記錄',d:'記錄會議的內容、表決結果：數出席人數、數票、寫下決議，最後報告今天的決議。'},
+  m:{ic:'🙋',n:'同學',d:'參與討論與表決：舉手發言、附議、按贊成或不贊成。'}
+};
+/* 六個流程（課本 p.74–75） */
+var KM_FL=[
+  {n:'選出主席、司儀、記錄',d:'平常要由全班選舉選出來。今天是我們第一次開班會，用抽籤決定。'},
+  {n:'宣布開會',d:'主席宣布班會開始。'},
+  {n:'報告事項',d:'主席、班級幹部報告事情。'},
+  {n:'討論事項',d:'提名、附議、表決，決定事情。'},
+  {n:'臨時動議',d:'提出不是今天討論事項裡的事情。'},
+  {n:'散會',d:'主席宣布散會。'}
+];
+/* 整場班會的程序：st＝第幾個流程（1–6，7＝結束） */
+var KM_P=[
+  {st:1,k:'roles'},
+  {st:2,k:'say',r:'h',x:'open1'},{st:2,k:'att'},{st:2,k:'say',r:'w',x:'att'},{st:2,k:'say',r:'c',x:'open2'},
+  {st:3,k:'say',r:'h',x:'rep1'},{st:3,k:'say',r:'c',x:'rep2'},{st:3,k:'say',r:'h',x:'rep3'},
+  {st:4,k:'say',r:'h',x:'dis1'},{st:4,k:'say',r:'c',x:'dis2'},
+  {st:4,k:'item',i:0},{st:4,k:'item',i:1},{st:4,k:'item',i:2},{st:4,k:'item',i:3},
+  {st:4,k:'say',r:'c',x:'dis3'},
+  {st:5,k:'say',r:'h',x:'tmp1'},{st:5,k:'tmp'},
+  {st:6,k:'say',r:'h',x:'end1'},{st:6,k:'say',r:'w',x:'dec'},{st:6,k:'say',r:'h',x:'end2'},{st:6,k:'say',r:'c',x:'end3'},
+  {st:7,k:'done'}
+];
+var KM_REM=['請先舉手，等主席點到你再說話。','別人說話的時候，請安靜聽。','請大家看投影幕。','說話的人，請大聲一點。','請按完按鈕，再把手放下。'];
+
+/* ---------- 共用狀態（老師機保管） ---------- */
+var KM={M:null,off:0,ds:[],set:function(m){this.M=m;this.off=Date.now()-(+m.now||Date.now());this.ds.forEach(function(d){if(d.root._owner===d)d.render();});},now:function(){return Date.now()-this.off;}};
+function kmFresh(o){o=o||{};return {mid:Date.now().toString(36),r:o.r||{c:0,h:0,w:0},one:o.one==null?1:o.one,b:0,lk:1,ln:null,ph:'roles',rdy:{},q:[],fl:0,sp:null,pc:null,C:[],V:null,dec:[null,null,null,null],vr:[[],[],[],[]],rd:1,TM:[],rec:{att:null,d:[null,null,null,null],tm:[]},atry:0,tmr:null,bell:0,rem:null,cap:null,gv:0,rx:[],ST:{},ack:{}};}
+function kmBeat(M){return KM_P[Math.min(M.b,KM_P.length-1)];}
+function kmStep(M){return kmBeat(M).st;}
+function kmRole(M,n){if(!n)return 't';return M.r.c===n?'c':M.r.h===n?'h':M.r.w===n?'w':'m';}
+function kmSeatOf(M,r){return typeof r==='number'?r:(M.r[r]||0);}
+function kmNum(a){return a.slice().sort(function(x,y){return x-y;}).map(function(n){return n+' 號';}).join('、');}
+function kmIt(M){var B=kmBeat(M);return B.k==='item'?B.i:-1;}
+/* 這一項最多幾人：一人一項時，要留人給後面的項目 */
+function kmCap(M,i,pp){if(!M.one)return 3;var used={};M.dec.forEach(function(d,j){if(d&&j!==i)d.forEach(function(n){used[n]=1;});});var av=pp.filter(function(n){return !used[n];}).length;return Math.max(1,Math.min(3,av-(3-i)));}
+function kmTaken(M,n,i){if(!M.one)return -1;for(var j=0;j<4;j++)if(j!==i&&M.dec[j]&&M.dec[j].indexOf(n)>=0)return j;return -1;}
+function kmNeed(np){return Math.floor(np/2)+1;}
+function kmWhyQ(w){return w.replace(/^他/,'誰')+'？';}
+/* 誰可以被提名（第 i 項）：在場、還沒當這一項的候選人、一人一項時還沒被派到別的項目 */
+function kmCanNom(M,i,t,pp){if(pp.indexOf(t)<0)return '不在班會裡';if(M.C.some(function(c){return c.n===t;}))return '已經是候選人';if(M.pc&&M.pc.t===t)return '正在被提名';var j=kmTaken(M,t,i);if(j>=0)return '已經參加'+KM_IT[j].n;return '';}
+
+/* ---------- 台詞 ---------- */
+function kmSent(M,i,p){var it=KM_IT[i];if(p.s)return '我自願參加'+it.n+'，因為'+KM_SELF[p.w]+'。';return '我推薦 '+p.t+' 號參加'+it.n+'，因為'+it.w[p.w]+'。';}
+function kmDecText(M){var R=M.rec,s='報告今天的決議：';
+  KM_IT.forEach(function(it,i){var d=R.d[i];s+=it.n+'，推派 '+(d&&d.length?kmNum(d):'（還沒寫）')+'。';});
+  if(!M.TM.length)s+='臨時動議：沒有。';else M.TM.forEach(function(t,j){var v=R.tm[j];s+='臨時動議第'+KM_CN[j]+'個：「'+kmTmText(t,true)+'」'+(v==null?'（還沒寫）':v?'通過':'沒有通過')+'。';});
+  return s;}
+function kmTmText(t,short){return t.m>=0?KM_TM[t.m].replace(/。$/,''):(t.by+' 號用說的提議');}
+function kmLineText(M,ln){
+  if(!ln)return '';var p=ln.p||{},it=KM_IT[p.i]||KM_IT[0];
+  switch(ln.x){
+  case 'open1':return '各位同學好，班會時間到了。請記錄報告出席人數。';
+  case 'att':return '報告主席：今天應到 7 人，實到 '+(M.rec.att||0)+' 人。';
+  case 'open2':return '我宣布：班會開始！今天要討論的事情是：推派同學參加學校的國語文競賽。希望大家踴躍發言。';
+  case 'rep1':return '報告事項。請主席報告。';
+  case 'rep2':return '學校要舉辦國語文競賽，一共有四個項目：國語朗讀、閩南語朗讀、作文、字音字形。每一個項目，我們班至少要派一個人，最多三個人。'+(M.one?'一個人只能參加一個項目。':'一個人可以參加不只一個項目。');
+  case 'rep3':return '平常這個時候，班級幹部也要報告班上的工作。我們班還沒有選幹部，所以今天的幹部報告省略。';
+  case 'dis1':return '討論事項。請主席主持討論。';
+  case 'dis2':return '我們一個項目、一個項目討論。想參加的人可以自願；覺得誰適合，可以推薦他，還要說出原因。有人附議，提名才算數。最後用表決決定。';
+  case 'it_in':return '現在討論第'+KM_CN[p.i]+'項：'+it.n+'。'+it.n+'就是：'+it.d+'這一項最多推派 '+p.cap+' 個人。想自願或推薦別人的人，請按「舉手」。';
+  case 'nom_say':return kmSent(M,p.i,p.p);
+  case 'sec_ask':return '有沒有人附議？要附議的人，請按「我附議」，並且說：「我附議。」';
+  case 'sec_ok':return '有人附議，'+p.n+' 號成為'+it.n+'的候選人。還有沒有人要提名？';
+  case 'sec_no':return '沒有人附議，這個提名不算數。還有沒有人要提名？';
+  case 'nom_end':return (p.full?'候選人已經有 '+p.cap+' 個了，':'')+'提名結束，現在開始表決。今天出席 '+p.np+' 個人，要有 '+p.need+' 票以上才通過。';
+  case 'vote_ask':return '贊成 '+p.n+' 號參加'+it.n+'的人，請按「贊成」；不贊成的人，請按「不贊成」。';
+  case 'cnt_say':return '報告主席：贊成的有 '+p.y+' 票。';
+  case 'res_ok':return '表決結果：'+kmNum(p.ns)+'通過了！恭喜 '+kmNum(p.ns)+' '+'代表我們班參加'+it.n+'，大家拍拍手！';
+  case 'res_no':return '表決結果：沒有人超過一半的人贊成。我們重新提名一次，想自願或推薦別人的人，請按「舉手」。';
+  case 'dis3':return '四個項目都決定好了，討論事項結束。';
+  case 'tmp1':return '臨時動議。如果有不是今天討論事項裡的事情，可以在這個時候提出來。';
+  case 'tmp_ask':return '有沒有人要提出臨時動議？有的人，請按「舉手」。';
+  case 'tmp_say':return p.m>=0?'我有臨時動議。我提議：'+KM_TM[p.m]:'我有臨時動議。（請你用說的，說出你的提議。）';
+  case 'tmp_vote':return '有人附議。贊成這個提議的人，請按「贊成」；不贊成的人，請按「不贊成」。今天出席 '+p.np+' 個人，要有 '+p.need+' 票以上才通過。';
+  case 'tmp_ok':return '表決結果：超過一半的人贊成，這個提議通過！還有沒有人要提出臨時動議？';
+  case 'tmp_no':return '表決結果：沒有超過一半的人贊成，這個提議沒有通過。還有沒有人要提出臨時動議？';
+  case 'tmp_sno':return '沒有人附議，這個提議不討論。還有沒有人要提出臨時動議？';
+  case 'tmp_end':return M.TM.length?'沒有其他的臨時動議了，臨時動議結束。':'沒有人要提出臨時動議，臨時動議結束。';
+  case 'end1':return '散會。散會前，請記錄報告今天的決議。';
+  case 'dec':return kmDecText(M);
+  case 'end2':return '請主席宣布散會。';
+  case 'end3':return '謝謝大家踴躍發言。我宣布：班會結束，散會！';
+  }
+  return '';
+}
+/* 主席可以點的「提示句」（顯示在投影幕上，主席念出來） */
+function kmChairHints(M){var i=kmIt(M),a=[];
+  if(M.ph==='nom'){a.push('還有沒有人要提名？');if(i>=0)a.push('請大家想一想：'+kmWhyQ(KM_IT[i].w[0]));if(i>=0)a.push('請大家想一想：'+kmWhyQ(KM_IT[i].w[1]));a.push('請舉手再發言，謝謝。');}
+  if(M.ph==='ask')a.push('還有沒有人要提出臨時動議？');
+  if(M.ph==='sec')a.push('還有沒有人要附議？');
+  if(M.ph==='vote')a.push('還沒有按的人，請快一點按。');
+  return a;}
+
+/* ---------- 狀態機 ---------- */
+function kmSetLine(M,r,x,p){M.lk++;M.ln={k:M.lk,r:r,x:x,p:p||{}};if(x==='res_ok'||x==='end3')M.gv=Date.now();}
+function kmStat(M,n,k){if(!n)return;var S=M.ST[n]=M.ST[n]||{};S[k]=(S[k]||0)+1;}
+function kmEnter(M,b,pp){
+  M.b=b;M.ln=null;M.ph='';M.q=[];M.fl=0;M.sp=null;M.pc=null;M.V=null;M.cap=null;
+  var B=kmBeat(M);if(B.k!=='item')M.C=[];
+  if(B.k==='say')kmSetLine(M,B.r,B.x,{});
+  else if(B.k==='att')M.ph='att';
+  else if(B.k==='item'){M.C=[];M.rd=1;M.icap=kmCap(M,B.i,pp);kmSetLine(M,'c','it_in',{i:B.i,cap:M.icap});}
+  else if(B.k==='tmp')kmSetLine(M,'c','tmp_ask',{});
+  else if(B.k==='roles')M.ph='roles';
+  else if(B.k==='done')M.ph='done';
+}
+function kmOpenVote(M,pp,n,i){var np=Math.max(1,pp.length);M.V={k:M.lk+1,n:n,i:i,Y:[],N:[],np:np,need:kmNeed(np),wr:0};}
+/* 一句話說完以後要做什麼 */
+function kmAfter(M,pp){
+  var ln=M.ln;if(!ln)return;var x=ln.x,p=ln.p||{},i=kmIt(M);M.ln=null;
+  switch(x){
+  case 'it_in':M.ph='nom';return;
+  case 'nom_say':{var sp=M.sp||{};M.pc={by:M.fl,i:i,s:!!sp.s,t:sp.s?M.fl:sp.t,w:sp.w,sec:[]};kmStat(M,M.fl,'spk');M.fl=0;M.sp=null;kmSetLine(M,'c','sec_ask',{i:i});return;}
+  case 'tmp_say':{var sp2=M.sp||{};M.pc={by:M.fl,m:sp2.m,sec:[]};kmStat(M,M.fl,'spk');M.fl=0;M.sp=null;kmSetLine(M,'c','sec_ask',{});return;}
+  case 'sec_ask':M.ph='sec';return;
+  case 'sec_ok':M.ph='nom';if(M.C.length>=M.icap){var np=Math.max(1,pp.length);kmSetLine(M,'c','nom_end',{i:i,full:1,cap:M.icap,np:np,need:kmNeed(np)});}return;
+  case 'sec_no':M.ph='nom';return;
+  case 'nom_end':M.q=[];M.vi=0;kmOpenVote(M,pp,M.C[0].n,i);kmSetLine(M,'c','vote_ask',{i:i,n:M.C[0].n});return;
+  case 'vote_ask':case 'tmp_vote':M.V.k=M.lk;M.ph='vote';return;
+  case 'cnt_say':{var V=M.V;
+    if(kmBeat(M).k==='item'){var c=M.C[M.vi];c.y=V.Y.length;c.np=V.np;c.need=V.need;M.vr[i].push({n:c.n,y:c.y,rd:M.rd});M.vi++;
+      if(M.vi<M.C.length){var nx=M.C[M.vi].n;kmOpenVote(M,pp,nx,i);kmSetLine(M,'c','vote_ask',{i:i,n:nx});return;}
+      var ok=M.C.filter(function(c){return c.y>=c.need;}).map(function(c){return c.n;});M.V=null;
+      if(ok.length){M.dec[i]=ok;kmSetLine(M,'c','res_ok',{i:i,ns:ok});}else{kmSetLine(M,'c','res_no',{i:i});}
+      return;}
+    var t=M.pc;t.y=V.Y.length;t.np=V.np;t.need=V.need;t.pass=t.y>=V.need?1:0;M.TM.push({by:t.by,m:t.m,y:t.y,need:t.need,pass:t.pass});M.pc=null;M.V=null;kmSetLine(M,'c',t.pass?'tmp_ok':'tmp_no',{});return;}
+  case 'res_ok':kmEnter(M,M.b+1,pp);return;
+  case 'res_no':M.C=[];M.rd++;M.ph='nom';return;
+  case 'tmp_ask':case 'tmp_ok':case 'tmp_no':case 'tmp_sno':M.ph='ask';return;
+  case 'tmp_end':kmEnter(M,M.b+1,pp);return;
+  }
+  kmEnter(M,M.b+1,pp);
+}
+/* 套用一個動作；回傳 true＝有改變。n＝座號（0＝老師） */
+function kmApply(M,n,a,o){
+  var pp=o.pp||[],rl=kmRole(M,n),B=kmBeat(M),i=kmIt(M),T=n===0;
+  var inMeet=T||pp.indexOf(n)>=0;if(!inMeet)return false;
+  switch(a.a){
+  case 'rdy':if(M.ph!=='roles')return false;M.rdy[n]=1;return true;
+  case 'go':if(M.ph!=='roles'||!(T||rl==='h'))return false;if(!M.r.c||!M.r.h||!M.r.w)return false;kmEnter(M,1,pp);return true;
+  case 'done':{if(!M.ln||(!T&&a.k!==M.ln.k))return false;if(!T&&kmSeatOf(M,M.ln.r)!==n)return false;
+    if(M.ln.x==='dec'&&!kmRecDone(M)&&!T)return false;
+    if(typeof M.ln.r!=='number')kmStat(M,n||kmSeatOf(M,M.ln.r),'line');kmAfter(M,pp);return true;}
+  case 'att':{if(M.ph!=='att'||!(T||rl==='w'))return false;var v=+a.v;if(!(v>=1&&v<=7))return false;
+    if(!T&&v!==pp.length&&M.atry<1&&!a.sure){M.atry++;M.attw=v;return true;}
+    M.rec.att=v;kmEnter(M,M.b+1,pp);return true;}
+  case 'hand':{var on=!!a.on;
+    if(!(M.ph==='nom'||M.ph==='ask'||M.ph==='sec'))return false;if(rl==='c'&&!T)return false;
+    M.q=M.q.filter(function(h){return h.n!==n;});if(!on)return true;
+    var pr=a.p||{};
+    if(M.ph==='ask'||B.k==='tmp'){var m=+pr.m;if(!(m>=-1&&m<KM_TM.length))return false;M.q.push({n:n,p:{m:m}});return true;}
+    if(B.k!=='item')return false;var w=+pr.w;
+    if(pr.s){if(!(w>=0&&w<KM_SELF.length))return false;if(kmCanNom(M,i,n,pp))return false;M.q.push({n:n,p:{s:1,w:w}});return true;}
+    var t=+pr.t;if(!(w>=0&&w<4)||!t||t===n||kmCanNom(M,i,t,pp))return false;M.q.push({n:n,p:{t:t,w:w}});return true;}
+  case 'call':{if(!(T||rl==='c'))return false;if(!(M.ph==='nom'||M.ph==='ask')||M.ln||M.fl)return false;var hq=M.q.filter(function(h){return h.n===+a.n;})[0];if(!hq)return false;
+    if(B.k==='item'){var pp2=hq.p;var tt=pp2.s?hq.n:pp2.t;if(kmCanNom(M,i,tt,pp)){M.q=M.q.filter(function(h){return h!==hq;});return true;}
+      if(M.C.length>=M.icap)return false;}
+    M.q=M.q.filter(function(h){return h!==hq;});M.fl=hq.n;M.sp=hq.p;M.ph='';
+    kmSetLine(M,hq.n,B.k==='item'?'nom_say':'tmp_say',B.k==='item'?{i:i,p:hq.p}:{m:hq.p.m});return true;}
+  case 'sec':{if(M.ph!=='sec'||!M.pc||rl==='c'||n===M.pc.by)return false;var on2=a.on!==false;var k=M.pc.sec.indexOf(n);if(on2&&k<0){M.pc.sec.push(n);kmStat(M,n,'sec');}else if(!on2&&k>=0)M.pc.sec.splice(k,1);else return false;return true;}
+  case 'secok':{if(!(T||rl==='c')||M.ph!=='sec'||!M.pc||!M.pc.sec.length)return false;var pc=M.pc;M.ph='';
+    if(B.k==='item'){M.C.push({n:pc.t,by:pc.by,s:pc.s,w:pc.w,sec:pc.sec.slice(),f:0,rd:M.rd});M.pc=null;kmSetLine(M,'c','sec_ok',{i:i,n:pc.t});return true;}
+    M.q=[];var np=Math.max(1,pp.length);kmOpenVote(M,pp,0,-1);kmSetLine(M,'c','tmp_vote',{np:np,need:kmNeed(np)});return true;}
+  case 'secno':{if(!(T||rl==='c')||M.ph!=='sec'||!M.pc)return false;M.ph='';M.pc=null;kmSetLine(M,'c',B.k==='item'?'sec_no':'tmp_sno',{i:i});return true;}
+  case 'nomend':{if(!(T||rl==='c')||M.ph!=='nom'||M.ln||M.fl||!M.C.length)return false;var np2=Math.max(1,pp.length);M.ph='';kmSetLine(M,'c','nom_end',{i:i,np:np2,need:kmNeed(np2)});return true;}
+  case 'feel':{var c=M.C.filter(function(c){return c.n===n&&!c.s;})[0];if(!c||c.f)return false;c.f=a.v===2?2:1;return true;}
+  case 'vote':{var V=M.V;if(M.ph!=='vote'||!V||a.k!==V.k||T)return false;if(V.Y.indexOf(n)>=0||V.N.indexOf(n)>=0)return false;(a.v?V.Y:V.N).push(n);kmStat(M,n,'vote');
+    if(V.Y.length+V.N.length>=pp.length)M.ph='cnt';return true;}
+  case 'vstop':{if(!(T||rl==='c')||M.ph!=='vote'||!M.V||!(M.V.Y.length+M.V.N.length))return false;M.ph='cnt';return true;}
+  case 'cnt':{var V2=M.V;if(M.ph!=='cnt'||!V2||!(T||rl==='w'))return false;var y=T?V2.Y.length:+a.v;if(y!==V2.Y.length){V2.wr++;V2.lastw=y;return true;}
+    M.ph='';kmSetLine(M,'w','cnt_say',{y:y});return true;}
+  case 'tmpend':{if(!(T||rl==='c')||M.ph!=='ask'||M.ln||M.fl)return false;M.ph='';kmSetLine(M,'c','tmp_end',{});return true;}
+  case 'recd':{if(!(T||rl==='w'))return false;var j=+a.i;if(!(j>=0&&j<4)||!M.dec[j])return false;var ns=(Array.isArray(a.ns)?a.ns:[]).map(Number).filter(function(x){return x>=1&&x<=7;});M.rec.d[j]=ns.filter(function(x,k){return ns.indexOf(x)===k;});return true;}
+  case 'rect':{if(!(T||rl==='w'))return false;var jj=+a.i;if(!(jj>=0&&jj<M.TM.length))return false;M.rec.tm[jj]=a.v?1:0;return true;}
+  case 'tmr':{if(!(T||rl==='h'))return false;var s=+a.v;M.tmr=s>0?{end:Date.now()+s*1000,len:s}:null;return true;}
+  case 'bell':if(!(T||rl==='h'))return false;M.bell=Date.now();return true;
+  case 'rem':{if(!(T||rl==='h'))return false;var r=+a.v;if(!(r>=0&&r<KM_REM.length))return false;M.rem={k:r,t:Date.now()};return true;}
+  case 'cap':{if(!(T||rl==='c'))return false;var hs=kmChairHints(M),hx=+a.v;if(!(hx>=0&&hx<hs.length))return false;M.cap={x:hs[hx],t:Date.now()};return true;}
+  case 'rx':{M.rx.push({n:n,e:+a.e||0,to:+a.to||0,t:Date.now()});if(M.rx.length>14)M.rx.splice(0,M.rx.length-14);kmStat(M,n,'rx');return true;}
+  }
+  return false;
+}
+/* 記錄的紀錄單寫對了沒 */
+function kmRecItems(M){var R=M.rec,a=[];
+  a.push({k:'att',t:'出席人數',done:R.att!=null});
+  KM_IT.forEach(function(it,i){if(!M.dec[i])return;var d=R.d[i]||[],ok=d.length===M.dec[i].length&&M.dec[i].every(function(n){return d.indexOf(n)>=0;});a.push({k:'d'+i,i:i,t:it.n+' 推派的人',done:ok,wrote:d.length>0});});
+  M.TM.forEach(function(t,j){var v=R.tm[j];a.push({k:'t'+j,j:j,t:'臨時動議第'+KM_CN[j]+'個',done:v===t.pass,wrote:v!=null});});
+  return a;}
+function kmRecDone(M){return kmRecItems(M).every(function(x){return x.done;})&&M.dec.every(function(d){return !!d;});}
+/* 每個人看到的狀態 */
+function kmView(M,n,pp,ak){var o={};for(var k in M)if(k!=='ack')o[k]=M[k];o.now=Date.now();o.pp=pp;if(n>=1&&n<=7)o.ak=ak||0;return o;}
+/* ---------- 注音：字典在 km_zy.js（KM_ZC 單字、KM_ZW 破音詞） ---------- */
+var KM_ZCM=null,KM_ZWM=null,KM_MISS={};
+function kmZyInit(){if(KM_ZCM)return;KM_ZCM={};KM_ZWM={};
+  KM_ZC.split(/\s+/).forEach(function(e){if(e)KM_ZCM[e.charAt(0)]=e.slice(1);});
+  KM_ZW.split('|').forEach(function(e){var p=e.split('=');if(p.length===2)KM_ZWM[p[0].trim()]=p[1].trim().split(/\s+/);});}
+function kmZc(ch,p){if(!p){KM_MISS[ch]=1;return '<span class="kzc">'+ch+'</span>';}
+  var t='',neu=false;if(p.charAt(0)==='˙'){neu=true;p=p.slice(1);}var last=p.charAt(p.length-1);if('ˊˇˋ'.indexOf(last)>=0){t=last;p=p.slice(0,-1);}
+  var col=(neu?'<i class="kzn">˙</i>':'')+p.split('').map(function(x){return '<i>'+x+'</i>';}).join('');
+  return '<span class="kzc">'+ch+'<span class="kzp"><span class="kzs">'+col+'</span><span class="kzt">'+t+'</span></span></span>';}
+function kmZ(s){kmZyInit();s=String(s==null?'':s);var out='',i=0;
+  while(i<s.length){var c=s.charAt(i);if(!/[一-鿿]/.test(c)){out+=esc(c);i++;continue;}
+    var hit=null;for(var L=4;L>=2;L--){var w=s.substr(i,L);if(w.length===L&&KM_ZWM[w]){hit=w;break;}}
+    if(hit){var ps=KM_ZWM[hit];for(var k=0;k<hit.length;k++)out+=kmZc(hit.charAt(k),ps[k]);i+=hit.length;}
+    else{out+=kmZc(c,KM_ZCM[c]);i++;}}
+  return '<span class="kzy">'+out+'</span>';}
+
+/* ---------- 共用的畫面小零件 ---------- */
+function kmWho(M,r){var n=kmSeatOf(M,r),rl=typeof r==='number'?kmRole(M,r):r;var R=KM_RL[rl]||KM_RL.m;return R.ic+' '+(rl==='m'?'':R.n+' ')+n+' 號';}
+function kmFlowHTML(M,big){var s=kmStep(M);
+  return '<div class="km-flow'+(big?' big':'')+'">'+KM_FL.map(function(f,i){var k=i+1,c=k<s?'past':k===s?'on':'';return '<div class="f '+c+'"><b>'+(k<s?'✔':KM_CN[i])+'</b>'+kmZ(f.n)+'</div>';}).join('')+'</div>';}
+function kmTmrHTML(M){var T=M.tmr;if(!T)return '';var left=Math.max(0,Math.ceil((T.end-KM.now())/1000));if(left<=0&&KM.now()-T.end>15000)return '';
+  return '<div class="km-tmr'+(left<=0?' up':left<=10?' low':'')+'" data-end="'+T.end+'">⏱ <b>'+(left<=0?kmZ('時間到'):Math.floor(left/60)+':'+('0'+left%60).slice(-2))+'</b></div>';}
+function kmHandsHTML(M,ns,numbered){return '<div class="km-hands">'+(ns.length?ns.map(function(n,k){return '<span class="hd">✋<b>'+n+'</b>'+(numbered?'<i>'+(k+1)+'</i>':'')+'</span>';}).join(''):'<span class="none">'+kmZ('還沒有人')+'</span>')+'</div>';}
+/* 四個項目的看板 */
+function kmBoardHTML(M,big){var cur=kmIt(M);
+  return '<div class="km-items'+(big?' big':'')+'">'+KM_IT.map(function(it,i){var d=M.dec[i],on=i===cur,h='';
+    if(d)h='<div class="res">'+d.map(function(n){return '<span class="won">⭐ '+n+' 號</span>';}).join('')+'</div>';
+    else if(on){h=M.C.length?'<div class="cands">'+M.C.map(function(c){var v=M.vr[i].filter(function(x){return x.n===c.n&&x.rd===M.rd;})[0];return '<span class="cand">'+c.n+' 號'+(c.f===1?' 👍':c.f===2?' 😟':'')+(v?' <em>'+v.y+' 票</em>':'')+'</span>';}).join('')+'</div>':'<div class="wait">'+kmZ('提名中')+'</div>';}
+    else h='<div class="wait">'+kmZ('還沒討論')+'</div>';
+    return '<div class="it'+(on?' on':'')+(d?' ok':'')+'"><div class="nm">'+it.ic+' '+kmZ(it.n)+'</div>'+h+'</div>';}).join('')+'</div>';}
+/* 紀錄單（記錄寫的；editable＝記錄本人） */
+function kmRecHTML(M,editable,pp){var R=M.rec,its=kmRecItems(M),d=new Date(),h='';
+  function mark(x){return x?(x.done?'<b class="ok">✔</b>':x.wrote?'<b class="bad">'+kmZ('再聽一次')+'</b>':'<b class="todo">'+kmZ('要寫')+'</b>'):'';}
+  function itm(k){return its.filter(function(x){return x.k===k;})[0];}
+  h+='<div class="km-rec"><div class="hd">📝 '+kmZ('班會紀錄')+'</div>';
+  h+='<div class="row">'+kmZ('日期')+'：'+(d.getMonth()+1)+' / '+d.getDate()+'　'+kmZ('主席')+' '+M.r.c+' '+kmZ('號')+'　'+kmZ('司儀')+' '+M.r.h+' '+kmZ('號')+'　'+kmZ('記錄')+' '+M.r.w+' '+kmZ('號')+'</div>';
+  h+='<div class="row">'+kmZ('出席')+'：'+kmZ('應到')+' 7 '+kmZ('人')+'，'+kmZ('實到')+' <u>'+(R.att!=null?R.att:'　')+'</u> '+kmZ('人')+'</div>';
+  h+='<div class="row t">'+kmZ('討論事項')+'：'+kmZ('推派國語文競賽代表')+'</div>';
+  KM_IT.forEach(function(it,i){var dec=M.dec[i],v=M.vr[i];
+    h+='<div class="row it"><div class="l">'+it.ic+' '+kmZ(it.n)+'</div><div class="r">';
+    if(v.length)h+='<div class="vs">'+kmZ('表決')+'：'+v.map(function(x){return x.n+' '+kmZ('號')+' '+x.y+' '+kmZ('票');}).join('　')+'</div>';
+    if(!dec)h+='<div class="wait">'+kmZ('還沒有表決結果')+'</div>';
+    else{var mine=R.d[i]||[];h+='<div class="dec">'+kmZ('決議：推派')+' ';
+      if(editable)h+=pp.map(function(n){return '<button type="button" class="nb'+(mine.indexOf(n)>=0?' on':'')+'" data-a="recd" data-i="'+i+'" data-v="'+n+'">'+n+'</button>';}).join('');
+      else h+='<u>'+(mine.length?kmNum(mine):'　')+'</u>';
+      h+=' '+mark(itm('d'+i))+'</div>';}
+    h+='</div></div>';});
+  h+='<div class="row t">'+kmZ('臨時動議')+'：'+(M.TM.length?'':(kmStep(M)>5?kmZ('沒有'):''))+'</div>';
+  M.TM.forEach(function(t,j){var v=R.tm[j];h+='<div class="row it"><div class="l">'+KM_CN[j]+'</div><div class="r">'+kmZ('「'+kmTmText(t)+'」')+'（'+t.y+' '+kmZ('票')+'）<div class="dec">';
+    if(editable)h+='<button type="button" class="nb w'+(v===1?' on':'')+'" data-a="rect" data-i="'+j+'" data-v="1">'+kmZ('通過')+'</button><button type="button" class="nb w'+(v===0?' on':'')+'" data-a="rect" data-i="'+j+'" data-v="0">'+kmZ('沒有通過')+'</button>';
+    else h+='<u>'+(v==null?'　':v?kmZ('通過'):kmZ('沒有通過'))+'</u>';
+    h+=' '+mark(itm('t'+j))+'</div></div></div>';});
+  return h+'</div>';}
+
+/* ---------- 孩子的畫面（也是 8 號投影） ---------- */
+function KmMeet(root,ws){
+  var self=this;this.root=root;this.ws=ws;this.last='';this.ui={mode:'',t:0,w:-1,m:-9,k:''};this.sounds={};
+  KM.ds.push(this);
+  root.addEventListener('click',function(e){if(root._owner!==self)return;var b=e.target.closest('[data-a]');if(!b||!root.contains(b)||b.disabled)return;self.click(b.dataset.a,b.dataset.v,b);});
+  setInterval(function(){self.tick();},500);
+}
+KmMeet.prototype.me=function(){return this.ws.seat||0;};
+KmMeet.prototype.isBoard=function(){var s=this.me();return !s||s===8;};
+KmMeet.prototype.mount=KmMeet.prototype.load=function(){this.root._owner=this;this.last='';this.render();};
+KmMeet.prototype.st=function(){var st=this.ws.state(),M=KM.M;if(st&&M&&st.mid!==M.mid){st.mid=M.mid;st.ac=[];st.lt=0;this.ui={mode:'',t:0,w:-1,m:-9,k:''};this.ws.onChange(true);}return st;};
+KmMeet.prototype.act=function(a){var st=this.st(),M=KM.M;if(!st||!M||this.ws.locked||this.isBoard())return;
+  var t=Math.max(Date.now(),(st.lt||0)+1);a.t=t;st.lt=t;st.ac=st.ac||[];st.ac.push(a);if(st.ac.length>25)st.ac.splice(0,st.ac.length-25);
+  this.ws.onChange(true);this.render();};
+KmMeet.prototype.pend=function(type){var st=this.st(),M=KM.M,ak=(M&&M.ak)||0;return ((st&&st.ac)||[]).filter(function(a){return a.t>ak&&(!type||a.a===type);});};
+KmMeet.prototype.click=function(a,v,b){
+  var M=KM.M,ui=this.ui,me=this.me();if(!M)return;
+  switch(a){
+  case 'rdy':this.act({a:'rdy'});return;
+  case 'go':{var nr=0;(M.pp||[]).forEach(function(n){if(M.rdy[n])nr++;});if(nr<(M.pp||[]).length&&!confirm('還有人沒按「我知道了」，要開始嗎？'))return;this.act({a:'go'});return;}
+  case 'done':if(M.ln)this.act({a:'done',k:M.ln.k});return;
+  case 'att':this.act({a:'att',v:+v});return;
+  case 'attsure':this.act({a:'att',v:+v,sure:1});return;
+  case 'mode':ui.mode=v;ui.t=0;ui.w=-1;this.toEnd=1;this.render();return;
+  case 't':ui.t=+v;ui.w=-1;this.toEnd=1;this.render();return;
+  case 'w':ui.w=+v;this.toEnd=1;this.render();return;
+  case 'm':ui.m=+v;this.toEnd=1;this.render();return;
+  case 'hand':{var i=kmIt(M);if(M.ph==='ask'||kmBeat(M).k==='tmp'){if(ui.m<-1)return;this.act({a:'hand',on:true,p:{m:ui.m}});ui.m=-9;return;}
+    if(ui.mode==='s'){if(ui.w<0)return;this.act({a:'hand',on:true,p:{s:1,w:ui.w}});}else{if(!ui.t||ui.w<0)return;this.act({a:'hand',on:true,p:{t:ui.t,w:ui.w}});}
+    ui.mode='';ui.t=0;ui.w=-1;return;}
+  case 'down':this.act({a:'hand',on:false});return;
+  case 'call':this.act({a:'call',n:+v});return;
+  case 'sec':this.act({a:'sec',on:v!=='0'});return;
+  case 'secok':this.act({a:'secok'});return;
+  case 'secno':this.act({a:'secno'});return;
+  case 'nomend':this.act({a:'nomend'});return;
+  case 'feel':this.act({a:'feel',v:+v});return;
+  case 'vote':if(M.V)this.act({a:'vote',v:+v,k:M.V.k});return;
+  case 'vstop':if(confirm('還有人沒有按，要停止表決嗎？'))this.act({a:'vstop'});return;
+  case 'cnt':this.act({a:'cnt',v:+v});return;
+  case 'tmpend':this.act({a:'tmpend'});return;
+  case 'recd':{var j=+b.dataset.i,cur=(M.rec.d[j]||[]).slice();var p=this.pend('recd').filter(function(x){return x.i===j;});if(p.length)cur=p[p.length-1].ns.slice();var n=+v,k=cur.indexOf(n);if(k>=0)cur.splice(k,1);else cur.push(n);this.act({a:'recd',i:j,ns:cur});return;}
+  case 'rect':this.act({a:'rect',i:+b.dataset.i,v:+v});return;
+  case 'tmr':this.act({a:'tmr',v:+v});return;
+  case 'bell':this.act({a:'bell'});return;
+  case 'rem':this.act({a:'rem',v:+v});return;
+  case 'cap':this.act({a:'cap',v:+v});return;
+  case 'rx':this.act({a:'rx',e:+v,to:+(b.dataset.to||0)});return;
+  }
+};
+KmMeet.prototype.tick=function(){if(this.root._owner!==this||!KM.M)return;var el=this.root.querySelector('.km-tmrw');if(el){var h=kmTmrHTML(KM.M);if(el._h!==h){el._h=h;el.innerHTML=h;}}
+  var M=KM.M;if(this.isBoard()){this.sound('bell',M.bell);if(M.tmr&&KM.now()>=M.tmr.end)this.sound('tmr',M.tmr.end);this.sound('gv',M.gv);}};
+KmMeet.prototype.sound=function(k,t){if(!t||this.sounds[k]===t)return;var first=this.sounds[k]===undefined;this.sounds[k]=t;if(first&&KM.now()-t>4000)return;if(KM.now()-t>6000)return;
+  try{var C=this.ac||(this.ac=new (window.AudioContext||window.webkitAudioContext)());var tone=function(f,d,st){var o=C.createOscillator(),g=C.createGain();o.frequency.value=f;o.type=k==='gv'?'square':'sine';o.connect(g);g.connect(C.destination);var t0=C.currentTime+st;g.gain.setValueAtTime(.0001,t0);g.gain.exponentialRampToValueAtTime(.25,t0+.01);g.gain.exponentialRampToValueAtTime(.0001,t0+d);o.start(t0);o.stop(t0+d+.05);};
+    if(k==='bell'){tone(1318,1.2,0);tone(1046,1.4,.35);}else if(k==='tmr'){tone(880,.4,0);tone(880,.4,.5);tone(880,.6,1);}else{tone(140,.15,0);tone(140,.15,.25);tone(140,.25,.5);}}catch(e){}};
+KmMeet.prototype.render=function(){
+  if(this.root._owner!==this)return;var M=KM.M,st=this.st();
+  var html=!M?'<div class="km"><div class="km-wait">'+kmZ('等老師打開班會……')+'</div></div>':this.isBoard()?this.boardHTML(M):this.seatHTML(M);
+  if(html===this.last)return;this.last=html;
+  var sc=this.root.querySelector('.km-do');var y=sc?sc.scrollTop:0;
+  this.root.innerHTML=html;var sc2=this.root.querySelector('.km-do');if(sc2)sc2.scrollTop=this.toEnd?sc2.scrollHeight:y;this.toEnd=0;this.tick();
+};
+/* 現在發生什麼事（大家都一樣） */
+KmMeet.prototype.nowHTML=function(M,big){
+  var ln=M.ln,me=this.me(),h='';
+  if(ln){var sn=kmSeatOf(M,ln.r),mine=sn===me&&!this.isBoard();
+    h='<div class="km-say'+(mine?' mine':'')+' r-'+(typeof ln.r==='number'?'m':ln.r)+'"><div class="who">'+(mine?'🗣️ '+kmZ('輪到你說了！請大聲念出來：'):kmWho(M,ln.r)+' '+kmZ('說：'))+'</div><div class="tx">'+kmZ(kmLineText(M,ln))+'</div></div>';
+    if(big&&ln.x==='rep2')h+='<div class="km-expl">'+KM_IT.map(function(it){return '<div><b>'+it.ic+' '+kmZ(it.n)+'</b>'+kmZ(it.d)+'</div>';}).join('')+'</div>';
+    return h;}
+  var V=M.V,i=kmIt(M),it=KM_IT[i];
+  switch(M.ph){
+  case 'roles':if(!big)return '';return '<div class="km-st">'+kmZ('第一個流程：選出主席、司儀、記錄。')+'<br><small>'+kmZ(KM_FL[0].d)+'</small></div>';
+  case 'att':if(!big)return '';return '<div class="km-st">📝 '+kmZ('記錄正在數出席人數，請坐好。')+'</div>';
+  case 'nom':case 'ask':return '<div class="km-st">'+(M.ph==='nom'?'🎤 '+kmZ('主席正在請大家提名')+(it?'：'+kmZ(it.n):''):'🎤 '+kmZ('主席正在問：有沒有臨時動議？'))+'</div><div class="km-q"><b>'+kmZ('舉手的人')+'</b>'+kmHandsHTML(M,M.q.map(function(x){return x.n;}))+'</div>';
+  case 'sec':{var pc=M.pc||{};return '<div class="km-st">🤝 '+(pc.m!=null?kmZ(pc.by+' 號的臨時動議，要有人附議'):kmZ((pc.s?pc.t+' 號自願':pc.by+' 號推薦 '+pc.t+' 號')+'，要有人附議'))+'</div><div class="km-q"><b>'+kmZ('附議的人')+'</b>'+kmHandsHTML(M,pc.sec||[])+'</div>';}
+  case 'vote':return '<div class="km-st">🗳️ '+kmZ(V&&V.n?'表決：贊成 '+V.n+' 號參加'+it.n+'嗎？':'表決：贊成這個臨時動議嗎？')+'</div><div class="km-q"><b>'+kmZ('按好了')+' '+(V.Y.length+V.N.length)+' / '+V.np+'</b>'+(big?kmHandsHTML(M,V.Y):'')+'</div>';
+  case 'cnt':if(!big&&kmRole(M,me)==='w')return '';return '<div class="km-st">📝 '+kmZ('記錄正在數票：贊成的人舉手')+'</div><div class="km-q">'+kmHandsHTML(M,V.Y,V.wr>=2)+'</div>';
+  case 'done':return '<div class="km-st done">🎉 '+kmZ('班會結束了！')+'</div>';
+  }
+  return '';
+};
+/* 大螢幕（8 號投影） */
+KmMeet.prototype.boardHTML=function(M){
+  var h='<div class="km board"><div class="km-top"><div class="ttl">🏛️ '+kmZ('301 班會')+'<small>'+kmZ('推派國語文競賽代表')+'</small></div><div class="km-tmrw"></div></div>'+kmFlowHTML(M,true);
+  if(M.ph==='roles'){h+='<div class="km-roles">'+['c','h','w'].map(function(r){var n=M.r[r];return '<div class="rc r-'+r+'"><div class="ic">'+KM_RL[r].ic+'</div><div class="nm">'+kmZ(KM_RL[r].n)+'</div><div class="no">'+(n?n+' 號':'?')+(n&&M.rdy[n]?' ✔':'')+'</div><div class="d">'+kmZ(KM_RL[r].d)+'</div></div>';}).join('')+
+      '<div class="rc r-m"><div class="ic">🙋</div><div class="nm">'+kmZ('同學')+'</div><div class="no">'+((M.pp||[]).filter(function(n){return n!==M.r.c&&n!==M.r.h&&n!==M.r.w;}).map(function(n){return n+(M.rdy[n]?'✔':'');}).join(' ')||'—')+'</div><div class="d">'+kmZ(KM_RL.m.d)+'</div></div></div>'+
+      '<div class="km-st">'+kmZ(KM_FL[0].d)+'<br>'+kmZ('每個人看自己的畫面，按「我知道了」。大家都好了，司儀按「開始開班會」。')+'</div><div class="km-teach">👩‍🏫 '+kmZ('導師：在旁邊看大家開會，班會結束後給大家建議或鼓勵。')+'</div></div>';return h;}
+  if(M.ph==='done'){h+='<div class="km-end"><div class="l">'+kmRecHTML(M,false,M.pp||[])+'</div><div class="r"><div class="km-st done">🎉 '+kmZ('班會結束了！')+'</div><div class="km-teach big">👩‍🏫 '+kmZ('班會結束後：請老師給大家建議或鼓勵。')+'</div>'+kmBoardHTML(M,false)+'</div></div></div>';return h;}
+  h+='<div class="km-main"><div class="l">'+this.nowHTML(M,true)+this.fxHTML(M)+'</div><div class="r">'+kmBoardHTML(M,true)+(kmStep(M)>=4?'<div class="km-mini">'+kmRecHTML(M,false,M.pp||[])+'</div>':'')+'</div></div></div>';
+  return h;
+};
+/* 特效：安靜鈴、司儀提醒、主席提示句、敲槌、拍手 */
+KmMeet.prototype.fxHTML=function(M){var now=KM.now(),h='';
+  if(M.bell&&now-M.bell<5000)h+='<div class="km-fx bell">🔔 '+kmZ('請安靜')+'</div>';
+  if(M.rem&&now-M.rem.t<9000)h+='<div class="km-fx rem">📢 '+kmZ('司儀提醒：'+KM_REM[M.rem.k])+'</div>';
+  if(M.cap&&now-M.cap.t<9000)h+='<div class="km-fx cap">🎤 '+kmZ('主席說：'+M.cap.x)+'</div>';
+  if(M.gv&&now-M.gv<2500&&this.isBoard())h+='<div class="km-fx gv">🔨</div>';
+  var rx=(M.rx||[]).filter(function(r){return now-r.t<4000;});if(rx.length)h+='<div class="km-rx">'+rx.map(function(r,k){return '<span style="left:'+(8+(r.n*13)%80)+'%;animation-delay:'+(k%3)*.15+'s">'+(r.e===1?'💪':'👏')+'<small>'+r.n+'</small></span>';}).join('')+'</div>';
+  if(h&&!this.fxT){var me=this;this.fxT=setTimeout(function(){me.fxT=null;me.render();},1000);}
+  return h;};
+/* 孩子自己的平板 */
+KmMeet.prototype.seatHTML=function(M){
+  var me=this.me(),rl=kmRole(M,me),R=KM_RL[rl],pp=M.pp||[];
+  var h='<div class="km seat r-'+rl+'"><div class="km-top"><div class="me">'+me+' 號・'+R.ic+' '+kmZ(R.n)+'</div><div class="km-tmrw"></div></div>'+kmFlowHTML(M,false);
+  if(pp.indexOf(me)<0)return h+'<div class="km-st">'+kmZ('等一下，正在連線到班會……')+'</div></div>';
+  h+='<div class="km-body"><div class="km-do">'+this.nowHTML(M,false)+this.fxHTML(M)+this.todoHTML(M,me,rl)+'</div><div class="km-side">'+this.sideHTML(M,me,rl)+'</div></div></div>';
+  return h;
+};
+KmMeet.prototype.recNag=function(M,rl){if(rl!=='w')return '';var bad=kmRecItems(M).filter(function(x){return !x.done&&x.k!=='att';});if(!bad.length)return '';
+  return '<div class="km-todo hot"><div class="tt">📝 '+kmZ('記錄的工作：')+'</div><div class="tb">'+kmZ('在右邊的紀錄單寫下：'+bad.map(function(x){return x.t;}).join('、')+'。')+'</div></div>';};
+KmMeet.prototype.todoHTML=function(M,me,rl){
+  var self=this,ln=M.ln,pend=this.pend(),pp=M.pp||[],i=kmIt(M),it=KM_IT[i],ui=this.ui,h='';
+  var busy=pend.length?' <span class="sending">'+kmZ('傳送中')+'…</span>':'';
+  function box(title,body){return '<div class="km-todo"><div class="tt">👉 '+kmZ('你現在要做：')+'</div><div class="tb">'+kmZ(title)+'</div>'+(body||'')+busy+'</div>';}
+  function btn(a,v,label,cls,dis){return '<button type="button" class="kb '+(cls||'')+'" data-a="'+a+'" data-v="'+(v==null?'':v)+'"'+(dis?' disabled':'')+'>'+label+'</button>';}
+  /* 被推薦的人：先回應 */
+  var mc=i>=0?M.C.filter(function(c){return c.n===me&&!c.s&&!c.f;})[0]:null,feel='';
+  if(mc&&!this.pend('feel').length)feel='<div class="km-todo hot"><div class="tt">🌟 '+kmZ('你被推薦參加'+it.n+'了！')+'</div><div class="tb">'+kmZ('按一個，並且說出來：')+'</div>'+btn('feel',1,'👍 '+kmZ('我願意試試看'),'g')+btn('feel',2,'😟 '+kmZ('我有點擔心'),'')+'</div>';
+  /* 拍手、加油 */
+  var cheer='';
+  if(ln&&ln.x==='res_ok')cheer='<div class="km-cheer">'+btn('rx',0,'👏 '+kmZ('拍拍手'),'g')+'</div>';
+  else{var wor=M.C.filter(function(c){return c.f===2&&c.n!==me;});if(wor.length&&(M.ph==='nom'||M.ph==='sec'||M.ph==='vote'))cheer='<div class="km-cheer">'+wor.map(function(c){return '<button type="button" class="kb" data-a="rx" data-v="1" data-to="'+c.n+'">💪 '+kmZ('幫 '+c.n+' 號加油')+'</button>';}).join('')+'</div>';}
+  if(ln){var sn=kmSeatOf(M,ln.r);
+    if(sn===me){var dis=ln.x==='dec'&&!kmRecDone(M);
+      return feel+box(dis?'先把右邊的紀錄單寫完（每一格都要有 ✔），再念出來。':'大聲念出上面的話。念完了，按「我說完了」。',btn('done',null,'✔ '+kmZ('我說完了'),'big g',dis||this.pend('done').length))+cheer;}
+    return feel+box('請看著'+kmWho(M,ln.r).replace(/^\S+ /,'')+'，安靜聽。')+this.recNag(M,rl)+cheer;}
+  switch(M.ph){
+  case 'roles':{var rd=M.rdy[me]||this.pend('rdy').length;var b2='<div class="km-role r-'+rl+'"><div class="nm">'+KM_RL[rl].ic+' '+kmZ('你是：'+KM_RL[rl].n)+'</div><div class="d">'+kmZ('你的工作：'+KM_RL[rl].d)+'</div></div>';
+    b2+=rd?'<div class="ok">✔ '+kmZ('你按了「我知道了」，等大家。')+'</div>':btn('rdy',null,'👌 '+kmZ('我知道了'),'big g');
+    if(rl==='h'){var nr=pp.filter(function(n){return M.rdy[n];}).length;b2+='<div class="hint">'+kmZ('大家都按「我知道了」以後，由你開始：')+' ('+nr+' / '+pp.length+')</div>'+btn('go',null,'▶ '+kmZ('開始開班會'),'big o',!(M.r.c&&M.r.h&&M.r.w));}
+    return box('看看你今天的角色，還有你的工作。',b2);}
+  case 'att':if(rl==='w'){var b3='<div class="kpad">'+[1,2,3,4,5,6,7].map(function(n){return btn('att',n,n,'num');}).join('')+'</div>';
+      if(M.attw&&M.atry)b3='<div class="kwarn">'+kmZ('你數的是 '+M.attw+' 人，電腦看到 '+pp.length+' 人在班會裡。再數一次，或按「我確定」。')+'</div>'+b3+btn('attsure',M.attw,kmZ('我確定是 '+M.attw+' 人'),'');
+      return box('數一數：今天有幾個同學在開班會？（包括你自己）按數字。',b3);}
+    return box('記錄正在數人數，請坐好。');
+  case 'nom':case 'ask':{var tmp=M.ph==='ask';
+    if(rl==='c'){var b4='';if(M.q.length)b4+='<div class="hint">'+kmZ('點一個舉手的人，請他發言：')+'</div>'+M.q.map(function(x){return btn('call',x.n,'🎤 '+kmZ('請 '+x.n+' 號發言'),'o');}).join('');
+      else b4+='<div class="hint">'+kmZ('還沒有人舉手。可以點右邊的「提示句」，念給大家聽。')+'</div>';
+      if(!tmp){b4+='<div class="hint">'+kmZ('候選人：')+(M.C.length?kmNum(M.C.map(function(c){return c.n;})):kmZ('還沒有'))+'（'+kmZ('最多 '+M.icap+' 個')+'）</div>';
+        b4+=btn('nomend',null,'🔚 '+kmZ('沒有人要提名了：提名結束，開始表決'),'',!M.C.length);}
+      else b4+=btn('tmpend',null,'🔚 '+kmZ(M.TM.length?'沒有人要提了：臨時動議結束':'沒有人要提：臨時動議結束'),'');
+      return feel+box(tmp?'問大家有沒有臨時動議，點舉手的人發言。':'請舉手的人發言。大家說完了，按「提名結束」。',b4)+cheer;}
+    var inq=M.q.filter(function(x){return x.n===me;})[0];
+    if(inq){var sent=tmp?(inq.p.m>=0?'我有臨時動議。我提議：'+KM_TM[inq.p.m]:'我有臨時動議。（用說的）'):kmSent(M,i,inq.p);
+      return feel+box('你舉手了，等主席點你。',' <div class="prev">'+kmZ('你要說：「'+sent+'」')+'</div>'+btn('down',null,kmZ('把手放下（不說了）'),''))+cheer;}
+    if(tmp){var b5='<div class="chips">'+KM_TM.map(function(t,k){return btn('m',k,kmZ(t),'chip'+(ui.m===k?' on':''));}).join('')+btn('m',-1,'💬 '+kmZ('我想用說的'),'chip'+(ui.m===-1?' on':''))+'</div>';
+      if(ui.m>=-1)b5+='<div class="prev">'+kmZ('你要說：「我有臨時動議。我提議：'+(ui.m>=0?KM_TM[ui.m]:'（用說的）')+'」')+'</div>'+btn('hand',null,'✋ '+kmZ('舉手'),'big o');
+      return feel+box('有想提出的事嗎？先選一個，再按「舉手」。沒有的話，安靜聽就好。',b5)+cheer;}
+    var b6='',selfBad=kmCanNom(M,i,me,pp);
+    b6+='<div class="chips">'+btn('mode','s','🙋 '+kmZ('我要自願'),'chip'+(ui.mode==='s'?' on':''),!!selfBad)+btn('mode','r','👉 '+kmZ('我要推薦別人'),'chip'+(ui.mode==='r'?' on':''))+'</div>';
+    if(selfBad&&selfBad!=='不在班會裡')b6+='<div class="hint">'+kmZ('（你'+selfBad+'，不能再自願）')+'</div>';
+    if(ui.mode==='r'){b6+='<div class="hint">'+kmZ('推薦幾號？')+'</div><div class="kpad">'+pp.filter(function(n){return n!==me;}).map(function(n){var bad=kmCanNom(M,i,n,pp);return '<button type="button" class="kb num'+(ui.t===n?' on':'')+'" data-a="t" data-v="'+n+'"'+(bad?' disabled title="'+bad+'"':'')+'>'+n+(bad?'<small>'+kmZ(bad.slice(0,4))+'</small>':'')+'</button>';}).join('')+'</div>';}
+    if(ui.mode==='s'||(ui.mode==='r'&&ui.t)){var ws=ui.mode==='s'?KM_SELF:it.w;b6+='<div class="hint">'+kmZ('原因是什麼？')+'</div><div class="chips">'+ws.map(function(w,k){return btn('w',k,kmZ(w),'chip'+(ui.w===k?' on':''));}).join('')+'</div>';}
+    if(ui.w>=0&&(ui.mode==='s'||ui.t)){var p=ui.mode==='s'?{s:1,w:ui.w}:{t:ui.t,w:ui.w};b6+='<div class="prev">'+kmZ('你要說：「'+kmSent(M,i,p)+'」')+'</div>'+btn('hand',null,'✋ '+kmZ('舉手'),'big o');}
+    return feel+box('想參加，就自願；覺得誰適合，就推薦他。選好了按「舉手」，等主席點你。',b6)+cheer;}
+  case 'sec':{var pc=M.pc||{};
+    if(rl==='c'){var b7='<div class="hint">'+kmZ('附議的人：')+(pc.sec.length?kmNum(pc.sec):kmZ('還沒有'))+'</div>';
+      b7+=btn('secok',null,'✔ '+kmZ(pc.m!=null?'有人附議：開始表決':'有人附議：'+pc.t+' 號成為候選人'),'g',!pc.sec.length)+btn('secno',null,'✖ '+kmZ('沒有人附議：不算數'),'');
+      return box('等一下，看有沒有人附議，再按一個。',b7)+cheer;}
+    if(pc.by===me)return feel+box('等別人附議你的提議。')+cheer;
+    var on=pc.sec.indexOf(me)>=0,ps=this.pend('sec');if(ps.length)on=ps[ps.length-1].on;
+    return feel+box(pc.m!=null?'同意 '+pc.by+' 號的提議嗎？同意就按「我附議」，並且說：「我附議。」':'同意 '+(pc.s?pc.t+' 號自願參加':pc.by+' 號推薦 '+pc.t+' 號')+'嗎？同意就按「我附議」，並且說：「我附議。」',
+      on?'<div class="ok">✔ '+kmZ('你附議了')+'</div>'+btn('sec','0',kmZ('取消附議'),''):btn('sec','1','🤝 '+kmZ('我附議'),'big g'))+cheer;}
+  case 'vote':{var V=M.V,pv=this.pend('vote'),did=V.Y.indexOf(me)>=0?1:V.N.indexOf(me)>=0?0:pv.length?pv[pv.length-1].v:-1;
+    var q=V.n?'贊成 '+V.n+' 號參加'+it.n+'嗎？':'贊成這個臨時動議嗎？',b8;
+    if(did>=0)b8='<div class="ok">✔ '+kmZ('你按了「'+(did?'贊成':'不贊成')+'」，等大家按完。')+'</div>';else b8=btn('vote',1,'👍 '+kmZ('贊成'),'big g')+btn('vote',0,'✋ '+kmZ('不贊成'),'big');
+    if(rl==='c')b8+='<div class="hint">'+kmZ('按好的人：'+(V.Y.length+V.N.length)+' / '+V.np)+'</div>'+btn('vstop',null,kmZ('停止表決'),'',!(V.Y.length+V.N.length));
+    return feel+box(q+(V.n===me?'（你自己也可以按）':''),b8)+cheer;}
+  case 'cnt':{var V2=M.V;if(rl==='w'){var b9=kmHandsHTML(M,V2.Y,V2.wr>=2)+'<div class="kpad">'+Array.apply(null,{length:V2.np+1}).map(function(_,n){return btn('cnt',n,n,'num');}).join('')+'</div>';
+      if(V2.wr)b9='<div class="kwarn">'+kmZ('不對喔，'+V2.lastw+' 票不對，再數一次。')+'</div>'+b9;
+      return box('數一數：舉手「贊成」的有幾個人？按數字。',b9);}
+    return box('記錄正在數票，請等一下。')+cheer;}
+  case 'done':{var S=M.ST[me]||{},b10='<div class="km-sum">'+kmZ('你今天：')+'<br>🗣️ '+kmZ('發言')+' '+(S.spk||0)+' '+kmZ('次')+'　🤝 '+kmZ('附議')+' '+(S.sec||0)+' '+kmZ('次')+'　🗳️ '+kmZ('表決')+' '+(S.vote||0)+' '+kmZ('次')+(S.line?'　🎙️ '+kmZ('念台詞')+' '+S.line+' '+kmZ('次'):'')+'</div>';
+    return box('班會結束了！謝謝你。請聽老師給大家的建議、鼓勵。',b10);}
+  }
+  return box('請看投影幕，安靜聽。');
+};
+/* 右邊：依角色不同 */
+KmMeet.prototype.sideHTML=function(M,me,rl){var pp=M.pp||[],h='';
+  if(rl==='w')return kmRecHTML(M,true,pp);
+  if(rl==='h'){h+='<div class="km-tool"><div class="hd">📢 '+kmZ('司儀工具')+'</div>';
+    h+='<div class="tl"><b>⏱ '+kmZ('計時器')+'</b><button type="button" class="kb" data-a="tmr" data-v="60">1 '+kmZ('分鐘')+'</button><button type="button" class="kb" data-a="tmr" data-v="120">2 '+kmZ('分鐘')+'</button><button type="button" class="kb" data-a="tmr" data-v="0">'+kmZ('停止')+'</button></div>';
+    h+='<div class="tl"><b>🔔 '+kmZ('安靜鈴')+'</b><button type="button" class="kb o" data-a="bell">🔔 '+kmZ('搖鈴')+'</button><small>'+kmZ('太吵的時候按，再說「請安靜」。')+'</small></div>';
+    h+='<div class="tl col"><b>📣 '+kmZ('提醒卡')+'</b><small>'+kmZ('按一張，投影幕會出現，你也要念出來：')+'</small>'+KM_REM.map(function(t,k){return '<button type="button" class="kb chip" data-a="rem" data-v="'+k+'">'+kmZ(t)+'</button>';}).join('')+'</div></div>';
+    h+='<div class="km-tool"><div class="hd">📋 '+kmZ('流程表')+'</div>'+KM_FL.map(function(f,k){var s=kmStep(M),c=k+1<s?'past':k+1===s?'on':'';return '<div class="fl '+c+'">'+(k+1<s?'✔':KM_CN[k])+' '+kmZ(f.n)+'<small>'+kmZ(f.d)+'</small></div>';}).join('')+'</div>';
+    return h;}
+  if(rl==='c'){var hs=kmChairHints(M);if(hs.length)h+='<div class="km-tool"><div class="hd">💬 '+kmZ('提示句（點了會出現在投影幕上，你念出來）')+'</div>'+hs.map(function(t,k){return '<button type="button" class="kb chip" data-a="cap" data-v="'+k+'">'+kmZ(t)+'</button>';}).join('')+'</div>';}
+  return h+kmBoardHTML(M,false);
+};
+function kmSummary(st){var M=KM.M;if(!M)return '班會';return KM_FL[Math.min(5,kmStep(M)-1)].n;}
+function kmTile(box,st,big,n){var M=KM.M;if(!M){box.innerHTML='';return;}var rl=kmRole(M,n),b=[];
+  if(M.ln&&kmSeatOf(M,M.ln.r)===n)b.push('<b class="g">🗣️ 念台詞中</b>');
+  if(M.q.some(function(x){return x.n===n;}))b.push('<b class="a">✋ 舉手中</b>');
+  if(M.V&&(M.V.Y.indexOf(n)>=0||M.V.N.indexOf(n)>=0))b.push('🗳️ 已表決');
+  if(M.pc&&M.pc.sec.indexOf(n)>=0)b.push('🤝 附議');
+  M.dec.forEach(function(d,i){if(d&&d.indexOf(n)>=0)b.push('⭐ '+KM_IT[i].n);});
+  var S=M.ST[n]||{};if(S.spk)b.push('發言 '+S.spk+' 次');
+  if(M.ph==='roles')b.push(M.rdy[n]?'✔ 知道了':'看角色中');
+  if(rl==='w'){var its=kmRecItems(M);b.push('✍️ 紀錄 '+its.filter(function(x){return x.done;}).length+'/'+its.length);}
+  box.innerHTML='<div class="bht'+(big?' big':'')+'"><div class="rl r-'+rl+'">'+KM_RL[rl==='t'?'m':rl].ic+' '+KM_RL[rl==='t'?'m':rl].n+'</div>'+b.map(function(x){return '<div>'+x+'</div>';}).join('')+'</div>';}
+
+/* ---------- 老師的控制台（只要開著；班會由孩子自己進行） ---------- */
+function kmTeacher(o){
+  var M=lsGet('jiao.t.km',null);if(!M||!M.mid||!M.r||!M.rec)M=kmFresh();if(!M.ack)M.ack={};
+  var bar=o.bar,saveT=null,bcT=null,on=false;
+  bar.className='bh-tbar';bar.hidden=true;
+  bar.innerHTML='<div class="r"><b class="hd">🏛️ 班會：推派國語文競賽代表</b><span class="roles"></span><button class="btn draw" type="button">🎲 抽籤</button>'+
+    '<label>規則 <select class="one"><option value="1">一個人只能參加一項</option><option value="0">一個人可以參加多項</option></select></label><span class="sep"></span>'+
+    '<button class="btn skip" type="button" title="孩子卡住時才按">⏭ 幫忙跳過這一步</button><button class="btn newm" type="button">↺ 重新開始</button></div><div class="r info"></div>';
+  var $=function(s){return bar.querySelector(s);};
+  var rsel={};['c','h','w'].forEach(function(r){var l=h('label',{},KM_RL[r].ic+KM_RL[r].n+' '),s=h('select',{});l.appendChild(s);$('.roles').appendChild(l);rsel[r]=s;
+    s.addEventListener('change',function(){var n=+s.value;['c','h','w'].forEach(function(x){if(x!==r&&M.r[x]===n&&n)M.r[x]=0;});M.r[r]=n;changed();});});
+  function fillRoles(){['c','h','w'].forEach(function(r){var s=rsel[r];s.innerHTML='<option value="0">—</option>';for(var n=1;n<=7;n++){var op=document.createElement('option');op.value=n;op.textContent=n+' 號'+(o.names[n]?' '+o.names[n]:'');s.appendChild(op);}s.value=String(M.r[r]||0);});}
+  function pp(){var a=[];for(var n=1;n<=7;n++){var s=o.seats[n];if(s&&o.online(s)&&s.st&&s.st.id==='kmg')a.push(n);}return a;}
+  function publish(){KM.set(kmView(M,0,pp()));}
+  function changed(){publish();clearTimeout(saveT);saveT=setTimeout(function(){lsSet('jiao.t.km',M);},400);if(!bcT)bcT=setTimeout(function(){bcT=null;o.broadcast();},60);render();o.render();}
+  function T(a){a.t=Date.now();if(kmApply(M,0,a,{pp:pp()}))changed();}
+  $('.draw').addEventListener('click',function(){if(M.b>0&&!confirm('班會已經開始了，要重新抽籤嗎？'))return;var a=pp();if(a.length<3)a=[1,2,3,4,5,6,7];a=shuffle(a);M.r={c:a[0],h:a[1],w:a[2]};M.rdy={};changed();});
+  $('.one').addEventListener('change',function(){M.one=+$('.one').value;changed();});
+  $('.newm').addEventListener('click',function(){if(!confirm('重新開始這場班會嗎？（角色會留著，其他都清掉）'))return;M=kmFresh({r:M.r,one:M.one});changed();});
+  $('.skip').addEventListener('click',function(){var P=pp(),ph=M.ph;
+    if(M.ln){if(!confirm('幫「'+kmWho(M,M.ln.r)+'」跳過這句話嗎？'))return;T({a:'done'});return;}
+    if(ph==='roles'){T({a:'go'});return;}
+    if(ph==='att'){T({a:'att',v:P.length||7});return;}
+    if(ph==='nom'){if(M.C.length)T({a:'nomend'});else alert('還沒有候選人。可以提醒孩子舉手提名。');return;}
+    if(ph==='sec'){T({a:M.pc&&M.pc.sec.length?'secok':'secno'});return;}
+    if(ph==='vote'){if(M.V&&(M.V.Y.length+M.V.N.length))T({a:'vstop'});else alert('還沒有人按贊成或不贊成。');return;}
+    if(ph==='cnt'){T({a:'cnt'});return;}
+    if(ph==='ask'){T({a:'tmpend'});return;}
+    if(ph===''&&kmBeat(M).k==='done')return;});
+  function render(){if(!on)return;var P=pp();
+    ['c','h','w'].forEach(function(r){if(document.activeElement!==rsel[r])rsel[r].value=String(M.r[r]||0);});$('.one').value=String(M.one);
+    var B=kmBeat(M),s='流程 '+B.st+'/6';if(B.st<=6)s+=' '+KM_FL[B.st-1].n;if(B.k==='item')s+='・'+KM_IT[B.i].n+(M.rd>1?'（第 '+M.rd+' 次提名）':'');
+    if(M.ln)s+='　｜　'+kmWho(M,M.ln.r)+' 念：「'+kmLineText(M,M.ln).slice(0,24)+'…」';
+    else s+='　｜　'+({roles:'看角色（已按知道了：'+P.filter(function(n){return M.rdy[n];}).length+'/'+P.length+'）',att:'記錄數人數',nom:'提名中（舉手 '+M.q.length+'）',sec:'等附議',vote:'表決中 '+(M.V?(M.V.Y.length+M.V.N.length)+'/'+M.V.np:''),cnt:'記錄數票',ask:'臨時動議（舉手 '+M.q.length+'）',done:'散會了'}[M.ph]||'');
+    s+='　｜　在班會裡：'+(P.length?P.join(' '):'還沒有人');
+    var d=M.dec.map(function(x,i){return x?KM_IT[i].n+' '+x.join('、'):'';}).filter(Boolean);if(d.length)s+='　｜　'+d.join('；');
+    $('.info').textContent=s;}
+  function merge(n,st){
+    if(!st||st.k!=='km'||st.mid!==M.mid||!Array.isArray(st.ac))return;
+    var acs=st.ac.filter(function(a){return a&&typeof a==='object'&&+a.t>0;}).slice().sort(function(a,b){return a.t-b.t;}),a0=M.ack[n]||0,ch=false,P=pp();
+    acs.forEach(function(a){if(!(a.t>a0))return;a0=a.t;try{if(kmApply(M,n,a,{pp:P}))ch=true;}catch(e){}});
+    if(a0!==(M.ack[n]||0)){M.ack[n]=a0;ch=true;}
+    if(ch)changed();}
+  var lastPP='';
+  setInterval(function(){if(!on)return;var k=pp().join();if(k!==lastPP){lastPP=k;changed();}else publish();},2000);
+  function cmdFor(n,tk){if(tk!=='kmg')return undefined;return kmView(M,n,pp(),M.ack[n]);}
+  function setTask(id){on=id==='kmg';bar.hidden=!on;if(on){fillRoles();publish();render();}}
+  fillRoles();publish();
+  return {merge:merge,cmdFor:cmdFor,setTask:setTask,_M:function(){return M;},_T:T};
+}
+
+/* ---------- CSS ---------- */
+(function(){var css=
+'.km{--c:#e8505b;--h:#f08c00;--w:#1c7ed6;--m:#2f9e44;font-family:"Noto Sans TC","Microsoft JhengHei",sans-serif;color:#222;height:100%;display:flex;flex-direction:column;gap:8px;padding:8px;box-sizing:border-box;background:#fffdf6;overflow:hidden}'+
+'.kzy{line-height:1.9}.kzc{display:inline-flex;align-items:center;vertical-align:middle}.kzp{display:inline-flex;align-items:center;font-size:.36em;line-height:1;margin:0 .1em 0 .03em;font-weight:400;color:#333}'+
+'.kzs{display:inline-flex;flex-direction:column;align-items:center}.kzs i{font-style:normal;display:block;line-height:1.02}.kzs i.kzn{line-height:.6}.kzt{display:inline-block;width:.55em;font-size:1em;margin-left:-.05em}'+
+'.km-top{display:flex;align-items:center;gap:12px}.km-top .me{font-size:22px;font-weight:700;padding:4px 14px;border-radius:999px;background:#fff;border:3px solid #ccc}.km-top .ttl{font-size:30px;font-weight:800}.km-top .ttl small{font-size:20px;margin-left:12px;color:#666;font-weight:600}'+
+'.seat.r-c .me{border-color:var(--c)}.seat.r-h .me{border-color:var(--h)}.seat.r-w .me{border-color:var(--w)}.seat.r-m .me{border-color:var(--m)}'+
+'.km-tmrw{margin-left:auto}.km-tmr{font-size:24px;padding:2px 14px;border-radius:12px;background:#e7f5ff}.km-tmr.low{background:#fff3bf}.km-tmr.up{background:#ffe3e3;animation:kmBlink .6s 6}'+
+'@keyframes kmBlink{50%{opacity:.3}}'+
+'.km-flow{display:flex;gap:4px}.km-flow .f{flex:1 1 auto;white-space:nowrap;display:flex;align-items:center;gap:4px;padding:4px 6px;border-radius:10px;background:#eee;color:#888;font-size:15px;clip-path:polygon(0 0,92% 0,100% 50%,92% 100%,0 100%,6% 50%)}.km-flow .f b{font-size:14px;padding:0 4px}'+
+'.km-flow .f.on{flex-grow:3;background:#20c997;color:#fff;font-weight:700}.km-flow .f.on .kzp{color:#fff}.km-flow .f.past{background:#c3fae8;color:#087f5b}.km-flow.big .f{font-size:21px;padding:6px 14px}'+
+'.km-body{flex:1;display:flex;gap:10px;min-height:0}.km-do{flex:1.35;overflow:auto;display:flex;flex-direction:column;gap:8px}.km-side{flex:1;overflow:auto;display:flex;flex-direction:column;gap:8px}'+
+'.km-say{background:#fff;border:3px solid #ccc;border-radius:16px;padding:8px 14px}.km-say .who{font-size:18px;font-weight:700;color:#555}.km-say .tx{font-size:26px;font-weight:600}'+
+'.km-say.r-c{border-color:var(--c)}.km-say.r-h{border-color:var(--h)}.km-say.r-w{border-color:var(--w)}.km-say.r-m{border-color:var(--m)}.km-say.mine{background:#fff9db;box-shadow:0 0 0 4px #ffe066;animation:kmPulse 1.4s infinite}'+
+'@keyframes kmPulse{50%{box-shadow:0 0 0 8px #ffe06688}}'+
+'.seat .kzy{line-height:1.75}.seat .km-st{font-size:20px;padding:4px 12px}.seat .km-hands .hd{font-size:22px}.seat .km-q{font-size:16px}.seat .km-todo .tb{font-size:20px}.seat .kb{font-size:18px;padding:4px 12px}.seat .kb.big{font-size:23px;padding:6px 18px}.seat .kb.num{font-size:22px;min-width:50px}.seat .km-say .tx{font-size:24px}'+
+'.km-st{font-size:24px;font-weight:700;background:#fff;border-radius:14px;padding:8px 14px;border:2px dashed #bbb}.km-st small{font-size:18px;font-weight:500}.km-st.done{font-size:34px;text-align:center;border-color:#20c997}'+
+'.km-q{display:flex;align-items:center;gap:10px;font-size:18px}.km-hands{display:flex;flex-wrap:wrap;gap:6px}.km-hands .hd{position:relative;font-size:30px;background:#fff;border-radius:12px;padding:2px 8px;border:2px solid #ffd43b}.km-hands .hd b{font-size:20px;margin-left:2px}.km-hands .hd i{position:absolute;top:-8px;right:-6px;background:#e8505b;color:#fff;border-radius:50%;width:22px;height:22px;font-size:14px;font-style:normal;display:flex;align-items:center;justify-content:center}.km-hands .none{color:#999;font-size:18px}'+
+'.km-todo{background:#fff;border:3px solid #20c997;border-radius:16px;padding:8px 14px;display:flex;flex-direction:column;gap:6px;align-items:flex-start}.km-todo.hot{border-color:#fab005;background:#fff9db}.km-todo .tt{font-size:16px;color:#087f5b;font-weight:700}.km-todo .tb{font-size:22px;font-weight:600}'+
+'.kb{font:inherit;font-size:20px;padding:6px 14px;border-radius:12px;border:2px solid #adb5bd;background:#f8f9fa;cursor:pointer;margin:2px 4px 2px 0}.kb:disabled{opacity:.4;cursor:default}.kb.big{font-size:26px;padding:10px 22px}.kb.g{background:#d3f9d8;border-color:#2f9e44}.kb.o{background:#fff4e6;border-color:#f08c00}'+
+'.kb.chip{font-size:19px;text-align:left}.kb.on{background:#ffe066;border-color:#f59f00;font-weight:700}.kb.num{min-width:58px;font-size:26px;font-weight:700;display:inline-flex;flex-direction:column;align-items:center}.kb.num small{font-size:11px;font-weight:400}'+
+'.km-todo .kpad,.km-todo .chips{display:flex;flex-wrap:wrap}.km-todo .hint{font-size:17px;color:#555}.km-todo .prev{font-size:22px;background:#fff9db;border-radius:10px;padding:4px 10px;border:2px dashed #fab005}.km-todo .ok{font-size:20px;color:#2f9e44;font-weight:700}.km-todo .kwarn{font-size:19px;color:#c92a2a;font-weight:700}.sending{font-size:14px;color:#999}'+
+'.km-role{border-radius:14px;padding:6px 12px;background:#f1f3f5}.km-role .nm{font-size:28px;font-weight:800}.km-role .d{font-size:19px}.km-role.r-c{background:#ffe3e3}.km-role.r-h{background:#fff4e6}.km-role.r-w{background:#e7f5ff}.km-role.r-m{background:#ebfbee}'+
+'.km-cheer{display:flex;flex-wrap:wrap}.km-sum{font-size:22px}'+
+'.km-items{display:grid;grid-template-columns:1fr 1fr;gap:6px}.km-items .it{background:#fff;border:2px solid #dee2e6;border-radius:12px;padding:6px 10px;min-height:62px}.km-items .it.on{border-color:#20c997;box-shadow:0 0 0 3px #c3fae8}.km-items .it.ok{background:#fff9db;border-color:#fab005}'+
+'.km-items .nm{font-size:19px;font-weight:700}.km-items .wait{font-size:15px;color:#999}.km-items .cand,.km-items .won{display:inline-block;font-size:19px;font-weight:700;margin:2px 6px 0 0;padding:0 8px;border-radius:8px;background:#e6fcf5}.km-items .won{background:#ffe066}.km-items em{font-style:normal;color:#1c7ed6}'+
+'.km-items.big .nm{font-size:26px}.km-items.big .cand,.km-items.big .won{font-size:28px}'+
+'.km-tool{background:#fff;border-radius:14px;border:2px solid #dee2e6;padding:6px 10px}.km-tool .hd{font-size:18px;font-weight:800;margin-bottom:4px}.km-tool .tl{display:flex;flex-wrap:wrap;align-items:center;gap:4px;margin:4px 0}.km-tool .tl.col{flex-direction:column;align-items:stretch}.km-tool small{font-size:14px;color:#666}'+
+'.km-tool .fl{font-size:17px;padding:3px 6px;border-radius:8px;color:#999}.km-tool .fl small{display:block;font-size:13px}.km-tool .fl.on{background:#20c997;color:#fff;font-weight:700}.km-tool .fl.on small{color:#fff}.km-tool .fl.past{color:#087f5b}'+
+'.km-rec{background:#fff;border:2px solid #1c7ed6;border-radius:12px;padding:6px 10px;font-size:17px}.km-rec .hd{font-size:20px;font-weight:800;color:#1c7ed6}.km-rec .row{padding:3px 0;border-bottom:1px dashed #dee2e6}.km-rec .row.t{font-weight:700}.km-rec .row.it{display:flex;gap:8px}.km-rec .row.it .l{min-width:6.5em;font-weight:700}.km-rec .row.it .r{flex:1}.km-rec .vs{color:#555}.km-rec .wait{color:#aaa}'+
+'.km-rec u{text-decoration:none;border-bottom:2px solid #333;padding:0 10px}.km-rec .nb{font:inherit;font-size:17px;font-weight:700;min-width:34px;padding:2px 6px;margin:2px;border-radius:8px;border:2px solid #adb5bd;background:#f8f9fa;cursor:pointer}.km-rec .nb.on{background:#ffe066;border-color:#f59f00}.km-rec .ok{color:#2f9e44}.km-rec .bad{color:#c92a2a;font-size:14px}.km-rec .todo{color:#f08c00;font-size:14px}'+
+'.km.board{padding:14px 18px;gap:12px}.km.board .km-say .tx{font-size:44px}.km.board .km-say .who{font-size:26px}.km.board .km-st{font-size:36px}.km.board .km-st small{font-size:26px}.km.board .km-q{font-size:26px}.km.board .km-hands .hd{font-size:44px}'+
+'.km-main{flex:1;display:flex;gap:16px;min-height:0}.km-main .l{flex:1.5;display:flex;flex-direction:column;gap:12px;position:relative;overflow:hidden}.km-main .r{flex:1;display:flex;flex-direction:column;gap:10px;overflow:hidden}.km-mini{overflow:hidden;font-size:15px}.km-mini .km-rec{font-size:15px}'+
+'.km-expl{display:grid;grid-template-columns:1fr 1fr;gap:10px}.km-expl div{background:#fff;border-radius:14px;padding:8px 12px;font-size:24px;border:2px solid #fab005}.km-expl b{display:block;font-size:30px}'+
+'.km-roles{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.km-roles .rc{border-radius:18px;padding:10px;text-align:center;background:#fff;border:4px solid #ccc}.km-roles .rc.r-c{border-color:var(--c)}.km-roles .rc.r-h{border-color:var(--h)}.km-roles .rc.r-w{border-color:var(--w)}.km-roles .rc.r-m{border-color:var(--m)}'+
+'.km-roles .ic{font-size:54px}.km-roles .nm{font-size:34px;font-weight:800}.km-roles .no{font-size:40px;font-weight:800;color:#e8505b}.km-roles .d{font-size:20px;text-align:left}'+
+'.km-teach{font-size:22px;color:#7048e8;background:#f3f0ff;border-radius:12px;padding:6px 12px}.km-teach.big{font-size:34px}.km-end{flex:1;display:flex;gap:16px;min-height:0}.km-end .l{flex:1.2;overflow:auto}.km-end .l .km-rec{font-size:22px}.km-end .r{flex:1;display:flex;flex-direction:column;gap:12px}'+
+'.km-fx{position:absolute;left:50%;transform:translateX(-50%);z-index:5;border-radius:18px;padding:10px 22px;font-weight:800;box-shadow:0 6px 20px #0003;white-space:nowrap}.km-fx.bell{top:30%;font-size:64px;background:#fff3bf;animation:kmShake .3s 6}.km-fx.rem{bottom:4%;font-size:30px;background:#fff4e6;border:3px solid #f08c00}.km-fx.cap{bottom:18%;font-size:30px;background:#ffe3e3;border:3px solid #e8505b}.km-fx.gv{top:20%;font-size:120px;background:none;box-shadow:none;animation:kmGv .5s 3;transform-origin:80% 80%}'+
+'.seat .km-fx{position:static;transform:none;font-size:20px;white-space:normal}.seat .km-fx.bell{font-size:28px}.seat .km-fx.gv{font-size:40px}'+
+'@keyframes kmShake{25%{transform:translateX(-52%) rotate(-4deg)}75%{transform:translateX(-48%) rotate(4deg)}}@keyframes kmGv{50%{transform:translateX(-50%) rotate(-35deg)}}'+
+'.km-rx{position:absolute;inset:0;pointer-events:none;overflow:hidden}.km-rx span{position:absolute;bottom:-60px;font-size:54px;animation:kmUp 3.5s ease-out forwards}.km-rx small{font-size:18px;font-weight:700}.seat .km-rx{display:none}@keyframes kmUp{to{bottom:110%;opacity:0}}'+
+'.km-wait{font-size:28px;margin:auto}';
+var s=document.createElement('style');s.textContent=css;document.head.appendChild(s);})();
 
 var UNITS=[['angleb','角・課本','math'],['angle','角・習作','math'],['areab','面積・課本','math'],['area','面積・習作','math'],['divb','除法・課本','math'],['div','除法・習作','math'],['frac','分數板','math'],['mlb','公升和毫升','math'],['zh7','七 淡水小鎮','zh'],['zh8','八 安平古堡參觀記','zh'],['zh9','九 馬太鞍的巴拉告','zh'],['zh10','十 狐狸的故事','zh'],['zh11','十一 巨人的花園','zh'],['zh12','十二 模仿貓','zh'],['zizao','拆字造字','zh'],['bh','班會闖關','soc'],['socb','班級自治・課本','soc'],['socw','班級自治・習作','soc']];
 var SUBJ=[['zh','國語教室'],['math','數學教室'],['soc','社會教室']];
@@ -4118,6 +4694,7 @@ function newState(id){
   if(t.kind==='zi')return {k:'zi',id:id,cur:Array.from(t.chars)[0],sel:[],pad:{p:[],k:[]},subs:[]};
   if(t.kind==='dv')return dvNew(id);
   if(t.kind==='bh')return {k:'bh',id:id,mid:'',ac:[],lt:0};
+  if(t.kind==='km')return {k:'km',id:id,mid:'',ac:[],lt:0};
   if(t.kind==='bs')return bsNew(id);
   if(t.kind==='vt')return vtNew(id);
   if(t.kind==='rm')return rmNew(id);
@@ -4143,7 +4720,7 @@ function bLen(st,b){if(b&&b.t==='ru')return (b.n||10)*U_WB+2*RU_M;return (b&&b.L
 function wire(st){
   if(st.k==='zi')return ziWire(st);
   if(st.k==='dv')return dvWire(st);
-  if(st.k==='bh'||st.k==='bs'||st.k==='vt'||st.k==='rm'||st.k==='ap'||st.k==='fr'||st.k==='ml')return st;
+  if(st.k==='bh'||st.k==='bs'||st.k==='vt'||st.k==='rm'||st.k==='ap'||st.k==='fr'||st.k==='ml'||st.k==='km')return st;
   if(st.k==='wb'){var w0={k:'wb',id:st.id,ink:st.ink,copies:st.copies,boards:st.boards};if(st.tiles){w0.tiles=st.tiles;w0.sheets=st.sheets;w0.pieces=st.pieces;w0.paint=st.paint;}return w0;}
   var o={k:st.k,id:st.id,i:st.i,n:st.qs.length,q:st.qs[st.i]||null,ans:st.ans,res:st.res,done:st.done};
   if(st.k==='rao')o.board=st.board;else if(st.k==='cmp')o.B=st.B;else{o.paint=st.paint;o.pieces=st.pieces;}
@@ -4200,7 +4777,7 @@ function Scene(svg,opt){
 }
 Scene.prototype.dims=function(){return this.st.k==='wb'?[WB_W,WB_H]:[PR_W,PR_H];};
 Scene.prototype.load=function(st){if(this.anim){this.anim.cancel();this.anim=null;}this.st=st;this.tr=[];this.cut=[];this.justCut=false;this.liftI=-1;this.drawBg();this.drawInk();this.drawDyn();this.view();};
-Scene.prototype.view=function(){if(!this.st||this.st.k==='zi'||this.st.k==='dv'||this.st.k==='bh'||this.st.k==='bs'||this.st.k==='vt'||this.st.k==='rm'||this.st.k==='ap'||this.st.k==='fr'||this.st.k==='ml')return;
+Scene.prototype.view=function(){if(!this.st||this.st.k==='zi'||this.st.k==='dv'||this.st.k==='bh'||this.st.k==='bs'||this.st.k==='vt'||this.st.k==='rm'||this.st.k==='ap'||this.st.k==='fr'||this.st.k==='ml'||this.st.k==='km')return;
   var d=this.dims(),X0=0,Y0=0,W=d[0],H=d[1];
   if(this.st.k==='wb'){var bx=TASK[this.st.id].box;X0=bx[0];Y0=bx[1];W=bx[2];H=bx[3];}
   var x=X0,y=Y0,w=W,hh=H,z=(this.ia&&this.st.zoom)?this.st.zoom:null;
@@ -4715,8 +5292,8 @@ Workspace.prototype.state=function(){return this.states[this.id];};
 Workspace.prototype.setTask=function(id){
   if(!TASK[id])return;this.id=id;var st=this.states[id];
   if(!st||st.k!==TASK[id].kind||(st.k==='wb'&&!st.boards)||(isAreaUnit(TASK[id])&&!st.pieces)){st=this.states[id]=newState(id);}
-  var isZi=st.k==='zi',isDv=st.k==='dv',isBh=st.k==='bh'||st.k==='bs'||st.k==='vt'||st.k==='rm'||st.k==='ap'||st.k==='fr'||st.k==='ml';this.wsEl.hidden=isZi||isDv||isBh;this.ziEl.hidden=!isZi;this.dvEl.hidden=!isDv;this.bhEl.hidden=!isBh;
-  if(isBh){this.ansEl.innerHTML='';this.nextBtn=null;this.ansBtns={};this.numDisp=null;var D=st.k==='bh'?(this.bh||(this.bh=new BhMeet(this.bhEl,this))):st.k==='vt'?(this.vt||(this.vt=new VtDesk(this.bhEl,this))):st.k==='rm'?(this.rm||(this.rm=new RmDesk(this.bhEl,this))):st.k==='ap'?(this.ap||(this.ap=new ApDesk(this.bhEl,this))):st.k==='fr'?(this.fr||(this.fr=new FrDesk(this.bhEl,this))):st.k==='ml'?(this.ml||(this.ml=new MlDesk(this.bhEl,this))):(this.bs||(this.bs=new BhSort(this.bhEl,this)));D.mount();this.onChange(true);return;}
+  var isZi=st.k==='zi',isDv=st.k==='dv',isBh=st.k==='bh'||st.k==='bs'||st.k==='vt'||st.k==='rm'||st.k==='ap'||st.k==='fr'||st.k==='ml'||st.k==='km';this.wsEl.hidden=isZi||isDv||isBh;this.ziEl.hidden=!isZi;this.dvEl.hidden=!isDv;this.bhEl.hidden=!isBh;
+  if(isBh){this.ansEl.innerHTML='';this.nextBtn=null;this.ansBtns={};this.numDisp=null;var D=st.k==='bh'?(this.bh||(this.bh=new BhMeet(this.bhEl,this))):st.k==='vt'?(this.vt||(this.vt=new VtDesk(this.bhEl,this))):st.k==='rm'?(this.rm||(this.rm=new RmDesk(this.bhEl,this))):st.k==='ap'?(this.ap||(this.ap=new ApDesk(this.bhEl,this))):st.k==='fr'?(this.fr||(this.fr=new FrDesk(this.bhEl,this))):st.k==='ml'?(this.ml||(this.ml=new MlDesk(this.bhEl,this))):st.k==='km'?(this.km||(this.km=new KmMeet(this.bhEl,this))):(this.bs||(this.bs=new BhSort(this.bhEl,this)));D.mount();this.onChange(true);return;}
   if(isDv){this.ansEl.innerHTML='';this.nextBtn=null;this.ansBtns={};this.numDisp=null;if(!this.dv)this.dv=new DivDesk(this.dvEl,this);this.dv.load();this.onChange(true);return;}
   if(isZi){this.ansEl.innerHTML='';this.nextBtn=null;this.ansBtns={};this.numDisp=null;if(!this.zi)this.zi=new ZiDesk(this.ziEl,this);this.zi.load(st);this.onChange(true);return;}
   this.scene.mode=(TASK[id].subj==='zh'||TASK[id].ink)?'pen':'move';this.scene.load(st);this.buildTools();this.buildAns();this.syncTools();this.onChange(true);
@@ -4874,6 +5451,7 @@ function summary(st){
   if(!st)return '';
   if(st.k==='dv')return dvSummary(st);
   if(st.k==='bh')return bhSummary(st);
+  if(st.k==='km')return kmSummary(st);
   if(st.k==='bs')return bsSummary(st);
   if(st.k==='vt')return vtSummary(st);
   if(st.k==='rm')return rmSummary(st);
@@ -4997,6 +5575,7 @@ function StudentApp(){
       if(d.t==='rs'){lastHeard=Date.now();rcGot(d);return;}
       if(d.t!=='cmd')return;
       if(d.bh&&typeof d.bh==='object')BH.set(d.bh);
+      if(d.km&&typeof d.km==='object')KM.set(d.km);
       if(!linked())dirty=true;
       lastHeard=Date.now();setNet('ok','已連線老師');
       if(isVtQuiz(d.task)&&typeof d.vr==='string'&&(!states[d.task]||states[d.task].run!==d.vr)){
@@ -5004,7 +5583,7 @@ function StudentApp(){
         if(ws.id===d.task)ws.setTask(d.task);
         dirty=true;lsSet(skey,states);
       }
-      var pk=(seat!==8&&Array.isArray(d.pick))?d.pick.filter(function(x){return TASK[x]&&TASK[x].kind!=='zi'&&TASK[x].kind!=='bh';}):null;if(pk&&!pk.length)pk=null;setPick(pk);
+      var pk=(seat!==8&&Array.isArray(d.pick))?d.pick.filter(function(x){return TASK[x]&&TASK[x].kind!=='zi'&&TASK[x].kind!=='bh'&&TASK[x].kind!=='km';}):null;if(pk&&!pk.length)pk=null;setPick(pk);
       if(d.task&&(!pk||d.tv!==lastTv||pk.indexOf(ws.id)<0))setTask(d.task);lastTv=pk?d.tv:null;
       rcCmd(seat!==8?d.ctl:null);
       if(seat===8)recCmd(d.rec);
@@ -5070,7 +5649,7 @@ function TeacherApp(){
   var freeze=false,view='grid',seats={},modalSeat=null;
   /* 個別頁面：indiv[座號]={p:[可以翻的頁],c:現在這頁,tv:老師改頁的次數} */
   var indiv=lsGet('jiao.t.indiv',{})||{};
-  (function(){for(var k in indiv){var I=indiv[k];var ok=I&&+k>=1&&+k<=7&&Array.isArray(I.p);if(ok){I.p=I.p.filter(function(x){return TASK[x]&&TASK[x].kind!=='zi'&&TASK[x].kind!=='bh';});ok=I.p.length>0;}if(!ok){delete indiv[k];continue;}if(I.p.indexOf(I.c)<0)I.c=I.p[0];I.tv=+I.tv||1;}})();
+  (function(){for(var k in indiv){var I=indiv[k];var ok=I&&+k>=1&&+k<=7&&Array.isArray(I.p);if(ok){I.p=I.p.filter(function(x){return TASK[x]&&TASK[x].kind!=='zi'&&TASK[x].kind!=='bh'&&TASK[x].kind!=='km';});ok=I.p.length>0;}if(!ok){delete indiv[k];continue;}if(I.p.indexOf(I.c)<0)I.c=I.p[0];I.tv=+I.tv||1;}})();
   function saveIndiv(){lsSet('jiao.t.indiv',indiv);}
   function assignedPages(n){return isVtQuiz(task)||n===8?null:indiv[n];}
   function tFor(n){var I=assignedPages(n);return I?I.c:task;}
@@ -5100,7 +5679,7 @@ function TeacherApp(){
       newQuizRun();delete demoStates[id];
       for(var seatNo in seats)seats[seatNo].st=null;
     }
-    task=id;lsSet('jiao.t.task',id);if(Z)Z.setTask(id);if(BT)BT.setTask(id);
+    task=id;lsSet('jiao.t.task',id);if(Z)Z.setTask(id);if(BT)BT.setTask(id);if(KT)KT.setTask(id);
     for(var n in seats)seats[n].light=null;
     syncTaskBtns();syncIndAll();broadcast();demo.setTask(id);renderAllTiles();
   }
@@ -5127,12 +5706,12 @@ function TeacherApp(){
     t.classList.toggle('lg-g',s.light==='g');t.classList.toggle('lg-r',s.light==='r');
     t.querySelector('.gbtn').classList.toggle('on',s.light==='g');t.querySelector('.rbtn').classList.toggle('on',s.light==='r');
     var off=t.querySelector('.off');off.hidden=!!s.st&&on;off.textContent=s.st?'連線中斷':'還沒連線';
-    var isZi=!!s.st&&s.st.k==='zi',isDv=!!s.st&&s.st.k==='dv',isBh=!!s.st&&(s.st.k==='bh'||s.st.k==='bs'||s.st.k==='vt'||s.st.k==='rm'||s.st.k==='ap'||s.st.k==='fr'||s.st.k==='ml');s.tz.hidden=!(isZi||isDv||isBh);s.tz.classList.toggle('dvbox',isDv);s.tz.classList.toggle('bhbox',isBh);s.scene.svg.style.visibility=(isZi||isDv||isBh)?'hidden':'';
+    var isZi=!!s.st&&s.st.k==='zi',isDv=!!s.st&&s.st.k==='dv',isBh=!!s.st&&(s.st.k==='bh'||s.st.k==='bs'||s.st.k==='vt'||s.st.k==='rm'||s.st.k==='ap'||s.st.k==='fr'||s.st.k==='ml'||s.st.k==='km');s.tz.hidden=!(isZi||isDv||isBh);s.tz.classList.toggle('dvbox',isDv);s.tz.classList.toggle('bhbox',isBh);s.scene.svg.style.visibility=(isZi||isDv||isBh)?'hidden':'';
     var I=assignedPages(n),ind=t.querySelector('.ind');t.classList.toggle('indv',!!I);ind.hidden=!I&&!s.ctl;ind.classList.toggle('rc',!!s.ctl);ind.textContent=s.ctl?'老師操作中':I?((I.away?'別的教室・':'個別 ')+I.p.length+' 頁'):'';ind.classList.toggle('away',!!(I&&I.away)&&!s.ctl);t.classList.toggle('away',!!(I&&I.away));
     if(n!==8)t.querySelector('.pbtn2').hidden=isVtQuiz(task);
     var sum='';if(s.st){sum=isZi?Z.summary(n,s.st):summary(s.st);var tg=tFor(n);if(s.st.id!==tg)sum='<span class="warn">還在 '+esc(TASK[s.st.id]?TASK[s.st.id].title:'')+'</span>・'+sum;else if(I)sum='<b>'+esc(TASK[tg].title)+'</b>・'+sum;}
     t.querySelector('.tile-sum').innerHTML=sum;t.querySelector('.dots').innerHTML=dotsHTML(s.st);
-    if(s.dirty&&s.st){if(isZi)ziTile(s.tz,s.st);else if(isDv)dvTile(s.tz,s.st);else if(isBh){if(s.st.k==='bh')bhTile(s.tz,s.st,false,n);else if(s.st.k==='vt')vtTile(s.tz,s.st,false);else if(s.st.k==='rm')rmTile(s.tz,s.st,false);else if(s.st.k==='ap')apTile(s.tz,s.st,false);else if(s.st.k==='fr')frTile(s.tz,s.st,false);else if(s.st.k==='ml')mlTile(s.tz,s.st,false);else bsTile(s.tz,s.st,false);}else try{s.scene.load(s.st);}catch(e){}s.dirty=false;}
+    if(s.dirty&&s.st){if(isZi)ziTile(s.tz,s.st);else if(isDv)dvTile(s.tz,s.st);else if(isBh){if(s.st.k==='bh')bhTile(s.tz,s.st,false,n);else if(s.st.k==='km')kmTile(s.tz,s.st,false,n);else if(s.st.k==='vt')vtTile(s.tz,s.st,false);else if(s.st.k==='rm')rmTile(s.tz,s.st,false);else if(s.st.k==='ap')apTile(s.tz,s.st,false);else if(s.st.k==='fr')frTile(s.tz,s.st,false);else if(s.st.k==='ml')mlTile(s.tz,s.st,false);else bsTile(s.tz,s.st,false);}else try{s.scene.load(s.st);}catch(e){}s.dirty=false;}
   }
   function renderAllTiles(){for(var n in seats)renderTile(+n);}
   /* modal */
@@ -5147,7 +5726,7 @@ function TeacherApp(){
   modal.querySelector('.rcbtn').addEventListener('click',function(){var n=modalSeat;if(n==null)return;if(seats[n].ctl)rcStop(n);else rcStart(n);});
   /* 老師在孩子的畫面上操作 */
   var rws=new Workspace(modal.querySelector('.modal-ws'),{states:{},canRestart:true,onChange:function(){rcDirty=true;}}),rcDirty=false,rcLast=0,rcK=0;
-  function rcStart(n){var s=seats[n];if(n===8||!s.st||s.st.k==='zi'||s.st.k==='bh'||!online(s))return;rcK=Math.max(rcK+1,Date.now()%1e9);s.ctl={k:rcK,id:s.st.id,ok:false};s.rcV=0;s.fsBuf=null;sendCmd(n);renderTile(n);renderModal(true);}
+  function rcStart(n){var s=seats[n];if(n===8||!s.st||s.st.k==='zi'||s.st.k==='bh'||s.st.k==='km'||!online(s))return;rcK=Math.max(rcK+1,Date.now()%1e9);s.ctl={k:rcK,id:s.st.id,ok:false};s.rcV=0;s.fsBuf=null;sendCmd(n);renderTile(n);renderModal(true);}
   function rcLoad(n,full){var s=seats[n];s.ctl.ok=true;s.rcV=0;var o={};o[full.id]=full;rws.states=o;if(modalSeat===n){modal.querySelector('.modal-ws').hidden=false;modal.querySelector('.modal-stage').hidden=true;}rws.setTask(full.id);rws.scene.view();rcDirty=false;s.st=fitWire(full);s.dirty=true;sendCmd(n);renderModal(true);}
   function rcSend(n){var s=seats[n];if(!s.ctl||!s.ctl.ok||!s.pid)return;var full=rws.state();if(!full)return;s.rcV=(s.rcV||0)+1;relayChunks(peer,s.pid,{t:'rs',k:s.ctl.k,v:s.rcV},JSON.stringify(full));s.st=fitWire(full);s.dirty=true;rcLast=Date.now();rcDirty=false;}
   function rcStop(n){var s=seats[n];if(!s.ctl)return;if(s.ctl.ok&&rcDirty)rcSend(n);s.ctl=null;s.fsBuf=null;sendCmd(n);modal.querySelector('.modal-ws').hidden=true;modal.querySelector('.modal-stage').hidden=false;s.mdirty=true;renderTile(n);if(modalSeat===n)renderModal(true);}
@@ -5159,11 +5738,11 @@ function TeacherApp(){
   function openModal(n){if(!seats[n].st)return;if(seats[n].st.k==='zi'){Z.open(n);return;}if(modalSeat!=null&&modalSeat!==n&&seats[modalSeat].ctl)rcStop(modalSeat);modalSeat=n;modal.hidden=false;modal.querySelector('.modal-ws').hidden=!(seats[n].ctl&&seats[n].ctl.ok);modal.querySelector('.modal-stage').hidden=!!(seats[n].ctl&&seats[n].ctl.ok);renderModal(true);}
   var mpKey='';
   function renderModal(full){if(modalSeat==null)return;var n=modalSeat,s=seats[n],I=assignedPages(n),c=s.ctl;modal.querySelector('.mt').textContent=n+' 號 '+(names[n]||'');modal.querySelector('.msum').innerHTML=summary(s.st);modal.querySelector('.gbtn').classList.toggle('on',s.light==='g');modal.querySelector('.rbtn').classList.toggle('on',s.light==='r');
-    var rb=modal.querySelector('.rcbtn');rb.hidden=n===8||!s.st||s.st.k==='zi'||s.st.k==='bh';rb.classList.toggle('on',!!(c&&c.ok));rb.classList.toggle('wait',!!(c&&!c.ok));rb.textContent=!c?'✋ 我來操作':c.ok?'👉 換他自己做':'等 '+n+' 號的畫面傳過來…（按這裡取消）';
+    var rb=modal.querySelector('.rcbtn');rb.hidden=n===8||!s.st||s.st.k==='zi'||s.st.k==='bh'||s.st.k==='km';rb.classList.toggle('on',!!(c&&c.ok));rb.classList.toggle('wait',!!(c&&!c.ok));rb.textContent=!c?'✋ 我來操作':c.ok?'👉 換他自己做':'等 '+n+' 號的畫面傳過來…（按這裡取消）';
     modal.querySelector('.pbtn').hidden=n===8||isVtQuiz(task);
     var mp=modal.querySelector('.mpages'),key=I?I.p.join(',')+'|'+I.c:'';if(key!==mpKey||full){mpKey=key;mp.innerHTML='';mp.hidden=!I;if(I){mp.appendChild(h('span',{class:'pl'},'可以翻的頁（點了就幫他換頁）：'));I.p.forEach(function(id){var b=h('button',{type:'button'},esc(TASK[id].title));b.classList.toggle('on',id===I.c);b.addEventListener('click',function(){rcGoPage(n,id);});mp.appendChild(b);});}}
-    var dvm=!!s.st&&(s.st.k==='dv'||s.st.k==='bh'||s.st.k==='bs'||s.st.k==='vt'||s.st.k==='rm'||s.st.k==='ap'||s.st.k==='fr'||s.st.k==='ml');mdv.hidden=!dvm||!!(c&&c.ok);if(!(c&&c.ok))mstage.hidden=dvm;
-    if(c&&c.ok)return;if(s.st&&(full||s.mdirty)){if(dvm){if(s.st.k==='bh')bhTile(mdv,s.st,true,n);else if(s.st.k==='bs')bsTile(mdv,s.st,true);else if(s.st.k==='vt')vtTile(mdv,s.st,true);else if(s.st.k==='rm')rmTile(mdv,s.st,true);else if(s.st.k==='ap')apTile(mdv,s.st,true);else if(s.st.k==='fr')frTile(mdv,s.st,true);else if(s.st.k==='ml')mlTile(mdv,s.st,true);else dvTile(mdv,s.st,true);}else try{mScene.load(s.st);}catch(e){}s.mdirty=false;}}
+    var dvm=!!s.st&&(s.st.k==='dv'||s.st.k==='bh'||s.st.k==='bs'||s.st.k==='vt'||s.st.k==='rm'||s.st.k==='ap'||s.st.k==='fr'||s.st.k==='ml'||s.st.k==='km');mdv.hidden=!dvm||!!(c&&c.ok);if(!(c&&c.ok))mstage.hidden=dvm;
+    if(c&&c.ok)return;if(s.st&&(full||s.mdirty)){if(dvm){if(s.st.k==='bh')bhTile(mdv,s.st,true,n);else if(s.st.k==='km')kmTile(mdv,s.st,true,n);else if(s.st.k==='bs')bsTile(mdv,s.st,true);else if(s.st.k==='vt')vtTile(mdv,s.st,true);else if(s.st.k==='rm')rmTile(mdv,s.st,true);else if(s.st.k==='ap')apTile(mdv,s.st,true);else if(s.st.k==='fr')frTile(mdv,s.st,true);else if(s.st.k==='ml')mlTile(mdv,s.st,true);else dvTile(mdv,s.st,true);}else try{mScene.load(s.st);}catch(e){}s.mdirty=false;}}
   /* 選頁面：讓孩子各自訂正 */
   var pp=h('div',{class:'pp'});pp.hidden=true;
   pp.innerHTML='<div class="pp-card"><header>選頁面：讓孩子各自訂正</header><div class="pp-body"><div class="pp-row ppseats"></div><div class="pp-row ppsubj"></div><div class="pplist"></div><label class="pp-away"><input type="checkbox" class="ppawayc"> 在別的教室（例如學習教室）：不受「全班看老師」影響，按「全部回到全班」也不會被拉回來</label></div><footer><span class="sp"></span><button class="btn ppoff" type="button">取消個別（回到全班）</button><button class="btn ppcancel" type="button">關閉</button><button class="btn ppok" type="button">設定</button></footer></div>';
@@ -5176,7 +5755,7 @@ function TeacherApp(){
     var sj=pp.querySelector('.ppsubj');sj.innerHTML='<span class="lab">可以翻哪幾頁？照順序點，孩子會先打開第 1 頁，之後自己在這幾頁之間換</span>';
     SUBJ.forEach(function(x){if(!UNITS.some(function(u){return u[2]===x[0]&&u[0]!=='zizao';}))return;var b=h('button',{class:'pp-subj'+(ppSubj===x[0]?' on':''),type:'button'},esc(x[1]));b.addEventListener('click',function(){ppSubj=x[0];renderPP();});sj.appendChild(b);});
     var L=pp.querySelector('.pplist');L.innerHTML='';
-    UNITS.forEach(function(u){if(u[2]!==ppSubj||u[0]==='zizao')return;var ts=TASKS.filter(function(t){return !isVtQuiz(t.id)&&t.kind!=='zi'&&t.kind!=='bh'&&(t.unit||'').split(' ').indexOf(u[0])>=0;});if(!ts.length)return;
+    UNITS.forEach(function(u){if(u[2]!==ppSubj||u[0]==='zizao')return;var ts=TASKS.filter(function(t){return !isVtQuiz(t.id)&&t.kind!=='zi'&&t.kind!=='bh'&&t.kind!=='km'&&(t.unit||'').split(' ').indexOf(u[0])>=0;});if(!ts.length)return;
       L.appendChild(h('div',{class:'pp-unit'},esc(u[1])));var r=h('div',{class:'pp-row'});
       ts.forEach(function(t){var k=ppSel.indexOf(t.id),b=h('button',{class:'pp-pg'+(k>=0?' on':''),type:'button',title:t.sub},(k>=0?'<i>'+(k+1)+'</i>':'')+esc(t.title));b.addEventListener('click',function(){var j=ppSel.indexOf(t.id);if(j>=0)ppSel.splice(j,1);else ppSel.push(t.id);renderPP();});r.appendChild(b);});L.appendChild(r);});
     var ns=Object.keys(ppSeats).length;pp.querySelector('.sp').textContent=!ns?'請先選要給誰':!ppSel.length?'請點要訂正的頁面':('給 '+ns+' 個人・'+ppSel.length+' 頁');pp.querySelector('.ppok').disabled=!ns||!ppSel.length;pp.querySelector('.ppoff').disabled=!Object.keys(ppSeats).some(function(k){return indiv[k];});
@@ -5195,6 +5774,8 @@ function TeacherApp(){
   $('.zibtn').addEventListener('click',function(){Z.open(0);});
   var bhbar=h('div',{});$('.t-main').insertBefore(bhbar,$('.grid'));
   var BT=bhTeacher({bar:bhbar,seats:seats,names:names,online:online,broadcast:function(){broadcast();},render:function(){for(var k in seats){var ss=seats[k];if(ss.st&&ss.st.k==='bh'){ss.dirty=true;ss.mdirty=true;}}renderAllTiles();if(modalSeat!=null)renderModal();}});
+  var kmbar=h('div',{});$('.t-main').insertBefore(kmbar,$('.grid'));
+  var KT=kmTeacher({bar:kmbar,seats:seats,names:names,online:online,broadcast:function(){broadcast();},render:function(){for(var k in seats){var ss=seats[k];if(ss.st&&ss.st.k==='km'){ss.dirty=true;ss.mdirty=true;}}renderAllTiles();if(modalSeat!=null)renderModal();}});
   function setView(v){view=v;$('.grid').hidden=v!=='grid';$('.legend').hidden=v!=='grid';$('.demo').hidden=v!=='demo';$('.vgrid').classList.toggle('on',v==='grid');$('.vdemo').classList.toggle('on',v==='demo');if(v==='demo')demo.scene.view();}
   $('.vgrid').addEventListener('click',function(){setView('grid');});
   $('.vdemo').addEventListener('click',function(){setView('demo');});
@@ -5216,7 +5797,7 @@ function TeacherApp(){
   qrBox.querySelector('.qrsave').addEventListener('click',function(){lsSet('jiao.t.surl',qrBox.querySelector('.qrin').value.trim());showQR();});
   /* network */
   var peer=null,tries=0;
-  function sendCmd(n){var s=seats[n];if(!s.pid)return;var I=assignedPages(n);relay(peer,s.pid,{t:'cmd',rec:n===8?(recId||null):undefined,task:I?I.c:task,vr:isVtQuiz(task)?quizRun:undefined,pick:I?I.p:undefined,tv:I?I.tv:undefined,ctl:s.ctl?{k:s.ctl.k,id:s.ctl.id,ok:s.ctl.ok}:undefined,freeze:(n===8||(I&&I.away))?false:freeze,light:n===8?null:(s.light||null),zi:Z?Z.cmdFor(n):undefined,zr:Z?Z.roundFor(task):null,zw:(n===8&&Z)?Z.wallFor(task):undefined,bh:BT?BT.cmdFor(n,I?I.c:task):undefined});s.zt=Date.now();}
+  function sendCmd(n){var s=seats[n];if(!s.pid)return;var I=assignedPages(n);relay(peer,s.pid,{t:'cmd',rec:n===8?(recId||null):undefined,task:I?I.c:task,vr:isVtQuiz(task)?quizRun:undefined,pick:I?I.p:undefined,tv:I?I.tv:undefined,ctl:s.ctl?{k:s.ctl.k,id:s.ctl.id,ok:s.ctl.ok}:undefined,freeze:(n===8||(I&&I.away))?false:freeze,light:n===8?null:(s.light||null),zi:Z?Z.cmdFor(n):undefined,zr:Z?Z.roundFor(task):null,zw:(n===8&&Z)?Z.wallFor(task):undefined,bh:BT?BT.cmdFor(n,I?I.c:task):undefined,km:KT?KT.cmdFor(n,I?I.c:task):undefined});s.zt=Date.now();}
   function broadcast(){for(var n in seats)sendCmd(+n);}
   function onMsg(m){
     if(!m||!m.src||!m.payload||typeof m.payload.jiao!=='object')return;
@@ -5228,7 +5809,7 @@ function TeacherApp(){
     if(d.t==='fs'&&s.ctl&&!s.ctl.ok&&d.k===s.ctl.k&&d.id===s.ctl.id){var fn=+d.n,fi=+d.i;if(fn>0&&fn<300&&fi>=0&&fi<fn&&typeof d.d==='string'){var fb=s.fsBuf;if(!fb||fb.k!==d.k||fb.id!==d.id||fb.n!==fn)fb=s.fsBuf={k:d.k,id:d.id,n:fn,p:[],got:0};if(fb.p[fi]==null){fb.p[fi]=d.d;fb.got++;}if(fb.got===fb.n){s.fsBuf=null;var full=null;try{full=JSON.parse(fb.p.join(''));}catch(e){}if(full&&full.id===s.ctl.id&&TASK[full.id])rcLoad(n,full);}}}
     if(d.t==='st'&&isVtQuiz(task)&&(!d.st||d.st.id!==task||d.st.run!==quizRun))return;
     if(d.t==='st'&&d.st&&typeof d.st==='object'&&TASK[d.st.id]&&s.ctl&&s.ctl.ok){}
-    else if(d.t==='st'&&d.st&&typeof d.st==='object'&&TASK[d.st.id]){var I=indiv[n];if(I&&d.tv===I.tv&&I.p.indexOf(d.st.id)>=0&&I.c!==d.st.id){I.c=d.st.id;saveIndiv();}s.st=d.st;s.dirty=true;s.mdirty=true;if(d.st.k==='bh'&&BT)BT.merge(n,d.st);if(d.st.k==='zi'&&Date.now()-s.zt>1500&&Z.needs(n,d.st))sendCmd(n);}
+    else if(d.t==='st'&&d.st&&typeof d.st==='object'&&TASK[d.st.id]){var I=indiv[n];if(I&&d.tv===I.tv&&I.p.indexOf(d.st.id)>=0&&I.c!==d.st.id){I.c=d.st.id;saveIndiv();}s.st=d.st;s.dirty=true;s.mdirty=true;if(d.st.k==='bh'&&BT)BT.merge(n,d.st);if(d.st.k==='km'&&KT)KT.merge(n,d.st);if(d.st.k==='zi'&&Date.now()-s.zt>1500&&Z.needs(n,d.st))sendCmd(n);}
     if(d.t==='zsub'&&d.sub&&typeof d.sub==='object'&&TASK[d.task]&&TASK[d.task].kind==='zi'){Z.onSub(n,d.sub,d.task);sendCmd(n);}
   }
   var outQ=[];
@@ -5278,7 +5859,7 @@ function TeacherApp(){
   $('.recbtn').addEventListener('click',function(){if(recR){if(confirm('要停止錄影並存檔嗎？'))recStop();}else recStart();});
   setInterval(function(){if(recR)recLabel();},1000);
   window.addEventListener('beforeunload',function(e){if(recR){e.preventDefault();e.returnValue='';}});
-  syncTaskBtns();syncIndAll();demo.setTask(task);Z.setTask(task);BT.setTask(task);setView('grid');startPeer();
+  syncTaskBtns();syncIndAll();demo.setTask(task);Z.setTask(task);BT.setTask(task);KT.setTask(task);setView('grid');startPeer();
 }
 
 if(ROLE==='teacher')TeacherApp();else StudentApp();
