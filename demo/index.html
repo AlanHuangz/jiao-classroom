@@ -5,78 +5,111 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>線上教室 體驗館</title>
 <style>
-:root{--bg:#eef3f6;--paper:#fff;--ink:#1d2b36;--muted:#61727f;--line:#d5dee5;--brand:#2a6fb0;--brand2:#e8930c;--ok:#1f9d55;--f:"Microsoft JhengHei","PingFang TC","Noto Sans TC",sans-serif}
+:root{--bg:#dfe7ee;--paper:#fff;--ink:#1d2b36;--muted:#61727f;--line:#d5dee5;--brand:#2a6fb0;--brand2:#e8930c;--ok:#1f9d55;--f:"Microsoft JhengHei","PingFang TC","Noto Sans TC",sans-serif}
 *{box-sizing:border-box}
 html,body{height:100%;margin:0}
 body{font-family:var(--f);background:var(--bg);color:var(--ink);display:flex;flex-direction:column;overflow:hidden}
-header{display:flex;align-items:center;gap:10px;padding:8px 14px;background:var(--paper);border-bottom:1px solid var(--line);flex-wrap:wrap}
-header h1{font-size:20px;margin:0 10px 0 0;white-space:nowrap}
-header h1 small{font-size:13px;color:var(--muted);font-weight:400;margin-left:6px}
-.vbtn{font:inherit;font-size:15px;font-weight:700;border:2px solid var(--line);background:#f7fafc;color:var(--ink);border-radius:999px;padding:6px 14px;cursor:pointer}
-.vbtn.on{background:var(--brand);border-color:var(--brand);color:#fff}
-header .sp{flex:1}
-header a.how{font-weight:800;color:#a35f00;text-decoration:none;border:2px solid #f0c06a;background:#fff7e6;border-radius:999px;padding:6px 14px}
+button{font-family:inherit}
+/* ---- 上方：一條細細的工具列 ---- */
+header{display:flex;align-items:center;gap:10px;padding:6px 12px;background:var(--paper);border-bottom:1px solid var(--line);min-height:48px}
+header h1{font-size:17px;margin:0;white-space:nowrap}
+.steps{display:flex;gap:3px;overflow-x:auto;scrollbar-width:none;flex:1;min-width:0;padding:2px}
+.steps::-webkit-scrollbar{display:none}
+.steps button{flex:none;font-size:13px;border:none;background:#eef2f5;color:var(--muted);border-radius:999px;padding:4px 9px;cursor:pointer;white-space:nowrap}
+.steps button.on{background:var(--brand2);color:#fff;font-weight:800}
+.steps button.done{background:#e3f4ea;color:var(--ok)}
+.seg{display:flex;background:#eef2f5;border-radius:999px;padding:3px;flex:none}
+.seg button{font-size:14px;font-weight:700;border:none;background:none;color:var(--muted);border-radius:999px;padding:5px 11px;cursor:pointer;white-space:nowrap}
+.seg button.on{background:#fff;color:var(--brand);box-shadow:0 1px 4px rgba(20,40,60,.2)}
+.seg button[hidden]{display:none}
+header a.how{flex:none;font-size:14px;font-weight:800;color:#a35f00;text-decoration:none;border:2px solid #f0c06a;background:#fff7e6;border-radius:999px;padding:4px 11px;white-space:nowrap}
+/* ---- 主體：左邊窄窄的說明，右邊是體驗區 ---- */
 main{flex:1;display:flex;min-height:0}
-.guide{width:360px;flex:none;background:var(--paper);border-right:1px solid var(--line);display:flex;flex-direction:column;min-height:0}
-.toc{display:flex;gap:4px;padding:10px 12px 0;flex-wrap:wrap}
-.toc button{font:inherit;font-size:13px;border:none;background:#eef2f5;color:var(--muted);border-radius:8px;padding:4px 8px;cursor:pointer}
-.toc button.on{background:#fff3d6;color:var(--ink);font-weight:800;box-shadow:0 0 0 2px #f5b83d inset}
-.toc button.done{color:var(--ok)}
-.card{flex:1;overflow:auto;padding:12px 16px 16px}
-.card .chap{font-size:13px;font-weight:800;color:var(--brand2);letter-spacing:1px}
-.card h2{font-size:21px;margin:4px 0 10px;line-height:1.35}
-.card p{line-height:1.65;margin:0 0 10px;font-size:15.5px}
-.card .who{display:inline-block;font-size:12.5px;font-weight:800;border-radius:6px;padding:1px 8px;margin-bottom:6px}
-.who.s{background:#e3f1ff;color:#1d5c99}.who.t{background:#e9f8ef;color:#17703c}.who.a{background:#f3ecff;color:#6a3fb5}
-.do{background:#f6f9fb;border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin:10px 0}
-.do b.h{display:block;font-size:14px;color:var(--muted);margin-bottom:4px}
-.do ol,.do ul{margin:0;padding-left:20px}.do li{margin:5px 0;line-height:1.55;font-size:15px}
-.note{background:#fff8e6;border-left:4px solid #f0b43c;border-radius:6px;padding:8px 10px;font-size:14.5px;line-height:1.6;margin:10px 0}
-.two{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0}
-.two div{border-radius:12px;padding:8px 10px;font-size:14.5px;line-height:1.5}
-.two .e{background:#e9f8ef}.two .i{background:#e3f1ff}
-.two b{display:block;font-size:15px;margin-bottom:2px}
-.acts{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
-.act{font:inherit;font-size:15px;font-weight:700;border:2px solid var(--brand);color:var(--brand);background:#fff;border-radius:10px;padding:6px 12px;cursor:pointer}
+.guide{width:310px;flex:none;background:var(--paper);border-right:1px solid var(--line);display:flex;flex-direction:column;min-height:0;transition:width .2s}
+.ghead{display:flex;align-items:center;gap:8px;padding:10px 12px 0}
+.ghead .chap{font-size:13px;font-weight:800;color:var(--brand2)}
+.ghead .cnt{font-size:12px;color:var(--muted)}
+.ghead .fold{margin-left:auto;border:none;background:#eef2f5;color:var(--muted);border-radius:8px;padding:4px 8px;font-size:13px;cursor:pointer;white-space:nowrap}
+.card{flex:1;overflow:auto;padding:4px 14px 12px}
+.card h2{font-size:18px;margin:4px 0 6px;line-height:1.35}
+.card .lead{font-size:14.5px;line-height:1.6;margin:0 0 8px;color:#33434f}
+.who{display:inline-block;font-size:12px;font-weight:800;border-radius:6px;padding:1px 8px}
+.who.s{background:#e3f1ff;color:#1d5c99}.who.t{background:#e9f8ef;color:#17703c}
+.do{background:#fff8e6;border:2px solid #f5c95c;border-radius:12px;padding:8px 10px 8px 8px;margin:8px 0}
+.do.look{background:#eef7f1;border-color:#a8dcb9}
+.do b.h{display:block;font-size:13.5px;color:#8a5a00;margin:0 0 2px 4px}
+.do.look b.h{color:#17703c}
+.do ol,.do ul{margin:0;padding-left:22px}.do li{margin:4px 0;line-height:1.5;font-size:14.5px}
+.tip{font-size:13.5px;line-height:1.55;color:#4a5a66;background:#f3f6f8;border-radius:8px;padding:6px 9px;margin:8px 0}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:6px 0}
+.two div{border-radius:10px;padding:6px 8px;font-size:13.5px;line-height:1.45}
+.two .e{background:#e9f8ef}.two .i{background:#e3f1ff}.two b{display:block}
+details.more{margin:8px 0;font-size:13.5px;line-height:1.6;color:#4a5a66}
+details.more summary{cursor:pointer;font-weight:700;color:var(--brand);list-style:none}
+details.more summary::-webkit-details-marker{display:none}
+details.more summary::before{content:'▸ '}details.more[open] summary::before{content:'▾ '}
+details.more p{margin:6px 0}
+.acts{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+.act{font-size:14px;font-weight:700;border:2px solid var(--brand);color:var(--brand);background:#fff;border-radius:10px;padding:5px 10px;cursor:pointer}
 .act:hover{background:#eaf3fb}
-.nav{display:flex;gap:8px;padding:10px 16px;border-top:1px solid var(--line);background:#fafcfd}
-.nav button{font:inherit;font-size:16px;font-weight:800;border-radius:12px;padding:9px 14px;cursor:pointer;border:2px solid var(--line);background:#fff;color:var(--ink)}
+.nav{display:flex;gap:6px;padding:8px 12px;border-top:1px solid var(--line);background:#fafcfd}
+.nav button{font-size:15px;font-weight:800;border-radius:10px;padding:8px 12px;cursor:pointer;border:2px solid var(--line);background:#fff;color:var(--ink)}
 .nav .nx{flex:1;background:var(--brand2);border-color:var(--brand2);color:#fff}
-.nav .nx:disabled{opacity:.45;cursor:default}
-.stage{flex:1;position:relative;min-width:0;display:flex;gap:12px;padding:12px;align-items:flex-start;justify-content:center}
-.fr{position:relative;flex:none;display:flex;flex-direction:column;gap:6px}
+.nav button:disabled{opacity:.45;cursor:default}
+/* 收起來：只剩一條，體驗區更大 */
+.rail{display:none;flex-direction:column;align-items:center;gap:8px;padding:10px 0}
+.rail button{border:none;border-radius:10px;cursor:pointer;font-weight:800}
+.rail .open{background:#eef2f5;color:var(--muted);font-size:13px;padding:8px 6px;writing-mode:vertical-rl;letter-spacing:2px}
+.rail .rn{font-size:13px;color:var(--muted);text-align:center;line-height:1.3}
+.rail .rnx{background:var(--brand2);color:#fff;font-size:18px;width:38px;height:38px}
+.rail .rpv{background:#eef2f5;color:var(--ink);font-size:18px;width:38px;height:38px}
+.rail button:disabled{opacity:.4;cursor:default}
+body.folded .guide{width:56px}
+body.folded .guide>:not(.rail){display:none}
+body.folded .rail{display:flex}
+/* ---- 體驗區 ---- */
+.stage{flex:1;position:relative;min-width:0;display:flex;gap:10px;padding:8px 10px 10px;align-items:flex-start;justify-content:center}
+.fr{position:relative;flex:none;display:flex;flex-direction:column;gap:4px}
 .fr[hidden]{display:none}
-.fr .lab{font-size:14px;font-weight:800;color:var(--muted);display:flex;align-items:center;gap:8px}
-.fr .lab i{font-style:normal;font-size:12px;font-weight:700;border-radius:6px;padding:1px 8px}
-.fr.stu .lab i{background:#e3f1ff;color:#1d5c99}.fr.tea .lab i{background:#e9f8ef;color:#17703c}
-.box{position:relative;overflow:hidden;border-radius:14px;box-shadow:0 2px 10px rgba(20,40,60,.18);background:#fff}
+.fr .lab{font-size:13px;font-weight:800;color:#45555f;display:flex;align-items:center;gap:6px;height:20px}
+.fr .lab i{font-style:normal;font-size:12px;font-weight:700;border-radius:6px;padding:1px 7px;background:#fff}
+.box{position:relative;overflow:hidden;border-radius:12px;box-shadow:0 3px 14px rgba(20,40,60,.22);background:#fff}
 .box iframe{position:absolute;left:0;top:0;width:1280px;height:800px;border:0;transform-origin:0 0}
-.flash{animation:fl 1.2s 2}@keyframes fl{50%{box-shadow:0 0 0 6px rgba(232,147,12,.7)}}
+.flash{animation:fl 1.2s 2}@keyframes fl{50%{box-shadow:0 0 0 6px rgba(232,147,12,.75)}}
 .bots{position:absolute;left:-3000px;top:0;width:1200px;height:700px;border:0}
-.small-warn{display:none;padding:8px 14px;background:#fff3d6;font-size:14px}
-@media (max-width:900px){.small-warn{display:block}.guide{width:300px}}
-@media (max-width:700px){header h1 small{display:none}main{flex-direction:column}.guide{width:auto;max-height:46vh;border-right:none;border-bottom:1px solid var(--line)}}
+@media (max-width:1100px){header h1{display:none}}
+@media (max-width:760px){
+  header{flex-wrap:wrap}.steps{order:3;flex-basis:100%}
+  main{flex-direction:column}
+  .stage{order:1;flex:1}
+  .guide{order:2;width:auto;max-height:44vh;border-right:none;border-top:1px solid var(--line)}
+  body.folded .guide{width:auto;max-height:none}
+  body.folded .rail{flex-direction:row;justify-content:center;padding:6px}
+  .rail .open{writing-mode:horizontal-tb;letter-spacing:0}
+}
 </style>
 </head>
 <body>
 <header>
-  <h1>線上教室 體驗館<small>20 分鐘，當一次學生、也當一次老師</small></h1>
-  <button class="vbtn" data-v="stu" type="button">🧒 學生平板（1 號）</button>
-  <button class="vbtn" data-v="tea" type="button">👩‍🏫 老師畫面</button>
-  <button class="vbtn" data-v="both" type="button">⬌ 並排</button>
-  <span class="sp"></span>
-  <a class="how" href="agent.html" target="_blank" rel="noopener">🤖 這是怎麼做出來的？</a>
+  <h1>🏫 線上教室 體驗館</h1>
+  <nav class="steps" aria-label="體驗步驟"></nav>
+  <div class="seg" role="group" aria-label="切換畫面">
+    <button data-v="stu" type="button">🧒 學生平板</button>
+    <button data-v="tea" type="button">👩‍🏫 老師畫面</button>
+    <button data-v="both" type="button">⬌ 並排</button>
+  </div>
+  <a class="how" href="agent.html" target="_blank" rel="noopener">🤖 怎麼做出來的？</a>
 </header>
-<div class="small-warn">畫面比較小，建議用電腦或大螢幕平板體驗（手機也能看，但會很小）。</div>
 <main>
   <aside class="guide">
-    <div class="toc"></div>
+    <div class="ghead"><span class="chap"></span><span class="cnt"></span><button class="fold" type="button" title="收起說明，讓體驗區變大">收起 ◀</button></div>
     <div class="card"></div>
-    <div class="nav"><button class="pv" type="button">◀ 上一步</button><button class="nx" type="button">下一步 ▶</button></div>
+    <div class="nav"><button class="pv" type="button">◀</button><button class="nx" type="button">下一步 ▶</button></div>
+    <div class="rail"><button class="open" type="button" title="打開說明">說明 ▶</button><div class="rn"></div><button class="rpv" type="button" title="上一步">◀</button><button class="rnx" type="button" title="下一步">▶</button></div>
   </aside>
   <section class="stage">
-    <div class="fr stu"><div class="lab">🧒 學生平板 <i>你是 1 號</i></div><div class="box"><iframe title="學生平板" id="fs"></iframe></div></div>
-    <div class="fr tea"><div class="lab">👩‍🏫 老師畫面 <i>全班 7 人，即時更新</i></div><div class="box"><iframe title="老師畫面" id="ft"></iframe></div></div>
+    <div class="fr stu"><div class="lab">🧒 學生平板 <i>你是 1 號</i></div><div class="box"><iframe title="學生平板" id="fs" allow="fullscreen"></iframe></div></div>
+    <div class="fr tea"><div class="lab">👩‍🏫 老師畫面 <i>全班 7 人，即時更新</i></div><div class="box"><iframe title="老師畫面" id="ft" allow="fullscreen"></iframe></div></div>
   </section>
 </main>
 <iframe class="bots" id="fb" title="模擬同學" aria-hidden="true" tabindex="-1"></iframe>
@@ -90,94 +123,132 @@ main{flex:1;display:flex;min-height:0}
   setTimeout(function(){fb.src='app.html?role=bots&room='+room;fs.src='app.html?role=student&room='+room+'#2468-1';},700);
   var VW=1280,VH=800,view='stu';
   function fit(){
-    var st=document.querySelector('.stage'),W=st.clientWidth-24,H=st.clientHeight-24-26;
+    var st=document.querySelector('.stage'),W=st.clientWidth-20,H=st.clientHeight-18-24;
     var show=view==='both'?['stu','tea']:[view],sc,stack=false;
-    if(view==='both'){var a=Math.min((W-12)/2/VW,H/VH),b=Math.min(W/VW,(H+26-2*36-14)/2/VH);stack=b>a||window.innerWidth<700;sc=stack?b:a;}else sc=Math.min(W/VW,H/VH);
+    if(view==='both'){var a=Math.min((W-10)/2/VW,H/VH),b=Math.min(W/VW,(H-24-10)/2/VH);stack=b>a;sc=stack?b:a;}else sc=Math.min(W/VW,H/VH);
+    sc=Math.max(.1,sc);
     st.style.flexDirection=stack?'column':'row';st.style.alignItems=stack?'center':'flex-start';
     ['stu','tea'].forEach(function(k){var fr=document.querySelector('.fr.'+k),on=show.indexOf(k)>=0;fr.hidden=!on;if(!on)return;
       var box=fr.querySelector('.box');box.style.width=Math.floor(VW*sc)+'px';box.style.height=Math.floor(VH*sc)+'px';fr.querySelector('iframe').style.transform='scale('+sc+')';});
-    document.querySelectorAll('.vbtn').forEach(function(b){b.classList.toggle('on',b.dataset.v===view);});
+    document.querySelectorAll('.seg button').forEach(function(b){b.classList.toggle('on',b.dataset.v===view);});
   }
   function setView(v){view=v;fit();}
   window.addEventListener('resize',fit);
-  document.querySelectorAll('.vbtn').forEach(function(b){b.addEventListener('click',function(){setView(b.dataset.v);});});
+  document.querySelectorAll('.seg button').forEach(function(b){b.addEventListener('click',function(){setView(b.dataset.v);});});
+  /* 說明收起來／打開 */
+  function fold(on){document.body.classList.toggle('folded',on);setTimeout(fit,0);setTimeout(fit,260);}
+  document.querySelector('.fold').addEventListener('click',function(){fold(true);});
+  document.querySelector('.rail .open').addEventListener('click',function(){fold(false);});
   /* 操作老師畫面 */
   function T(){try{return ft.contentDocument;}catch(e){return null;}}
   function assign(id){var d=T();var b=d&&d.querySelector('.task-btn[data-id="'+id+'"]');if(b)b.click();}
-  function openSeat(n){var d=T();if(!d)return;var mc=d.querySelector('.modal .mx, .modal .close');var tl=d.querySelectorAll('.grid .tile')[n-1];if(tl){var s=tl.querySelector('.tile-stage');if(s)s.click();}}
+  function openSeat(n){var d=T();if(!d)return;var tl=d.querySelectorAll('.grid .tile')[n-1];if(tl){var s=tl.querySelector('.tile-stage');if(s)s.click();}}
   function closeModal(){var d=T();if(!d)return;var m=d.querySelector('.modal');if(m&&!m.hidden){var x=m.querySelector('.mclose,.close,[data-close]');if(x)x.click();else m.hidden=true;}}
   function flash(k){var b=document.querySelector('.fr.'+k+' .box');if(!b)return;b.classList.remove('flash');void b.offsetWidth;b.classList.add('flash');}
+  /* 冰塊動畫：整個學生平板放到全螢幕 */
+  function fullStu(){setView('stu');fold(true);var el=document.documentElement;try{var r=(el.requestFullscreen||el.webkitRequestFullscreen).call(el);if(r&&r.catch)r.catch(function(){});}catch(e){}}
+  document.addEventListener('fullscreenchange',function(){setTimeout(fit,50);});
   var S=[
-    {chap:'開始',title:'歡迎來到 7 個人的小教室',view:'both',html:
-      '<p>這是一間 <b>7 個人的小班</b>。你是 <b>1 號學生</b>，2～7 號是電腦<b>模擬的同學</b>：有人很快、有人常常錯、有人會卡住，就像真的教室。</p>'+
-      '<p>右邊的老師畫面，是<b>真正上課用的老師版</b>。每個孩子在平板上的每一個動作，都會即時出現在老師的格子裡。</p>'+
-      '<div class="do"><b class="h">這次體驗四站</b><ul><li>📐 角度：把角描下來、疊上去比大小</li><li>🟦 面積：把半格拼成一平方公分，再數一數</li><li>🍰 除法：「8 ÷ 2」是平分給 2 人，還是每人 2 片？</li><li>🍕 分數：自己平分、塗色，把兩條分數條排在一起比大小</li></ul></div>'+
-      '<p>每一站都是：<span class="who s">先當學生</span> → <span class="who t">再換老師看全班</span>。左邊這個框會一步一步帶你做。</p>'+
-      '<div class="note">上方三個按鈕可以隨時切換：只看學生平板、只看老師畫面、或兩個並排。</div>'},
-    {chap:'📐 角度',who:'s',title:'描角比大小：邊長越長，角就越大嗎？',view:'stu',go:function(){assign('xa1');},html:
-      '<p>甲的邊很長，乙的邊很短。很多孩子會說「甲比較大，因為邊比較長」。</p><p>在這裡，孩子不用量角器，而是自己把角<b>「複製」下來，疊上去比</b>。</p>'+
-      '<div class="do"><b class="h">做做看（在學生平板上）</b><ol><li>左邊工具按<b>「描角」</b>。</li><li>依序點三下：<b>乙的頂點</b> → 乙<b>一條邊</b>上的一點 → <b>另一條邊</b>上的一點。乙就被描成一張彩色的「描圖紙」。</li><li>拖著描好的角，把<b>頂點放到甲的頂點</b>上；拉旁邊的 <b>↻</b> 轉一轉，讓一條邊和甲的邊疊在一起（靠近會自動吸過去）。</li><li>乙的另一條邊在甲的外面還是裡面？用<b>「畫筆」</b>圈出答案。</li></ol></div>',
+    {chap:'開始',title:'歡迎來到 7 個人的小教室',view:'both',
+      lead:'你是 <b>1 號學生</b>，2～7 號是電腦<b>模擬的同學</b>。另一邊是<b>真正上課用的老師版</b>：每個孩子的每一個動作，都即時出現在老師的格子裡。',
+      look:['📐 角度：把角描下來、疊上去比大小','🟦 面積：把半格拼成一平方公分','🍰 除法：8 ÷ 2 是平分給 2 人，還是每人 2 片？','🍕 分數：自己平分、塗色、排在一起比','🥛 容量：倒水看刻度，把 1 公升冰塊切到 1 毫升'],lookH:'這次體驗五站',
+      tip:'每一站都是<span class="who s">先當學生</span> → <span class="who t">再換老師看全班</span>。上方可以切換畫面；左邊的說明按「收起」，體驗區會變大。',
+      more:'<p>模擬同學各有個性：2 號小安又快又準、3 號阿哲常有迷思、4 號米米很慢、5 號小葵會卡住、6 號阿寶很粗心、7 號彤彤普通。名字都是虛構的。</p>'},
+    {chap:'📐 角度',who:'s',title:'描角比大小：邊越長，角就越大嗎？',view:'stu',go:function(){assign('xa1');},
+      lead:'甲的邊很長、乙的邊很短。孩子不用量角器，而是把角<b>描下來、疊上去比</b>。',
+      steps:['左邊工具按<b>「描角」</b>。','依序點三下：<b>乙的頂點</b> → 一條邊上的一點 → 另一條邊上的一點。','拖著描好的角，把<b>頂點放到甲的頂點</b>上；拉 <b>↻</b> 轉一轉，讓一條邊疊在甲的邊上。','乙的另一條邊在甲的外面還是裡面？用<b>「畫筆」</b>圈出答案。'],
+      more:'<p>很多孩子會說「甲比較大，因為邊比較長」。自己描、自己疊，孩子會親眼看到：角的大小跟邊的長短無關。</p>',
       acts:[['再派一次這個活動',function(){assign('xa1');setView('stu');}]]},
-    {chap:'📐 角度',who:'t',title:'換老師看：每個孩子怎麼比，一目了然',view:'tea',html:
-      '<p>這是老師的畫面。<b>每一格就是一個孩子的平板</b>，他描了什麼、疊在哪、圈了哪個，都即時出現。</p>'+
-      '<div class="do"><b class="h">找找看</b><ul><li>誰真的把角<b>描下來、疊上去</b>了？</li><li>誰<b>沒有描</b>，直接用看的就圈答案？</li><li>誰<b>疊歪了</b>，還圈了「甲」？（這就是「邊長越長角越大」的迷思）</li></ul></div>'+
-      '<div class="do"><b class="h">老師可以這樣做</b><ol><li><b>點任何一格</b>，放大看他的畫面。</li><li>放大後按<b>「✋ 我來操作」</b>：你就能直接在那個孩子的平板上示範，他的畫面會鎖住、跟著你動。按「👉 換他自己做」還給他。</li><li>格子上的<b>綠燈／紅燈</b>：給孩子一個訊號（例如紅燈＝老師待會過去）。</li></ol></div>',
+    {chap:'📐 角度',who:'t',title:'換老師看：每個孩子怎麼比，一目了然',view:'tea',
+      lead:'<b>每一格就是一個孩子的平板</b>：他描了什麼、疊在哪裡、圈了哪個，都即時出現。',
+      look:['誰真的把角<b>描下來、疊上去</b>了？','誰<b>沒有描</b>，直接用看的就圈答案？','誰<b>疊歪了</b>，還圈了「甲」？'],
+      steps:['<b>點任何一格</b>，放大看那個孩子的畫面。','放大後按<b>「✋ 我來操作」</b>：直接在他的平板上示範；按「👉 換他自己做」還給他。','格子上的<b>綠燈／紅燈</b>：給孩子一個訊號。'],stepsH:'老師可以這樣做',
       acts:[['放大看 3 號阿哲',function(){setView('tea');openSeat(3);flash('tea');}],['放大看 6 號阿寶',function(){setView('tea');openSeat(6);flash('tea');}]]},
-    {chap:'📐 角度',who:'s',title:'自動批改：是真的會，還是猜對的？',view:'both',go:function(){closeModal();assign('cmp');},html:
-      '<p>第二個活動「哪個角比較大」一共 12 題，<b>系統自動對答</b>。孩子要把「乙」拖到「甲」上、轉到邊對齊，再按答案。</p>'+
-      '<div class="do"><b class="h">做做看</b><ol><li>在學生平板上，拖「乙」到「甲」的頂點，按「↺ 轉／轉 ↻」或拉把手讓邊對齊。</li><li>按「甲比較大／一樣大／乙比較大」。做兩三題就好。</li><li>看右邊老師畫面上<b>你自己的那一格（1 號）</b>。</li></ol></div>'+
-      '<div class="note">老師格子下面的小圓點：<b style="color:#1f9d55">綠＝答對</b>、<b style="color:#c0392b">紅＝答錯</b>；<b>空心＝沒有先對齊就作答</b>。同樣是答對，實心是真的比過、空心是猜的——紙本考卷看不出來，這裡一眼就知道。</div>'},
-    {chap:'🟦 面積',who:'s',title:'補成一格：把兩個半格拼成一平方公分',view:'stu',go:function(){closeModal();assign('apair');},html:
-      '<p>面積單元最難的是「<b>半格</b>」。孩子常常把半格當成一格數，或乾脆不算。</p>'+
-      '<p>這裡的半格三角形已經切好，孩子要<b>動手把兩個半格拼成完整的一平方公分</b>，再數一共幾平方公分。</p>'+
-      '<div class="do"><b class="h">做做看</b><ol><li>按住一片三角形<b>拖動</b>；選到它之後可以按<b>「轉 90°」「翻面」</b>。</li><li>把兩個半格拼在同一格裡，變成完整的一格（靠近會自動對齊）。</li><li>上方會顯示「拼好幾格」；都拼好了，再按數字回答一共幾平方公分。</li></ol></div>'},
-    {chap:'🟦 面積',who:'t',title:'數格子：塗一塗、剪一剪，過程都看得到',view:'both',go:function(){assign('acnt');},html:
-      '<p>第二個活動「數格子算面積」，孩子可以<b>一格一格塗色</b>數，也可以用<b>剪刀</b>把凸出來的部分剪下來，移到缺口拼成整格。</p>'+
-      '<div class="do"><b class="h">看老師畫面</b><ul><li>每一格上面寫著孩子<b>塗了幾格、剪了幾片</b>：誰在認真數、誰沒數就直接猜，馬上分得出來。</li><li>有同學把<b>半格當成一整格</b>數，答案就會多出來——這正是老師要走過去的時候。</li></ul></div>'+
-      '<div class="note">你也可以在學生平板上做幾題：左邊按「塗格子」在格子上點一點或拖一拖。</div>'},
-    {chap:'🍰 除法',who:'s',title:'同樣是 8 ÷ 2，意思不一樣',view:'stu',go:function(){closeModal();assign('xdv');},html:
-      '<p>算式一模一樣，孩子卻常常分不清題目在說哪一種：</p>'+
-      '<div class="two"><div class="e"><b>第 1 題・等分除</b>8 片蛋糕，<b>平分給 2 個人</b>，一個人幾片？<br>→「2」是<b>分成 2 份</b></div><div class="i"><b>第 2 題・包含除</b>8 片蛋糕，<b>每人 2 片</b>，可以分給幾人？<br>→「2」是<b>每份 2 片</b></div></div>'+
-      '<div class="do"><b class="h">做做看（兩題都做）</b><ol><li>先<b>判斷</b>：題目裡的「2」是什麼？選錯了系統不會直接給答案，而是請你再讀一次題目。</li><li>判斷對了，才能<b>自己拿盤子分</b>：要幾個盤子、每盤放幾片，都是自己決定，系統不幫你擺好。</li><li>最後寫算式、選單位。<b>圖和算式都對才算對</b>；錯了，後面會自動多加一題同類型的。</li></ol></div>'},
-    {chap:'🍰 除法',who:'t',title:'老師看到的是「想法」，不只是答案',view:'tea',html:
-      '<p>老師格子會顯示孩子<b>正在判斷題意</b>、<b>選錯了幾次</b>，也看得到他的盤子是怎麼分的。</p>'+
-      '<div class="do"><b class="h">找找看</b><ul><li>誰把「平分給 2 人」和「每人 2 片」搞混了？（格子上會寫「判斷題意中・選錯 1 次」）</li><li>誰判斷對了，但盤子分錯了？</li><li>誰一直停在同一題沒有動？（5 號小葵會卡住——在真的教室裡，這種孩子最容易被忽略）</li></ul></div>'+
-      '<div class="do"><b class="h">試試看老師的按鈕</b><ul><li>上方按<b>「全班看老師」</b>：所有孩子的平板會停住、顯示「請看老師」，模擬同學也會停下來。再按一次解除。</li><li>點一格放大 → 按<b>「✋ 我來操作」</b>，直接在孩子的盤子上示範怎麼分。</li></ul></div>',
+    {chap:'📐 角度',who:'s',title:'自動批改：是真的會，還是猜對的？',view:'both',go:function(){closeModal();assign('cmp');},
+      lead:'「哪個角比較大」12 題，<b>系統自動對答</b>。孩子要先把乙疊到甲上、對齊，再作答。',
+      steps:['拖「乙」到「甲」的頂點，按「↺ 轉／轉 ↻」讓邊對齊。','按「甲比較大／一樣大／乙比較大」，做兩三題。','看老師畫面上<b>你自己那一格（1 號）</b>。'],
+      tip:'格子下面的小圓點：<b style="color:#1f9d55">綠＝對</b>、<b style="color:#c0392b">紅＝錯</b>，<b>空心＝沒對齊就作答</b>。同樣答對，空心的是猜的，紙本考卷看不出來。'},
+    {chap:'🟦 面積',who:'s',title:'補成一格：兩個半格拼成一平方公分',view:'stu',go:function(){closeModal();assign('apair');},
+      lead:'孩子常把半格當成一格數，或乾脆不算。這裡要<b>動手把兩個半格拼成一格</b>，再數一共幾平方公分。',
+      steps:['按住一片三角形<b>拖動</b>；選到它以後可以<b>「轉 90°」「翻面」</b>。','把兩個半格拼在同一格裡（靠近會自動對齊）。','上方會顯示「拼好幾格」；都拼好了，再按數字回答。']},
+    {chap:'🟦 面積',who:'t',title:'數格子：塗一塗、剪一剪，過程都看得到',view:'both',go:function(){assign('acnt');},
+      lead:'孩子可以<b>一格一格塗色</b>數，也可以用<b>剪刀</b>把凸出來的部分移到缺口拼成整格。',
+      look:['每一格寫著孩子<b>塗了幾格、剪了幾片</b>：誰在數、誰在猜，馬上分得出來。','有人把<b>半格當成一整格</b>數，答案就會多出來，這時候老師就該過去看看。'],
+      tip:'你也可以在學生平板上做幾題：左邊按「塗格子」，在格子上點一點或拖一拖。'},
+    {chap:'🍰 除法',who:'s',title:'同樣是 8 ÷ 2，意思不一樣',view:'stu',go:function(){closeModal();assign('xdv');},
+      lead:'<div class="two"><div class="e"><b>第 1 題・等分除</b>8 片蛋糕<b>平分給 2 人</b>，一人幾片？</div><div class="i"><b>第 2 題・包含除</b>8 片蛋糕<b>每人 2 片</b>，可分給幾人？</div></div>',
+      steps:['先<b>判斷</b>題目裡的「2」是什麼。選錯了不會給答案，而是請你再讀一次題目。','判斷對了，才能<b>自己拿盤子分</b>：要幾個盤子、每盤幾片，都自己決定。','寫算式、選單位。<b>圖和算式都對才算對</b>；錯了會自動多一題同類型的。']},
+    {chap:'🍰 除法',who:'t',title:'老師看到的是「想法」，不只是答案',view:'tea',
+      lead:'格子會顯示孩子<b>正在判斷題意</b>、<b>選錯幾次</b>，也看得到他的盤子怎麼分。',
+      look:['誰把「平分給 2 人」和「每人 2 片」搞混了？（格子上寫「選錯 1 次」）','誰判斷對了，但盤子分錯了？','誰一直停在同一題沒動？（5 號小葵會卡住）'],
+      steps:['上方按<b>「全班看老師」</b>：所有平板停住、顯示「請看老師」。再按一次解除。','點一格放大 → <b>「✋ 我來操作」</b>，在孩子的盤子上示範。'],stepsH:'試試看老師的按鈕',
       acts:[['放大看 5 號小葵',function(){setView('tea');openSeat(5);flash('tea');}],['放大看 3 號阿哲',function(){setView('tea');openSeat(3);flash('tea');}]]},
-    {chap:'🍕 分數',who:'s',title:'分數板：自己平分、自己塗，排在一起比',view:'stu',go:function(){closeModal();assign('fr2');},html:
-      '<p>分數最難的是「<b>平分</b>」和「<b>比大小</b>」。孩子常以為 1/5 比 1/3 大，因為「5 比 3 大」。</p>'+
-      '<p>這個分數板參考了國外很受歡迎的 Polypad 分數條：每一條都是「1 整條」，孩子<b>自己決定平分成幾塊、自己塗</b>，兩條上下對齊，誰長誰短一看就知道。</p>'+
-      '<div class="do"><b class="h">做做看（在學生平板上）</b><ol><li>甲、乙各按 <b>「＋」</b>，平分成題目說的塊數（每一塊都一樣大，上面會寫 1/幾）。</li><li><b>點一塊就塗色</b>，塗出題目的分數；再點一次可以擦掉。</li><li>看看兩條塗色的部分誰比較長，按「甲 比較多／一樣多／乙 比較多」。</li></ol></div>'+
-      '<div class="note">另外兩個活動：<b>「幾分之幾」</b>（平分、塗色、寫分數，也有蛋糕、披薩的圓形）和<b>「合起來、吃掉」</b>（同分母加減，用兩種顏色＋「吃掉」）。圖和寫的分數都要對才算對。</div>',
+    {chap:'🍕 分數',who:'s',title:'分數板：自己平分、自己塗，排在一起比',view:'stu',go:function(){closeModal();assign('fr2');},
+      lead:'孩子常以為 1/5 比 1/3 大，因為「5 比 3 大」。每一條都是「1 整條」，<b>自己平分、自己塗</b>，上下對齊一看就知道。',
+      steps:['甲、乙各按 <b>「＋」</b>，平分成題目說的塊數。','<b>點一塊就塗色</b>，塗出題目的分數；再點一次可以擦掉。','比比看誰塗的比較長，按「甲 比較多／一樣多／乙 比較多」。'],
+      more:'<p>參考國外很受歡迎的 Polypad 分數條。另外兩個活動：「幾分之幾」（也有蛋糕、披薩的圓形）和「合起來、吃掉」（同分母加減）。圖和分數都要對才算對。</p>',
       acts:[['換成「幾分之幾」',function(){assign('fr1');setView('stu');}],['換成「合起來、吃掉」',function(){assign('fr3');setView('stu');}]]},
-    {chap:'🍕 分數',who:'t',title:'圖是對的，答案卻錯了——老師一眼就看到',view:'tea',html:
-      '<p>老師的格子會畫出每個孩子的分數板：切成幾塊、塗了幾塊、寫了什麼。</p>'+
-      '<div class="do"><b class="h">找找看</b><ul><li><b>3 號阿哲</b>：遇到「1/幾」比大小時，兩條都排對了，卻說分母大的比較多（例如說 1/5 比 1/3 多）——他的圖和他的想法打架了，這是最好的教學時機。格子上會出現「錯 1 次」。</li><li>派「幾分之幾」時，阿哲會把分母寫成「沒塗的塊數」（部分比部分的迷思）。</li><li>派「合起來、吃掉」時，<b>6 號阿寶</b>會寫 2/8 ＋ 3/8 ＝ 5/16（把分母也加起來）。</li></ul></div>'+
-      '<div class="note">點一格放大，按「✋ 我來操作」，就能在孩子自己的分數板上示範：「每一塊合起來以後，還是一樣大嗎？」</div>',
-      acts:[['放大看 3 號阿哲',function(){setView('tea');openSeat(3);flash('tea');}],['派「合起來、吃掉」給全班',function(){closeModal();assign('fr3');setView('tea');}],['放大看 6 號阿寶',function(){setView('tea');openSeat(6);flash('tea');}]]},
-    {chap:'總整理',title:'這間教室，老師多了哪些「眼睛」和「手」？',view:'both',go:function(){closeModal();},html:
-      '<div class="do"><b class="h">👀 看得到</b><ul><li>全班每個孩子的操作過程，<b>即時</b>出現在一個畫面上</li><li>誰是真的會、誰是猜對的（空心小圓點）</li><li>誰卡在「判斷題意」、誰一直沒動</li></ul></div>'+
-      '<div class="do"><b class="h">✋ 幫得到</b><ul><li>點開放大、直接在孩子的平板上示範</li><li>紅綠燈、全班看老師</li><li>錯了自動加練同類型的題目，不能混過去</li></ul></div>'+
-      '<div class="do"><b class="h">🏫 真的上課時還有</b><ul><li>課本、習作一題一題切好，孩子在平板上直接寫</li><li>個別派頁：不同孩子做不同的題目</li><li>國語拆字造字、社會課班會闖關、錄影回放</li></ul></div>'+
-      '<div class="note">真的上課時：老師開一台筆電，孩子用 Chromebook 輸入班級代碼連進來，投影機接 8 號。不用安裝任何東西。</div>'+
-      '<p>最後一個問題：<b>這整套教室，是一位國小老師跟 AI 一起做出來的。</b>老師沒有寫一行程式。</p>',
+    {chap:'🍕 分數',who:'t',title:'圖是對的，答案卻錯了',view:'tea',
+      lead:'老師的格子會畫出每個孩子的分數板：切成幾塊、塗了幾塊、寫了什麼。',
+      look:['<b>3 號阿哲</b>：兩條都排對了，卻說 1/5 比 1/3 多。他的圖說的是一回事，答案又是另一回事，正好可以從這裡教。','派「幾分之幾」時，阿哲會把分母寫成「沒塗的塊數」。','派「合起來、吃掉」時，<b>6 號阿寶</b>會寫 2/8 ＋ 3/8 ＝ 5/16。'],
+      tip:'點一格放大，按「✋ 我來操作」，在孩子自己的分數板上問：「合起來以後，每一塊還是一樣大嗎？」',
+      acts:[['放大看 3 號阿哲',function(){setView('tea');openSeat(3);flash('tea');}],['派「合起來、吃掉」',function(){closeModal();assign('fr3');setView('tea');}],['放大看 6 號阿寶',function(){setView('tea');openSeat(6);flash('tea');}]]},
+    {chap:'🥛 容量',who:'s',title:'倒水實驗室：按住就倒，放開就停',view:'stu',go:function(){closeModal();assign('ml1');},
+      lead:'量杯最難的是刻度：<b>1 小格不一定是 1 毫升</b>。孩子要自己把飲料倒進量杯，再看刻度寫出幾毫升。',
+      steps:['按住<b>「💧 按住倒水」</b>：瓶子傾斜、水柱流下，量杯水面慢慢升高；放開就停。','整瓶都倒完以後，按<b>「🔍 放大看刻度」</b>看清楚水面。','用數字鍵寫出幾毫升，按<b>「檢查」</b>。'],
+      tip:'先用 10 毫升量杯（1 小格 1 毫升），再換奶瓶（1 小格 10 毫升）、500 和 1000 毫升的量杯。錯了，後面會多加一題同類型的。',
+      more:'<p>課本 p.112–116 的「公升和毫升」。真的量杯一個班只有幾個，水還會灑出來；這裡每個孩子都能自己倒、倒回去、一小格一小格倒。</p><p>另外兩個活動：「倒倒看」要倒出剛好幾毫升；「比比看」是一高一矮兩瓶飲料，倒進量杯才知道誰裝得多。</p>',
+      acts:[['換成「倒倒看」',function(){assign('ml2');setView('stu');}],['換成「比比看」',function(){assign('ml3');setView('stu');}]]},
+    {chap:'🥛 容量',who:'t',title:'誰把每 1 小格都當成 1 毫升？',view:'tea',
+      lead:'格子上畫著每個孩子的量杯：倒了多少、寫了幾毫升、錯了幾次。',
+      look:['<b>3 號阿哲</b>：換到 1 小格 10 毫升的量杯，還是一格一格當 1 毫升數。','派「倒倒看」：<b>6 號阿寶</b>常常倒太多，系統會叫他「倒回一小格」。','派「比比看」：阿哲覺得<b>瓶子比較高，就裝得比較多</b>。'],
+      tip:'點一格放大，按「✋ 我來操作」，直接在他的量杯上示範：先找有數字的刻度，再數多了幾小格。',
+      acts:[['放大看 3 號阿哲',function(){setView('tea');openSeat(3);flash('tea');}],['派「倒倒看」給全班',function(){closeModal();assign('ml2');setView('tea');}],['派「比比看」給全班',function(){closeModal();assign('ml3');setView('tea');}]]},
+    {chap:'🧊 容量',who:'s',title:'1 公升有多大？把冰塊切到 1 毫升',view:'stu',go:function(){closeModal();assign('ml4');},
+      lead:'一個每邊 10 公分的正方體盒子，裝滿水剛好 <b>1 公升</b>。結冰以後倒出來，一刀一刀切，最後找到 <b>1 毫升</b>有多小。',
+      steps:['按畫面下方藍色的<b>「▶ 開始」</b>。每一段播完會停下來，再按一次藍色按鈕播下一段，一共 10 段。','<b>用滑鼠拖曳</b>可以轉動冰塊，從旁邊、從上面看。','也可以按「自動播放」。想看大一點，按左下的「⛶ 全螢幕看」（按 Esc 回來）。'],
+      tip:'這不是錄好的影片，是程式即時畫出來的 3D 動畫：孩子可以自己停、轉來轉去、倒回去再看一次。老師的格子會顯示每個人看到第幾段。',
+      more:'<p>十段：正方體盒子 → 倒進 1 公升的水 → 結冰 → 倒出冰塊 → 從側邊切成 10 層 → 拿最上面一層從上往下看 → 切成 10 × 10 → 拉出一小塊 → 放大看 → 1 公升裡有幾個 1 毫升？</p><p>上課時通常投影出來全班一起看，再派給每個孩子自己轉著看。</p>',
+      acts:[['⛶ 全螢幕看',fullStu],['看全班看到第幾段',function(){setView('tea');flash('tea');}]]},
+    {chap:'總整理',title:'老師多了哪些「眼睛」和「手」？',view:'both',go:function(){closeModal();},
+      look:['全班每個孩子的操作過程，<b>即時</b>出現在一個畫面上','誰是真的會、誰是猜對的（空心小圓點）','誰卡在「判斷題意」、誰一直沒動'],lookH:'👀 看得到',
+      steps:['點開放大、直接在孩子的平板上示範','紅綠燈、全班看老師','錯了自動加練同類型的題目'],stepsH:'✋ 幫得到',
+      tip:'真的上課時：老師開一台筆電，孩子用 Chromebook 輸入班級代碼連進來，投影機接 8 號，不用安裝任何東西。課本、習作也一題一題切好，孩子在平板上直接寫。',
+      lead:'這整套教室，是<b>一位國小老師跟 AI 一起做出來的</b>。老師沒有寫一行程式。',
       acts:[['🤖 看看是怎麼做出來的',function(){window.open('agent.html','_blank');}],['從頭再玩一次',function(){location.reload();}]]}
   ];
   var cur=0,seen={};
-  var toc=document.querySelector('.toc'),card=document.querySelector('.card');
-  S.forEach(function(s,i){var b=document.createElement('button');b.type='button';b.textContent=(i+1)+' '+s.chap;b.title=s.title;b.addEventListener('click',function(){go(i);});toc.appendChild(b);});
+  var steps=document.querySelector('.steps'),card=document.querySelector('.card');
+  S.forEach(function(s,i){var b=document.createElement('button');b.type='button';b.textContent=(i+1)+' '+s.chap;b.title=s.title;b.addEventListener('click',function(){go(i);});steps.appendChild(b);});
+  function list(items,tag){return '<'+tag+'>'+items.map(function(x){return '<li>'+x+'</li>';}).join('')+'</'+tag+'>';}
   function go(i){
     cur=Math.max(0,Math.min(S.length-1,i));var s=S[cur];seen[cur]=1;
-    card.innerHTML='<div class="chap">'+s.chap+'</div>'+(s.who?'<span class="who '+s.who+'">'+(s.who==='s'?'🧒 你是學生':'👩‍🏫 你是老師')+'</span>':'')+'<h2>'+s.title+'</h2>'+s.html+(s.acts?'<div class="acts"></div>':'');
+    document.querySelector('.ghead .chap').textContent=s.chap;
+    document.querySelector('.ghead .cnt').textContent=(cur+1)+' / '+S.length;
+    document.querySelector('.rail .rn').innerHTML=(cur+1)+'<br>/'+S.length;
+    var h=(s.who?'<span class="who '+s.who+'">'+(s.who==='s'?'🧒 你是學生':'👩‍🏫 你是老師')+'</span>':'')+'<h2>'+s.title+'</h2>';
+    if(s.lead)h+='<div class="lead">'+s.lead+'</div>';
+    if(s.steps&&s.who!=='t'&&!s.stepsH)h+='<div class="do"><b class="h">👉 做做看</b>'+list(s.steps,'ol')+'</div>';
+    if(s.look)h+='<div class="do look"><b class="h">'+(s.lookH||'🔍 找找看')+'</b>'+list(s.look,'ul')+'</div>';
+    if(s.steps&&(s.who==='t'||s.stepsH))h+='<div class="do"><b class="h">'+(s.stepsH||'👉 做做看')+'</b>'+list(s.steps,s.stepsH&&s.stepsH.charAt(0)==='✋'?'ul':'ol')+'</div>';
+    if(s.tip)h+='<div class="tip">'+s.tip+'</div>';
+    if(s.acts)h+='<div class="acts"></div>';
+    if(s.more)h+='<details class="more"><summary>為什麼這樣設計？</summary>'+s.more+'</details>';
+    card.innerHTML=h;
     if(s.acts){var a=card.querySelector('.acts');s.acts.forEach(function(x){var b=document.createElement('button');b.type='button';b.className='act';b.textContent=x[0];b.addEventListener('click',x[1]);a.appendChild(b);});}
     card.scrollTop=0;
     if(s.view)setView(s.view);
     if(s.go)s.go();
-    toc.querySelectorAll('button').forEach(function(b,k){b.classList.toggle('on',k===cur);b.classList.toggle('done',!!seen[k]&&k!==cur);});
-    document.querySelector('.pv').disabled=cur===0;var nx=document.querySelector('.nx');nx.disabled=cur===S.length-1;nx.textContent=cur===S.length-1?'體驗完成 🎉':'下一步 ▶';
+    steps.querySelectorAll('button').forEach(function(b,k){b.classList.toggle('on',k===cur);b.classList.toggle('done',!!seen[k]&&k!==cur);if(k===cur&&b.scrollIntoView)b.scrollIntoView({block:'nearest',inline:'center'});});
+    var last=cur===S.length-1;
+    ['.pv','.rail .rpv'].forEach(function(q){document.querySelector(q).disabled=cur===0;});
+    ['.nx','.rail .rnx'].forEach(function(q){document.querySelector(q).disabled=last;});
+    document.querySelector('.nx').textContent=last?'體驗完成 🎉':'下一步 ▶';
   }
   document.querySelector('.pv').addEventListener('click',function(){go(cur-1);});
   document.querySelector('.nx').addEventListener('click',function(){go(cur+1);});
+  document.querySelector('.rail .rpv').addEventListener('click',function(){go(cur-1);});
+  document.querySelector('.rail .rnx').addEventListener('click',function(){go(cur+1);});
   /* 老師畫面準備好才開始 */
   function ready(){var d=T();return d&&d.querySelector('.task-btn[data-id="xa1"]');}
   (function wait(){if(ready())go(0);else setTimeout(wait,200);})();
