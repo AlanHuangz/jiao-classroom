@@ -2171,42 +2171,132 @@ var AP_SK={
   dots:{it:'🟠',iu:'個',nm:'點點',ct:'圈',e:'pack',part:0,fill:'圈一圈',full:''}
 };
 function apLab(sk,k){var S=AP_SK[sk];return S.lab?S.lab(k):'第 '+k+' '+S.ct;}
-/* ask：full＝滿的份數（多的捨去）、all＝全部都要（多的要再一份）、each＝每份幾個、each+rem、full+rem */
-var AP_Q={
-  seat:{t:'inc',ask:'full',q:'表演廳裡每排有 {d} 個座位，一個座位坐 1 個人，有 {n} 個人進場，最多可以坐滿幾排？',a:['最多可以坐滿','排']},
-  marble:{t:'eq',ask:'each',q:'弟弟有 {n} 顆彈珠，平分裝成 {d} 袋，盡量分完，每袋有幾顆彈珠？',a:['每袋有','顆彈珠']},
-  train:{t:'inc',ask:'all',q:'遊樂園的小火車一次可以載 {d} 個小朋友，{n} 個小朋友都要坐一次，最少要載幾次？',a:['最少要載','次']},
-  pizza:{t:'inc',ask:'all',q:'一個披薩平分成 {d} 片，全班有 {n} 個人，一個人吃 1 片披薩，最少要買幾個披薩才夠？',a:['最少要買','個披薩']},
-  diabolo:{t:'eq',ask:'each+rem',q:'有 {n} 個扯鈴，要平分給 {d} 個班級練習使用，盡量分完，每個班級可以分到幾個扯鈴？還剩下幾個？',a:['每個班級分到','個，還剩下','個']},
-  ribbon:{t:'inc',ask:'full+rem',q:'{n} 公分長的緞帶，每 {d} 公分剪成一段，最多可以剪成幾段？還剩下幾公分？',a:['最多可以剪成','段，還剩下','公分']},
-  rope:{t:'inc',ask:'full',q:'姐姐拿一條長 {n} 公分的紅繩綁蝴蝶結，一個蝴蝶結用掉 {d} 公分，這條紅繩最多可以綁幾個蝴蝶結？',a:['最多可以綁','個蝴蝶結']},
-  bus:{t:'inc',ask:'all',q:'兒童樂園的空中巴士一次可以載 {d} 個人，有 {n} 個小朋友都要坐一次，最少要載幾次才夠？',a:['最少要載','次']}
+/* ===== 問法：同一個情境、同樣的數字，可以問不同的問題（孩子不能靠「這種題目都是＋1」來猜） =====
+   ask：full＝滿的有幾份、all＝全部都要（最後不滿的那份也算）、last＝最後一份有幾個、gap＝最後一份還差幾個、each＝每份幾個、rem＝剩下幾個 */
+var AP_QS={
+  seat:{t:'inc',pre:'表演廳裡每排有 {d} 個座位，一個座位坐 1 個人，有 {n} 個人進場',v:{
+    full:['，最多可以坐滿幾排？',['最多可以坐滿','排']],
+    all:['，要讓每個人都有位子坐，至少要開放幾排？',['至少要開放','排']],
+    last:['，一排坐滿了再坐下一排，最後一排坐了幾個人？',['最後一排坐了','個人']],
+    gap:['，一排坐滿了再坐下一排，最少再來幾個人，最後一排就會坐滿？',['最少再來','個人']]}},
+  train:{t:'inc',pre:'遊樂園的小火車一次可以載 {d} 個小朋友，有 {n} 個小朋友排隊',v:{
+    all:['，每個人都要坐一次，最少要載幾次？',['最少要載','次']],
+    full:['，一次一次載，有幾次是坐滿的？',['坐滿的有','次']],
+    last:['，一次一次載，最後一次載了幾個小朋友？',['最後一次載了','個小朋友']],
+    gap:['，一次一次載，最後一次還有幾個空位？',['最後一次還有','個空位']]}},
+  bus:{t:'inc',pre:'兒童樂園的空中巴士一次可以載 {d} 個人，有 {n} 個小朋友排隊',v:{
+    all:['，每個人都要坐一次，最少要載幾次才夠？',['最少要載','次']],
+    full:['，一次一次載，有幾次是坐滿的？',['坐滿的有','次']],
+    last:['，一次一次載，最後一次載了幾個人？',['最後一次載了','個人']],
+    gap:['，一次一次載，最後一次還有幾個空位？',['最後一次還有','個空位']]}},
+  pizza:{t:'inc',pre:'一個披薩平分成 {d} 片，有 {n} 個人，一個人吃 1 片',v:{
+    all:['，最少要買幾個披薩才夠？',['最少要買','個披薩']],
+    full:['，一個披薩拿完再拿下一個，有幾個披薩是整個拿完的？',['整個拿完的有','個披薩']],
+    last:['，一個披薩拿完再拿下一個，最後一個披薩被拿走幾片？',['最後一個披薩被拿走','片']],
+    gap:['，一個披薩拿完再拿下一個，最後一個披薩還剩下幾片？',['最後一個披薩還剩下','片']]}},
+  ribbon:{t:'inc',pre:'{n} 公分長的緞帶，每 {d} 公分剪成一段',v:{
+    full:['，最多可以剪成幾段？',['最多可以剪成','段']],
+    rem:['，剪到不能再剪，還剩下幾公分？',['還剩下','公分']],
+    gap:['，剪到不能再剪，剩下的緞帶最少還要再接幾公分，才能再剪一段？',['最少還要再接','公分']]}},
+  rope:{t:'inc',pre:'姐姐拿一條長 {n} 公分的紅繩綁蝴蝶結，一個蝴蝶結用掉 {d} 公分',v:{
+    full:['，這條紅繩最多可以綁幾個蝴蝶結？',['最多可以綁','個蝴蝶結']],
+    rem:['，綁到不能再綁，紅繩還剩下幾公分？',['還剩下','公分']],
+    gap:['，綁到不能再綁，剩下的紅繩最少還要再接幾公分，才能再綁一個？',['最少還要再接','公分']]}},
+  marble:{t:'eq',pre:'弟弟有 {n} 顆彈珠，平分裝成 {d} 袋，盡量分完',v:{
+    each:['，每袋有幾顆彈珠？',['每袋有','顆彈珠']],
+    rem:['，還剩下幾顆彈珠？',['還剩下','顆彈珠']]}},
+  diabolo:{t:'eq',pre:'有 {n} 個扯鈴，要平分給 {d} 個班級練習使用，盡量分完',v:{
+    each:['，每個班級可以分到幾個扯鈴？',['每個班級分到','個扯鈴']],
+    rem:['，還剩下幾個扯鈴？',['還剩下','個扯鈴']]}}
 };
-function apMk(sk,n,d,wb){var Q=AP_Q[sk];return {sk:sk,n:n,d:d,t:Q.t,ask:Q.ask,q:Q.q.replace('{n}',n).replace('{d}',d),a:Q.a,wb:wb?1:0};}
-function apExtra(sk){for(var k=0;k<200;k++){var d=ri(3,9),q=ri(3,8),r=ri(1,d-1),n=d*q+r;if(n>80||n<10)continue;return apMk(sk,n,d);}return apMk(sk,25,4);}
-function apAns(q){var Q=Math.floor(q.n/q.d),R=q.n%q.d;return q.ask==='full'?[Q]:q.ask==='all'?[Q+(R?1:0)]:q.ask==='each'?[Q]:[Q,R];}
+/* 說話用的字：g 一份叫什麼、who 要被照顧到的人、u 一份裡的單位、v 動作、fl 滿、has 最後一份「有」 */
+var AP_WD={
+  seat:{g:'排',who:'個人',u:'個人',v:'坐到位子',fl:'坐滿',has:'坐了'},
+  train:{g:'次',who:'個小朋友',u:'個人',v:'坐到小火車',fl:'坐滿',has:'載了'},
+  bus:{g:'次',who:'個小朋友',u:'個人',v:'坐到空中巴士',fl:'坐滿',has:'載了'},
+  pizza:{g:'個披薩',who:'個人',u:'片',v:'吃到披薩',fl:'整個拿完',has:'被拿走'},
+  ribbon:{g:'段',u:'公分',one:'剪一段',fl:'剪好'},
+  rope:{g:'個蝴蝶結',u:'公分',one:'綁一個蝴蝶結',fl:'綁好'},
+  marble:{g:'袋',u:'顆'},diabolo:{g:'班',u:'個'},dots:{g:'圈',u:'個'}
+};
+function apAsksFor(sk,R){return Object.keys(AP_QS[sk].v).filter(function(a){return R>0||(a!=='last'&&a!=='gap'&&a!=='rem');});}
+function apMk(sk,n,d,ask,wb,fu){var Q=AP_QS[sk],V=Q.v[ask];return {sk:sk,n:n,d:d,t:Q.t,ask:ask,q:(Q.pre+V[0]).replace(/\{n\}/g,n).replace(/\{d\}/g,d),a:V[1],wb:wb?1:0,fu:fu?1:0};}
+/* 錯了加一題：同一種情境、新的數字；有時候剛好整除（猜「＋1」就會錯），問法也會換 */
+function apExtra(sk,ask0){for(var k=0;k<200;k++){var d=ri(3,9),q=ri(3,8),ex=Math.random()<.3,r=ex?0:ri(1,d-1),n=d*q+r;if(n>80||n<10)continue;
+  var asks=apAsksFor(sk,r),ask=(asks.indexOf(ask0)>=0&&Math.random()<.5)?ask0:pick(asks);return apMk(sk,n,d,ask);}return apMk(sk,25,4,'full');}
+function apAns(q){var Q=Math.floor(q.n/q.d),R=q.n%q.d;return q.ask==='all'?Q+(R?1:0):q.ask==='last'||q.ask==='rem'?R:q.ask==='gap'?q.d-R:Q;}
 /* p.86 苦瓜路線：3×3 的籃子 */
 var AP_PATH=[['12÷3','27÷3','24÷6'],['32÷4','63÷7','18÷9'],['40÷8','35÷5','12÷2']];
 function apNew(id){
-  if(id==='ap85'){var a=[apMk('seat',33,9,1),apMk('marble',39,6,1),apMk('train',59,7,1),apMk('pizza',23,8,1)];return {k:'ap',id:id,qs:a,i:0,w:apW(a[0]),res:[],add:0,done:false};}
-  if(id==='ap87'){var b=[apMk('diabolo',53,6,1),apMk('ribbon',80,9,1),apMk('rope',60,8,1),apMk('bus',32,5,1)];return {k:'ap',id:id,qs:b,i:0,w:apW(b[0]),res:[],add:0,done:false};}
+  if(id==='ap85'){var a=[apMk('seat',33,9,'full',1),apMk('seat',33,9,'all',0,1),apMk('marble',39,6,'each',1),apMk('marble',39,6,'rem',0,1),apMk('train',59,7,'all',1),apMk('train',59,7,'full',0,1),apMk('pizza',23,8,'all',1),apMk('pizza',23,8,'last',0,1)];return {k:'ap',ver:2,id:id,qs:a,i:0,w:apW(a[0]),res:[],add:0,done:false};}
+  if(id==='ap87'){var b=[apMk('diabolo',53,6,'each',1),apMk('diabolo',53,6,'rem',0,1),apMk('ribbon',80,9,'full',1),apMk('ribbon',80,9,'rem',0,1),apMk('rope',60,8,'full',1),apMk('rope',60,8,'gap',0,1),apMk('bus',32,5,'all',1),apMk('bus',32,5,'last',0,1)];return {k:'ap',ver:2,id:id,qs:b,i:0,w:apW(b[0]),res:[],add:0,done:false};}
   var c=[{path:1}].concat([[27,9],[38,6],[49,7],[55,8]].map(function(x){return {sk:'dots',n:x[0],d:x[1],t:'inc',ask:'div',q:'算算看：'+x[0]+' ÷ '+x[1]+' 可以整除嗎？（每 '+x[1]+' 個圈一圈）',wb:1};}));
-  return {k:'ap',id:id,qs:c,i:0,w:apW(c[0]),res:[],add:0,done:false};
+  return {k:'ap',ver:2,id:id,qs:c,i:0,w:apW(c[0]),res:[],add:0,done:false};
 }
-function apW(q){if(q.path)return {path:[[0,0]],qv:{},en:'',miss:0,msg:'',s:'path'};return {s:'op',g:[],L:q.n,en:{a:'',b:'',q:'',r:'',x:'',y:''},f:'a',c:{},sel:null,miss:0,msg:'',dv:null};}
+/* prev：上一題的操作（同一張圖換個問題時，直接沿用） */
+function apW(q,prev){if(q.path)return {path:[[0,0]],qv:{},en:'',miss:0,msg:'',s:'path'};
+  if(q.fu&&prev&&prev.g)return {s:'ans',g:prev.g.slice(),L:prev.L,en:{a:'',b:'',q:'',r:'',x:'',y:''},f:q.ask==='gap'?'x':null,c:JSON.parse(JSON.stringify(prev.c||{})),sel:null,miss:0,msg:'',dv:null,pk:[],tg:{}};
+  return {s:'op',g:[],L:q.n,en:{a:'',b:'',q:'',r:'',x:'',y:''},f:'a',c:{},sel:null,miss:0,msg:'',dv:null,pk:[],tg:{}};}
+/* 老師看：多算了沒滿的（猜＋1）、漏算了最後那些 */
+function apTags(st){var p1=0,m1=0;st.res.forEach(function(r){if(r.tg){p1+=r.tg.p1||0;m1+=r.tg.m1||0;}});var w=st.w;if(w&&w.tg&&w.s!=='done'&&!st.done){p1+=w.tg.p1||0;m1+=w.tg.m1||0;}
+  return (p1?'・<span class="warn">猜＋1（多算沒滿的）'+p1+' 次</span>':'')+(m1?'・<span class="warn">漏算最後那些 '+m1+' 次</span>':'');}
 function apSummary(st){
-  if(!st.qs)return '';var ok=st.res.filter(function(r){return r.al;}).length;
-  if(st.done)return '<span class="good">完成！</span>一次就對 '+ok+'/'+st.res.length+(st.add?'・加練 '+st.add+' 題':'');
+  if(!st.qs)return '';var ok=st.res.filter(function(r){return r.al;}).length,tg=apTags(st);
+  if(st.done)return '<span class="good">完成！</span>一次就想對 '+ok+'/'+st.res.length+(st.add?'・加練 '+st.add+' 題':'')+tg;
   var q=st.qs[st.i],w=st.w,s='第 '+(st.i+1)+'/'+st.qs.length+' 題・';
-  if(q.path)s+='苦瓜路線：走了 '+(w.path.length)+' 籃';else s+=q.n+' ÷ '+q.d+'・'+({op:'操作中',eq:'寫算式',vt:'寫直式',ans:'寫答案',div:'判斷整除',done:'做完'})[w.s];
-  return s+(w.miss?'・<span class="warn">錯 '+w.miss+' 次</span>':'')+(st.add?'・加練 '+st.add:'');
+  if(q.path)s+='苦瓜路線：走了 '+(w.path.length)+' 籃';else s+=q.n+' ÷ '+q.d+'・'+({op:'操作中',eq:'寫算式',vt:'寫直式',ans:'點出答案',why:'想為什麼',div:'判斷整除',done:'做完'})[w.s];
+  return s+(w.miss?'・<span class="warn">錯 '+w.miss+' 次</span>':'')+(st.add?'・加練 '+st.add:'')+tg;
 }
+/* ---- 在圖上點出題目問的東西 ---- */
+function apPickTxt(q,w){var pk=w.pk||[];if(!pk.length)return '（還沒點）';var W=AP_WD[q.sk]||{},idx=pk.filter(function(x){return x!=='L';}).map(Number).sort(function(a,b){return a-b;});
+  var s=idx.map(function(i){return apLab(q.sk,i+1);});if(pk.indexOf('L')>=0)s.push('剩下的');return s.join('、')+(idx.length>1?'（'+idx.length+' '+(W.g||'')+'）':'');}
+function apConseq(q,kind,p){var R=q.n%q.d,Q=Math.floor(q.n/q.d),sk=q.sk,W=AP_WD[sk],lab=apLab(sk,p+1);
+  if(kind==='p1'){if(sk==='pizza')return lab+'只被拿走 '+R+' 片，還剩 '+(q.d-R)+' 片。這個披薩有整個拿完嗎？';
+    return lab+'只'+W.has+' '+R+' 個人，還空著 '+(q.d-R)+' 個位子。這一'+W.g+'有坐滿嗎？';}
+  if(sk==='seat')return '如果不開放'+lab+'，最後那 '+R+' 個人就沒有位子坐了！';
+  if(sk==='pizza')return '如果只買 '+Q+' 個披薩，最後那 '+R+' 個人就沒有披薩吃了！';
+  return '如果只載 '+Q+' 次，月台上還有 '+R+' 個小朋友沒坐到！';}
+function apPickCheck(q,w){
+  var S=AP_SK[q.sk],W=AP_WD[q.sk]||{},G=w.g,n=G.length,R=q.n%q.d,pk=w.pk||[],idx=pk.filter(function(x){return x!=='L';}).map(Number),hasL=pk.indexOf('L')>=0;
+  if(!pk.length)return {empty:1};
+  if(q.ask==='rem'){if(hasL&&!idx.length)return {ok:1};return {msg:'你點的是'+apLab(q.sk,idx[0]+1)+'。題目問的是「還剩下」多少，剩下的在哪裡？',hl:'L'};}
+  if(q.ask==='each'){if(hasL)return {msg:'那是還沒分出去的。題目問的是每一'+W.g+'分到多少，點一'+W.g+'看看。'};return {ok:1};}
+  if(q.ask==='last'){var li=n-1;if(idx.length===1&&idx[0]===li&&!hasL)return {ok:1};return {msg:'題目問的是最後一'+W.g+'。從第 1 '+W.g.replace(/^個/,'個')+'開始數，最後一'+W.g+'是哪一'+W.g+'？'};}
+  if(hasL){if(S.cm&&q.ask==='full')return {tg:'p1',hl:'L',msg:'剩下這一段只有 '+R+' 公分，'+W.one+'要 '+q.d+' 公分，夠嗎？'};return {msg:'題目問的是有幾'+W.g+'，不是剩下的。'};}
+  var full=[],part=-1;G.forEach(function(c,i){if(c===q.d)full.push(i);else part=i;});
+  var want=q.ask==='all'?G.map(function(c,i){return i;}):full,miss=want.filter(function(i){return idx.indexOf(i)<0;}),extra=idx.filter(function(i){return want.indexOf(i)<0;});
+  if(!miss.length&&!extra.length)return {ok:1};
+  if(part>=0&&extra.indexOf(part)>=0)return {tg:'p1',hl:String(part),msg:apConseq(q,'p1',part)};
+  if(part>=0&&q.ask==='all'&&miss.indexOf(part)>=0)return {tg:'m1',hl:String(part),msg:apConseq(q,'m1',part)};
+  return {msg:'再數一數，還有'+W.g.replace(/^個/,'')+'沒點到喔。'};
+}
+/* 答對以後用說的（不寫「商＋1」的算式） */
+function apSay(q){var Q=Math.floor(q.n/q.d),R=q.n%q.d,S=AP_SK[q.sk],W=AP_WD[q.sk]||{};
+  if(q.ask==='full'){if(!R)return '剛好分完，每一'+W.g+'都'+W.fl+'，一共 '+Q+' '+W.g+'。';if(S.cm)return '剩下的 '+R+' 公分不夠'+W.one+'，所以是 '+Q+' '+W.g+'。';return '最後一'+W.g+'只'+W.has+' '+R+' '+W.u+'，沒有'+W.fl+'，所以'+W.fl+'的是 '+Q+' '+W.g+'。';}
+  if(q.ask==='all'){if(!R)return '剛好分完，'+Q+' '+W.g+'就夠了。';return '最後那 '+R+' '+W.who+'也要'+W.v+'，所以那一'+W.g+'也要算，一共 '+apAns(q)+' '+W.g+'。';}
+  if(q.ask==='last')return '最後一'+W.g+W.has+' '+R+' '+W.u+'，就是算式裡的餘數。';
+  if(q.ask==='gap')return S.cm?'剩下的'+S.nm+'有 '+R+' 公分，'+W.one+'要 '+q.d+' 公分，還差 '+(q.d-R)+' 公分。':q.sk==='pizza'?'最後一個披薩被拿走 '+R+' 片，一個披薩有 '+q.d+' 片，還剩下 '+(q.d-R)+' 片。':'最後一'+W.g+'有 '+R+' '+W.u+'，一'+W.g+'要 '+q.d+' '+W.u+'，還差 '+(q.d-R)+' '+W.u+'。';
+  if(q.ask==='rem')return '還剩下 '+R+' '+W.u+'，就是算式裡的餘數。';
+  if(q.ask==='each')return '每一'+W.g+'都分到 '+Q+' '+W.u+'。';return '';}
+/* 理由卡：只在「容易憑感覺＋1」的題目出（坐滿幾份、全部都要、剛好整除） */
+function apCardRight(q){var R=q.n%q.d;return !R?'ex':q.ask==='all'?'ls':'nf';}
+function apCards(q){if(q.ask!=='full'&&q.ask!=='all')return null;return shuffle([apCardRight(q),'p1','kw']);}
+function apCardTxt(q,k){var R=q.n%q.d,S=AP_SK[q.sk],W=AP_WD[q.sk]||{};
+  if(k==='nf')return S.cm?'剩下的 '+R+' 公分不夠'+W.one+'，所以不算':'最後一'+W.g+'沒有'+W.fl+'，所以不算';
+  if(k==='ls')return '最後那 '+R+' '+W.who+'也要'+W.v+'，所以那一'+W.g+'也要算';
+  if(k==='ex')return '剛好分完，沒有剩下的';
+  if(k==='p1')return '有餘數，所以要加 1';
+  return '這種題目都是這樣算的';}
+function apCardMsg(q,k){var R=q.n%q.d,W=AP_WD[q.sk]||{};
+  if(k==='p1'){if(!R)return '這題剛好分完，沒有餘數喔。看看圖，還需要再多一'+W.g+'嗎？';
+    return q.ask==='full'?'有餘數就一定要加 1 嗎？看看你在圖上點的：最後那一'+W.g+'有算進去嗎？為什麼？':'有餘數就一定要加 1 嗎？如果題目問「'+W.fl+'的有幾'+W.g+'」，還要加嗎？看看圖，最後那一'+W.g+'為什麼要算？';}
+  return '題目換個問法，答案就不一樣了。看看圖，再想想為什麼。';}
 function apTile(box,st,big){if(!st.qs){box.innerHTML='';return;}var h2='<div class="rmt'+(big?' big':'')+'">'+apSummary(st);if(!st.done){var q=st.qs[st.i];if(!q.path)h2+='<div class="rmt-rows"><span>'+esc(q.q)+'</span></div>';}box.innerHTML=h2+'</div>';}
 
 /* 畫教具：照題意長得像真的東西（表演廳一排一排、小火車、整個圓的披薩、袋子、班級、緞帶尺） */
 var AP_MC=['#e53935','#1e88e5','#43a047','#fbc02d','#8e24aa','#fb8c00'];
 function apTens(n,item){var s='';for(var i=0;i<n;i+=10){s+='<span class="ten">';for(var j=i;j<Math.min(n,i+10);j++)s+=item(j);s+='</span>';}return s;}
-function apPile(title,n,unit,item,cls,act){return '<div class="ap-q '+(cls||'')+'"'+(act?' data-a="'+act+'"':'')+'><div class="hd">'+title+'<b>'+n+' '+unit+'</b></div><div class="in">'+(n?apTens(n,item):'<span class="mut">（沒有了）</span>')+'</div></div>';}
+function apPile(title,n,unit,item,cls,act,v){return '<div class="ap-q '+(cls||'')+'"'+(act?' data-a="'+act+'"'+(v!=null?' data-v="'+v+'"':''):'')+'><div class="hd">'+title+'<b>'+n+' '+unit+'</b></div><div class="in">'+(n?apTens(n,item):'<span class="mut">（沒有了）</span>')+'</div></div>';}
 function apKid(){return '<i class="kid">🧒</i>';}
 function apMarble(i){return '<i class="mb" style="background-color:'+AP_MC[i%6]+'"></i>';}
 function apDia(i){var c=AP_MC[i%6];return '<svg class="ap-dia" viewBox="0 0 22 28"><path d="M1.5 3.5 L9.3 12.6 L12.7 12.6 L20.5 3.5 Z" fill="'+c+'"/><ellipse cx="11" cy="3.5" rx="9.5" ry="2.6" fill="'+c+'" stroke="#37474f" stroke-width="1.2"/><ellipse cx="11" cy="3.5" rx="6" ry="1.2" fill="rgba(255,255,255,.55)"/><rect x="9.2" y="12.4" width="3.6" height="3.2" rx=".8" fill="#546e7a"/><path d="M9.3 15.4 L12.7 15.4 L20.5 24.5 Q11 27.6 1.5 24.5 Z" fill="'+c+'" stroke="#37474f" stroke-width="1.2" stroke-linejoin="round"/><path d="M4 21.5 Q11 23 18 21.5" stroke="rgba(255,255,255,.5)" stroke-width="1.4" fill="none"/></svg>';}
@@ -2220,43 +2310,45 @@ function apPizza(d,c,nx){var R=56,C=64,s='<svg class="ap-pz" viewBox="0 0 128 12
       s+='<circle cx="'+X(am,R*.58).toFixed(1)+'" cy="'+Y(am,R*.58).toFixed(1)+'" r="6" fill="#c0392b"/><circle cx="'+X(am+sp*.22,R*.3).toFixed(1)+'" cy="'+Y(am+sp*.22,R*.3).toFixed(1)+'" r="3.2" fill="#c0392b"/><circle cx="'+X(am-sp*.2,R*.8).toFixed(1)+'" cy="'+Y(am-sp*.2,R*.8).toFixed(1)+'" r="2.2" fill="#2e7d32"/></g>';}}
   return s+'</svg>';}
 function apPicHTML(q,w){
-  var S=AP_SK[q.sk],sk=q.sk,bgk=sk==='dots'?'':sk,G=w.g,n=G.length,last=n?G[n-1]:0,canOne=n&&last<q.d&&w.L>0,needNew=w.L>0&&(!n||last>=q.d);
+  var S=AP_SK[q.sk],sk=q.sk,bgk=sk==='dots'?'':sk,G=w.g,n=G.length,sel=w.s==='ans'&&q.ask!=='gap'&&q.ask!=='div',pkl=w.pk||[],last=n?G[n-1]:0,canOne=n&&last<q.d&&w.L>0,needNew=w.L>0&&(!n||last>=q.d);
   var h2='<div class="ap-pic sk-'+sk+(sk!=='dots'?' ap-v':'')+(bgk&&typeof AP_BG!=='undefined'&&AP_BG[bgk]?' bgi bg-'+bgk:'')+'">';
+  function pa(i){return sel?' data-a="pk" data-v="'+i+'"':'';}
+  function pc(i){return (sel?' pkable':'')+(pkl.indexOf(String(i))>=0?' pk-on':'')+(w.hl!=null&&w.hl===String(i)?' pk-hl':'');}
   function ghost(t,cls){return '<button type="button" class="ap-ghost'+(cls?' '+cls:'')+'" data-a="add">'+t+'</button>';}
   if(sk==='seat'){
     h2+='<div class="ap-stage">🎭 舞 台</div><div class="ap-rows">';
-    G.forEach(function(c,i){var cur=i===n-1;h2+='<div class="ap-row'+(c===q.d?' full':cur?' cur':'')+'"><span class="rl">第 '+(i+1)+' 排</span><span class="seats">';
+    G.forEach(function(c,i){var cur=i===n-1&&w.s==='op';h2+='<div class="ap-row'+(c===q.d?' full':cur?' cur':'')+pc(i)+'"'+pa(i)+'><span class="rl">第 '+(i+1)+' 排</span><span class="seats">';
       for(var k=0;k<q.d;k++)h2+='<i class="ap-st'+(k<c?' on':'')+'"'+(cur&&k===c&&canOne?' data-a="one"':'')+'>'+(k<c?'<span>🧒</span>':'')+'<em>'+(k+1)+'</em></i>';
       h2+='</span><b>'+c+' / '+q.d+'</b></div>';});
     if(needNew)h2+=ghost('＋ '+(n?'下一排開始坐':'第 1 排開始坐'));
     h2+='</div>'+apPile('🚪 門口排隊的',w.L,'人',apKid,'',canOne?'one':'');
   }else if(sk==='train'||sk==='bus'){
     h2+='<div class="'+(sk==='train'?'ap-trns':'ap-gons')+'">';
-    G.forEach(function(c,i){var cur=i===n-1,cnt=0,col=AP_MC[i%6],st=(c===q.d?' full':cur?' cur':'');
+    G.forEach(function(c,i){var cur=i===n-1&&w.s==='op',cnt=0,col=AP_MC[i%6],st=(c===q.d?' full':cur?' cur':'');
       function win(){var k=cnt++;return '<i class="ap-win'+(k<c?' on':'')+'"'+(cur&&k===c&&canOne?' data-a="one"':'')+'>'+(k<c?'🧒':'')+'</i>';}
-      if(sk==='train'){h2+='<div class="ap-trn'+st+'"><span class="rl">第 '+(i+1)+' 次<b>'+c+' / '+q.d+'</b></span><div class="tr">'+apLoco();
+      if(sk==='train'){h2+='<div class="ap-trn'+st+pc(i)+'"'+pa(i)+'><span class="rl">第 '+(i+1)+' 次<b>'+c+' / '+q.d+'</b></span><div class="tr">'+apLoco();
         apCars(q.d).forEach(function(m,j){var s='';for(var t=0;t<m;t++)s+=win();h2+='<span class="hook"></span><span class="ap-car" style="--c:'+AP_MC[(i+j+1)%6]+'">'+s+'</span>';});h2+='</div></div>';}
-      else{var s2='';for(var t=0;t<q.d;t++)s2+=win();h2+='<div class="ap-gon'+st+'"><span class="hang"></span><span class="cab" style="--c:'+col+'"><span class="roof"></span><span class="wins">'+s2+'</span></span><span class="lb">第 '+(i+1)+' 次 <b>'+c+' / '+q.d+'</b></span></div>';}
+      else{var s2='';for(var t=0;t<q.d;t++)s2+=win();h2+='<div class="ap-gon'+st+pc(i)+'"'+pa(i)+'><span class="hang"></span><span class="cab" style="--c:'+col+'"><span class="roof"></span><span class="wins">'+s2+'</span></span><span class="lb">第 '+(i+1)+' 次 <b>'+c+' / '+q.d+'</b></span></div>';}
     });
     if(needNew)h2+=ghost('＋ '+(sk==='train'?'開'+(n?'下':'第')+'一班小火車':'開'+(n?'下':'第')+'一班空中巴士'),'tall');
     h2+='</div>'+apPile('🎫 排隊等坐車的',w.L,'人',apKid,'',canOne?'one':'');
   }else if(sk==='pizza'){
     h2+='<div class="ap-pzs">';
-    G.forEach(function(c,i){var cur=i===n-1;h2+='<div class="ap-pzc'+(c===q.d?' full':cur?' cur':'')+'">'+apPizza(q.d,c,cur&&canOne?c:-1)+'<span class="lb">第 '+(i+1)+' 個披薩 <b>'+c+' / '+q.d+' 片</b></span></div>';});
+    G.forEach(function(c,i){var cur=i===n-1&&w.s==='op';h2+='<div class="ap-pzc'+(c===q.d?' full':cur?' cur':'')+pc(i)+'"'+pa(i)+'>'+apPizza(q.d,c,cur&&canOne?c:-1)+'<span class="lb">第 '+(i+1)+' 個披薩 <b>'+c+' / '+q.d+' 片</b></span></div>';});
     if(needNew)h2+=ghost('＋<br>'+(n?'再買一個披薩':'買第一個披薩'),'round');
     h2+='</div>'+apPile('🙋 還沒拿到披薩的',w.L,'人',apKid,'',canOne?'one':'');
   }else if(sk==='marble'||sk==='diabolo'){
     var mb=sk==='marble',canDeal=n&&w.L>=n;h2+='<div class="ap-bags">';
     G.forEach(function(c,i){var it='';for(var k=0;k<c;k++)it+=mb?apMarble(i+k):apDia(i+k*2);
-      h2+=mb?'<div class="ap-bag"><span class="neck"></span><span class="bd">'+it+'</span><span class="lb">第 '+(i+1)+' 袋 <b>'+c+' 顆</b></span></div>'
-            :'<div class="ap-cls"><span class="sign">'+(i+1)+' 班</span><span class="box">'+it+'</span><span class="lb"><b>'+c+' 個</b></span></div>';});
-    if(n<10)h2+=ghost(mb?'＋<br>再拿一個袋子':'＋<br>再找一個班級','bagg');
-    h2+='</div>'+apPile(mb?'🍽️ 盤子裡還沒分的彈珠':'📦 器材室還沒分的扯鈴',w.L,mb?'顆':'個',mb?apMarble:function(i){return apDia(i);},mb?'tray':'store',canDeal?'one':'');
+      h2+=mb?'<div class="ap-bag'+pc(i)+'"'+pa(i)+'><span class="neck"></span><span class="bd">'+it+'</span><span class="lb">第 '+(i+1)+' 袋 <b>'+c+' 顆</b></span></div>'
+            :'<div class="ap-cls'+pc(i)+'"'+pa(i)+'><span class="sign">'+(i+1)+' 班</span><span class="box">'+it+'</span><span class="lb"><b>'+c+' 個</b></span></div>';});
+    if(n<10&&w.s==='op')h2+=ghost(mb?'＋<br>再拿一個袋子':'＋<br>再找一個班級','bagg');
+    h2+='</div>'+apPile(mb?'🍽️ 盤子裡還沒分的彈珠':'📦 器材室還沒分的扯鈴',w.L,mb?'顆':'個',mb?apMarble:function(i){return apDia(i);},(mb?'tray':'store')+pc('L'),canDeal?'one':sel?'pk':'',sel?'L':null);
   }else if(S.cm){
     var rope=sk==='rope',ppc=Math.max(5,Math.min(12,Math.floor(720/q.n)));
     h2+='<div class="ap-strip'+(rope?' rope':'')+'"><div class="ln" style="width:'+(q.n*ppc)+'px">';
-    G.forEach(function(c,i){h2+='<span class="seg used" style="width:'+(c*ppc)+'px">'+(rope?'<em class="bow">🎀</em>':'<em class="sc">✂️</em>')+'<small>'+(i+1)+'</small></span>';});
-    if(w.L)h2+='<span class="seg rest"'+(w.L>=q.d?' data-a="fill"':'')+' style="width:'+(w.L*ppc)+'px"></span>';
+    G.forEach(function(c,i){h2+='<span class="seg used'+pc(i)+'"'+pa(i)+' style="width:'+(c*ppc)+'px">'+(rope?'<em class="bow">🎀</em>':'<em class="sc">✂️</em>')+'<small>'+(i+1)+'</small></span>';});
+    if(w.L)h2+='<span class="seg rest'+pc('L')+'"'+(w.L>=q.d&&w.s==='op'?' data-a="fill"':pa('L'))+' style="width:'+(w.L*ppc)+'px"></span>';
     h2+='</div><div class="ru" style="width:'+(q.n*ppc+1)+'px;--p:'+ppc+'px">';
     for(var x=0;x<=q.n;x+=10)h2+='<span style="left:'+(x*ppc)+'px">'+x+'</span>';if(q.n%10)h2+='<span class="end" style="left:'+(q.n*ppc)+'px">'+q.n+'</span>';
     h2+='</div><div class="ap-sinfo">'+(n?(rope?'綁好的蝴蝶結 <b>'+n+' 個</b>（每個 '+q.d+' 公分）':'剪下來的 <b>'+n+' 段</b>（每段 '+q.d+' 公分）')+'　':'')+'還沒用的'+S.nm+' <b>'+w.L+' 公分</b></div></div>';
@@ -2274,10 +2366,10 @@ function ApDesk(root,ws){
     if(/^[0-9]$/.test(e.key))self.click('k',e.key);else if(e.key==='Backspace')self.click('k','⌫');else if(e.key==='Enter')self.click('check');else return;e.preventDefault();});
 }
 ApDesk.prototype.st=function(){return this.ws.state();};
-ApDesk.prototype.load=ApDesk.prototype.mount=function(){this.root._owner=this;this.render();};
+ApDesk.prototype.load=ApDesk.prototype.mount=function(){this.root._owner=this;var st0=this.st();if(st0&&st0.k==='ap'&&st0.ver!==2&&!this.ws.locked&&this.ws.states&&this.ws.id)this.ws.states[this.ws.id]=apNew(st0.id);this.render();};
 ApDesk.prototype.changed=function(){this.render();this.ws.onChange(true);};
-ApDesk.prototype.finish=function(){var st=this.st(),w=st.w,q=st.qs[st.i];st.res.push({ok:true,al:w.miss===0});
-  if(w.miss&&!q.path&&(st.add||0)<4){var x=q.sk==='dots'?(function(){var d=ri(3,9),n=d*ri(2,8)+(Math.random()<.5?0:ri(1,d-1));return {sk:'dots',n:n,d:d,t:'inc',ask:'div',q:'算算看：'+n+' ÷ '+d+' 可以整除嗎？（每 '+d+' 個圈一圈）'};})():apExtra(q.sk);st.qs.push(x);st.add=(st.add||0)+1;}
+ApDesk.prototype.finish=function(){var st=this.st(),w=st.w,q=st.qs[st.i];st.res.push({ok:true,al:w.miss===0,tg:w.tg||{}});
+  if(w.miss&&!q.path&&(st.add||0)<4){var x=q.sk==='dots'?(function(){var d=ri(3,9),n=d*ri(2,8)+(Math.random()<.5?0:ri(1,d-1));return {sk:'dots',n:n,d:d,t:'inc',ask:'div',q:'算算看：'+n+' ÷ '+d+' 可以整除嗎？（每 '+d+' 個圈一圈）'};})():apExtra(q.sk,q.ask);st.qs.push(x);st.add=(st.add||0)+1;}
   w.s='done';};
 ApDesk.prototype.cell=function(k){var st=this.st();if(st.w.s!=='vt'||['Q1','Q0','P1','P0','M1','M0'].indexOf(k)<0)return;st.w.sel=k;this.render();};
 ApDesk.prototype.render=function(){
@@ -2289,17 +2381,22 @@ ApDesk.prototype.click=function(a,v){
   var st=this.st();if(!st)return;
   if(a==='again'){var n=apNew(st.id);st.qs=n.qs;st.i=0;st.w=n.w;st.res=[];st.add=0;st.done=false;this.changed();return;}
   if(st.done)return;var q=st.qs[st.i],w=st.w;
-  if(a==='next'){if(w.s!=='done')return;st.i++;if(st.i>=st.qs.length){st.i=st.qs.length-1;st.done=true;}else st.w=apW(st.qs[st.i]);this.changed();return;}
+  if(a==='next'){if(w.s!=='done')return;st.i++;if(st.i>=st.qs.length){st.i=st.qs.length-1;st.done=true;}else st.w=apW(st.qs[st.i],w);this.changed();return;}
   if(q.path)return this.cPath(st,q,w,a,v);
   return this.cProb(st,q,w,a,v);
 };
 /* ----- 應用題 ----- */
 ApDesk.prototype.hProb=function(st,q,w){
-  w=st.w;var S=AP_SK[q.sk],h2='<div class="rm-head"><span class="lv">'+(st.id==='ap86'?'p.86 第 2 題':st.id==='ap85'?'p.85 第 1 題':'p.87 第 4 題')+(q.wb?'（習作原題）':'')+'</span><b>'+esc(q.q)+'</b><span class="no">第 '+(st.i+1)+' / '+st.qs.length+' 題</span></div>';
-  var steps=q.ask==='div'?['① 圈一圈','② 寫算式','③ 整除嗎？']:['① 照題目做做看','② 記錄算式','③ 直式','④ 回答'],si={op:0,eq:1,vt:2,ans:3,div:2,done:9}[w.s];
+  w=st.w;var S=AP_SK[q.sk],fu=!!q.fu,pickAsk=q.ask!=='gap'&&q.ask!=='div',Q=Math.floor(q.n/q.d),R=q.n%q.d;
+  var lv=fu?'🔁 同一張圖，換一個問題':(st.id==='ap86'?'p.86 第 2 題':st.id==='ap85'?'p.85 第 1 題':'p.87 第 4 題')+(q.wb?'（習作原題）':'');
+  var h2='<div class="rm-head"><span class="lv">'+lv+'</span><b>'+esc(q.q)+'</b><span class="no">第 '+(st.i+1)+' / '+st.qs.length+' 題</span></div>';
+  var steps=q.ask==='div'?['① 圈一圈','② 寫算式','③ 整除嗎？']:fu?['看同一張圖','在圖上點出答案']:['① 照題目做做看','② 記錄算式','③ 直式','④ 在圖上點出答案'];
+  var si=(fu?{ans:1,why:1,done:9}:{op:0,eq:1,vt:2,ans:3,why:3,div:2,done:9})[w.s];if(si==null)si=0;
   h2+='<div class="ap-steps">'+steps.map(function(t,i){return '<span class="'+(i<si?'d':i===si?'c':'')+'">'+(i<si?'✓ ':'')+t+'</span>';}).join('')+'</div>';
   h2+='<div class="rm-body"><div class="rm-col grow">';
   if(w.s==='op')h2+='<div class="rm-say">'+this.opSay(q)+'</div>';
+  else if(w.s==='ans'&&pickAsk)h2+='<div class="rm-say">👆 題目問的是什麼？<b>在下面的圖上點出來</b>（點錯了再點一次可以取消）。</div>';
+  else if(w.s==='ans'&&q.ask==='gap')h2+='<div class="rm-say">看看下面的圖，想一想題目問的是什麼。</div>';
   h2+=apPicHTML(q,w);
   if(w.s==='op'){h2+='<div class="rm-tools">';
     if(S.e==='pack'){if(S.part)h2+='<button type="button" data-a="add">'+esc(S.add)+'</button><button type="button" class="big" data-a="one">'+esc(S.one)+'</button>';
@@ -2307,29 +2404,53 @@ ApDesk.prototype.hProb=function(st,q,w){
     else h2+='<button type="button" data-a="add">'+esc(S.add)+'</button><button type="button" class="big" data-a="one">'+esc(S.one)+'</button><button type="button" data-a="un">'+esc(S.un)+'</button><button type="button" data-a="pop">拿掉一'+esc(S.ct)+'</button>';
     h2+='<button type="button" class="go" data-a="opok">做好了 ✓</button></div>';}
   h2+=(w.msg?'<div class="rm-msg'+(w.good?' ok':'')+'">'+esc(w.msg)+'</div>':'')+'</div><div class="rm-col">';
-  /* 右邊：算式、直式、答 */
-  var e=w.en,self=this;function box(f,big){return '<button type="button" class="rm-ab'+(w.f===f?' f':'')+'" data-a="f" data-v="'+f+'">'+esc(e[f])+'</button>';}
+  /* 右邊：算式、直式、回答（算式只記錄計算；回答是看圖判斷，不寫「＋1」） */
+  var e=w.en;function box(f){return '<button type="button" class="rm-ab'+(w.f===f?' f':'')+'" data-a="f" data-v="'+f+'">'+esc(e[f])+'</button>';}
   if(w.s==='op')h2+='<div class="sm mut" style="max-width:260px">先在左邊照著題目做做看，做好了再來寫算式。</div>';
-  if(w.s==='eq'||w.s!=='op'){h2+='<div class="ap-eq"><div class="lb">② 記錄算式</div>'+(w.s==='eq'?box('a')+' ÷ '+box('b')+' = '+box('q')+' … '+box('r'):'<b>'+q.n+' ÷ '+q.d+' = '+Math.floor(q.n/q.d)+' … '+(q.n%q.d)+'</b>')+'</div>';}
-  if(w.s==='vt'||((w.s==='ans'||w.s==='done')&&q.ask!=='div')){var wc={c:{},fix:{},bad:w.bad||[],sel:w.sel},Dg=rmDig(q.n);wc.c={V:String(q.d),D1:Dg.t,D0:Dg.o};['Q1','Q0','P1','P0','M1','M0'].forEach(function(k){wc.c[k]=w.c[k]||'';});['V','D1','D0'].forEach(function(k){wc.fix[k]=1;});
-    h2+='<div class="ap-eq"><div class="lb">③ 直式</div>'+rmGridHTML(q,wc,{ed:w.s==='vt'?['Q1','Q0','P1','P0','M1','M0']:[],small:w.s!=='vt'})+'</div>';}
-  if(w.s==='ans'||(w.s==='done'&&q.ask!=='div')){var A=q.a;h2+='<div class="ap-eq ans"><div class="lb">④ 回答</div>答：'+esc(A[0])+' '+(w.s==='ans'?box('x'):'<b>'+apAns(q)[0]+'</b>')+' '+esc(A[1]);if(A.length>2)h2+=' '+(w.s==='ans'?box('y'):'<b>'+apAns(q)[1]+'</b>')+' '+esc(A[2]);h2+='</div>';}
+  if(fu)h2+='<div class="ap-eq"><div class="lb">算式（和上一題一樣）</div><b>'+q.n+' ÷ '+q.d+' = '+Q+' … '+R+'</b></div>';
+  else{
+    if(w.s!=='op'){h2+='<div class="ap-eq"><div class="lb">② 記錄算式</div>'+(w.s==='eq'?box('a')+' ÷ '+box('b')+' = '+box('q')+' … '+box('r'):'<b>'+q.n+' ÷ '+q.d+' = '+Q+' … '+R+'</b>')+'</div>';}
+    if(w.s==='vt'||((w.s==='ans'||w.s==='why'||w.s==='done')&&q.ask!=='div')){var wc={c:{},fix:{},bad:w.bad||[],sel:w.sel},Dg=rmDig(q.n);wc.c={V:String(q.d),D1:Dg.t,D0:Dg.o};['Q1','Q0','P1','P0','M1','M0'].forEach(function(k){wc.c[k]=(w.c||{})[k]||'';});['V','D1','D0'].forEach(function(k){wc.fix[k]=1;});
+      h2+='<div class="ap-eq"><div class="lb">③ 直式</div>'+rmGridHTML(q,wc,{ed:w.s==='vt'?['Q1','Q0','P1','P0','M1','M0']:[],small:w.s!=='vt'})+'</div>';}
+  }
+  if(q.ask!=='div'&&(w.s==='ans'||w.s==='why'||w.s==='done')){var A=q.a,got=w.s!=='ans';
+    h2+='<div class="ap-eq ans"><div class="lb">'+(fu?'':'④ ')+'回答</div>';
+    if(pickAsk){if(w.s==='ans')h2+='<div class="ap-pkt">你點了：'+esc(apPickTxt(q,w))+'</div><button type="button" class="rm-btn" data-a="pkok">點好了 ✓</button>';
+      h2+='<div>答：'+esc(A[0])+' <b>'+(got?apAns(q):'□')+'</b> '+esc(A[1])+'</div>';}
+    else h2+='<div>答：'+esc(A[0])+' '+(w.s==='ans'?box('x'):'<b>'+apAns(q)+'</b>')+' '+esc(A[1])+'</div>';
+    h2+='</div>';}
+  if(w.s==='why')h2+='<div class="ap-eq"><div class="lb">🤔 為什麼？選一個最好的理由</div><div class="ap-cards">'+(w.rc||[]).map(function(k){return '<button type="button" data-a="rc" data-v="'+k+'">'+esc(apCardTxt(q,k))+'</button>';}).join('')+'</div></div>';
   if(w.s==='div'||(w.s==='done'&&q.ask==='div'))h2+='<div class="ap-eq"><div class="lb">③ '+q.n+' ÷ '+q.d+' 可以整除嗎？</div><div class="rm-judge"><button type="button" data-a="dv" data-v="1">✓ 可以整除</button><button type="button" data-a="dv" data-v="0">✗ 不能整除</button></div></div>';
-  if(['eq','vt','ans'].indexOf(w.s)>=0)h2+=rmPadHTML()+'<button type="button" class="rm-btn" data-a="check">檢查</button>';
-  if(w.s==='done')h2+='<button type="button" class="rm-btn go" data-a="next">'+(st.i+1<st.qs.length?'下一題 ▶':'看結果 ▶')+'</button>';
+  if(['eq','vt'].indexOf(w.s)>=0||(w.s==='ans'&&q.ask==='gap'))h2+=rmPadHTML()+'<button type="button" class="rm-btn" data-a="check">檢查</button>';
+  if(w.s==='done')h2+='<button type="button" class="rm-btn go" data-a="next">'+(st.i+1<st.qs.length?(st.qs[st.i+1].fu?'同一張圖，換一個問題 ▶':'下一題 ▶'):'看結果 ▶')+'</button>';
   return h2+'</div></div>';
 };
+/* 操作說明只講情境怎麼做（大家都分完），不替孩子判斷題目問什麼 */
 ApDesk.prototype.opSay=function(q){var S=AP_SK[q.sk];
-  if(q.sk==='seat')return '🎭 有 '+q.n+' 個人要進表演廳，每排 '+q.d+' 個座位。請大家一個一個坐下，排滿一排再換下一排。全部坐好了按「做好了」。';
-  if(q.sk==='train'||q.sk==='bus')return (q.sk==='train'?'🚂 小火車':'🚡 空中巴士')+'一次載 '+q.d+' 個人，'+q.n+' 個小朋友都要坐。開一班車、請小朋友上車，直到排隊的人都坐到為止。';
-  if(q.sk==='pizza')return '🍕 一個披薩有 '+q.d+' 片，'+q.n+' 個人每人拿 1 片。買披薩、讓大家一個一個拿，直到每個人都拿到。';
+  if(q.sk==='seat')return '🎭 有 '+q.n+' 個人要進表演廳，每排 '+q.d+' 個座位。請大家一個一個坐下，一排坐滿了再坐下一排，門口的人都坐下了，按「做好了」。';
+  if(q.sk==='train'||q.sk==='bus')return (q.sk==='train'?'🚂 小火車':'🚡 空中巴士')+'一次載 '+q.d+' 個人，有 '+q.n+' 個小朋友排隊。開一班車、請小朋友上車，排隊的人都上車了，按「做好了」。';
+  if(q.sk==='pizza')return '🍕 一個披薩有 '+q.d+' 片，有 '+q.n+' 個人排隊，每人拿 1 片。買披薩、讓大家一個一個拿，排隊的人都拿到了，按「做好了」。';
   if(q.sk==='ribbon')return '✂️ 緞帶長 '+q.n+' 公分，一格是 1 公分。每次剪下 '+q.d+' 公分，剪到不能再剪為止。';
   if(q.sk==='rope')return '🎀 紅繩長 '+q.n+' 公分，一格是 1 公分。綁一個蝴蝶結用掉 '+q.d+' 公分，綁到不能再綁為止。';
   if(q.sk==='dots')return '🟠 有 '+q.n+' 個點點，每 '+q.d+' 個圈一圈，圈到不能再圈。剩下的點點不夠圈一圈，就是餘數。';
   var cn=q.sk==='diabolo'?'個班級':S.ct;return '要平分給 '+q.d+' '+cn+'：先準備 '+q.d+' '+cn+'，再「'+S.one+'」，分到不夠再分為止。';
 };
+/* 在圖上點選、理由卡 */
+ApDesk.prototype.cPick=function(st,q,w,a,v){
+  w.msg='';w.good=0;w.hl=null;w.tg=w.tg||{};
+  if(a==='pk'){if(w.s!=='ans')return;w.pk=w.pk||[];var j=w.pk.indexOf(v);if(j>=0)w.pk.splice(j,1);else if(q.ask==='last'||q.ask==='each'||q.ask==='rem')w.pk=[v];else w.pk.push(v);this.changed();return;}
+  if(a==='pkok'){if(w.s!=='ans')return;var r=apPickCheck(q,w);
+    if(r.ok){var rc=apCards(q);if(rc){w.s='why';w.rc=rc;}else{w.msg='答對了！'+apSay(q);w.good=1;this.finish();}}
+    else if(r.empty)w.msg='先在圖上點一點：題目問的是哪些？';
+    else{w.miss++;if(r.tg)w.tg[r.tg]=(w.tg[r.tg]||0)+1;w.msg=r.msg;w.hl=r.hl||null;}
+    this.changed();return;}
+  if(a==='rc'){if(w.s!=='why')return;
+    if(v===apCardRight(q)){w.msg='想得很清楚！'+apSay(q);w.good=1;this.finish();}
+    else{w.miss++;if(v==='p1')w.tg.p1=(w.tg.p1||0)+1;w.msg=apCardMsg(q,v);}
+    this.changed();return;}
+};
 ApDesk.prototype.cProb=function(st,q,w,a,v){
-  var S=AP_SK[q.sk],i;w.msg='';w.good=0;
+  var S=AP_SK[q.sk],i;if(a==='pk'||a==='pkok'||a==='rc')return this.cPick(st,q,w,a,v);w.msg='';w.good=0;w.hl=null;
   if(w.s==='op'){
     if(S.e==='pack'){
       if(a==='add'){if(w.g.length&&w.g[w.g.length-1]<q.d&&w.L>0){w.msg='這一'+S.ct+'還沒'+(S.full||'滿')+'喔，先把它'+(S.full||'裝滿')+'。';}else if(w.L<=0){w.msg='已經沒有'+(S.it==='🧒'?'人在排隊':'東西')+'了。';}else w.g.push(0);}
@@ -2344,7 +2465,7 @@ ApDesk.prototype.cProb=function(st,q,w,a,v){
       else if(a==='un'){if(!w.g.length||Math.min.apply(null,w.g)<1)return;for(i=0;i<w.g.length;i++)w.g[i]--;w.L+=w.g.length;}
     }
     if(a==='opok'){var ok=false;
-      if(S.e==='pack'&&S.part){var allFull=w.g.slice(0,-1).every(function(c){return c===q.d;});if(w.L>0)w.msg='還有 '+w.L+' '+S.iu+(q.sk==='pizza'?'沒拿到披薩':'沒坐到')+'喔！題目說大家都要'+(q.sk==='pizza'?'吃到':'坐到')+'。';else if(!allFull)w.msg='前面的'+S.ct+'還沒'+S.full+'，就換下一'+S.ct+'了喔，請一'+S.ct+'一'+S.ct+(S.full==='分完'?'分完':'坐滿')+'。';else ok=true;}
+      if(S.e==='pack'&&S.part){var allFull=w.g.slice(0,-1).every(function(c){return c===q.d;});if(w.L>0)w.msg='還有 '+w.L+' '+S.iu+'在排隊，先讓大家都'+(q.sk==='pizza'?'拿到披薩':'坐下')+'。';else if(!allFull)w.msg='前面的'+S.ct+'還沒'+S.full+'，就換下一'+S.ct+'了喔，請一'+S.ct+'一'+S.ct+(S.full==='分完'?'分完':'坐滿')+'。';else ok=true;}
       else if(S.e==='pack'){if(w.L>=q.d)w.msg='還沒用的還有 '+w.L+(S.cm?' 公分':' 個')+'，還可以再'+(q.sk==='rope'?'綁一個':q.sk==='dots'?'圈一圈':'剪一段')+'喔！';else ok=true;}
       else{if(w.g.length!==q.d)w.msg='題目說要分成 '+q.d+' '+S.ct+'喔，現在有 '+w.g.length+' '+S.ct+'。';else if(w.L>=q.d)w.msg='剩下 '+w.L+' '+S.iu+'，還夠每'+S.ct+'再放 1 '+S.iu+'喔，再分分看！';else ok=true;}
       if(ok){w.s='eq';w.f='a';w.msg='做好了！看著你做的，把算式寫下來。';w.good=1;}else w.miss++;}
@@ -2362,23 +2483,17 @@ ApDesk.prototype.cProb=function(st,q,w,a,v){
     if(w.s==='vt'){var r=rmRight(q),bad=[];['Q1','Q0'].forEach(function(k){if((w.c[k]||'')!==(r[k]||''))bad.push(k);});if(!bad.length)['P1','P0'].forEach(function(k){if((w.c[k]||'')!==(r[k]||''))bad.push(k);});if(!bad.length)['M1','M0'].forEach(function(k){if((w.c[k]||'')!==(r[k]||''))bad.push(k);});
       if(!bad.length){w.s='ans';w.f='x';w.bad=[];w.msg='';}else{w.miss++;w.bad=bad;var k0=bad[0].charAt(0);w.msg=k0==='Q'?'商寫在被除數個位的上面。':k0==='P'?q.d+' × '+Q+' = ？個位對個位。':q.n+' − '+(q.d*Q)+' = ？';}
       this.changed();return;}
-    if(w.s==='ans'){var ans=apAns(q),xs=[e.x,e.y];if(xs[0]===''||(ans.length>1&&xs[1]===''))return;
-      if(+xs[0]===ans[0]&&(ans.length<2||+xs[1]===ans[1])){w.msg='答對了！'+this.why(q);w.good=1;this.finish();}
-      else{w.miss++;w.msg=this.hint(q,+xs[0],+xs[1]);}
+    if(w.s==='ans'){if(q.ask!=='gap'||e.x==='')return;
+      if(+e.x===apAns(q)){w.msg='答對了！'+apSay(q);w.good=1;this.finish();}
+      else{w.miss++;w.msg=this.hint(q,+e.x);w.hl=AP_SK[q.sk].cm?'L':String(w.g.length-1);}
       this.changed();return;}
   }
   if(a==='dv'&&w.s==='div'){var can=q.n%q.d===0;if((v==='1')===can){w.msg=can?'對！剛好圈完，沒有剩下，餘數是 0，就是整除。':'對！還剩下 '+(q.n%q.d)+' 個圈不起來，餘數不是 0，不能整除。';w.good=1;this.finish();}else{w.miss++;w.msg='看看圖：最後還有沒有剩下圈不起來的點點？';}this.changed();return;}
 };
-ApDesk.prototype.why=function(q){var Q=Math.floor(q.n/q.d),R=q.n%q.d,S=AP_SK[q.sk];
-  if(q.ask==='full')return R?(S.cm?'最後剩下 '+R+' 公分，不夠再'+(q.sk==='rope'?'綁一個蝴蝶結':'剪一段')+'，所以不算。':'最後一'+S.ct+'只有 '+R+' '+S.iu+'，沒有'+S.full+'，所以不算。'):'剛好'+(S.full||'分完')+'。';
-  if(q.ask==='all')return R?'最後還有 '+R+' '+S.iu+'，也要再'+(q.sk==='pizza'?'買一個':'載一次')+'，所以是 '+Q+' + 1 = '+(Q+1)+'。':'剛好分完。';
-  return '';};
-ApDesk.prototype.hint=function(q,x,y){var Q=Math.floor(q.n/q.d),R=q.n%q.d,S=AP_SK[q.sk];
-  if(q.ask==='all'&&x===Q&&R)return '看看左邊：一共'+(q.sk==='pizza'?'買了幾個披薩':'開了幾班車')+'？最後那'+(q.sk==='pizza'?'個':'班')+'只有 '+R+' '+S.iu+'，也要算喔！';
-  if(q.ask==='full'&&x===Q+1&&R)return '看看左邊：最後那一'+S.ct+(S.cm?'只有 '+R+' 公分，夠不夠？':'有坐滿嗎？題目問的是「坐滿」幾排。');
-  if(q.ask==='each'&&x!==Q)return '題目問的是「每'+S.ct+'有幾'+S.iu+'」，看看每'+S.ct+'放了幾'+S.iu+'。';
-  if(q.ask.indexOf('rem')>=0&&x===Q&&y!==R)return '剩下的是多少？看看還沒分的。';
-  return '再看看你做的圖，題目問的是什麼？';};
+/* 答錯時給的提示：讓孩子回去看圖 */
+ApDesk.prototype.hint=function(q,x){var R=q.n%q.d,S=AP_SK[q.sk],lab=apLab(q.sk,Math.max(1,Math.ceil(q.n/q.d)));
+  if(S.cm)return '看看剩下的那一段有幾公分？一'+AP_WD[q.sk].g+'要 '+q.d+' 公分，還差幾公分？';
+  return '看看圖上的'+lab+'，數一數'+(q.sk==='pizza'?'還剩幾片':'還空著幾個位子')+'？';};
 /* ----- p.86 苦瓜路線 ----- */
 ApDesk.prototype.hPath=function(st,q){
   var w=st.w,cur=w.path[w.path.length-1],key=cur[0]+'-'+cur[1],got=w.qv[key],h2='<div class="rm-head"><span class="lv">p.86 第 1 題・苦瓜路線</span><b>規則：這一籃算式的「商」，是下一籃算式的「除數」。從 12 ÷ 3 出發，走到出口！</b></div>';
@@ -2402,7 +2517,7 @@ ApDesk.prototype.cPath=function(st,q,w,a,v){
     if(w.path.some(function(p){return p[0]===rc[0]&&p[1]===rc[1];})){w.msg='這一籃走過了。';this.changed();return;}
     var nx=AP_PATH[rc[0]][rc[1]].split('÷').map(Number);if(nx[1]!==qv){w.miss++;w.msg=AP_PATH[rc[0]][rc[1]]+' 的除數是 '+nx[1]+'，不是 '+qv+'。再找找看！';this.changed();return;}
     w.path.push(rc);this.changed();return;}
-  if(a==='exit'){if(cur[0]===2&&cur[1]===2&&w.qv[key]!=null){w.s='done';w.good=1;st.res.push({ok:true,al:w.miss===0});}this.changed();return;}
+  if(a==='exit'){if(cur[0]===2&&cur[1]===2&&w.qv[key]!=null){w.s='done';w.good=1;st.res.push({ok:true,al:w.miss===0,tg:w.tg||{}});}this.changed();return;}
 };
 (function(){var css=
 '.ap-pic{display:flex;gap:12px;flex-wrap:wrap;align-items:flex-start;background:#fff;border-radius:14px;padding:10px}.ap-cs{display:flex;flex-wrap:wrap;gap:8px;flex:1;min-width:0}'+
@@ -2467,7 +2582,8 @@ var s=document.createElement('style');s.textContent=css;document.head.appendChil
 '.ap-strip .ru span{position:absolute;top:11px;transform:translateX(-50%);font-size:11px;font-weight:700;color:#333}.ap-strip .ru span.end{color:#c62828}'+
 '.ap-sinfo{margin-top:6px;font-size:15px;color:var(--muted)}.ap-sinfo b{color:var(--ink);font-size:17px}'+
 /* 點點 */
-'.ap-c i.dot,.ap-rest i.dot{width:20px;height:20px}.ap-c i.dot::before,.ap-rest i.dot::before{content:"";width:15px;height:15px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#ffd29a,#f07c1b 70%)}.ap-rest[data-a]:hover{border-color:#c46f00}';
+'.ap-c i.dot,.ap-rest i.dot{width:20px;height:20px}.ap-c i.dot::before,.ap-rest i.dot::before{content:"";width:15px;height:15px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#ffd29a,#f07c1b 70%)}.ap-rest[data-a]:hover{border-color:#c46f00}'+
+'.ap-pic .pkable{cursor:pointer;outline:3px dashed rgba(42,111,176,.4);outline-offset:2px}.ap-pic .pkable:hover{outline-color:#2a7fc4}.ap-pic .pk-on{outline:4px solid #e53935!important;outline-offset:3px;box-shadow:0 0 0 7px rgba(229,57,53,.16)}.ap-pic .pk-hl{animation:apHl .55s 6 alternate}@keyframes apHl{from{filter:none}to{filter:drop-shadow(0 0 10px #ff9800) brightness(1.12)}}.ap-eq.ans{flex-direction:column;align-items:flex-start;gap:6px}.ap-pkt{font-size:15px;color:var(--muted)}.ap-eq.ans>div{font-size:18px}.ap-cards{display:flex;flex-direction:column;gap:7px;margin-top:6px;max-width:320px}.ap-cards button{font:inherit;font-size:16px;font-weight:700;text-align:left;border:2px solid #cfd8dc;background:#fff;border-radius:12px;padding:9px 12px;cursor:pointer;color:var(--ink)}.ap-cards button:hover{border-color:#2a7fc4;background:#f3f9ff}';
 var s=document.createElement('style');s.textContent=css;document.head.appendChild(s);})();
 
 /* ================= 分數板：切一切、塗一塗、比一比、合起來（參考 Polypad 分數條、分數圓的操作概念，自己設計） =================
