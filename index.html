@@ -294,7 +294,7 @@ var ROLE='student';
 var PAGES={};
 var LITE=true;
 var STUDENT_URL='https://alanhuangz.github.io/jiao-classroom/';
-var PAGE_IDS=["59", "60", "61", "62", "63", "69", "70", "71", "72", "73", "74", "75", "b86", "b87", "b88", "b89", "b90", "b91", "b92", "b93", "b94", "b95", "b96", "b97", "b76", "b77", "b78", "b79", "b80", "b81", "b82", "b83", "z76", "z77", "z78", "z79", "z80", "z81", "z82", "z83", "z84", "z85", "z86", "z87", "z88", "z89", "z90", "z91", "z92", "z93", "z94", "z95", "z96", "z97", "z98", "z99", "z108", "z109", "z110", "z111", "z112", "z113", "z114", "z115", "z116", "z117", "z118", "z119", "z120", "z121", "z122", "z123", "z124", "z125", "z126", "z127", "z128", "z129", "z130", "z131", "66", "67", "b98", "b99", "b100", "b101", "b102", "b103", "b104", "b105", "b106", "b107", "b108", "b109", "b110", "b111", "76", "77", "78", "79", "80", "81", "82", "83", "84", "85", "86", "87", "s68", "s69", "s70", "s71", "s72", "s73", "s74", "s75", "s76", "s77", "s78", "sw18", "sw19", "sw20", "sw21", "b112", "b113", "b114", "b115", "b116", "b117", "b118", "b119", "b120", "b121", "b122", "b123", "b124", "b125", "89", "90", "91", "92", "93", "94", "95", "96", "97", "98", "99", "100", "101"];
+var PAGE_IDS=["59", "60", "61", "62", "63", "69", "70", "71", "72", "73", "74", "75", "b86", "b87", "b88", "b89", "b90", "b91", "b92", "b93", "b94", "b95", "b96", "b97", "b76", "b77", "b78", "b79", "b80", "b81", "b82", "b83", "z76", "z77", "z78", "z79", "z80", "z81", "z82", "z83", "z84", "z85", "z86", "z87", "z88", "z89", "z90", "z91", "z92", "z93", "z94", "z95", "z96", "z97", "z98", "z99", "z108", "z109", "z110", "z111", "z112", "z113", "z114", "z115", "z116", "z117", "z118", "z119", "z120", "z121", "z122", "z123", "z124", "z125", "z126", "z127", "z128", "z129", "z130", "z131", "66", "67", "b98", "b99", "b100", "b101", "b102", "b103", "b104", "b105", "b106", "b107", "b108", "b109", "b110", "b111", "76", "77", "78", "79", "80", "81", "82", "83", "84", "85", "86", "87", "s68", "s69", "s70", "s71", "s72", "s73", "s74", "s75", "s76", "s77", "s78", "sw18", "sw19", "sw20", "sw21", "b112", "b113", "b114", "b115", "b116", "b117", "b118", "b119", "b120", "b121", "b122", "b123", "b124", "b125", "89", "90", "91", "92", "93", "94", "95", "96", "97", "98", "99", "100", "101", "b126", "b127", "b128", "b129", "b130", "b131", "b132", "b133", "b134", "b135", "b136", "b137", "b138", "b139", "103", "104", "105", "106", "107", "108", "109", "110", "111", "112", "113"];
 var PREFIX='jiao3-wk-';
 var CLASS_CODE='0301';
 var ROSTER={};
@@ -2590,9 +2590,52 @@ var s=document.createElement('style');s.textContent=css;document.head.appendChil
    一個「整體」用 ＋／− 平分成幾塊（每塊一樣大），點一塊就塗色；比大小時兩條分數條上下對齊；加減用兩種顏色＋「吃掉」。
    圖（切幾塊、塗幾塊）和寫的分數都對，才算對；錯了後面多加一題同類型的。 */
 TASKS.push(
+  /* 第 9 單元 分數：4 套核心概念操作教具（純精細實物圖樣媒介、拆籬笆、X光想像線、印章鋪滿、離散量防呆） */
+  {id:'f9a',kind:'fr',unit:'frac',title:'平分①：拆籬笆 & X 光想像線',sub:'沒切開也是 1/3、1/8！ 6 題'},
+  {id:'f9b',kind:'fr',unit:'frac',title:'平分②：疊疊看・鋪滿整體 1',sub:'王爺爺菜地、檸檬派、鬆餅 7 題'},
+  {id:'f9c',kind:'fr',unit:'frac',title:'整體 1 圖譜實驗室',sub:'先連續再離散・看實物圖樣 8 題'},
+  {id:'f9d',kind:'fr',unit:'frac',title:'離散量：被拿走後＆比大小',sub:'甜甜圈 1/6 vs 1/5、片與盒 6 題'},
   {id:'fr1',kind:'fr',unit:'frac',title:'分數板①：幾分之幾',sub:'平分、塗色、寫分數 10 題'},
   {id:'fr2',kind:'fr',unit:'frac',title:'分數板②：比大小',sub:'兩條分數條排一排 8 題'},
-  {id:'fr3',kind:'fr',unit:'frac',title:'分數板③：合起來、吃掉',sub:'同分母加減 8 題'}
+  {id:'fr3',kind:'fr',unit:'frac',title:'分數板③：合起來、吃掉',sub:'同分母加減 8 題'},
+  /* 第 9 單元 課本 p.126–139 */
+  {id:'fb126',unit:'fracb',kind:'wb',page:'b126',box:[20,0,1200,1520],ink:true,title:'p.126 故事＋暖身①②',sub:'認識平分、幾分之一'},
+  {id:'fb127',unit:'fracb',kind:'wb',page:'b127',box:[20,0,1200,1520],ink:true,title:'p.127 水壺＋暖身③',sub:'比大小、合起來'},
+  {id:'fb128',unit:'fracb',kind:'wb',page:'b128',box:[20,10,1200,1470],ink:true,title:'p.128 9-1 蔥油餅',sub:'平分成 4 片・1/4 與 2/4'},
+  {id:'fb129a',unit:'fracb',kind:'wb',page:'b129',box:[20,20,1200,560],ink:true,title:'p.129 蔥油餅 ③④',sub:'3/4 張、4/4 張＝1 張'},
+  {id:'fb129b',unit:'fracb',kind:'wb',page:'b129',box:[20,580,1200,900],ink:true,title:'p.129 2 披薩 8 片',sub:'品妍、柏宇、子晴吃幾個'},
+  {id:'fb130a',unit:'fracb',kind:'wb',page:'b130',box:[20,20,1200,390],ink:true,title:'p.130 3 正方形色紙',sub:'哪一張是 2/3 張？'},
+  {id:'fb130b',unit:'fracb',kind:'wb',page:'b130',box:[20,410,1200,660],ink:true,title:'p.130 4 檸檬派切 6 片',sub:'沒平分！宇翔吃幾分之幾？'},
+  {id:'fb130c',unit:'fracb',kind:'wb',page:'b130',box:[20,1070,1200,410],ink:true,title:'p.130 做做看',sub:'哪一個是 3/12 個披薩'},
+  {id:'fb131a',unit:'fracb',kind:'wb',page:'b131',box:[20,10,1200,1060],ink:true,title:'p.131 9-2 戰鬥陀螺',sub:'1 個也是 1/6 盒'},
+  {id:'fb131b',unit:'fracb',kind:'wb',page:'b131',box:[20,1070,1200,400],ink:true,title:'p.131 2 印章 12 個',sub:'幾個也是幾盒'},
+  {id:'fb132a',unit:'fracb',kind:'wb',page:'b132',box:[20,20,1200,520],ink:true,title:'p.132 3 果凍 10 個',sub:'個與盒互換'},
+  {id:'fb132b',unit:'fracb',kind:'wb',page:'b132',box:[20,530,1200,520],ink:true,title:'p.132 4 甜甜圈 6 個',sub:'妹妹拿的是 1/6 還是 1/5？'},
+  {id:'fb132c',unit:'fracb',kind:'wb',page:'b132',box:[20,1050,1200,420],ink:true,title:'p.132 做做看',sub:'9 個吊飾各是幾分之幾盒'},
+  {id:'fb133',unit:'fracb',kind:'wb',page:'b133',box:[20,10,1200,1470],ink:true,title:'p.133 9-3 1 公尺彩帶',sub:'分數數詞序列 1/10～10/10'},
+  {id:'fb134a',unit:'fracb',kind:'wb',page:'b134',box:[20,20,1200,660],ink:true,title:'p.134 2 跳格塗色紙條',sub:'三條都是 6/11 條嗎？'},
+  {id:'fb134b',unit:'fracb',kind:'wb',page:'b134',box:[20,680,1200,800],ink:true,title:'p.134 3 緞帶與做做看',sub:'1 公尺平分看長度'},
+  {id:'fb135',unit:'fracb',kind:'wb',page:'b135',box:[20,10,1200,1470],ink:true,title:'p.135 9-4 分數比大小',sub:'壽司卷、披薩、做做看'},
+  {id:'fb136a',unit:'fracb',kind:'wb',page:'b136',box:[20,20,1200,980],ink:true,title:'p.136 檸檬塔＆餅乾',sub:'5 片和 4/10 盒誰多？'},
+  {id:'fb136b',unit:'fracb',kind:'wb',page:'b136',box:[20,1000,1200,470],ink:true,title:'p.136 做做看 水蜜桃',sub:'5/12 盒 vs 8 顆'},
+  {id:'fb137a',unit:'fracb',kind:'wb',page:'b137',box:[20,20,1200,560],ink:true,title:'p.137 2 王爺爺的菜地',sub:'小白菜是 1/2 還是 1/3 塊地？'},
+  {id:'fb137b',unit:'fracb',kind:'wb',page:'b137',box:[20,580,1200,480],ink:true,title:'p.137 3 羽彤＆彥辰鬆餅',sub:'猜猜吃了多少個鬆餅'},
+  {id:'fb137c',unit:'fracb',kind:'wb',page:'b137',box:[20,1060,1200,420],ink:true,title:'p.137 做做看',sub:'估計塗色部分比大小'},
+  {id:'fb138',unit:'fracb',kind:'wb',page:'b138',box:[20,10,1200,1470],ink:true,title:'p.138 練習九 1～2',sub:'餅乾盤、蛋糕、果汁杯'},
+  {id:'fb139',unit:'fracb',kind:'wb',page:'b139',box:[20,10,1200,1470],ink:true,title:'p.139 練習九 3～5',sub:'3/8 彩帶、圈圈看、比大小'},
+  /* 第 9 單元 習作 p.103–113 */
+  {id:'fw103',unit:'fracw',kind:'wb',page:'103',box:[20,10,1200,1470],ink:true,title:'習p.103 1',sub:'披薩平分 8 片'},
+  {id:'fw104',unit:'fracw',kind:'wb',page:'104',box:[20,10,1200,1470],ink:true,title:'習p.104 2',sub:'檸檬塔、蛋糕、果汁杯'},
+  {id:'fw105a',unit:'fracw',kind:'wb',page:'105',box:[20,20,1200,660],ink:true,title:'習p.105 3 國旗',sub:'紅色是幾分之幾面國旗'},
+  {id:'fw105b',unit:'fracw',kind:'wb',page:'105',box:[20,680,1200,790],ink:true,title:'習p.105 4 披薩誰說對',sub:'判斷沒平分的披薩'},
+  {id:'fw106',unit:'fracw',kind:'wb',page:'106',box:[20,10,1200,1470],ink:true,title:'習p.106 9-2 填填看',sub:'彈珠、餅乾、蘋果、雞蛋、布丁'},
+  {id:'fw107',unit:'fracw',kind:'wb',page:'107',box:[20,10,1200,1470],ink:true,title:'習p.107 2～3',sub:'一壺茶 7 杯、一盒甜甜圈 8 個'},
+  {id:'fw108',unit:'fracw',kind:'wb',page:'108',box:[20,10,1200,1470],ink:true,title:'習p.108 9-3 火車',sub:'10 節車廂與分數序列'},
+  {id:'fw109',unit:'fracw',kind:'wb',page:'109',box:[20,10,1200,1470],ink:true,title:'習p.109 3～4',sub:'8/11 條緞帶、蔥油餅與 1 公尺'},
+  {id:'fw110',unit:'fracw',kind:'wb',page:'110',box:[20,10,1200,1470],ink:true,title:'習p.110 9-4 填填看',sub:'蛋糕、蛋卷、蛋塔比大小'},
+  {id:'fw111',unit:'fracw',kind:'wb',page:'111',box:[20,10,1200,1470],ink:true,title:'習p.111 2～3',sub:'塗色比大小、沒切開的估計'},
+  {id:'fw112',unit:'fracw',kind:'wb',page:'112',box:[20,10,1200,1470],ink:true,title:'習p.112 綜合練習 1～3',sub:'隔熱墊、月餅盒、分數序列'},
+  {id:'fw113',unit:'fracw',kind:'wb',page:'113',box:[20,10,1200,1470],ink:true,title:'習p.113 綜合練習 4～5',sub:'設計旗子、蜂蜜蛋糕'}
 );
 var FR_IT={
   cake:{sh:'pie',nm:'蛋糕',u:'個',pc:'塊',bg:'#fff4f4',bd:'#e39aa5'},
@@ -2621,18 +2664,20 @@ function frMkCmp(kind){
   return frQ('cmp',{it:it,A:A,B:B});
 }
 function frGen(id){
+  if(/^f9[a-d]$/.test(id))return f9Gen(id);
   if(id==='fr1')return shuffle([frMkOne('name','pie'),frMkOne('name','bar'),frMkOne('name','pie'),frMkOne('name','bar'),frMkOne('make','bar'),frMkOne('make','pie'),frMkOne('make','bar'),frMkOne('name','pie')]).concat([frMkOne('whole','bar'),frMkOne('whole','pie')]);
   if(id==='fr2')return shuffle([frMkCmp('unit'),frMkCmp('unit'),frMkCmp('unit'),frMkCmp('den'),frMkCmp('den'),frMkCmp('den'),frMkCmp('one'),frMkCmp('unit')]);
   var qs=[frMkOne('add','pie'),frMkOne('add','bar'),frMkOne('add','pie'),frMkOne('add','bar'),frMkOne('sub','bar'),frMkOne('sub','pie'),frMkOne('sub','bar')];
   var full=frMkOne('add','pie');full.b=full.n-full.a;qs.splice(ri(1,6),0,full);return qs;
 }
 function frRows(q){return q.t==='cmp'?[{n:1,s:[0]},{n:1,s:[0]}]:[{n:1,s:[0]}];}
-function frW(q){return {rows:frRows(q),tool:1,lab:1,e:{},f:frFields(q)[0],miss:0,msg:'',good:0,s:'op'};}
+function frW(q){if(f9Is(q))return f9W(q);return {rows:frRows(q),tool:1,lab:1,e:{},f:frFields(q)[0],miss:0,msg:'',good:0,s:'op'};}
 function frNew(id){var qs=frGen(id);return {k:'fr',ver:1,id:id,qs:qs,i:0,w:frW(qs[0]),res:[],add:0,done:false};}
-function frFields(q){return q.t==='cmp'?[]:q.t==='make'?['x','y']:(q.t==='add'||q.t==='sub')?['a','b','c','d','e','f']:['a','b'];}
+function frFields(q,w){if(f9Is(q))return f9Fields(q,w);return q.t==='cmp'?[]:q.t==='make'?['x','y']:(q.t==='add'||q.t==='sub')?['a','b','c','d','e','f']:['a','b'];}
 function frCnt(r,v){return r.s.filter(function(x){return x===v;}).length;}
 /* 題目文字（HTML） */
-function frText(q){
+function frText(q,w){
+  if(f9Is(q))return f9Text(q,w);
   var I=FR_IT[q.it],U='一'+I.u+I.nm;
   if(q.t==='name')return '把'+U+'平分成 '+q.n+' '+I.pc+'，塗出其中 '+q.k+' '+I.pc+'。塗色的部分是幾分之幾'+I.u+'？';
   if(q.t==='make')return '在'+U+'上，塗出 '+frF(q.k,q.n)+' '+I.u+'。';
@@ -2677,6 +2722,7 @@ function frEqHint(q,w){var e=w.e,W=frWant(q),I=FR_IT[q.it];
 function frCheck(st,cmpPick){
   var q=st.qs[st.i],w=st.w;w.msg='';w.good=0;
   if(w.s==='done')return false;
+  if(f9Is(q))return f9Check(st,cmpPick);
   var pic=frPicOk(q,w),eqOk;
   if(q.t==='cmp')eqOk=cmpPick===frCmpAns(q);
   else{var W=frWant(q),ks=frFields(q),blank=ks.some(function(k){return w.e[k]==null||w.e[k]==='';});if(blank){w.msg='把空格都寫好再檢查。';return false;}eqOk=ks.every(function(k){return +w.e[k]===W[k];});}
@@ -2734,13 +2780,14 @@ function frSummary(st){
   if(!st.qs)return '';var ok=st.res.filter(function(r){return r.ok;}).length;
   if(st.done)return '<span class="good">完成！</span>一次就對 '+ok+'/'+st.res.length+(st.add?'・加練 '+st.add+' 題':'');
   var q=st.qs[st.i],w=st.w,s='第 '+(st.i+1)+'/'+st.qs.length+' 題・';
+  if(f9Is(q))return f9Summary(st);
   if(q.t==='cmp')s+='甲 切 '+w.rows[0].n+' 塗 '+frCnt(w.rows[0],1)+'・乙 切 '+w.rows[1].n+' 塗 '+frCnt(w.rows[1],1);
   else{var r=w.rows[0];s+='切成 '+r.n+' 塊・塗 '+(frCnt(r,1)+frCnt(r,2)+frCnt(r,3))+' 塊';var t=frEqText(q,w);if(t)s+='・寫 '+esc(t);}
   if(w.s==='done')s+='・<span class="good">這題對</span>';
   return s+(w.miss?'・<span class="warn">錯 '+w.miss+' 次</span>':'')+(st.add?'・加練 '+st.add:'');
 }
 function frTile(box,st,big){if(!st.qs){box.innerHTML='';return;}var h2='<div class="rmt frt'+(big?' big':'')+'">'+frSummary(st);
-  if(!st.done){var q=st.qs[st.i];h2+='<div class="frt-q">'+frText(q)+'</div>'+frBoardSVG(q,st.w,false);}
+  if(!st.done){var q=st.qs[st.i];h2+='<div class="frt-q">'+frText(q,st.w)+'</div>'+(f9Is(q)?f9BoardSVG(q,st.w,false):frBoardSVG(q,st.w,false));}
   box.innerHTML=h2+'</div>';}
 
 function FrDesk(root,ws){
@@ -2763,13 +2810,14 @@ FrDesk.prototype.click=function(a,v){
   if(st.done)return;var q=st.qs[st.i],w=st.w;
   if(a==='next'){if(w.s!=='done')return;frNext(st);this.changed();return;}
   if(w.s==='done')return;
+  if(f9Is(q)&&a!=='f'&&a!=='k'){this.f9Click(a,v);return;}
   if(a==='cut'){var p=v.split(','),r=w.rows[+p[0]],nn=Math.max(1,Math.min(12,r.n+(+p[1])));if(nn===r.n)return;r.n=nn;r.s=[];for(var i=0;i<nn;i++)r.s.push(0);w.msg='';this.changed();return;}
   if(a==='tool'){w.tool=+v;this.render();return;}
   if(a==='clr'){w.rows.forEach(function(r){for(var i=0;i<r.n;i++)r.s[i]=0;});this.changed();return;}
   if(a==='lab'){w.lab=w.lab===0?1:0;this.changed();return;}
   if(a==='f'){w.f=v;this.render();return;}
   if(a==='k'){var f=w.f;if(!f)return;var cur=w.e[f]==null?'':String(w.e[f]);if(v==='⌫')cur=cur.slice(0,-1);else if(cur.length<2)cur=(cur==='0'?'':cur)+v;w.e[f]=cur;
-    if(v!=='⌫'&&cur.length===1){var ks=frFields(q),j=ks.indexOf(f);if(j+1<ks.length)w.f=ks[j+1];}
+    if(v!=='⌫'&&!f9Is(q)&&cur.length===1){var ks=frFields(q,w),j=ks.indexOf(f);if(j+1<ks.length)w.f=ks[j+1];}
     this.changed();return;}
   if(a==='check'&&q.t!=='cmp'){frCheck(st);this.changed();return;}
   if(a==='cmp'&&q.t==='cmp'){frCheck(st,v);this.changed();return;}
@@ -2777,7 +2825,9 @@ FrDesk.prototype.click=function(a,v){
 FrDesk.prototype.render=function(){
   var root=this.root;if(root._owner!==this)return;var st=this.st();if(!st||st.k!=='fr')return;
   if(st.done){var cl=st.res.filter(function(r){return r.ok;}).length;root.innerHTML='<div class="rm"><div class="rm-done"><div class="big">🎉 完成了！</div><div>做了 '+st.res.length+' 題，一次就對 <b>'+cl+'</b> 題'+(st.add?'（有 '+st.add+' 題是錯了以後加練的）':'')+'</div><button type="button" class="rm-btn" data-a="again">再玩一輪</button></div></div>';return;}
-  var q=st.qs[st.i],w=st.w,I=FR_IT[q.it],h2='<div class="rm"><div class="rm-head"><span class="lv">'+esc(TASK[st.id].title)+'</span><b class="frhq">'+frText(q)+'</b><span class="no">第 '+(st.i+1)+' / '+st.qs.length+' 題</span></div>';
+  var q=st.qs[st.i],w=st.w;
+  if(f9Is(q)){this.f9Render();return;}
+  var I=FR_IT[q.it],h2='<div class="rm"><div class="rm-head"><span class="lv">'+esc(TASK[st.id].title)+'</span><b class="frhq">'+frText(q)+'</b><span class="no">第 '+(st.i+1)+' / '+st.qs.length+' 題</span></div>';
   h2+='<div class="rm-body fr-body"><div class="rm-col fr-tools">';
   w.rows.forEach(function(r,k){h2+='<div class="fr-cut"><div class="t">'+(q.t==='cmp'?'<b>'+(k?'乙':'甲')+'</b> ':'')+'平分成</div><div class="ctl"><button type="button" data-a="cut" data-v="'+k+',-1"'+(r.n<=1?' disabled':'')+'>−</button><b class="n">'+r.n+'</b><button type="button" data-a="cut" data-v="'+k+',1"'+(r.n>=12?' disabled':'')+'>＋</button><span>'+I.pc+'</span></div></div>';});
   if(q.t==='add')h2+='<div class="fr-pens"><button type="button" data-a="tool" data-v="1" class="'+(w.tool===1?'on':'')+'"><i style="background:'+FR_C[1]+'"></i>哥哥吃的</button><button type="button" data-a="tool" data-v="2" class="'+(w.tool===2?'on':'')+'"><i style="background:'+FR_C[2]+'"></i>妹妹吃的</button></div>';
@@ -2807,6 +2857,758 @@ FrDesk.prototype.render=function(){
 '.fr-cmp{display:flex;flex-direction:column;gap:8px;width:100%}.fr-cmp button{font:inherit;font-size:20px;font-weight:800;border:3px solid var(--line);border-radius:12px;background:#fff;padding:10px}.fr-cmp button.on{border-color:var(--green);background:#eefaf2}'+
 '.frt .frt-q{margin:4px 0;font-size:12px;color:var(--muted)}.frt.big .frt-q{font-size:17px}.frt .fr-svg{max-height:140px}.frt.big .fr-svg{max-height:none}.frhq{line-height:1.6}';
 var s=document.createElement('style');s.textContent=css;document.head.appendChild(s);})();
+
+
+/* ================= 第 9 單元 分數核心概念體驗（f9a 拆籬笆＆X光想像線、f9b 疊疊看＆鋪滿整體1、f9c 整體1圖譜實驗室、f9d 離散量防呆＆比大小） =================
+   兩大教學靈魂：
+   1. 精細 SVG 實物圖樣媒介（零 emoji、絕不放空盤子）：
+      「單個數量」後面掛單獨 1 個實物縮圖；「分數」後面掛整個完整實物（如畫滿 5 片餅乾的整盤、裝滿 6 顆的整盒）的等比例縮圖，點圖樣會即時點亮主畫面對應部位！
+   2. 打破「一定要全部切開才算 1/3、1/8」：
+      透過親手「拆掉切線（大小不變）」、「只切最右邊做出 1/2→1/4→1/8 ＋ X 光想像線」、「拿這塊當印章鋪滿整體 1」，徹底建立分數是「與整體 1 的大小關係」。 */
+var F9_T={f9erase:1,f9half:1,f9ovl:1,f9stamp:1,f9ribbon:1,f9pack:1,f9take:1,f9dcmp:1};
+function f9Is(q){return !!(q&&F9_T[q.t]);}
+
+/* ---------- 精細 SVG 實物繪製（主舞台與微縮圖樣共用同一套畫法，1:1 對應、完全無 emoji） ---------- */
+function f9DrawObj(kind,cx,cy,r,sel,ghost){
+  var op=ghost?'.25':'1',s='<g opacity="'+op+'">';
+  if(sel)s+='<circle cx="'+cx+'" cy="'+cy+'" r="'+(r*1.22).toFixed(1)+'" fill="#fff2cc" stroke="#e07a12" stroke-width="2.5"/>';
+  if(kind==='cookie'){
+    s+='<circle cx="'+cx+'" cy="'+cy+'" r="'+r+'" fill="#dc9e4e" stroke="#9e6220" stroke-width="'+(r>14?2.2:1.3)+'"/>';
+    [[-.38,-.25],[.28,-.35],[-.1,.08],[.36,.22],[-.3,.36]].forEach(function(p){
+      s+='<circle cx="'+(cx+p[0]*r).toFixed(1)+'" cy="'+(cy+p[1]*r).toFixed(1)+'" r="'+(r*.15).toFixed(1)+'" fill="#4c280f"/>';
+    });
+  }else if(kind==='donut'){
+    s+='<circle cx="'+cx+'" cy="'+cy+'" r="'+r+'" fill="#e6ab5e" stroke="#a66e2a" stroke-width="'+(r>14?2:1.2)+'"/>';
+    s+='<circle cx="'+cx+'" cy="'+cy+'" r="'+(r*.84).toFixed(1)+'" fill="#f48fb1"/>';
+    [[-.45,-.2],[.35,-.35],[.42,.18],[-.3,.42]].forEach(function(p,i){
+      s+='<circle cx="'+(cx+p[0]*r).toFixed(1)+'" cy="'+(cy+p[1]*r).toFixed(1)+'" r="'+(r*.11).toFixed(1)+'" fill="'+(i%2?'#fff6b3':'#ffffff')+'"/>';
+    });
+    s+='<circle cx="'+cx+'" cy="'+cy+'" r="'+(r*.34).toFixed(1)+'" fill="#ffffff" stroke="#c88a42" stroke-width="'+(r>14?1.6:1)+'"/>';
+  }else if(kind==='jelly'){
+    s+='<path d="M'+(cx-r*.85).toFixed(1)+' '+(cy+r*.72).toFixed(1)+' L'+(cx-r*.62).toFixed(1)+' '+(cy-r*.65).toFixed(1)+' Q'+cx+' '+(cy-r*.92).toFixed(1)+' '+(cx+r*.62).toFixed(1)+' '+(cy-r*.65).toFixed(1)+' L'+(cx+r*.85).toFixed(1)+' '+(cy+r*.72).toFixed(1)+' Z" fill="#59c983" stroke="#2b8a4e" stroke-width="'+(r>14?2:1.2)+'"/>';
+    s+='<ellipse cx="'+cx+'" cy="'+(cy-r*.55).toFixed(1)+'" rx="'+(r*.42).toFixed(1)+'" ry="'+(r*.16).toFixed(1)+'" fill="#b8f2cc"/>';
+  }else if(kind==='top'){
+    s+='<circle cx="'+cx+'" cy="'+cy+'" r="'+r+'" fill="#3d8bd9" stroke="#1e538c" stroke-width="'+(r>14?2:1.2)+'"/>';
+    s+='<circle cx="'+cx+'" cy="'+cy+'" r="'+(r*.68).toFixed(1)+'" fill="#f5b030" stroke="#c77a14" stroke-width="'+(r>14?1.6:1)+'"/>';
+    s+='<circle cx="'+cx+'" cy="'+cy+'" r="'+(r*.3).toFixed(1)+'" fill="#e54d42"/>';
+    s+='<circle cx="'+cx+'" cy="'+cy+'" r="'+(r*.12).toFixed(1)+'" fill="#fff"/>';
+  }else if(kind==='pudding'){
+    s+='<path d="M'+(cx-r*.88).toFixed(1)+' '+(cy+r*.76).toFixed(1)+' L'+(cx-r*.62).toFixed(1)+' '+(cy-r*.55).toFixed(1)+' Q'+cx+' '+(cy-r*.88).toFixed(1)+' '+(cx+r*.62).toFixed(1)+' '+(cy-r*.55).toFixed(1)+' L'+(cx+r*.88).toFixed(1)+' '+(cy+r*.76).toFixed(1)+' Z" fill="#fad66b" stroke="#c79522" stroke-width="'+(r>14?2:1.2)+'"/>';
+    s+='<path d="M'+(cx-r*.62).toFixed(1)+' '+(cy-r*.45).toFixed(1)+' Q'+cx+' '+(cy-r*.92).toFixed(1)+' '+(cx+r*.62).toFixed(1)+' '+(cy-r*.45).toFixed(1)+' Q'+cx+' '+(cy-r*.2).toFixed(1)+' '+(cx-r*.62).toFixed(1)+' '+(cy-r*.45).toFixed(1)+' Z" fill="#8c471c"/>';
+  }else if(kind==='peach'){
+    s+='<path d="M'+cx+' '+(cy+r*.88).toFixed(1)+' C'+(cx-r*1.1).toFixed(1)+' '+(cy+r*.45).toFixed(1)+' '+(cx-r*1.05).toFixed(1)+' '+(cy-r*.75).toFixed(1)+' '+cx+' '+(cy-r*.52).toFixed(1)+' C'+(cx+r*1.05).toFixed(1)+' '+(cy-r*.75).toFixed(1)+' '+(cx+r*1.1).toFixed(1)+' '+(cy+r*.45).toFixed(1)+' '+cx+' '+(cy+r*.88).toFixed(1)+' Z" fill="#ff9eb5" stroke="#d45d79" stroke-width="'+(r>14?2:1.2)+'"/>';
+    s+='<path d="M'+cx+' '+(cy-r*.55).toFixed(1)+' Q'+(cx+r*.55).toFixed(1)+' '+(cy-r*1.05).toFixed(1)+' '+(cx+r*.72).toFixed(1)+' '+(cy-r*.48).toFixed(1)+' Q'+(cx+r*.3).toFixed(1)+' '+(cy-r*.4).toFixed(1)+' '+cx+' '+(cy-r*.55).toFixed(1)+' Z" fill="#5bbd6e"/>';
+  }
+  return s+'</g>';
+}
+function f9PieSlicePath(cx,cy,R,a0,a1){
+  var x0=(cx+R*Math.cos(a0*Math.PI/180)).toFixed(1),y0=(cy+R*Math.sin(a0*Math.PI/180)).toFixed(1);
+  var x1=(cx+R*Math.cos(a1*Math.PI/180)).toFixed(1),y1=(cy+R*Math.sin(a1*Math.PI/180)).toFixed(1);
+  return 'M'+cx+' '+cy+' L'+x0+' '+y0+' A'+R+' '+R+' 0 '+(a1-a0>180?1:0)+' 1 '+x1+' '+y1+' Z';
+}
+/* 生成緊貼在數字／分數後面的「精細實物縮圖」（絕不用 emoji、絕不放空盤子！） */
+function f9Pic(kind,mode,n,word,hiNow,noBtn){
+  var svg='',w=56,h=38,isWhole=mode==='whole';
+  if(kind==='field'){
+    w=60;h=38;
+    svg='<rect x="3" y="4" width="54" height="30" rx="4" fill="#c99e75" stroke="#7d5634" stroke-width="2.2"/>'+
+        '<rect x="39" y="5" width="17" height="28" fill="#6cc268" opacity=".45"/>';
+  }else if(kind==='choc'){
+    w=64;h=28;
+    svg='<rect x="3" y="4" width="58" height="20" rx="3" fill="#7c4a2a" stroke="#4a2810" stroke-width="2"/>'+
+        '<rect x="7" y="7" width="50" height="14" rx="2" fill="#9a6038" opacity=".55"/>';
+  }else if(kind==='ribbon'){
+    w=n>=5?78:60;h=24;
+    svg='<rect x="3" y="4" width="'+(w-6)+'" height="16" rx="3" fill="#f5a133" stroke="#b86b11" stroke-width="2"/>';
+  }else if(kind==='strip11'){
+    if(isWhole){w=76;h=24;svg='<rect x="3" y="4" width="70" height="16" rx="2" fill="#fff6db" stroke="#8a6c2d" stroke-width="1.8"/>';for(var i=1;i<11;i++)svg+='<line x1="'+(3+70*i/11).toFixed(1)+'" x2="'+(3+70*i/11).toFixed(1)+'" y1="4" y2="20" stroke="#c8b07a" stroke-width="1"/>';}
+    else{w=24;h=24;svg='<rect x="5" y="4" width="14" height="16" rx="2" fill="#f5b83d" stroke="#a67212" stroke-width="1.8"/>';}
+  }else if(kind==='toast'){
+    w=64;h=32;
+    svg='<path d="M5 12 Q5 4 14 4 L50 4 Q59 4 59 12 L59 27 Q59 29 56 29 L8 29 Q5 29 5 27 Z" fill="#f5dca8" stroke="#b07c34" stroke-width="2.2"/>';
+  }else if(kind==='paper'){
+    w=40;h=40;
+    svg='<rect x="4" y="4" width="32" height="32" rx="2" fill="#fff1cc" stroke="#b58d3c" stroke-width="2.2"/>';
+  }else if(kind==='pie'){
+    w=42;h=42;
+    svg='<circle cx="21" cy="21" r="18" fill="#e0a448" stroke="#9e6619" stroke-width="2"/><circle cx="21" cy="21" r="14.5" fill="#fde068"/>';
+  }else if(kind==='waffle'){
+    w=42;h=42;
+    svg='<circle cx="21" cy="21" r="18" fill="#eab354" stroke="#9e6619" stroke-width="2"/>'+
+        '<path d="M12 12 L30 30 M30 12 L12 30 M21 5 L21 37 M5 21 L37 21" stroke="#c7882c" stroke-width="1.2" opacity=".7"/>';
+  }else if(kind==='pizza'){
+    if(isWhole){
+      var rad=n==='small'?12:18;w=42;h=42;
+      svg='<circle cx="21" cy="21" r="'+rad+'" fill="#e59e3c" stroke="#9e5c14" stroke-width="2"/><circle cx="21" cy="21" r="'+(rad-3)+'" fill="#fddb6d"/>'+
+          '<circle cx="'+(21-rad*.35).toFixed(1)+'" cy="'+(21-rad*.25).toFixed(1)+'" r="2.2" fill="#d3392a"/><circle cx="'+(21+rad*.32).toFixed(1)+'" cy="'+(21+rad*.22).toFixed(1)+'" r="2.2" fill="#d3392a"/>';
+    }else{
+      w=34;h=34;svg='<path d="'+f9PieSlicePath(17,27,22,-120,-60)+'" fill="#fddb6d" stroke="#9e5c14" stroke-width="1.8"/><circle cx="17" cy="17" r="2.2" fill="#d3392a"/>';
+    }
+  }else if(kind==='cookie'&&isWhole){
+    /* 一整盤 5 片餅乾完整擺好（不是空盤子！） */
+    w=60;h=46;
+    svg='<ellipse cx="30" cy="24" rx="27" ry="19" fill="#eef5fa" stroke="#7f9fb8" stroke-width="2"/>'+
+        '<ellipse cx="30" cy="24" rx="22" ry="14.5" fill="#fff" stroke="#c5d8e6" stroke-width="1.2"/>';
+    var pos5=[[19,17],[30,15],[41,17],[24,29],[36,29]];
+    for(var k=0;k<(n||5);k++)svg+=f9DrawObj('cookie',pos5[k][0],pos5[k][1],5.2,false,false);
+  }else if(!isWhole){
+    /* 單獨 1 個物件的精細圖樣 */
+    w=34;h=34;
+    svg=f9DrawObj(kind,17,17,12,false,false);
+  }else{
+    /* 離散量完整盒裝縮圖（裝滿全部 n 個物件，絕不是空盒子！） */
+    var cols=n<=4?2:n<=6?3:n<=8?4:n<=10?5:6,rows=Math.ceil(n/cols);
+    var cs=12,pad=4;w=cols*cs+pad*2;h=rows*cs+pad*2;
+    svg='<rect x="1.5" y="1.5" width="'+(w-3)+'" height="'+(h-3)+'" rx="4" fill="#eef6fc" stroke="#5b84a6" stroke-width="2"/>';
+    for(var idx=0;idx<n;idx++){
+      var r0=Math.floor(idx/cols),c0=idx%cols;
+      svg+=f9DrawObj(kind,pad+c0*cs+cs/2,pad+r0*cs+cs/2,4.5,false,false);
+    }
+  }
+  var hiCls=hiNow===mode?' hi':'';
+  var inner='<svg class="f9-ico" width="'+w+'" height="'+h+'" viewBox="0 0 '+w+' '+h+'">'+svg+'</svg>'+(word?'<span class="f9-w">'+esc(word)+'</span>':'');
+  if(noBtn)return '<span class="f9-ref static">'+inner+'</span>';
+  return '<button type="button" class="f9-ref'+hiCls+'" data-a="f9hi" data-v="'+mode+'" title="'+(isWhole?'點一下：在主畫面框出整個「整體 1」':'點一下：在主畫面指出單獨 1 個')+'">'+inner+'</button>';
+}
+
+/* ---------- 題庫產生器（f9a、f9b、f9c、f9d） ---------- */
+function f9Gen(id){
+  if(id==='f9a'){
+    return [
+      frQ('f9erase',{kind:'field',sh:'bar',n:3,colIdx:2,ask:'王爺爺把菜地平分成 3 份，右邊種小白菜。拆掉左邊的籬笆後，小白菜還是幾分之幾？',opts:[[1,3],[1,2],[2,3]]}),
+      frQ('f9erase',{kind:'choc',sh:'bar',n:4,colIdx:3,ask:'一條巧克力平分成 4 格，塗色是 1/4。把左邊 2 條切線擦掉後，塗色部分還是幾分之幾？',opts:[[1,4],[1,2],[1,3]]}),
+      frQ('f9erase',{kind:'pie',sh:'pie',n:6,colIdx:0,ask:'披薩老闆只切出 1 片給你，剩下 5 片黏在一起沒切開！把其他切線擦掉看看，這 1 片還是幾分之幾？',opts:[[1,6],[1,2],[1,4]]}),
+      frQ('f9half',{kind:'ribbon',sh:'bar',cuts:2,n:4,ask:'左邊都不切，每次「只對半切最右邊那一塊」切 2 次！打開 X 光想像線看看最右邊這塊是幾分之幾？'}),
+      frQ('f9half',{kind:'ribbon',sh:'bar',cuts:3,n:8,ask:'挑戰國中中垂線直覺！左邊全程不切，只對半切最右邊 3 次，再打開 X 光想像線，最右邊這塊是幾分之幾？'}),
+      frQ('f9half',{kind:'pizza',sh:'pie',cuts:3,n:8,ask:'披薩也是！只對半切最右邊 3 次（其他不切），打開 X 光想像線，最右邊這片是幾分之幾？'})
+    ];
+  }
+  if(id==='f9b'){
+    return [
+      frQ('f9ovl',{kind:'paper',equal:false,widths:[22,56,22],col:[0,2],ask:'課本 p.130 色紙：這張正方形紙塗了 2 塊，是 2/3 張色紙嗎？先把第 1 塊拿起來疊到中間比比看！'}),
+      frQ('f9ovl',{kind:'paper',equal:true,widths:[33.33,33.33,33.34],col:[0,2],ask:'再看這張色紙：把第 1 塊拿起來疊到中間比比看，它有平分嗎？塗色是 2/3 張嗎？'}),
+      frQ('f9stamp',{kind:'field',sh:'bar',n:3,showCut:1,ask:'課本 p.137 王爺爺的菜地：只有 1 條線分成 2 塊！拿右邊小白菜當印章鋪滿整塊地，證明它是幾分之幾？'}),
+      frQ('f9stamp',{kind:'pie',sh:'pie',n:8,uneven:6,ask:'課本 p.130 宇翔的檸檬派：媽媽切成 6 片但大小不一樣！拿宇翔這小片旋轉鋪滿整個派，證明他是吃了幾分之幾？'}),
+      frQ('f9stamp',{kind:'waffle',sh:'pie',n:4,outline:1,ask:'課本 p.137 羽彤的鬆餅：只看這一塊鬆餅，拿它旋轉蓋印鋪滿虛線圓，她是吃了幾分之幾？'}),
+      frQ('f9stamp',{kind:'waffle',sh:'pie',n:8,outline:1,ask:'課本 p.137 彥辰的鬆餅：這一小塊要旋轉蓋印幾次才鋪滿整個圓？他是吃了幾分之幾？'}),
+      frQ('f9stamp',{kind:'toast',sh:'bar',n:5,showCut:1,ask:'一條吐司只切下最右邊 1 片，左邊都沒切開！拿右邊這片去蓋印鋪滿整條吐司，這片是幾分之幾？'})
+    ];
+  }
+  if(id==='f9c'){
+    return [
+      frQ('f9ribbon',{mode:'swap',n1:3,n2:5,ask:'先看連續量！用同一段藍緞帶量「橘色整體 1」：換一條更長的整體 1，分數會怎麼變？'}),
+      frQ('f9ribbon',{mode:'gather',n:11,cols:[0,2,4,6,8,10],ask:'課本 p.134 跳格塗色紙條：塗色沒有連在一起，還是 6/11 嗎？按「把塗色合在一起」看看！'}),
+      frQ('f9pack',{kind:'cookie',n:5,target:1,word:'',ask:'進入離散量！先點選盤子裡 1 片餅乾，再看看「單片餅乾」和「整盤 5 片餅乾」要怎麼記！'}),
+      frQ('f9pack',{kind:'cookie',n:5,target:3,word:'',ask:'同一盤 5 片餅乾：這次點選 3 片餅乾，寫出它是幾個單片、也是幾分之幾整盤！'}),
+      frQ('f9pack',{kind:'donut',n:4,swapN:6,target:1,word:'盒',ask:'同一顆甜甜圈，換掉「整體 1 的盒子」看看！先在 4 格盒點 1 顆，再換裝進 6 格盒！'}),
+      frQ('f9pack',{kind:'top',n:6,target:1,word:'盒',ask:'課本 p.131 戰鬥陀螺（6 個一盒）：點出 1 個陀螺，寫出它是幾個、也是幾分之幾盒！'}),
+      frQ('f9pack',{kind:'jelly',n:10,target:3,word:'盒',ask:'課本 p.132 果凍（10 個一盒）：點出大寶吃的 3 個果凍，寫出幾個、也是幾分之幾盒！'}),
+      frQ('f9pack',{kind:'cookie',n:5,target:5,wholeEq:1,word:'盤',ask:'整盤 5 片餅乾全部點起來！5 片餅乾是幾分之幾盤？也就是完整的 1 盤！'})
+    ];
+  }
+  /* f9d */
+  return [
+    frQ('f9take',{kind:'donut',n:6,take1:1,take2:1,mode:'choice',word:'盒',ask:'課本 p.132 甜甜圈（一盒 6 個）：哥哥先拿走 1 個，妹妹再拿走 1 個。妹妹拿走的是 1/6 還是 1/5？'}),
+    frQ('f9take',{kind:'pudding',n:8,take1:2,take2:1,mode:'choice',word:'盒',ask:'一盒布丁有 8 個：姊姊先吃掉 2 個，弟弟再吃 1 個。弟弟吃的是 1/8 還是 1/6？'}),
+    frQ('f9take',{kind:'jelly',n:10,take1:3,take2:4,mode:'rem',word:'盒',ask:'課本 p.132 果凍（一盒 10 個）：大寶吃 3 個、小寶吃 4 個，還剩下幾個？也就是幾分之幾盒？'}),
+    frQ('f9dcmp',{kind:'cookie',n:10,aCount:5,bCount:4,aFmt:'unit',bFmt:'frac',word:'盒',ask:'課本 p.136 餅乾（10 片一盒）：品妍拿 5 片，柏宇拿 4/10 盒。把兩人的份都點進盒子裡比一比！'}),
+    frQ('f9dcmp',{kind:'peach',n:12,aCount:5,bCount:8,aFmt:'frac',bFmt:'unit',word:'盒',ask:'課本 p.136 水蜜桃（12 顆一盒）：甲拿 5/12 盒，乙拿 8 顆。點進盒子裡比一比誰比較多！'}),
+    frQ('f9dcmp',{kind:'pizza',diffWhole:1,ask:'終極思考題：左邊是大披薩的 1/4，右邊是小披薩的 1/2！把兩片疊在一起比比看，你發現了什麼？'})
+  ];
+}
+
+function f9W(q){
+  if(q.t==='f9erase')return {erased:0,xray:0,pick:'',hi:'',miss:0,msg:'',good:0,s:'op'};
+  if(q.t==='f9half')return {step:0,xray:0,hi:'',e:{},f:'a',miss:0,msg:'',good:0,s:'op'};
+  if(q.t==='f9ovl')return {ovl:0,pick:'',hi:'',miss:0,msg:'',good:0,s:'op'};
+  if(q.t==='f9stamp')return {stamps:1,xray:0,hi:'',e:{},f:'a',miss:0,msg:'',good:0,s:'op'};
+  if(q.t==='f9ribbon'){
+    if(q.mode==='swap')return {ph:1,stamps:1,hi:'',e:{},f:'a',miss:0,msg:'',good:0,s:'op'};
+    return {gathered:0,hi:'',e:{},f:'c',miss:0,msg:'',good:0,s:'op'};
+  }
+  if(q.t==='f9pack')return {ph:1,curN:q.n,sel:[],hi:'',e:{},f:'c',miss:0,msg:'',good:0,s:'op'};
+  if(q.t==='f9take')return {st:0,ghost:0,pick:'',hi:'',e:{},f:'c',miss:0,msg:'',good:0,s:'op'};
+  /* f9dcmp */
+  if(q.diffWhole)return {ovl:0,pick:'',hi:'',miss:0,msg:'',good:0,s:'op'};
+  return {selA:[],selB:[],pick:'',hi:'',miss:0,msg:'',good:0,s:'op'};
+}
+function f9Fields(q,w){
+  if(!w)return [];
+  if(q.t==='f9half')return w.step>=q.cuts&&w.xray?['a','b']:[];
+  if(q.t==='f9stamp')return w.stamps>=q.n?['a','b']:[];
+  if(q.t==='f9ribbon'){
+    if(q.mode==='swap'){var tn=w.ph===1?q.n1:q.n2;return w.stamps>=tn?['a','b']:[];}
+    return w.gathered?['c','a','b']:[];
+  }
+  if(q.t==='f9pack')return w.sel.length===q.target?(q.swapN?['a','b']:['c','a','b']):[];
+  if(q.t==='f9take')return q.mode==='rem'&&w.st>=2?['c','a','b']:[];
+  return [];
+}
+function f9Text(q,w){return q.ask;}
+
+/* ---------- 檢查邏輯 ---------- */
+function f9Check(st,pick2){
+  var q=st.qs[st.i],w=st.w,e=w.e||{};w.msg='';w.good=0;
+  var bl=function(f){return e[f]==null||e[f]==='';};
+  var pass=function(msg){w.s='done';w.good=1;w.msg=msg;st.res.push({ok:w.miss===0,al:true});};
+  if(q.t==='f9erase'){
+    if(!w.erased){w.msg='先按左邊「🪄 拆掉切線」，親眼看看其他切線消失後會變怎樣！';return false;}
+    w.pick=pick2;
+    if(pick2==='1/'+q.n){pass('答對了！其他地方的切線拆掉，塗色這塊大小一公釐都沒變，依然是 1/'+q.n+'！');return true;}
+    w.miss++;w.xray=1;
+    w.msg='已經幫你打開「👓 X 光想像線」！看看剛才拆掉的線——塗色這塊完全沒變大，左邊沒有平分喔，再選一次！';
+    return false;
+  }
+  if(q.t==='f9half'){
+    if(w.step<q.cuts){w.msg='還沒切完喔！再按左邊「✂️ 只對半切最右邊」！（已切 '+w.step+'/'+q.cuts+' 次）';return false;}
+    if(!w.xray){w.msg='按一下左邊「👓 打開 X 光想像線」，看看沒切開的地方藏著幾塊一樣大的！';return false;}
+    if(bl('a')||bl('b')){w.msg='把分子和分母都填好再按檢查。';return false;}
+    if(+e.a!==1||+e.b!==q.n){w.miss++;w.msg='數一數打開 X 光想像線後，整個整體 1 一共可以分成幾塊跟塗色一樣大的？';return false;}
+    pass('太棒了！就算左邊完全沒切開，整條（整個）其實剛好可以分成 '+q.n+' 塊一樣大的，所以最右邊這塊就是 1/'+q.n+'！');
+    return true;
+  }
+  if(q.t==='f9ovl'){
+    if(!w.ovl){w.msg='先按左邊「🖐️ 把第 1 塊疊到中間比比看」，親眼確認有沒有一樣大！';return false;}
+    w.pick=pick2;
+    var ok=(q.equal&&pick2==='yes')||(!q.equal&&pick2==='no');
+    if(ok){pass(q.equal?'沒錯！疊上去完全重合，真的平分成 3 份，塗 2 份就是 2/3！':'破案了！疊上去明顯不一樣大，沒有平分就不能說是 2/3！');return true;}
+    w.miss++;w.msg=q.equal?'看看重疊的樣子：第 1 塊跟中間那一塊有完全一樣大嗎？':'看看重疊的樣子：第 1 塊比中間窄很多，這三塊沒有一樣大喔！';
+    return false;
+  }
+  if(q.t==='f9stamp'){
+    if(w.stamps<q.n){w.msg='還沒鋪滿整體 1 喔！繼續按左邊「📋 蓋印鋪滿」，數數看要幾塊才剛好鋪滿！';return false;}
+    if(bl('a')||bl('b')){w.msg='填好分子和分母再按檢查。';return false;}
+    if(+e.a!==1||+e.b!==q.n){w.miss++;w.msg='你剛才親手鋪了幾塊一樣大的，才剛好鋪滿整體 1？分母就是那個數字喔！';return false;}
+    pass('證明成功！剛好要 '+q.n+' 塊一樣大的才能鋪滿整體 1，所以就算原本沒切齊，這 1 塊就是 1/'+q.n+'！');
+    return true;
+  }
+  if(q.t==='f9ribbon'){
+    if(q.mode==='swap'){
+      var tn=w.ph===1?q.n1:q.n2;
+      if(w.stamps<tn){w.msg='按左邊「📋 用藍緞帶量量看」，看看這條橘色整體 1 要幾段藍緞帶才鋪滿！';return false;}
+      if(bl('a')||bl('b')){w.msg='寫下藍緞帶是幾分之幾再按檢查。';return false;}
+      if(+e.a!==1||+e.b!==tn){w.miss++;w.msg='數一數你剛才鋪了幾段藍緞帶才跟橘色整體 1 一樣長？';return false;}
+      if(w.ph===1){w.ph=2;w.stamps=1;w.e={};w.f='a';w.good=1;w.msg='對了，在短母帶裡它是 1/'+q.n1+'！現在換成「更長的橘色整體 1」，藍緞帶沒變長，再量一次看看！';return false;}
+      pass('太棒了！同一段藍緞帶，整體 1 變長時，它就從 1/'+q.n1+' 變成 1/'+q.n2+'！分數要看它後面的整體 1！');
+      return true;
+    }
+    if(!w.gathered){w.msg='先按左邊「🧲 把塗色合在一起看看」！';return false;}
+    if(bl('c')||bl('a')||bl('b')){w.msg='把三個空格都填好再按檢查。';return false;}
+    var cnt=q.cols.length;
+    if(+e.c!==cnt||+e.a!==cnt||+e.b!==q.n){w.miss++;w.msg='合起來數數看：整條有 '+q.n+' 格，塗色的有幾格？';return false;}
+    pass('答對了！不管有沒有塗在一起，都是 '+cnt+' 個小格，也就是 '+cnt+'/'+q.n+' 條！');
+    return true;
+  }
+  if(q.t==='f9pack'){
+    if(w.sel.length!==q.target){w.msg='先在畫面上直接點出剛好 '+q.target+' 個（目前已點 '+w.sel.length+' 個）！';return false;}
+    var fs=f9Fields(q,w);for(var i=0;i<fs.length;i++)if(bl(fs[i])){w.msg='把右邊的空格都填好再按檢查！';return false;}
+    if(!q.swapN&&+e.c!==q.target){w.miss++;w.msg='點點看單個圖樣：你選了幾個單獨的？';return false;}
+    if(+e.a!==q.target||+e.b!==w.curN){w.miss++;w.msg='點點看分數後面的「完整整盤／整盒圖樣」：整個整體 1 裡面一共有幾個？你選了其中幾個？';return false;}
+    if(q.swapN&&w.ph===1){
+      w.ph=2;w.curN=q.swapN;w.sel=[];w.e={};w.f='a';w.good=1;
+      w.msg='在 4 格盒裡，1 顆是 1/4！現在換裝進 6 格盒——再點 1 顆，看看分數變成什麼？';
+      return false;
+    }
+    pass(q.wholeEq?'太棒了！5 片全部選起來是 5/5 整盤，也就是完整的 1 盤！':'完全正確！看懂「單個圖樣」和「完整整體圖樣」的差別了！');
+    return true;
+  }
+  if(q.t==='f9take'){
+    if(w.st<2){w.msg='先按左邊的按鈕，把兩個人拿走（吃掉）的動作做完！';return false;}
+    if(q.mode==='choice'){
+      w.pick=pick2;
+      if(pick2==='1/'+q.n){pass('破案了！原本一整盒就是 '+q.n+' 個，前面的人拿走只是空出凹槽，「整體 1 盒」沒有變小，所以還是 1/'+q.n+'！');return true;}
+      w.miss++;w.ghost=1;
+      w.msg='已經幫你「👻 蓋回原本滿盒」！看看透明的原本一整盒有幾格？前面拿走不會讓盒子變小喔，再選一次！';
+      return false;
+    }
+    var rem=q.n-q.take1-q.take2;
+    if(bl('c')||bl('a')||bl('b')){w.msg='把三個空格都填好再按檢查。';return false;}
+    if(+e.c!==rem||+e.a!==rem||+e.b!==q.n){w.miss++;w.msg='數數看盒子裡還剩幾個？原本一整盒一共有幾個？';return false;}
+    pass('答對了！還剩下 '+rem+' 個，也就是 '+rem+'/'+q.n+' 盒！');
+    return true;
+  }
+  /* f9dcmp */
+  if(q.diffWhole){
+    if(!w.ovl){w.msg='先按左邊「🖐️ 把兩片疊在一起比比看」，親眼看誰比較大！';return false;}
+    w.pick=pick2;
+    if(pick2==='diff'){pass('大發現！大披薩的 1/4 竟然比小披薩的 1/2 還大！所以比分數大小時，一定要先看「整體 1」有沒有一樣大！');return true;}
+    w.miss++;w.msg='再看看重疊的那兩片：大披薩的 1/4 和小披薩的 1/2 誰比較大？為什麼會這樣？';
+    return false;
+  }
+  if(w.selA.length!==q.aCount||w.selB.length!==q.bCount){
+    w.msg=(w.selA.length!==q.aCount?'先在上面（甲）盒子點出 '+q.aCount+' 個！':'先在下面（乙）盒子點出 '+q.bCount+' 個！');
+    return false;
+  }
+  w.pick=pick2;
+  var want=q.aCount===q.bCount?'eq':q.aCount>q.bCount?'gt':'lt';
+  if(pick2===want){pass('答對了！放進同一個完整盒子一看就秒懂：甲是 '+q.aCount+' 個、乙是 '+q.bCount+' 個，'+(want==='gt'?'甲':'乙')+'比較多！');return true;}
+  w.miss++;w.msg='比比看上下兩個一樣的盒子裡，哪一盒點亮的比較多？';
+  return false;
+}
+
+function f9Summary(st){
+  var q=st.qs[st.i],w=st.w,s='第 '+(st.i+1)+'/'+st.qs.length+' 題・';
+  if(q.t==='f9erase')s+=(w.erased?'已拆切線':'還沒拆線')+(w.pick?'・選 '+w.pick:'');
+  else if(q.t==='f9half')s+='對半切 '+w.step+'/'+q.cuts+' 次'+(w.xray?'・開X光':'');
+  else if(q.t==='f9ovl')s+=(w.ovl?'已疊比':'還沒疊比')+(w.pick?'・選 '+w.pick:'');
+  else if(q.t==='f9stamp')s+='蓋印 '+w.stamps+'/'+q.n+' 塊';
+  else if(q.t==='f9ribbon')s+=(q.mode==='swap'?'階段 '+w.ph+'/2・量 '+w.stamps:'跳格塗色'+(w.gathered?'・已合起':''));
+  else if(q.t==='f9pack')s+='點了 '+w.sel.length+'/'+q.target+' 個（整體 '+w.curN+'）';
+  else if(q.t==='f9take')s+='操作步驟 '+w.st+'/2';
+  else s+=q.diffWhole?(w.ovl?'已疊大vs小披薩':'還沒疊比'):('甲點 '+w.selA.length+'・乙點 '+w.selB.length);
+  if(w.s==='done')s+='・<span class="good">這題對</span>';
+  return s+(w.miss?'・<span class="warn">錯 '+w.miss+' 次</span>':'');
+}
+
+/* ---------- 主舞台 SVG 繪製（清晰、大尺寸、零 emoji） ---------- */
+function f9BoardSVG(q,w,live){
+  var hiW=w.hi==='whole',hiU=w.hi==='unit';
+  if(q.t==='f9erase'){
+    if(q.sh==='bar'){
+      var W=520,H=150,x0=40,y0=55,pw=W/q.n,s='<svg class="fr-svg f9-svg" viewBox="0 0 600 260">';
+      if(hiW)s+='<rect x="'+(x0-8)+'" y="'+(y0-8)+'" width="'+(W+16)+'" height="'+(H+16)+'" rx="12" fill="none" stroke="#e07a12" stroke-width="5" stroke-dasharray="10 6"/>';
+      var baseCol=q.kind==='field'?'#c99e75':'#8c5432',hiCol=q.kind==='field'?'#68c164':'#f39c34';
+      s+='<rect x="'+x0+'" y="'+y0+'" width="'+W+'" height="'+H+'" rx="8" fill="'+baseCol+'" stroke="#5c3a1d" stroke-width="3.5"/>';
+      var cx=x0+q.colIdx*pw;
+      s+='<rect x="'+cx.toFixed(1)+'" y="'+y0+'" width="'+pw.toFixed(1)+'" height="'+H+'" rx="4" fill="'+hiCol+'" stroke="#2d6e2a" stroke-width="2.5"/>';
+      if(q.kind==='field'){
+        for(var r=0;r<3;r++)for(var c=0;c<3;c++){
+          var vx=cx+28+c*54,vy=y0+30+r*44;
+          s+='<circle cx="'+vx+'" cy="'+vy+'" r="11" fill="#3fa340"/><circle cx="'+(vx-5)+'" cy="'+(vy-4)+'" r="5" fill="#9ae68f"/>';
+        }
+        s+='<text x="'+(cx+pw/2).toFixed(1)+'" y="'+(y0-14)+'" font-size="18" font-weight="900" text-anchor="middle" fill="#2d6e2a">種小白菜</text>';
+      }
+      /* 右邊塗色那塊的邊界線永遠存在 */
+      s+='<line x1="'+cx.toFixed(1)+'" x2="'+cx.toFixed(1)+'" y1="'+y0+'" y2="'+(y0+H)+'" stroke="#3d2410" stroke-width="4"/>';
+      /* 左邊可拆掉的切線 */
+      for(var i=1;i<q.n;i++){
+        if(i===q.colIdx)continue;
+        var lx=(x0+i*pw).toFixed(1);
+        if(!w.erased){
+          s+='<line x1="'+lx+'" x2="'+lx+'" y1="'+(y0-4)+'" y2="'+(y0+H+4)+'" stroke="#e07a12" stroke-width="6" stroke-dasharray="10 5"'+(live?' data-a="f9er" style="cursor:pointer"':'')+'/>';
+          if(i===1)s+='<text x="'+lx+'" y="'+(y0+H+28)+'" font-size="15" font-weight="800" text-anchor="middle" fill="#c05c00">點這條線拆掉！</text>';
+        }else if(w.xray){
+          s+='<line x1="'+lx+'" x2="'+lx+'" y1="'+y0+'" y2="'+(y0+H)+'" stroke="#1f6fb8" stroke-width="3.5" stroke-dasharray="8 6"/>';
+        }
+      }
+      s+='<text x="'+(x0+W/2)+'" y="'+(y0+H+48)+'" font-size="16" font-weight="800" text-anchor="middle" fill="#526575">'+(w.erased?(w.xray?'👓 X 光想像線：其實還是平分成 '+q.n+' 份！':'左邊切線拆掉了——右邊這塊的大小有變嗎？'):'原本平分成 '+q.n+' 份，塗色的是 1/'+q.n)+'</text>';
+      return s+'</svg>';
+    }
+    /* pie erase */
+    var cx2=220,cy2=148,R=112,s2='<svg class="fr-svg pie f9-svg" viewBox="0 0 440 300">';
+    if(hiW)s2+='<circle cx="'+cx2+'" cy="'+cy2+'" r="'+(R+10)+'" fill="none" stroke="#e07a12" stroke-width="5" stroke-dasharray="10 6"/>';
+    s2+='<circle cx="'+cx2+'" cy="'+cy2+'" r="'+(R+6)+'" fill="#e0a448" stroke="#9e6619" stroke-width="3"/>';
+    s2+='<circle cx="'+cx2+'" cy="'+cy2+'" r="'+R+'" fill="#fde588" stroke="#b07c24" stroke-width="2.5"/>';
+    s2+='<path d="'+f9PieSlicePath(cx2,cy2,R,-90,-90+360/q.n)+'" fill="#f39c34" stroke="#8a4b00" stroke-width="3.5"/>';
+    for(var j=2;j<q.n;j++){
+      var ang=(-90+360*j/q.n)*Math.PI/180,px=(cx2+R*Math.cos(ang)).toFixed(1),py=(cy2+R*Math.sin(ang)).toFixed(1);
+      if(!w.erased)s2+='<line x1="'+cx2+'" y1="'+cy2+'" x2="'+px+'" y2="'+py+'" stroke="#e07a12" stroke-width="4.5" stroke-dasharray="8 5"'+(live?' data-a="f9er" style="cursor:pointer"':'')+'/>';
+      else if(w.xray)s2+='<line x1="'+cx2+'" y1="'+cy2+'" x2="'+px+'" y2="'+py+'" stroke="#1f6fb8" stroke-width="3" stroke-dasharray="7 5"/>';
+    }
+    s2+='<text x="'+cx2+'" y="286" font-size="16" font-weight="800" text-anchor="middle" fill="#526575">'+(w.erased?(w.xray?'👓 X 光想像線：整個派其實是 '+q.n+' 片一樣大！':'剩下 5 片沒切開——你手上這 1 片還是 1/'+q.n+' 嗎？'):'原本平分成 '+q.n+' 片，這 1 片是 1/'+q.n)+'</text>';
+    return s2+'</svg>';
+  }
+  if(q.t==='f9half'){
+    var segs=Math.pow(2,w.step);
+    if(q.sh==='bar'){
+      var W2=540,H2=110,x02=30,y02=64,s3='<svg class="fr-svg f9-svg" viewBox="0 0 600 240">';
+      if(hiW)s3+='<rect x="'+(x02-8)+'" y="'+(y02-8)+'" width="'+(W2+16)+'" height="'+(H2+16)+'" rx="12" fill="none" stroke="#e07a12" stroke-width="5" stroke-dasharray="10 6"/>';
+      s3+='<rect x="'+x02+'" y="'+y02+'" width="'+W2+'" height="'+H2+'" rx="8" fill="#ffe9bd" stroke="#b57a1e" stroke-width="3.5"/>';
+      /* 最右邊 1/segs 塗色 */
+      var rw=W2/segs;
+      s3+='<rect x="'+(x02+W2-rw).toFixed(1)+'" y="'+y02+'" width="'+rw.toFixed(1)+'" height="'+H2+'" rx="4" fill="#f39c34" stroke="#8a4b00" stroke-width="3"/>';
+      /* 畫出實際切下去的 1..step 條切線（只切右邊！） */
+      for(var k=1;k<=w.step;k++){
+        var frac=1-1/Math.pow(2,k),cx3=(x02+W2*frac).toFixed(1);
+        s3+='<line x1="'+cx3+'" x2="'+cx3+'" y1="'+(y02-6)+'" y2="'+(y02+H2+6)+'" stroke="#c0392b" stroke-width="4"/>';
+        s3+='<text x="'+cx3+'" y="'+(y02-14)+'" font-size="14" font-weight="900" text-anchor="middle" fill="#c0392b">第'+k+'刀</text>';
+      }
+      /* X 光想像線：把未切開的區域全部透視出等寬虛線 */
+      if(w.xray&&w.step>0){
+        for(var m=1;m<segs;m++){
+          var mx=(x02+W2*m/segs).toFixed(1);
+          s3+='<line x1="'+mx+'" x2="'+mx+'" y1="'+y02+'" y2="'+(y02+H2)+'" stroke="#1f6fb8" stroke-width="2.6" stroke-dasharray="6 5"/>';
+        }
+        for(var m2=0;m2<segs;m2++){
+          s3+='<text x="'+(x02+W2*(m2+.5)/segs).toFixed(1)+'" y="'+(y02+H2/2+7)+'" font-size="18" font-weight="900" text-anchor="middle" fill="'+(m2===segs-1?'#fff':'#1f5fa6')+'">'+(m2+1)+'</text>';
+        }
+      }else if(w.step>0){
+        s3+='<text x="'+(x02+W2*.25)+'" y="'+(y02+H2/2+7)+'" font-size="18" font-weight="800" text-anchor="middle" fill="#9c7a44">左邊完全沒切開</text>';
+      }
+      s3+='<text x="'+(x02+W2/2)+'" y="'+(y02+H2+36)+'" font-size="16" font-weight="800" text-anchor="middle" fill="#526575">'+(w.step<q.cuts?'已切 '+w.step+' / '+q.cuts+' 次（左邊都不切！）':(w.xray?'👓 打開 X 光想像線：整條一共藏著 '+segs+' 塊一樣大的！':'現在看得到 '+(w.step+1)+' 塊，但大小不一樣！按「👓 打開 X 光想像線」看看！'))+'</text>';
+      return s3+'</svg>';
+    }
+    /* pie half */
+    var pcx=220,pcy=146,pR=112,s4='<svg class="fr-svg pie f9-svg" viewBox="0 0 440 300">';
+    if(hiW)s4+='<circle cx="'+pcx+'" cy="'+pcy+'" r="'+(pR+10)+'" fill="none" stroke="#e07a12" stroke-width="5" stroke-dasharray="10 6"/>';
+    s4+='<circle cx="'+pcx+'" cy="'+pcy+'" r="'+(pR+6)+'" fill="#e59e3c" stroke="#9e5c14" stroke-width="3"/>';
+    s4+='<circle cx="'+pcx+'" cy="'+pcy+'" r="'+pR+'" fill="#fddb6d"/>';
+    if(w.step>0){
+      s4+='<path d="'+f9PieSlicePath(pcx,pcy,pR,-90,-90+360/segs)+'" fill="#f07828" stroke="#8a3200" stroke-width="3"/>';
+      /* 實際切線：-90度 與 -90+180、-90+90、-90+45 */
+      var realAngs=[-90];for(var k2=1;k2<=w.step;k2++)realAngs.push(-90+360/Math.pow(2,k2));
+      realAngs.forEach(function(a){var rd=a*Math.PI/180;s4+='<line x1="'+pcx+'" y1="'+pcy+'" x2="'+(pcx+pR*Math.cos(rd)).toFixed(1)+'" y2="'+(pcy+pR*Math.sin(rd)).toFixed(1)+'" stroke="#c0392b" stroke-width="3.5"/>';});
+    }
+    if(w.xray&&w.step>0){
+      for(var m3=0;m3<segs;m3++){
+        var a3=(-90+360*m3/segs)*Math.PI/180,am=(-90+360*(m3+.5)/segs)*Math.PI/180;
+        s4+='<line x1="'+pcx+'" y1="'+pcy+'" x2="'+(pcx+pR*Math.cos(a3)).toFixed(1)+'" y2="'+(pcy+pR*Math.sin(a3)).toFixed(1)+'" stroke="#1f6fb8" stroke-width="2.5" stroke-dasharray="6 5"/>';
+        s4+='<text x="'+(pcx+pR*.66*Math.cos(am)).toFixed(1)+'" y="'+(pcy+pR*.66*Math.sin(am)+6).toFixed(1)+'" font-size="17" font-weight="900" text-anchor="middle" fill="'+(m3===0?'#fff':'#1f5fa6')+'">'+(m3+1)+'</text>';
+      }
+    }
+    s4+='<text x="'+pcx+'" y="286" font-size="16" font-weight="800" text-anchor="middle" fill="#526575">'+(w.step<q.cuts?'已對半切 '+w.step+' / '+q.cuts+' 次':(w.xray?'👓 整個披薩其實可以分成 '+segs+' 片一樣大！':'按「👓 打開 X 光想像線」透視未切開的地方！'))+'</text>';
+    return s4+'</svg>';
+  }
+  if(q.t==='f9ovl'){
+    var S=230,ox=115,oy=34,curX=ox,s5='<svg class="fr-svg f9-svg" viewBox="0 0 460 300">';
+    var xs=[];
+    q.widths.forEach(function(pct,i){
+      var pw=S*pct/100;xs.push({x:curX,w:pw});
+      s5+='<rect x="'+curX.toFixed(1)+'" y="'+oy+'" width="'+pw.toFixed(1)+'" height="'+S+'" fill="'+(q.col.indexOf(i)>=0?'#f6b6c2':'#fffdf7')+'" stroke="#4a5d6e" stroke-width="3"/>';
+      s5+='<text x="'+(curX+pw/2).toFixed(1)+'" y="'+(oy+S/2+8)+'" font-size="20" font-weight="900" text-anchor="middle" fill="#3a4c5c">第'+(i+1)+'塊</text>';
+      curX+=pw;
+    });
+    if(w.ovl){
+      /* 把第 1 塊半透明疊到第 2 塊上比大小！ */
+      s5+='<rect x="'+xs[1].x.toFixed(1)+'" y="'+(oy-6)+'" width="'+xs[0].w.toFixed(1)+'" height="'+(S+12)+'" fill="rgba(42,111,176,.35)" stroke="#1f5fa6" stroke-width="4" stroke-dasharray="8 4"/>';
+      s5+='<text x="'+(xs[1].x+xs[0].w/2).toFixed(1)+'" y="'+(oy-12)+'" font-size="15" font-weight="900" text-anchor="middle" fill="#1f5fa6">第 1 塊疊上來！</text>';
+    }
+    s5+='<text x="230" y="290" font-size="16" font-weight="800" text-anchor="middle" fill="#526575">'+(w.ovl?(q.equal?'完全重合！三塊一樣大！':'明顯窄了一大截！三塊沒有一樣大！'):'按左邊「🖐️ 把第 1 塊疊到中間比比看」')+'</text>';
+    return s5+'</svg>';
+  }
+  if(q.t==='f9stamp'){
+    if(q.sh==='bar'){
+      var W3=520,H3=145,x03=40,y03=58,pw3=W3/q.n,s6='<svg class="fr-svg f9-svg" viewBox="0 0 600 260">';
+      if(hiW)s6+='<rect x="'+(x03-8)+'" y="'+(y03-8)+'" width="'+(W3+16)+'" height="'+(H3+16)+'" rx="12" fill="none" stroke="#e07a12" stroke-width="5" stroke-dasharray="10 6"/>';
+      var bg3=q.kind==='field'?'#c99e75':'#f5dca8',fg3=q.kind==='field'?'#68c164':'#e69b35';
+      s6+='<rect x="'+x03+'" y="'+y03+'" width="'+W3+'" height="'+H3+'" rx="8" fill="'+bg3+'" stroke="#6e4b26" stroke-width="3.5"/>';
+      /* 原本右邊塗色的那一塊（第 1 塊） */
+      var rx0=x03+W3-pw3;
+      s6+='<rect x="'+rx0.toFixed(1)+'" y="'+y03+'" width="'+pw3.toFixed(1)+'" height="'+H3+'" fill="'+fg3+'" stroke="#2d6e2a" stroke-width="3"/>';
+      s6+='<text x="'+(rx0+pw3/2).toFixed(1)+'" y="'+(y03+H3/2+8)+'" font-size="22" font-weight="900" text-anchor="middle" fill="#fff">1</text>';
+      /* 孩子蓋印上去的印章（2..w.stamps） */
+      for(var stp=2;stp<=w.stamps;stp++){
+        var sx0=x03+W3-stp*pw3;
+        s6+='<rect x="'+sx0.toFixed(1)+'" y="'+y03+'" width="'+pw3.toFixed(1)+'" height="'+H3+'" fill="'+fg3+'" fill-opacity=".42" stroke="#1f5fa6" stroke-width="3" stroke-dasharray="8 5"/>';
+        s6+='<text x="'+(sx0+pw3/2).toFixed(1)+'" y="'+(y03+H3/2+8)+'" font-size="22" font-weight="900" text-anchor="middle" fill="#1f5fa6">'+stp+'</text>';
+      }
+      s6+='<text x="'+(x03+W3/2)+'" y="'+(y03+H3+38)+'" font-size="16" font-weight="800" text-anchor="middle" fill="#526575">'+(w.stamps>=q.n?'剛好 '+q.n+' 塊一樣大的鋪滿整個整體 1！':'已鋪 '+w.stamps+' 塊，還沒鋪滿！再按「📋 蓋印鋪滿」')+'</text>';
+      return s6+'</svg>';
+    }
+    /* pie stamp (檸檬派 / 羽彤＆彥辰鬆餅) */
+    var pcx2=220,pcy2=146,pR2=112,da=360/q.n,s7='<svg class="fr-svg pie f9-svg" viewBox="0 0 440 300">';
+    if(hiW)s7+='<circle cx="'+pcx2+'" cy="'+pcy2+'" r="'+(pR2+10)+'" fill="none" stroke="#e07a12" stroke-width="5" stroke-dasharray="10 6"/>';
+    if(q.outline){
+      s7+='<circle cx="'+pcx2+'" cy="'+pcy2+'" r="'+pR2+'" fill="#fffdf7" stroke="#6c7d8c" stroke-width="3" stroke-dasharray="8 6"/>';
+    }else{
+      s7+='<circle cx="'+pcx2+'" cy="'+pcy2+'" r="'+(pR2+6)+'" fill="#e0a448" stroke="#9e6619" stroke-width="3"/>';
+      s7+='<circle cx="'+pcx2+'" cy="'+pcy2+'" r="'+pR2+'" fill="#fde588"/>';
+      /* 課本 p.130 檸檬派原本切得大小不一的 6 片切線（上方 4 小片 45度、下方 2 大片 90度） */
+      [-90,-45,0,90,180,225].forEach(function(a){var rd=a*Math.PI/180;s7+='<line x1="'+pcx2+'" y1="'+pcy2+'" x2="'+(pcx2+pR2*Math.cos(rd)).toFixed(1)+'" y2="'+(pcy2+pR2*Math.sin(rd)).toFixed(1)+'" stroke="#9e6619" stroke-width="2" stroke-dasharray="5 4"/>';});
+    }
+    /* 第 1 塊實物（實心） */
+    s7+='<path d="'+f9PieSlicePath(pcx2,pcy2,pR2,-90,-90+da)+'" fill="'+(q.kind==='waffle'?'#e8a846':'#f39c34')+'" stroke="#8a4b00" stroke-width="3"/>';
+    var am1=(-90+da/2)*Math.PI/180;
+    s7+='<text x="'+(pcx2+pR2*.64*Math.cos(am1)).toFixed(1)+'" y="'+(pcy2+pR2*.64*Math.sin(am1)+7).toFixed(1)+'" font-size="20" font-weight="900" text-anchor="middle" fill="#fff">1</text>';
+    /* 旋轉蓋印 2..w.stamps */
+    for(var sidx=2;sidx<=w.stamps;sidx++){
+      var a0=-90+(sidx-1)*da,a1=a0+da,amm=((a0+a1)/2)*Math.PI/180;
+      s7+='<path d="'+f9PieSlicePath(pcx2,pcy2,pR2,a0,a1)+'" fill="rgba(243,156,52,.38)" stroke="#1f5fa6" stroke-width="3" stroke-dasharray="7 4"/>';
+      s7+='<text x="'+(pcx2+pR2*.64*Math.cos(amm)).toFixed(1)+'" y="'+(pcy2+pR2*.64*Math.sin(amm)+7).toFixed(1)+'" font-size="19" font-weight="900" text-anchor="middle" fill="#1f5fa6">'+sidx+'</text>';
+    }
+    s7+='<text x="'+pcx2+'" y="286" font-size="16" font-weight="800" text-anchor="middle" fill="#526575">'+(w.stamps>=q.n?'轉滿一圈！剛好 '+q.n+' 片鋪滿整個圓！':'已鋪 '+w.stamps+' 片，繼續按「📋 旋轉蓋印」鋪滿整個圓！')+'</text>';
+    return s7+'</svg>';
+  }
+  if(q.t==='f9ribbon'){
+    if(q.mode==='swap'){
+      var tn=w.ph===1?q.n1:q.n2,segW=92,totW=tn*segW,x04=40,s8='<svg class="fr-svg f9-svg" viewBox="0 0 580 230">';
+      s8+='<text x="'+x04+'" y="34" font-size="16" font-weight="900" fill="#b86b11">橘色整體 1（'+(w.ph===1?'比較短的母帶':'換成更長的母帶！')+'）</text>';
+      if(hiW)s8+='<rect x="'+(x04-6)+'" y="44" width="'+(totW+12)+'" height="56" rx="10" fill="none" stroke="#e07a12" stroke-width="5" stroke-dasharray="9 5"/>';
+      s8+='<rect x="'+x04+'" y="50" width="'+totW+'" height="44" rx="6" fill="#f5a133" stroke="#b86b11" stroke-width="3"/>';
+      /* 藍色小緞帶（長度永遠固定 segW！）並往右蓋印量量看 */
+      s8+='<text x="'+x04+'" y="128" font-size="16" font-weight="900" fill="#1f5fa6">藍色緞帶（長度完全沒變！）</text>';
+      for(var r1=0;r1<w.stamps;r1++){
+        var rx=x04+r1*segW;
+        s8+='<rect x="'+rx+'" y="140" width="'+segW+'" height="40" rx="5" fill="'+(r1===0?'#3d8bd9':'rgba(61,139,217,.38)')+'" stroke="#1f5fa6" stroke-width="'+(r1===0?3:2.5)+'"'+(r1>0?' stroke-dasharray="7 4"':'')+'/>';
+        s8+='<text x="'+(rx+segW/2)+'" y="166" font-size="19" font-weight="900" text-anchor="middle" fill="'+(r1===0?'#fff':'#1f5fa6')+'">'+(r1+1)+'</text>';
+      }
+      s8+='<text x="290" y="214" font-size="15.5" font-weight="800" text-anchor="middle" fill="#526575">'+(w.stamps>=tn?'剛好量滿 '+tn+' 段！這段藍緞帶是 1/'+tn+' 條橘色整體 1！':'按左邊「📋 用藍緞帶量量看」（已量 '+w.stamps+' 段）')+'</text>';
+      return s8+'</svg>';
+    }
+    /* gather 6/11 */
+    var W4=550,x05=25,cw4=W4/q.n,s9='<svg class="fr-svg f9-svg" viewBox="0 0 600 180">';
+    if(hiW)s9+='<rect x="'+(x05-6)+'" y="46" width="'+(W4+12)+'" height="76" rx="10" fill="none" stroke="#e07a12" stroke-width="5" stroke-dasharray="9 5"/>';
+    for(var g=0;g<q.n;g++){
+      var filled=w.gathered?(g<q.cols.length):(q.cols.indexOf(g)>=0);
+      var gx=(x05+g*cw4).toFixed(1);
+      s9+='<rect x="'+gx+'" y="52" width="'+cw4.toFixed(1)+'" height="64" fill="'+(filled?'#f5b83d':'#fffdf7')+'" stroke="#7a5b24" stroke-width="2.4"/>';
+      if(filled&&hiU)s9+='<rect x="'+(+gx+3)+'" y="55" width="'+(cw4-6).toFixed(1)+'" height="58" fill="none" stroke="#d3392a" stroke-width="3.5"/>';
+      if(w.gathered&&filled)s9+='<text x="'+(+gx+cw4/2).toFixed(1)+'" y="91" font-size="20" font-weight="900" text-anchor="middle" fill="#6b3e00">'+(g+1)+'</text>';
+    }
+    s9+='<text x="300" y="152" font-size="16" font-weight="800" text-anchor="middle" fill="#526575">'+(w.gathered?'合在一起看：整條有 '+q.n+' 格，塗色剛好 '+q.cols.length+' 格！':'塗色跳開來了，按「🧲 把塗色合在一起看看」')+'</text>';
+    return s9+'</svg>';
+  }
+  if(q.t==='f9pack'){
+    var N=w.curN,s10='<svg class="fr-svg f9-svg" viewBox="0 0 540 300">';
+    if(q.kind==='cookie'){
+      /* 畫出完整大盤子＋5 片巧克力豆餅乾 */
+      if(hiW)s10+='<ellipse cx="270" cy="145" rx="224" ry="124" fill="none" stroke="#e07a12" stroke-width="6" stroke-dasharray="12 6"/>';
+      s10+='<ellipse cx="270" cy="145" rx="210" ry="112" fill="#e8f2f9" stroke="#7f9fb8" stroke-width="4"/>';
+      s10+='<ellipse cx="270" cy="145" rx="174" ry="86" fill="#ffffff" stroke="#c5d8e6" stroke-width="2"/>';
+      var pts=[[175,112],[270,98],[365,112],[218,184],[322,184]];
+      for(var ci=0;ci<N;ci++){
+        var on=w.sel.indexOf(ci)>=0;
+        s10+='<g'+(live?' data-a="f9pick" data-v="'+ci+'" style="cursor:pointer"':'')+'>'+f9DrawObj('cookie',pts[ci][0],pts[ci][1],32,on||hiU,false)+'</g>';
+      }
+      s10+='<text x="270" y="286" font-size="16" font-weight="800" text-anchor="middle" fill="#526575">直接點盤子上的餅乾（已選 '+w.sel.length+' 片，整盤共 '+N+' 片）</text>';
+      return s10+'</svg>';
+    }
+    /* 離散量盒子（甜甜圈、戰鬥陀螺、果凍） */
+    var cols2=N<=4?2:N<=6?3:N<=8?4:5,rows2=Math.ceil(N/cols2);
+    var cs2=N>=10?84:100,bw2=cols2*cs2+28,bh2=rows2*cs2+28,bx2=(540-bw2)/2,by2=(268-bh2)/2;
+    if(hiW)s10+='<rect x="'+(bx2-9)+'" y="'+(by2-9)+'" width="'+(bw2+18)+'" height="'+(bh2+18)+'" rx="18" fill="none" stroke="#e07a12" stroke-width="6" stroke-dasharray="12 6"/>';
+    s10+='<rect x="'+bx2+'" y="'+by2+'" width="'+bw2+'" height="'+bh2+'" rx="14" fill="#eef6fc" stroke="#5b84a6" stroke-width="4"/>';
+    for(var bi=0;bi<N;bi++){
+      var br=Math.floor(bi/cols2),bc=bi%cols2,cx4=bx2+14+bc*cs2+cs2/2,cy4=by2+14+br*cs2+cs2/2,on2=w.sel.indexOf(bi)>=0;
+      s10+='<rect x="'+(bx2+14+bc*cs2+4)+'" y="'+(by2+14+br*cs2+4)+'" width="'+(cs2-8)+'" height="'+(cs2-8)+'" rx="10" fill="'+(on2?'#fff6de':'#ffffff')+'" stroke="'+(on2?'#e07a12':'#c7d9e8')+'" stroke-width="'+(on2?3:2)+'"'+(live?' data-a="f9pick" data-v="'+bi+'" style="cursor:pointer"':'')+'/>';
+      s10+='<g'+(live?' data-a="f9pick" data-v="'+bi+'" style="cursor:pointer"':'')+'>'+f9DrawObj(q.kind,cx4,cy4,cs2*.33,on2||hiU,false)+'</g>';
+    }
+    s10+='<text x="270" y="288" font-size="16" font-weight="800" text-anchor="middle" fill="#526575">直接點格子裡的實物（已選 '+w.sel.length+' 個，整盒共 '+N+' 格）</text>';
+    return s10+'</svg>';
+  }
+  if(q.t==='f9take'){
+    var N2=q.n,cols3=N2<=6?3:N2<=8?4:5,rows3=Math.ceil(N2/cols3),cs3=N2>=10?82:98;
+    var bw3=cols3*cs3+28,bh3=rows3*cs3+28,bx3=(540-bw3)/2,by3=26,s11='<svg class="fr-svg f9-svg" viewBox="0 0 540 296">';
+    if(hiW||w.ghost)s11+='<rect x="'+(bx3-8)+'" y="'+(by3-8)+'" width="'+(bw3+16)+'" height="'+(bh3+16)+'" rx="18" fill="none" stroke="#e07a12" stroke-width="5" stroke-dasharray="10 6"/>';
+    s11+='<rect x="'+bx3+'" y="'+by3+'" width="'+bw3+'" height="'+bh3+'" rx="14" fill="#eef6fc" stroke="#5b84a6" stroke-width="4"/>';
+    for(var ti=0;ti<N2;ti++){
+      var tr=Math.floor(ti/cols3),tc=ti%cols3,tx=bx3+14+tc*cs3+cs3/2,ty=by3+14+tr*cs3+cs3/2;
+      var gone1=(w.st>=1&&ti<q.take1),gone2=(w.st>=2&&ti>=q.take1&&ti<q.take1+q.take2);
+      var slotBg=gone2?'#fff0f5':gone1?'#edf2f6':'#ffffff',slotBd=gone2?'#d6336c':gone1?'#9eb2c2':'#c7d9e8';
+      s11+='<rect x="'+(bx3+14+tc*cs3+4)+'" y="'+(by3+14+tr*cs3+4)+'" width="'+(cs3-8)+'" height="'+(cs3-8)+'" rx="10" fill="'+slotBg+'" stroke="'+slotBd+'" stroke-width="'+(gone2?3.5:2)+'"'+(gone1||gone2?' stroke-dasharray="6 4"':'')+'/>';
+      if(gone1){
+        if(w.ghost)s11+=f9DrawObj(q.kind,tx,ty,cs3*.31,false,true);
+        s11+='<text x="'+tx+'" y="'+(ty+5)+'" font-size="13" font-weight="900" text-anchor="middle" fill="#6b7d8c">先拿走了</text>';
+      }else if(gone2){
+        s11+=f9DrawObj(q.kind,tx,ty,cs3*.31,true,w.mode==='rem');
+        s11+='<text x="'+tx+'" y="'+(by3+14+tr*cs3+cs3-8)+'" font-size="12" font-weight="900" text-anchor="middle" fill="#c2255c">'+(q.mode==='choice'?'妹妹拿這格':'也吃掉了')+'</text>';
+      }else{
+        s11+=f9DrawObj(q.kind,tx,ty,cs3*.31,hiU&&q.mode==='rem',false);
+      }
+    }
+    s11+='<text x="270" y="280" font-size="15.5" font-weight="800" text-anchor="middle" fill="#526575">'+(w.ghost?'👻 看清楚：原本一整盒就是 '+N2+' 格，空出來的凹槽不會消失！':'原本一整盒裝滿 '+N2+' 個（空槽依然是盒子的一部分）')+'</text>';
+    return s11+'</svg>';
+  }
+  /* f9dcmp */
+  if(q.diffWhole){
+    var s12='<svg class="fr-svg f9-svg" viewBox="0 0 560 290">';
+    /* 大披薩 1/4（左，R=105） vs 小披薩 1/2（右，R=54） */
+    s12+='<text x="155" y="30" font-size="18" font-weight="900" text-anchor="middle" fill="#1d2b36">大披薩的 1/4</text>';
+    s12+='<circle cx="155" cy="148" r="106" fill="#e59e3c" stroke="#9e5c14" stroke-width="3"/><circle cx="155" cy="148" r="98" fill="#fff4cf" stroke="#d49e48" stroke-width="2" stroke-dasharray="6 4"/>';
+    s12+='<path d="'+f9PieSlicePath(155,148,98,-90,0)+'" fill="#f39c34" stroke="#8a4b00" stroke-width="3.5"/>';
+    s12+='<text x="415" y="30" font-size="18" font-weight="900" text-anchor="middle" fill="#1d2b36">小披薩的 1/2</text>';
+    s12+='<circle cx="415" cy="148" r="56" fill="#e59e3c" stroke="#9e5c14" stroke-width="3"/><circle cx="415" cy="148" r="50" fill="#fff4cf" stroke="#d49e48" stroke-width="2" stroke-dasharray="6 4"/>';
+    s12+='<path d="'+f9PieSlicePath(415,148,50,-90,90)+'" fill="#4ca6e8" stroke="#1f5fa6" stroke-width="3"/>';
+    if(w.ovl){
+      /* 把小披薩 1/2 疊到大披薩 1/4 上！ */
+      s12+='<path d="'+f9PieSlicePath(155,148,50,-90,90)+'" fill="rgba(76,166,232,.55)" stroke="#1f5fa6" stroke-width="3.5" stroke-dasharray="6 4"/>';
+      s12+='<text x="200" y="198" font-size="14.5" font-weight="900" fill="#1f5fa6">小披薩 1/2 疊上來！</text>';
+    }
+    s12+='<text x="280" y="280" font-size="16" font-weight="800" text-anchor="middle" fill="#526575">'+(w.ovl?'哇！大披薩的 1/4 面積反而比小披薩的 1/2 大得多！':'按左邊「🖐️ 把兩片疊在一起比比看」')+'</text>';
+    return s12+'</svg>';
+  }
+  /* 離散量兩盒對照比大小（10 格或 12 格） */
+  var N3=q.n,cols4=N3===12?6:5,rows4=2,cs4=54,bw4=cols4*cs4+20,bh4=rows4*cs4+18,bx4=(540-bw4)/2;
+  var s13='<svg class="fr-svg f9-svg" viewBox="0 0 540 310">';
+  [['甲',w.selA,16,'A'],['乙',w.selB,164,'B']].forEach(function(row){
+    var nm=row[0],sel=row[1],ry=row[2],tag=row[3];
+    s13+='<text x="'+(bx4-16)+'" y="'+(ry+bh4/2+8)+'" font-size="24" font-weight="900" text-anchor="end" fill="#1d2b36">'+nm+'</text>';
+    s13+='<rect x="'+bx4+'" y="'+ry+'" width="'+bw4+'" height="'+bh4+'" rx="12" fill="#eef6fc" stroke="#5b84a6" stroke-width="3"/>';
+    for(var di=0;di<N3;di++){
+      var dr=Math.floor(di/cols4),dc=di%cols4,dx=bx4+10+dc*cs4+cs4/2,dy=ry+9+dr*cs4+cs4/2,on3=sel.indexOf(di)>=0;
+      s13+='<rect x="'+(bx4+10+dc*cs4+3)+'" y="'+(ry+9+dr*cs4+3)+'" width="'+(cs4-6)+'" height="'+(cs4-6)+'" rx="8" fill="'+(on3?'#fff3cc':'#fff')+'" stroke="'+(on3?'#e07a12':'#c7d9e8')+'" stroke-width="'+(on3?2.8:1.6)+'"'+(live?' data-a="f9dp" data-v="'+tag+':'+di+'" style="cursor:pointer"':'')+'/>';
+      s13+='<g'+(live?' data-a="f9dp" data-v="'+tag+':'+di+'" style="cursor:pointer"':'')+'>'+f9DrawObj(q.kind,dx,dy,cs4*.33,on3,!on3)+'</g>';
+    }
+  });
+  s13+='<text x="270" y="302" font-size="14.5" font-weight="800" text-anchor="middle" fill="#526575">點上面（甲）和下面（乙）盒子裡的物件，把兩人的份都點亮再比！</text>';
+  return s13+'</svg>';
+}
+
+/* ---------- 互動操作（掛在 FrDesk 上） ---------- */
+FrDesk.prototype.f9Click=function(a,v){
+  var st=this.st(),q=st.qs[st.i],w=st.w;
+  if(a==='f9hi'){w.hi=(w.hi===v?'':v);this.render();return;}
+  if(a==='f9er'&&q.t==='f9erase'){w.erased=1;w.msg='切線拆掉了！現在看仔細：塗色這塊有變大嗎？右邊選答案！';w.good=1;this.changed();return;}
+  if(a==='f9xr'){w.xray=w.xray?0:1;if(q.t==='f9half'&&w.xray&&w.step>=q.cuts)w.f='a';this.changed();return;}
+  if(a==='f9cut'&&q.t==='f9half'){
+    if(w.step<q.cuts){w.step++;w.msg=w.step<q.cuts?'切好第 '+w.step+' 刀（左邊完全沒切！），再對半切最右邊！':'切完 '+q.cuts+' 刀了！按「👓 打開 X 光想像線」看看沒切開的地方藏了幾塊！';w.good=1;this.changed();}
+    return;
+  }
+  if(a==='f9ovl'){w.ovl=w.ovl?0:1;w.msg=w.ovl?'疊在一起看清楚了！現在在右邊選出你的發現。':'';this.changed();return;}
+  if(a==='f9stp'){
+    var tn=q.t==='f9ribbon'?(w.ph===1?q.n1:q.n2):q.n;
+    if(w.stamps<tn){w.stamps++;if(w.stamps>=tn){w.f='a';w.good=1;w.msg='剛好鋪滿 '+tn+' 塊！現在在右邊寫出分數！';}else{w.msg='已鋪 '+w.stamps+' 塊，還沒滿，繼續蓋印！';w.good=0;}this.changed();}
+    return;
+  }
+  if(a==='f9gath'&&q.t==='f9ribbon'){w.gathered=w.gathered?0:1;if(w.gathered){w.f='c';w.good=1;w.msg='塗色全滑到一起了！寫下有幾格、也是幾分之幾條！';}this.changed();return;}
+  if(a==='f9pick'&&q.t==='f9pack'){
+    var idx=+v,pos=w.sel.indexOf(idx);if(pos>=0)w.sel.splice(pos,1);else w.sel.push(idx);
+    w.msg='';if(w.sel.length===q.target&&!w.f)w.f=q.swapN?'a':'c';this.changed();return;
+  }
+  if(a==='f9tk'&&q.t==='f9take'){
+    if(w.st<2){w.st++;w.good=1;w.msg=w.st===1?'先拿走 '+q.take1+' 個了！看空槽留在盒子裡，接著按第二個人拿走！':'兩個人都拿好了！'+(q.mode==='choice'?'右邊選選看：這是幾分之幾盒？':'看看還剩幾個、是幾分之幾盒！');if(w.st===2&&q.mode==='rem')w.f='c';this.changed();}
+    return;
+  }
+  if(a==='f9gh'&&q.t==='f9take'){w.ghost=w.ghost?0:1;this.changed();return;}
+  if(a==='f9dp'&&q.t==='f9dcmp'){
+    var ps=String(v).split(':'),arr=ps[0]==='A'?w.selA:w.selB,di=+ps[1],ix=arr.indexOf(di);
+    if(ix>=0)arr.splice(ix,1);else arr.push(di);w.msg='';this.changed();return;
+  }
+  if(a==='f9rst'){st.w=f9W(q);this.changed();return;}
+  if(a==='f9opt'){f9Check(st,v);this.changed();return;}
+  if(a==='check'){f9Check(st);this.changed();return;}
+};
+
+/* ---------- 畫面渲染（三欄並排、純精細 SVG 圖樣媒介） ---------- */
+FrDesk.prototype.f9Render=function(){
+  var root=this.root,st=this.st(),q=st.qs[st.i],w=st.w,done=w.s==='done',e=w.e||{};
+  var h2='<div class="rm"><div class="rm-head"><span class="lv">'+esc(TASK[st.id].title)+'</span><b class="frhq">'+f9Text(q,w)+'</b><span class="no">第 '+(st.i+1)+' / '+st.qs.length+' 題</span></div>';
+  h2+='<div class="rm-body fr-body f9-body">';
+
+  /* 左欄：操作工具 */
+  h2+='<div class="rm-col f9-tools">';
+  if(q.t==='f9erase'){
+    h2+='<div class="ml-ctl"><div class="t">動手做實驗</div>'+
+      '<button type="button" class="ml-hold" data-a="f9er"'+(done||w.erased?' disabled':'')+'>'+(w.erased?'✅ 切線已拆掉':'🪄 拆掉其他切線')+'</button>'+
+      '<button type="button" class="ml-sm" data-a="f9xr"'+(done||!w.erased?' disabled':'')+'>'+(w.xray?'🙈 收起 X 光想像線':'👓 打開 X 光想像線')+'</button>'+
+      '<button type="button" class="ml-sm" data-a="f9rst"'+(done||!w.erased?' disabled':'')+'>↺ 復原重看</button></div>'+
+      '<div class="fr-tip">親手把其他區的切線擦掉，看看塗色那塊的大小有沒有改變！</div>';
+  }else if(q.t==='f9half'){
+    h2+='<div class="ml-ctl"><div class="t">只切最右邊！</div>'+
+      '<button type="button" class="ml-hold" data-a="f9cut"'+(done||w.step>=q.cuts?' disabled':'')+'>'+(w.step>=q.cuts?'✅ 切完 '+q.cuts+' 次了':'✂️ 只對半切最右邊')+'</button>'+
+      '<button type="button" class="ca-carrybtn'+(w.step>=q.cuts&&!w.xray?' pulse':'')+'" data-a="f9xr"'+(done||w.step<q.cuts?' disabled':'')+'>'+(w.xray?'🙈 收起 X 光想像線':'👓 打開 X 光想像線')+'</button>'+
+      '<button type="button" class="ml-sm" data-a="f9rst"'+(done||!w.step?' disabled':'')+'>↺ 全部重切</button></div>'+
+      '<div class="fr-tip">左邊完全不切，只不斷切最右邊！再打開「X 光想像線」透視整條藏著幾塊一樣大的。</div>';
+  }else if(q.t==='f9ovl'){
+    h2+='<div class="ml-ctl"><div class="t">重疊比大小</div>'+
+      '<button type="button" class="ml-hold" data-a="f9ovl"'+(done?' disabled':'')+'>'+(w.ovl?'↩ 放回原位':'🖐️ 把第 1 塊疊到中間比')+'</button></div>'+
+      '<div class="fr-tip">有沒有「平分」，不能用猜的——直接把兩塊疊在一起比大小最準！</div>';
+  }else if(q.t==='f9stamp'){
+    h2+='<div class="ml-ctl"><div class="t">拿這塊去量整體 1</div>'+
+      '<button type="button" class="ml-hold" data-a="f9stp"'+(done||w.stamps>=q.n?' disabled':'')+'>'+(w.stamps>=q.n?'✅ 剛好鋪滿 '+q.n+' 塊！':(q.sh==='pie'?'📋 旋轉蓋印鋪滿':'📋 拿這塊蓋印鋪滿'))+'</button>'+
+      '<button type="button" class="ml-sm" data-a="f9rst"'+(done||w.stamps<=1?' disabled':'')+'>↺ 清除印章</button></div>'+
+      '<div class="fr-tip">沒切齊也能證明是幾分之一！拿這一塊當印章，看看要幾塊一樣大的才剛好鋪滿整體 1。</div>';
+  }else if(q.t==='f9ribbon'){
+    if(q.mode==='swap'){
+      var tn=w.ph===1?q.n1:q.n2;
+      h2+='<div class="ml-ctl"><div class="t">量量整體 1</div>'+
+        '<button type="button" class="ml-hold" data-a="f9stp"'+(done||w.stamps>=tn?' disabled':'')+'>'+(w.stamps>=tn?'✅ 量滿 '+tn+' 段！':'📋 用藍緞帶量量看')+'</button>'+
+        '<button type="button" class="ml-sm" data-a="f9rst"'+(done||w.stamps<=1?' disabled':'')+'>↺ 重量</button></div>'+
+        '<div class="fr-tip">藍色緞帶長度沒變！看看換成不同的橘色「整體 1」後，分數怎麼變！</div>';
+    }else{
+      h2+='<div class="ml-ctl"><div class="t">跳格塗色驗證</div>'+
+        '<button type="button" class="ml-hold" data-a="f9gath"'+(done?' disabled':'')+'>'+(w.gathered?'↩ 放回原本跳格位置':'🧲 把塗色合在一起看看')+'</button></div>'+
+        '<div class="fr-tip">就算塗色散開在不同的格子，只要每一格一樣大，合起來看就一清二楚！</div>';
+    }
+  }else if(q.t==='f9pack'){
+    h2+='<div class="ml-ctl"><div class="t">動手點選實物</div>'+
+      '<div class="sc-tip2">目標：點選 <b>'+q.target+'</b> 個</div>'+
+      '<div class="sc-tip2">目前已選：<b>'+w.sel.length+'</b> 個</div>'+
+      '<button type="button" class="ml-sm" data-a="f9rst"'+(done||!w.sel.length?' disabled':'')+'>全部取消重選</button></div>'+
+      '<div class="fr-tip">點右邊分數後面的「實物縮圖」，主畫面會框出它代表的是「單獨 1 個」還是「整個整體 1」！</div>';
+  }else if(q.t==='f9take'){
+    h2+='<div class="ml-ctl"><div class="t">照故事操作</div>'+
+      '<button type="button" class="ml-hold" data-a="f9tk"'+(done||w.st>=2?' disabled':'')+'>'+(w.st===0?'👦 第一個人先拿走 '+q.take1+' 個':w.st===1?'👧 第二個人再拿走 '+q.take2+' 個':'✅ 都拿好了')+'</button>'+
+      '<button type="button" class="ml-sm" data-a="f9gh"'+(done||w.st===0?' disabled':'')+'>'+(w.ghost?'🙈 藏起原盒透視':'👻 蓋回原本 '+q.n+' 格滿盒')+'</button>'+
+      '<button type="button" class="ml-sm" data-a="f9rst"'+(done||!w.st?' disabled':'')+'>↺ 重來</button></div>'+
+      '<div class="fr-tip">注意看！東西拿走後，盒子上的凹槽還在——「一整盒」有變小嗎？</div>';
+  }else if(q.diffWhole){
+    h2+='<div class="ml-ctl"><div class="t">疊起來比比看</div>'+
+      '<button type="button" class="ml-hold" data-a="f9ovl"'+(done?' disabled':'')+'>'+(w.ovl?'↩ 分開看':'🖐️ 把兩片疊在一起比')+'</button></div>'+
+      '<div class="fr-tip">不要光看 1/4 和 1/2 就下結論，親手疊在一起看看！</div>';
+  }else{
+    h2+='<div class="ml-ctl"><div class="t">把兩人的份點進盒子</div>'+
+      '<div class="sc-tip2">甲：'+ (q.aFmt==='unit'?q.aCount+' '+f9Pic(q.kind,'unit',1,'',w.hi):frF(q.aCount,q.n)+' '+f9Pic(q.kind,'whole',q.n,q.word,w.hi)) +'</div>'+
+      '<div class="sc-tip2">乙：'+ (q.bFmt==='unit'?q.bCount+' '+f9Pic(q.kind,'unit',1,'',w.hi):frF(q.bCount,q.n)+' '+f9Pic(q.kind,'whole',q.n,q.word,w.hi)) +'</div>'+
+      '<button type="button" class="ml-sm" data-a="f9rst"'+(done?' disabled':'')+'>全部清掉重點</button></div>';
+  }
+  h2+='</div>';
+
+  /* 中欄：主舞台 */
+  h2+='<div class="rm-col grow fr-stage f9-stage">'+f9BoardSVG(q,w,true)+(w.msg?'<div class="rm-msg'+(w.good?' ok':'')+'">'+esc(w.msg)+'</div>':'')+'</div>';
+
+  /* 右欄：圖譜作答區（精細實物縮圖媒介！） */
+  var box=function(f){return '<button type="button" class="rm-ab'+(w.f===f&&!done?' f':'')+'" data-a="f" data-v="'+f+'">'+esc(e[f]==null?'':e[f])+'</button>';};
+  var frB=function(a,b){return '<span class="fr-frac">'+box(a)+'<i></i>'+box(b)+'</span>';};
+  h2+='<div class="rm-col f9-ans"><div class="ap-eq f9-eq">';
+  if(q.t==='f9erase'){
+    h2+='<div class="lb">塗色部分是幾分之幾？</div><div class="f9-row">對照整體 1：'+f9Pic(q.kind,'whole',q.n,'',w.hi)+'</div>';
+    h2+='<div class="f9-choices">'+q.opts.map(function(o){
+      var v=o[0]+'/'+o[1],on=done&&v==='1/'+q.n;
+      return '<button type="button" class="f9-cbtn'+(on?' on':'')+'" data-a="f9opt" data-v="'+v+'"'+(done?' disabled':'')+'>'+frF(o[0],o[1])+' '+f9Pic(q.kind,'whole',q.n,'',w.hi,true)+'</button>';
+    }).join('')+'</div>';
+  }else if(q.t==='f9half'){
+    h2+='<div class="lb">最右邊塗色這塊是</div><div class="f9-row">'+frB('a','b')+' '+f9Pic(q.kind,'whole',q.n,'',w.hi)+'</div>';
+    if(w.step<q.cuts||!w.xray)h2+='<div class="ml-note">先在左邊切完並打開「👓 X 光想像線」，再寫答案！</div>';
+  }else if(q.t==='f9ovl'){
+    h2+='<div class="lb">比完了，回答看看</div><div class="f9-choices">'+
+      '<button type="button" class="f9-cbtn'+(done&&q.equal?' on':'')+'" data-a="f9opt" data-v="yes"'+(done?' disabled':'')+'>✅ 有平分，是 '+frF(2,3)+' '+f9Pic('paper','whole',3,'',w.hi,true)+'</button>'+
+      '<button type="button" class="f9-cbtn'+(done&&!q.equal?' on':'')+'" data-a="f9opt" data-v="no"'+(done?' disabled':'')+'>❌ 沒有平分，不能說是 '+frF(2,3)+'</button></div>';
+  }else if(q.t==='f9stamp'){
+    h2+='<div class="lb">證明結果：這 1 塊是</div><div class="f9-row">'+frB('a','b')+' '+f9Pic(q.kind,'whole',q.n,'',w.hi)+'</div>';
+    if(w.stamps<q.n)h2+='<div class="ml-note">先按左邊「📋 蓋印鋪滿」，鋪滿整體 1 再填寫！</div>';
+  }else if(q.t==='f9ribbon'){
+    if(q.mode==='swap'){
+      var tn2=w.ph===1?q.n1:q.n2;
+      h2+='<div class="lb">'+(w.ph===1?'① 短母帶：藍緞帶是':'② 換長母帶：同一段藍緞帶變成')+'</div><div class="f9-row">'+frB('a','b')+' '+f9Pic('ribbon','whole',tn2,'',w.hi)+'</div>';
+    }else{
+      h2+='<div class="lb">用圖樣寫下來</div><div class="f9-row">'+box('c')+' '+f9Pic('strip11','unit',1,'',w.hi)+' ＝ '+frB('a','b')+' '+f9Pic('strip11','whole',11,'條',w.hi)+'</div>';
+    }
+  }else if(q.t==='f9pack'){
+    h2+='<div class="lb">對照實物圖樣寫下來</div>';
+    if(q.swapN){
+      h2+='<div class="f9-row">'+(w.ph===1?'① 裝進 4 格盒：':'② 換裝 6 格盒：')+'</div><div class="f9-row">1 '+f9Pic(q.kind,'unit',1,'',w.hi)+' ＝ '+frB('a','b')+' '+f9Pic(q.kind,'whole',w.curN,q.word,w.hi)+'</div>';
+    }else{
+      h2+='<div class="f9-row">'+box('c')+' '+f9Pic(q.kind,'unit',1,'',w.hi)+'</div>'+
+          '<div class="f9-row">＝ '+frB('a','b')+' '+f9Pic(q.kind,'whole',w.curN,q.word,w.hi)+'</div>'+
+          (q.wholeEq?'<div class="f9-row">＝ <b>1</b> '+f9Pic(q.kind,'whole',w.curN,q.word,w.hi)+'</div>':'');
+    }
+  }else if(q.t==='f9take'){
+    if(q.mode==='choice'){
+      var wrongN=q.n-q.take1;
+      h2+='<div class="lb">第二個人拿走的是哪一個？</div><div class="f9-choices">'+
+        '<button type="button" class="f9-cbtn'+(done?' on':'')+'" data-a="f9opt" data-v="1/'+q.n+'"'+(done?' disabled':'')+'>'+frF(1,q.n)+' '+f9Pic(q.kind,'whole',q.n,q.word,w.hi,true)+'</button>'+
+        '<button type="button" class="f9-cbtn" data-a="f9opt" data-v="1/'+wrongN+'"'+(done?' disabled':'')+'>'+frF(1,wrongN)+' '+f9Pic(q.kind,'whole',wrongN,q.word,w.hi,true)+'</button></div>';
+    }else{
+      h2+='<div class="lb">還剩下多少？</div><div class="f9-row">'+box('c')+' '+f9Pic(q.kind,'unit',1,'',w.hi)+'</div><div class="f9-row">＝ '+frB('a','b')+' '+f9Pic(q.kind,'whole',q.n,q.word,w.hi)+'</div>';
+    }
+  }else if(q.diffWhole){
+    h2+='<div class="lb">你發現了什麼？</div><div class="f9-choices">'+
+      '<button type="button" class="f9-cbtn'+(done?' on':'')+'" data-a="f9opt" data-v="diff"'+(done?' disabled':'')+'>整體 1 不一樣大，不能只看分數就比大小！</button>'+
+      '<button type="button" class="f9-cbtn" data-a="f9opt" data-v="half"'+(done?' disabled':'')+'>1/2 永遠都比 1/4 大</button></div>';
+  }else{
+    var want=q.aCount>q.bCount?'gt':q.aCount<q.bCount?'lt':'eq';
+    h2+='<div class="lb">點完盒子再比一比</div><div class="f9-choices">'+
+      [['gt','甲 比較多'],['eq','一樣多'],['lt','乙 比較多']].map(function(x){
+        return '<button type="button" class="f9-cbtn'+(done&&want===x[0]?' on':'')+'" data-a="f9opt" data-v="'+x[0]+'"'+(done?' disabled':'')+'>'+x[1]+'</button>';
+      }).join('')+'</div>';
+  }
+  h2+='</div>';
+  if(!done){
+    if(f9Fields(q,w).length){h2+=rmPadHTML()+'<button type="button" class="rm-btn" data-a="check">檢查</button>';}
+  }else{
+    h2+='<button type="button" class="rm-btn go" data-a="next">'+(st.i+1<st.qs.length?'下一題 ▶':'看結果 ▶')+'</button>';
+  }
+  root.innerHTML=h2+'</div></div></div>';
+};
+
+(function(){var s=document.createElement('style');s.textContent=
+  '.f9-body{gap:12px}.f9-tools{width:206px;flex:none;padding:10px}.f9-stage{min-width:260px;flex:1;padding:10px!important}.f9-ans{width:294px;flex:none;padding:10px 12px}@media (min-width:780px){.f9-body{flex-wrap:nowrap}}'+
+  '.f9-svg{max-height:58vh}.f9-eq{flex-direction:column;align-items:flex-start;gap:8px;font-size:21px}.f9-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}'+
+  '.f9-ref{display:inline-flex;align-items:center;gap:4px;background:#fff;border:2px solid #b9d0e2;border-radius:10px;padding:3px 6px;cursor:pointer;vertical-align:middle;transition:transform .1s,border-color .15s}.f9-ref:hover{border-color:#e07a12;background:#fff9ee}.f9-ref.hi{border-color:#e07a12;background:#fff2d6;box-shadow:0 0 0 3px rgba(224,122,18,.22)}.f9-ico{display:block;flex:none}.f9-w{font-size:14px;font-weight:900;color:#4a5d6e;padding-right:2px}'+
+  '.f9-choices{display:flex;flex-direction:column;gap:8px;width:100%}.f9-cbtn{display:flex;align-items:center;justify-content:center;gap:8px;font:inherit;font-size:18px;font-weight:800;border:2.5px solid var(--line);border-radius:12px;background:#fff;padding:10px 10px;cursor:pointer;text-align:center}.f9-cbtn:hover:not(:disabled){border-color:#2a6fb0;background:#f2f8ff}.f9-cbtn.on{border-color:var(--green);background:#eaf8ef;color:#157a40}'+
+  '.f9-eq .rm-ab{min-width:46px;height:40px;font-size:22px}.f9-eq .fr-frac>i{width:46px}';
+document.head.appendChild(s);})();
 
 /* ================= 第8單元 公升和毫升：課本 p.112–116（一題一塊）＋「倒水實驗室」教具 =================
    按住「倒水」→ 瓶子傾斜、水柱流下、量杯水面慢慢升高；放開就停。可以一小格一小格倒、倒回去、放大鏡看刻度。
@@ -6334,7 +7136,7 @@ function kmTeacher(o){
 '.km-wait{font-size:28px;margin:auto}';
 var s=document.createElement('style');s.textContent=css;document.head.appendChild(s);})();
 
-var UNITS=[['angleb','角・課本','math'],['angle','角・習作','math'],['areab','面積・課本','math'],['area','面積・習作','math'],['divb','除法・課本','math'],['div','除法・習作','math'],['frac','分數板','math'],['mlb','8-1 毫升','math'],['mlc','8-2 公升與毫升','math'],['mld','8-3 容量加減','math'],['mlw','公升毫升・習作','math'],['zh7','七 淡水小鎮','zh'],['zh8','八 安平古堡參觀記','zh'],['zh9','九 馬太鞍的巴拉告','zh'],['zh10','十 狐狸的故事','zh'],['zh11','十一 巨人的花園','zh'],['zh12','十二 模仿貓','zh'],['zizao','拆字造字','zh'],['bh','班會闖關','soc'],['socb','班級自治・課本','soc'],['socw','班級自治・習作','soc']];
+var UNITS=[['angleb','角・課本','math'],['angle','角・習作','math'],['areab','面積・課本','math'],['area','面積・習作','math'],['divb','除法・課本','math'],['div','除法・習作','math'],['frac','9 分數・操作體驗','math'],['fracb','9 分數・課本','math'],['fracw','9 分數・習作','math'],['mlb','8-1 毫升','math'],['mlc','8-2 公升與毫升','math'],['mld','8-3 容量加減','math'],['mlw','公升毫升・習作','math'],['zh7','七 淡水小鎮','zh'],['zh8','八 安平古堡參觀記','zh'],['zh9','九 馬太鞍的巴拉告','zh'],['zh10','十 狐狸的故事','zh'],['zh11','十一 巨人的花園','zh'],['zh12','十二 模仿貓','zh'],['zizao','拆字造字','zh'],['bh','班會闖關','soc'],['socb','班級自治・課本','soc'],['socw','班級自治・習作','soc']];
 var SUBJ=[['zh','國語教室'],['math','數學教室'],['soc','社會教室']];
 function unitSubj(u){for(var i=0;i<UNITS.length;i++)if(UNITS[i][0]===u)return UNITS[i][2];return 'math';}
 function isZhSt(st){return !!st&&st.k==='wb'&&!!TASK[st.id]&&(TASK[st.id].subj==='zh'||!!TASK[st.id].ink);}
