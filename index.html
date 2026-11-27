@@ -139,7 +139,7 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline
 .codein{font-size:40px;letter-spacing:.3em;text-align:center;padding:8px;border:2px solid var(--line);border-radius:12px;width:100%}
 .go{font-size:26px;padding:14px;border-radius:12px;border:0;background:var(--accent);color:#fff;font-weight:700}
 .go:disabled{opacity:.4}
-.taskpick{display:flex;gap:6px;flex-wrap:wrap}
+.taskpick{display:flex;gap:6px;flex-wrap:wrap;max-height:92px;overflow-y:auto;width:100%}
 
 /* ---------- teacher ---------- */
 .t-head{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center;padding:8px 16px;background:var(--ink);color:#fff}
@@ -294,7 +294,7 @@ var ROLE='student';
 var PAGES={};
 var LITE=true;
 var STUDENT_URL='https://alanhuangz.github.io/jiao-classroom/';
-var PAGE_IDS=["59", "60", "61", "62", "63", "69", "70", "71", "72", "73", "74", "75", "b86", "b87", "b88", "b89", "b90", "b91", "b92", "b93", "b94", "b95", "b96", "b97", "b76", "b77", "b78", "b79", "b80", "b81", "b82", "b83", "z76", "z77", "z78", "z79", "z80", "z81", "z82", "z83", "z84", "z85", "z86", "z87", "z88", "z89", "z90", "z91", "z92", "z93", "z94", "z95", "z96", "z97", "z98", "z99", "z108", "z109", "z110", "z111", "z112", "z113", "z114", "z115", "z116", "z117", "z118", "z119", "z120", "z121", "z122", "z123", "z124", "z125", "z126", "z127", "z128", "z129", "z130", "z131", "66", "67", "b98", "b99", "b100", "b101", "b102", "b103", "b104", "b105", "b106", "b107", "b108", "b109", "b110", "b111", "76", "77", "78", "79", "80", "81", "82", "83", "84", "85", "86", "87", "s68", "s69", "s70", "s71", "s72", "s73", "s74", "s75", "s76", "s77", "s78", "sw18", "sw19", "sw20", "sw21", "b112", "b113", "b114", "b115", "b116", "b117", "b118", "b119", "b120"];
+var PAGE_IDS=["59", "60", "61", "62", "63", "69", "70", "71", "72", "73", "74", "75", "b86", "b87", "b88", "b89", "b90", "b91", "b92", "b93", "b94", "b95", "b96", "b97", "b76", "b77", "b78", "b79", "b80", "b81", "b82", "b83", "z76", "z77", "z78", "z79", "z80", "z81", "z82", "z83", "z84", "z85", "z86", "z87", "z88", "z89", "z90", "z91", "z92", "z93", "z94", "z95", "z96", "z97", "z98", "z99", "z108", "z109", "z110", "z111", "z112", "z113", "z114", "z115", "z116", "z117", "z118", "z119", "z120", "z121", "z122", "z123", "z124", "z125", "z126", "z127", "z128", "z129", "z130", "z131", "66", "67", "b98", "b99", "b100", "b101", "b102", "b103", "b104", "b105", "b106", "b107", "b108", "b109", "b110", "b111", "76", "77", "78", "79", "80", "81", "82", "83", "84", "85", "86", "87", "s68", "s69", "s70", "s71", "s72", "s73", "s74", "s75", "s76", "s77", "s78", "sw18", "sw19", "sw20", "sw21", "b112", "b113", "b114", "b115", "b116", "b117", "b118", "b119", "b120", "b121", "b122", "b123", "b124", "b125", "89", "90", "91", "92", "93", "94", "95"];
 var PREFIX='jiao3-wk-';
 var CLASS_CODE='0301';
 var ROSTER={};
@@ -2848,7 +2848,44 @@ TASKS.push(
   {id:'ml6',kind:'ml',unit:'mlc',title:'2 公升量杯：數刻度',sub:'先看毫升、再看公升 8 題'},
   {id:'ml7',kind:'ml',unit:'mlc',title:'倒倒看：幾公升幾毫升',sub:'毫升倒成一杯一杯 8 題'},
   {id:'ml8',kind:'ml',unit:'mlc',title:'合起來：倒進大量杯',sub:'一杯一杯接著數 6 題'},
-  {id:'ml9',kind:'ml',unit:'mlc',title:'比比看：誰裝得多',sub:'倒成一杯一杯再比 6 題'}
+  {id:'ml9',kind:'ml',unit:'mlc',title:'比比看：誰裝得多',sub:'倒成一杯一杯再比 6 題'},
+  /* 🔍 刻度偵探（3 關體驗遊戲：涵蓋課本與習作全部 10 種量杯刻度） */
+  {id:'ml10',kind:'ml',unit:'mlb mlc mlw',title:'刻度偵探①：破譯 1 小格',sub:'10 種量杯・試試看再數 10 題'},
+  {id:'ml11',kind:'ml',unit:'mlb mlc mlw',title:'刻度偵探②：一樣高一樣多嗎？',sub:'雙胞胎量杯大對決 6 題'},
+  {id:'ml12',kind:'ml',unit:'mlb mlc mlw',title:'刻度偵探③：畫水位大師',sub:'像習作一樣塗出水量 8 題'},
+  /* 8-3 容量的加減計算＋練習八（課本 p.121–125） */
+  {id:'l121',unit:'mld',kind:'wb',page:'b121',box:[20,20,1200,930],ink:true,title:'p.121 1',sub:'鮮乳合起來、相差幾毫升'},
+  {id:'l121b',unit:'mld',kind:'wb',page:'b121',box:[20,960,1200,470],ink:true,title:'p.121 2',sub:'兩個水桶共裝幾公升'},
+  {id:'l122',unit:'mld',kind:'wb',page:'b122',box:[20,50,1200,555],ink:true,title:'p.122 3',sub:'沐浴乳 1250＋350 毫升'},
+  {id:'l122b',unit:'mld',kind:'wb',page:'b122',box:[20,605,1200,410],ink:true,title:'p.122 4',sub:'兩個保溫瓶合起來'},
+  {id:'l122c',unit:'mld',kind:'wb',page:'b122',box:[20,1015,1200,425],ink:true,title:'p.122 做做看',sub:'飲料店上下午紅茶'},
+  {id:'l123',unit:'mld',kind:'wb',page:'b123',box:[20,40,1200,520],ink:true,title:'p.123 5',sub:'冬瓜茶喝掉還剩多少'},
+  {id:'l123b',unit:'mld',kind:'wb',page:'b123',box:[20,555,1200,460],ink:true,title:'p.123 6',sub:'鍋子和水壺相差多少'},
+  {id:'l123c',unit:'mld',kind:'wb',page:'b123',box:[20,1015,1200,425],ink:true,title:'p.123 做做看',sub:'4 公升熱水瓶還能加多少'},
+  {id:'l124',unit:'mld',kind:'wb',page:'b124',box:[20,10,1200,625],ink:true,title:'p.124 練習1',sub:'2000 mL、3000 mL 看圖填'},
+  {id:'l124b',unit:'mld',kind:'wb',page:'b124',box:[20,635,1200,395],ink:true,title:'p.124 練習2',sub:'公升和毫升換算'},
+  {id:'l124c',unit:'mld',kind:'wb',page:'b124',box:[20,1030,1200,450],ink:true,title:'p.124 練習3',sub:'比比看 ＞ ＜ ＝'},
+  {id:'l125a',unit:'mld',kind:'wb',page:'b125',box:[20,40,1200,690],ink:true,title:'p.125 練習4①②',sub:'蜂蜜水、鮮奶'},
+  {id:'l125b',unit:'mld',kind:'wb',page:'b125',box:[20,720,1200,700],ink:true,title:'p.125 練習4③④',sub:'水果醋、洗手乳'},
+  /* 數學習作 第8單元 8-1～8-2（p.89–95） */
+  {id:'w89a',unit:'mlw',kind:'wb',page:'89',box:[20,10,1200,445],ink:true,title:'習p.89 1',sub:'認識 mL 填填看'},
+  {id:'w89b',unit:'mlw',kind:'wb',page:'89',box:[20,455,1200,515],ink:true,title:'習p.89 2①②',sub:'20 mL 藥杯、100 mL 油瓶'},
+  {id:'w89c',unit:'mlw',kind:'wb',page:'89',box:[20,965,1200,495],ink:true,title:'習p.89 2③④',sub:'100 mL 量杯、20 mL 針筒'},
+  {id:'w90a',unit:'mlw',kind:'wb',page:'90',box:[20,50,1200,740],ink:true,title:'習p.90 3①②',sub:'柳橙汁、綠茶幾毫升'},
+  {id:'w90b',unit:'mlw',kind:'wb',page:'90',box:[20,785,1200,675],ink:true,title:'習p.90 3③④',sub:'巧克力牛奶、鮮奶幾毫升'},
+  {id:'w91a',unit:'mlw',kind:'wb',page:'91',box:[20,50,1200,450],ink:true,title:'習p.91 4①②',sub:'畫出 6 mL、800 mL'},
+  {id:'w91b',unit:'mlw',kind:'wb',page:'91',box:[20,495,1200,400],ink:true,title:'習p.91 4③④',sub:'畫出 450 mL、500 mL'},
+  {id:'w91c',unit:'mlw',kind:'wb',page:'91',box:[20,895,1200,560],ink:true,title:'習p.91 5',sub:'眼藥水、大杯紅茶估量'},
+  {id:'w92a',unit:'mlw',kind:'wb',page:'92',box:[20,50,1200,560],ink:true,title:'習p.92 1①',sub:'4 個 1L 量杯共幾公升'},
+  {id:'w92b',unit:'mlw',kind:'wb',page:'92',box:[20,605,1200,390],ink:true,title:'習p.92 1②',sub:'6 個 1L 量杯共幾公升'},
+  {id:'w92c',unit:'mlw',kind:'wb',page:'92',box:[20,995,1200,470],ink:true,title:'習p.92 2',sub:'公升填填看'},
+  {id:'w93a',unit:'mlw',kind:'wb',page:'93',box:[20,50,1200,840],ink:true,title:'習p.93 3①②',sub:'2L 量杯裝了多少水'},
+  {id:'w93b',unit:'mlw',kind:'wb',page:'93',box:[20,885,1200,585],ink:true,title:'習p.93 3③④',sub:'兩個 2L 量杯合起來'},
+  {id:'w94a',unit:'mlw',kind:'wb',page:'94',box:[20,40,1200,690],ink:true,title:'習p.94 4①②',sub:'果汁機、熱水瓶容量'},
+  {id:'w94b',unit:'mlw',kind:'wb',page:'94',box:[20,730,1200,730],ink:true,title:'習p.94 5',sub:'2150、2050、2005 連連看'},
+  {id:'w95a',unit:'mlw',kind:'wb',page:'95',box:[20,50,1200,340],ink:true,title:'習p.95 6',sub:'公升和毫升填填看'},
+  {id:'w95b',unit:'mlw',kind:'wb',page:'95',box:[20,390,1200,630],ink:true,title:'習p.95 7',sub:'比比看 打√'},
+  {id:'w95c',unit:'mlw',kind:'wb',page:'95',box:[20,1020,1200,440],ink:true,title:'習p.95 8',sub:'比比看 ＞ ＜ ＝'}
 );
 /* 量杯：max 最大刻度、mj 大格、mn 小格、lab 標數字的刻度、w 杯寬、rate 每秒倒幾毫升 */
 var ML_CUP={
@@ -2901,19 +2938,20 @@ function mlGen(id){
   if(id==='ml0')return [mlMk('free')];
   if(id==='ml4')return [mlQ('ice',{cup:'c1000'})];
   if(/^ml[5-9]$/.test(id))return lmGen(id);
+  if(/^ml1[0-2]$/.test(id))return scGen(id);
   if(id==='ml1')return [mlMk('read','c10'),mlMk('read','b250')].concat(shuffle([mlMk('read','c10'),mlMk('read','b250'),mlMk('read','c500'),mlMk('read','c1000'),mlMk('read','c1000'),mlMk('read','c1000')]));
   if(id==='ml2')return [mlMk('make','c10'),mlMk('make','b250')].concat(shuffle([mlMk('make','c10'),mlMk('make','b250'),mlMk('make','c500'),mlMk('make','c1000'),mlMk('make','c1000'),mlMk('make','c1000')]));
   return [mlMk('cmp'),mlMk('cmp'),mlMk('cmp'),mlMk('cmp'),mlMk('cmp'),mlMk('cmp')];
 }
 function mlStations(q){if(q.t==='cmp')return [{v:0,rem:q.A.amt},{v:0,rem:q.B.amt}];return [{v:0,rem:q.t==='read'?q.amt:-1}];}
-function mlW(q){if(lmIs(q))return lmW(q);var w={st:mlStations(q),e:{},f:'a',pick:'',miss:0,msg:'',good:0,s:'op',lab:0,zoom:1};if(q.two){w.ph=q.t==='read'?'pour':'make';w.rv=[];w.rl=[];w.f='';}return w;}
+function mlW(q){if(scIs(q))return scW(q);if(lmIs(q))return lmW(q);var w={st:mlStations(q),e:{},f:'a',pick:'',miss:0,msg:'',good:0,s:'op',lab:0,zoom:1};if(q.two){w.ph=q.t==='read'?'pour':'make';w.rv=[];w.rl=[];w.f='';}return w;}
 /* 2 公升量杯的步驟：pour 倒進去 → ml 看右邊數到水面、寫毫升 → lm 看左邊從 1L 往上數、寫幾公升幾毫升（make：先倒出來，再 lm） */
 function mlTwoFix(q,w){if(!q.two)return;if(!w.ph)w.ph=q.t==='read'?(w.st[0].rem>0?'pour':'ml'):'make';w.rv=w.rv||[];w.rl=w.rl||[];if(w.ph==='pour'&&w.st[0].rem===0){w.ph='ml';w.f='c';}}
 function mlTwoLab(C,t){return C.lab.indexOf(t)>=0;}
 function mlNew(id){var qs=mlGen(id);return {k:'ml',ver:1,id:id,qs:qs,i:0,w:mlW(qs[0]),res:[],add:0,done:false};}
-function mlFields(q,w){if(q.t==='ice')return [];if(lmIs(q))return lmFields(q,w);if(q.two){if(!w)return [];mlTwoFix(q,w);return w.ph==='ml'?['c']:w.ph==='lm'?(q.amt%1000?['a','b']:['a']):[];}return q.t==='read'?['a']:q.t==='cmp'?['a','b']:[];}
+function mlFields(q,w){if(q.t==='ice')return [];if(scIs(q))return scFields(q,w);if(lmIs(q))return lmFields(q,w);if(q.two){if(!w)return [];mlTwoFix(q,w);return w.ph==='ml'?['c']:w.ph==='lm'?(q.amt%1000?['a','b']:['a']):[];}return q.t==='read'?['a']:q.t==='cmp'?['a','b']:[];}
 function mlSrc(q,k){if(q.t==='cmp')return k?q.B:q.A;return {it:q.it||'water'};}
-function mlText(q,w){if(lmIs(q))return lmText(q,w);var C=ML_CUP[q.cup];
+function mlText(q,w){if(scIs(q))return scText(q,w);if(lmIs(q))return lmText(q,w);var C=ML_CUP[q.cup];
   if(q.two){var ph=w?(mlTwoFix(q,w),w.ph):'';
     if(w&&w.s==='done')return q.amt+' 毫升，也可以說是 '+(q.amt%1000?Math.floor(q.amt/1000)+' 公升 '+q.amt%1000+' 毫升':(q.amt/1000)+' 公升')+'。';
     if(ph==='ml')return '先看<b class="mlbig">右邊</b>的刻度（毫升）。'+(mlTwoLab(C,q.amt)?'水面到了哪一條線？':'從水面下面最近、有寫數字的那條線開始，一格一格往上點，數到水面。');
@@ -2932,6 +2970,7 @@ function mlUnitHint(C){return C.mn===1?'這個量杯 1 小格是 1 毫升，一�
 function mlCheck(st,pick2){
   var q=st.qs[st.i],w=st.w,C=ML_CUP[q.cup];w.msg='';w.good=0;
   if(w.s==='done'||q.t==='free'||q.t==='ice')return false;
+  if(scIs(q))return scCheck(st,pick2);
   if(lmIs(q))return lmCheck(st,pick2);
   if(q.two)return mlTwoCheck(st);
   var ok=false;
@@ -3061,7 +3100,7 @@ function mlZoomVB(C,v){var y=mlY(C,v),win=Math.max(80,Math.min(150,2.4*C.mj*(ML_
 function mlSummary(st){
   if(!st.qs)return '';var ok=st.res.filter(function(r){return r.ok;}).length;
   if(st.done)return '<span class="good">完成！</span>一次就對 '+ok+'/'+st.res.length+(st.add?'・加練 '+st.add+' 題':'');
-  var q=st.qs[st.i],w=st.w;if(lmIs(q))return lmSummary(st);if(q.t==='ice')return '冰塊動畫・看到第 '+(w.k||0)+' / 10 步'+(w.k>=10?'・<span class="good">看完了</span>':'');var s=q.t==='free'?'自由倒・':'第 '+(st.i+1)+'/'+st.qs.length+' 題・';
+  var q=st.qs[st.i],w=st.w;if(scIs(q))return scSummary(st);if(lmIs(q))return lmSummary(st);if(q.t==='ice')return '冰塊動畫・看到第 '+(w.k||0)+' / 10 步'+(w.k>=10?'・<span class="good">看完了</span>':'');var s=q.t==='free'?'自由倒・':'第 '+(st.i+1)+'/'+st.qs.length+' 題・';
   if(q.t==='free')s+=ML_CUP[q.cup].nm+'・倒了 '+w.st[0].v+' mL';
   else if(q.t==='make')s+='要 '+q.amt+'・倒了 '+w.st[0].v+' mL';
   else if(q.two){mlTwoFix(q,w);var bx=function(f){return esc(w.e[f]==null||w.e[f]===''?'□':w.e[f]);};s+=(q.t==='make'?'要 '+q.amt+'・倒了 '+w.st[0].v+' mL':w.ph==='pour'?'倒進 '+w.st[0].v+'/'+q.amt:'倒完了')+(w.ph==='ml'?'・右邊點了 '+w.rv.length+' 格・寫 '+bx('c')+' 毫升':'')+(w.ph==='lm'||w.s==='done'?'・左邊點了 '+w.rl.length+' 格・寫 '+bx('a')+' 公升'+(q.amt%1000?' '+bx('b')+' 毫升':''):'');}
@@ -3074,15 +3113,18 @@ var ML_UID=0;
 /* 用計時器推動畫（分頁被藏起來時 requestAnimationFrame 會停，倒水會卡住） */
 function mlTick(f){return setTimeout(function(){f(performance.now());},16);}
 function mlTile(box,st,big){if(!st.qs){box.innerHTML='';return;}var h2='<div class="rmt mlt'+(big?' big':'')+'">'+mlSummary(st);
-  if(!st.done){var q=st.qs[st.i];h2+='<div class="frt-q">'+mlText(q,st.w)+'</div>'+(q.t==='ice'?'<div class="ml-icet">🧊 '+(st.w.k||0)+' / 10'+(st.w.k?'：'+ICE_CAPS[(st.w.k||1)-1]:'')+'</div>':lmIs(q)?lmBoardSVG(q,st.w,null):mlBoardSVG(q,st.w,'t'+(ML_UID++)+'_',false));}
+  if(!st.done){var q=st.qs[st.i];h2+='<div class="frt-q">'+mlText(q,st.w)+'</div>'+(q.t==='ice'?'<div class="ml-icet">🧊 '+(st.w.k||0)+' / 10'+(st.w.k?'：'+ICE_CAPS[(st.w.k||1)-1]:'')+'</div>':scIs(q)?scBoardSVG(q,st.w,null,false):lmIs(q)?lmBoardSVG(q,st.w,null):mlBoardSVG(q,st.w,'t'+(ML_UID++)+'_',false));}
   box.innerHTML=h2+'</div>';}
 
 /* ---------- 操作台 ---------- */
 function MlDesk(root,ws){
   var self=this;this.root=root;this.ws=ws;this.uid='m'+(ML_UID++)+'_';this.anim=null;
   root.addEventListener('click',function(e){if(root._owner!==self||self.ws.locked)return;var b=e.target.closest('[data-a]');if(!b||!root.contains(b)||b.disabled)return;self.click(b.dataset.a,b.dataset.v);});
-  root.addEventListener('pointerdown',function(e){if(root._owner!==self||self.ws.locked)return;var b=e.target.closest('[data-hold]');if(!b||!root.contains(b)||b.disabled)return;e.preventDefault();try{b.setPointerCapture(e.pointerId);}catch(x){}self.startPour(+b.dataset.hold,true);});
-  var stop=function(){if(self.anim&&self.anim.hold&&!self.anim.stopped)self.stopPour();};
+  root.addEventListener('pointerdown',function(e){if(root._owner!==self||self.ws.locked)return;
+    var dr=e.target.closest('[data-scdrag]');if(dr&&root.contains(dr)){e.preventDefault();try{dr.setPointerCapture(e.pointerId);}catch(x){}self.scDragStart(dr,e);return;}
+    var b=e.target.closest('[data-hold]');if(!b||!root.contains(b)||b.disabled)return;e.preventDefault();try{b.setPointerCapture(e.pointerId);}catch(x){}self.startPour(+b.dataset.hold,true);});
+  root.addEventListener('pointermove',function(e){if(root._owner!==self||!self._scDrag)return;e.preventDefault();self.scDragMove(e);});
+  var stop=function(){if(self._scDrag)self.scDragEnd();if(self.anim&&self.anim.hold&&!self.anim.stopped)self.stopPour();};
   root.addEventListener('pointerup',stop);root.addEventListener('pointercancel',stop);document.addEventListener('pointerup',stop);
   root.addEventListener('contextmenu',function(e){if(e.target.closest('[data-hold]'))e.preventDefault();});
   document.addEventListener('keydown',function(e){if(root._owner!==self||self.ws.locked||root.hidden||root.offsetParent===null)return;if(e.target&&/INPUT|TEXTAREA/.test(e.target.tagName))return;var st=self.st();if(!st||st.k!=='ml'||st.done)return;
@@ -3156,6 +3198,7 @@ MlDesk.prototype.click=function(a,v){
   if(a==='zoom'){w.zoom=w.zoom?0:1;this.render();return;}
   if(a==='lab'){w.lab=w.lab?0:1;this.changed();return;}
   if(w.s==='done')return;
+  if(scIs(q)&&a!=='f'&&a!=='k'){this.scClick(a,v);return;}
   if(a==='tk'){if(q.two){mlTwoTap(st,v);this.changed();}return;}
   if(lmIs(q)&&a!=='f'&&a!=='k'){this.lmClick(a,v);return;}
   if(q.two&&q.t==='make'&&w.ph==='lm'&&(a==='one'||a==='back'||a==='empty'))return;
@@ -3172,6 +3215,7 @@ MlDesk.prototype.render=function(){
   var root=this.root;if(root._owner!==this)return;var st=this.st();if(!st||st.k!=='ml')return;
   if(st.done){var cl=st.res.filter(function(r){return r.ok;}).length;root.innerHTML='<div class="rm"><div class="rm-done"><div class="big">🎉 完成了！</div><div>做了 '+st.res.length+' 題，一次就對 <b>'+cl+'</b> 題'+(st.add?'（有 '+st.add+' 題是錯了以後加練的）':'')+'</div><button type="button" class="rm-btn" data-a="again">再玩一輪</button></div></div>';return;}
   var q=st.qs[st.i],w=st.w,C=ML_CUP[q.cup],u=this.uid,done=w.s==='done',free=q.t==='free';if(q.two)mlTwoFix(q,w);
+  if(scIs(q)){this.iceHost=null;this.scRender();return;}
   if(lmIs(q)){this.iceHost=null;this.lmRender();return;}
   if(q.t==='ice'){if(this.iceHost&&root.contains(this.iceHost))return;var self=this;
     root.innerHTML='<div class="rm ml-icer"><div class="ml-ice"></div></div>';this.iceHost=root.querySelector('.ml-ice');
@@ -3272,6 +3316,7 @@ function lmPart(s){for(var i=0;i<s.cups.length;i++)if(s.cups[i]<1000)return s.cu
 function lmAns(q){var a=q.S[0].v,b=q.S[1].v;return a===b?'eq':a>b?'gt':'lt';}
 function lmCheck(st,pick2){
   var q=st.qs[st.i],w=st.w,e=w.e,S=w.sd,blank=function(f){return e[f]==null||e[f]==='';},i;
+  if(q.t==='join'){w.say=Array.isArray(w.say)?w.say:[];if(w.pd>w.say.length+1){w.pd=0;w.bk=0;w.say=[];w.e.c='';w.msg='';}}
   if(q.t==='fill'||q.t==='split'){var s=S[0];
     if(s.left>0){w.msg=s.cups.length?'還沒倒完，繼續倒進下一個量杯。':'先按「倒進一個量杯」，把它倒進 1 公升的量杯。';return false;}
     var fs=lmFields(q);for(i=0;i<fs.length;i++)if(blank(fs[i])){w.msg='框框都寫好，再按「檢查」。';return false;}
@@ -3381,6 +3426,7 @@ MlDesk.prototype.lmClick=function(a,v){var st=this.st(),q=st.qs[st.i],w=st.w,k=+
 };
 MlDesk.prototype.lmRender=function(){
   var root=this.root,st=this.st(),q=st.qs[st.i],w=st.w,done=w.s==='done',e=w.e,busy=!!this.anim;
+  if(q.t==='join'){w.say=Array.isArray(w.say)?w.say:[];if(w.pd>w.say.length+1){w.pd=0;w.bk=0;w.say=[];w.e.c='';w.msg='';}}
   var h2='<div class="rm"><div class="rm-head"><span class="lv">'+esc(TASK[st.id].title)+'</span><b class="frhq">'+mlText(q,w)+'</b><span class="no">第 '+(st.i+1)+' / '+st.qs.length+' 題</span></div>';
   h2+='<div class="rm-body ml-body"><div class="rm-col ml-tools">';
   if(q.t==='join'){var d0=w.sd[0],wait=w.pd>(w.say||[]).length;h2+='<div class="ml-ctl"><button type="button" class="ml-hold" data-a="jp"'+(done||busy||wait||w.pd>=d0.cups.length?' disabled':'')+'>'+(w.pd>=d0.cups.length?'都倒進去了':'💧 倒一杯進大量杯')+'</button><button type="button" class="ml-sm" data-a="reset"'+(done||busy||!w.pd?' disabled':'')+'>全部倒回去，重來</button></div>';
@@ -3411,6 +3457,600 @@ MlDesk.prototype.lmRender=function(){
   root.innerHTML=h2+'</div></div></div>';
 };
 (function(){var s=document.createElement('style');s.textContent='.lm-board{width:100%;display:flex;justify-content:center}.lm-svg{max-width:880px;max-height:72vh}.mlt .lm-svg{max-height:150px}.lm-row{font-size:18px;display:flex;flex-wrap:wrap;align-items:center;column-gap:6px}.lm-row span{white-space:nowrap}.lm-row b{color:#1f5fa6;font-size:24px}.lm-sum{margin-top:6px;font-size:22px;font-weight:900;color:#c0392b;background:#fff6e0;border-radius:10px;padding:6px 10px}.mlt.big .lm-svg{max-height:none}';document.head.appendChild(s);})();
+
+
+/* ================= 🔍 刻度偵探（ml10 破譯 1 小格、ml11 一樣高一樣多嗎、ml12 畫水位大師） =================
+   涵蓋課本 p.114–124 與習作 p.89–100 全部 10 種量杯刻度（1、5、10、50、100 mL），
+   含「只標頭尾留白版」、20 mL 針筒、100 mL 油瓶、250 mL 奶瓶、1000 mL 精細版、2L、3000 mL 飲料桶。
+   核心原則：不背規則，猜 1 小格是多少時會「真的照你猜的往上爬刻度」，自己親眼看出對不對！ */
+var SC_T={scstep:1,sctwin:1,scdraw:1};
+function scIs(q){return !!(q&&SC_T[q.t]);}
+var SC_UID=0;
+var SC_OPTS=[1,5,10,50,100];
+var SC_CUP={
+  s10:{nm:'10 mL 漱口水杯',max:10,mn:1,mj:5,lab:[1,5,10],w:96,sh:'cup',col:'#58c9b9',probe:{from:0,to:5,steps:5}},
+  s10b:{nm:'10 mL 留白量杯',max:10,mn:1,mj:5,lab:[1,10],w:96,sh:'beaker',col:'#5bb4ec',probe:{from:0,to:10,steps:10}},
+  s20:{nm:'20 mL 藥杯',max:20,mn:1,mj:5,lab:[1,5,10,15,20],w:104,sh:'cup',col:'#f5b52e',probe:{from:5,to:10,steps:5}},
+  s20s:{nm:'20 mL 針筒',max:20,mn:1,mj:5,lab:[1,5,10,15,20],w:78,sh:'syringe',col:'#f5a623',rev:1,probe:{from:5,to:10,steps:5}},
+  s100:{nm:'100 mL 小量杯',max:100,mn:5,mj:10,lab:[5,10,20,30,40,50,60,70,80,90,100],w:116,sh:'oil',col:'#f3b025',probe:{from:10,to:20,steps:2}},
+  s250:{nm:'250 mL 奶瓶',max:250,mn:10,mj:50,lab:[10,50,100,150,200,250],w:112,sh:'bottle',col:'#f1e3c6',probe:{from:50,to:100,steps:5}},
+  s500:{nm:'500 mL 量杯（標百）',max:500,mn:50,mj:100,lab:[100,200,300,400,500],w:136,sh:'beaker',col:'#f5a832',probe:{from:100,to:200,steps:2}},
+  s500b:{nm:'500 mL 留白量杯',max:500,mn:50,mj:250,lab:[50,500],w:136,sh:'beaker',col:'#58b0ea',probe:{from:0,to:500,steps:10}},
+  s1000b:{nm:'1000 mL 留白量杯',max:1000,mn:100,mj:500,lab:[100,1000],w:146,sh:'beaker',col:'#5bb4ec',probe:{from:0,to:1000,steps:10}},
+  s1000L:{nm:'1 公升留白量杯',max:1000,mn:100,mj:500,lab:[100,1000],topL:1,w:146,sh:'beaker',col:'#64bae8',probe:{from:0,to:1000,steps:10}},
+  s1000f:{nm:'1000 mL 精細量杯',max:1000,mn:10,mj:100,mid:50,lab:[100,200,300,400,500,600,700,800,900,1000],w:146,sh:'jug',col:'#4ca9e6',fine:1,probe:{from:100,to:200,steps:10}},
+  s2000:{nm:'2 公升量杯',max:2000,mn:100,mj:500,big:1000,lab:[100,1000,2000],labL:[1000,2000],w:146,sh:'beaker',col:'#e6a632',probe:{from:0,to:1000,steps:10}},
+  s3000:{nm:'3000 mL 飲料桶',max:3000,mn:100,mj:500,big:1000,lab:[100,1000,2000,3000],w:152,sh:'tank',col:'#f5a12b',probe:{from:1000,to:2000,steps:10}}
+};
+function scAmt(cup){
+  var C=SC_CUP[cup];
+  if(cup==='s10'||cup==='s10b')return ri(3,9);
+  if(cup==='s20'||cup==='s20s')return pick([7,8,9,12,13,14,16,17,18]);
+  if(cup==='s100')return pick([25,35,45,55,65,75,85,95]);
+  if(cup==='s250')return pick([70,80,90,120,130,140,170,180,190,220,230]);
+  if(cup==='s500'||cup==='s500b')return pick([150,250,350,450]);
+  if(cup==='s1000b'||cup==='s1000L')return pick([200,300,400,600,700,800,900]);
+  if(cup==='s1000f')return ri(2,8)*100+pick([20,30,40,60,70,80]);
+  if(cup==='s2000')return pick([700,800,1100,1200,1300,1400,1600,1700,1800,1900]);
+  return pick([1200,1300,1600,1700,1800,2200,2400,2600,2700]);
+}
+function scMkStep(cup,amt){return mlQ('scstep',{cup:cup,amt:amt||scAmt(cup)});}
+function scMkTwin(A,B){return mlQ('sctwin',{A:A,B:B});}
+function scMkDraw(cup,amt,sayL){return mlQ('scdraw',{cup:cup,amt:amt||scAmt(cup),sayL:!!sayL});}
+function scGen(id){
+  if(id==='ml10'){
+    /* 循序漸進：先熟悉 10/500/1000 三個長得一樣的 10 格杯 → 再挑戰 5mL油瓶、10mL奶瓶、標百500、2L、1000精細、3000桶、彩蛋斜針筒 */
+    var core=[
+      scMkStep('s10b',6),
+      scMkStep('s500b',350),
+      scMkStep('s1000b',700)
+    ];
+    var rest=shuffle([
+      scMkStep('s100',75),
+      scMkStep('s250',180),
+      scMkStep('s500',350),
+      scMkStep('s2000',1300),
+      scMkStep('s1000f',scAmt('s1000f')),
+      scMkStep('s3000',1700)
+    ]);
+    return core.concat(rest,[scMkStep('s20s',16)]);
+  }
+  if(id==='ml11'){
+    /* 雙胞胎量杯大對決：故意設計「水面一樣高但量差一倍」「看起來矮反而多」「高度不同其實一樣多」 */
+    return [
+      scMkTwin({cup:'s500b',amt:300},{cup:'s1000b',amt:600}),
+      scMkTwin({cup:'s10b',amt:8},{cup:'s100',amt:45}),
+      scMkTwin({cup:'s500',amt:450},{cup:'s1000b',amt:500}),
+      scMkTwin({cup:'s250',amt:200},{cup:'s500b',amt:200}),
+      scMkTwin({cup:'s1000L',amt:700},{cup:'s2000',amt:1400}),
+      scMkTwin({cup:'s500b',amt:500},{cup:'s2000',amt:500})
+    ];
+  }
+  /* ml12 畫水位大師：對照習作 p.91、p.89、p.100 與課本 p.115/124 */
+  return [
+    scMkDraw('s10b',6),
+    scMkDraw('s1000b',800),
+    scMkDraw('s500b',450),
+    scMkDraw('s100',75),
+    scMkDraw('s250',180),
+    scMkDraw('s2000',1200),
+    scMkDraw('s2000',1600,true),
+    scMkDraw('s3000',1700)
+  ];
+}
+function scW(q){
+  if(q.t==='scstep')return {ph:'step',tryG:0,tryN:0,tryOk:0,marks:[],e:{},f:'',miss:0,msg:'',good:0,s:'op',water:0};
+  if(q.t==='sctwin')return {marks:[[],[]],e:{},f:'a',pick:'',miss:0,msg:'',good:0,s:'op'};
+  return {val:0,mode:'draw',marks:[],chk:null,miss:0,msg:'',good:0,s:'op'};
+}
+function scFields(q,w){
+  if(q.t==='scstep')return w&&w.ph==='read'?['a']:[];
+  if(q.t==='sctwin')return ['a','b'];
+  return [];
+}
+function scGoalDesc(q){
+  if(q.sayL&&q.amt>=1000){var L=Math.floor(q.amt/1000),r=q.amt%1000;return L+' 公升'+(r?' '+r+' 毫升':'');}
+  return q.amt+' 毫升';
+}
+function scText(q,w){
+  if(q.t==='scstep'){
+    var C=SC_CUP[q.cup];
+    if(w&&w.s==='done')return C.nm+' 的 1 小格是 '+C.mn+' 毫升，這杯水有 '+q.amt+' 毫升。';
+    if(w&&w.ph==='read')return '已經破譯了（1 小格＝<b class="mlbig">'+C.mn+' 毫升</b>）！現在看看水面，這杯有幾毫升？'+(C.rev?'（注意：針筒由上往下數喔！）':'');
+    return '先破譯刻度！看這個 <b class="mlbig">'+C.nm+'</b>，<b>1 小格</b>是幾毫升？選一個數上去試試看！';
+  }
+  if(q.t==='sctwin'){
+    if(w&&w.s==='done')return '甲是 '+q.A.amt+' 毫升，乙是 '+q.B.amt+' 毫升——看水位高低會被騙，一定要先看刻度！';
+    return '先看清兩個量杯的刻度（點刻度線可以幫自己數），寫出甲、乙各有幾毫升，再比比看誰比較多！';
+  }
+  if(w&&w.s==='done')return '太棒了！在 '+SC_CUP[q.cup].nm+' 裡剛好畫出 '+scGoalDesc(q)+'！';
+  return '客人點單：請在 <b class="mlbig">'+SC_CUP[q.cup].nm+'</b> 裡畫出剛好 <b class="ml-red">'+scGoalDesc(q)+'</b> 的水！';
+}
+function scTwinAns(q){return q.A.amt===q.B.amt?'eq':q.A.amt>q.B.amt?'gt':'lt';}
+function scNearBase(C,v){
+  var b=0;
+  for(var i=0;i<C.lab.length;i++)if(C.lab[i]<=v&&C.lab[i]>b)b=C.lab[i];
+  if(C.mj&&v>=C.mj){var m=Math.floor(v/C.mj)*C.mj;if(m>b&&m<v)b=m;}
+  return b;
+}
+function scMisconception(C,amt,ans){
+  var base=scNearBase(C,amt);
+  if(C.mn>1&&base>0){
+    var steps=Math.round((amt-base)/C.mn);
+    if(steps>0&&ans===base+steps)return '你是不是把 1 小格當成 1 毫升了？剛剛試過，這個量杯 1 小格是 '+C.mn+' 毫升喔！點點看刻度線，從 '+base+' 開始一格一格加 '+C.mn+' 數到水面。';
+    if(C.mn===50&&ans===base+steps*10)return '小心喔！這個量杯 1 小格不是 10 毫升，而是 50 毫升。點刻度線從 '+base+' 往上數數看！';
+    if(C.mn===50&&ans===Math.round(amt/50)*100)return '你是不是把它當成 1000 mL 量杯（1 格 100）了？看看杯頂寫的是 500 mL，1 小格是 50 毫升喔！';
+    if(C.mn===100&&ans===Math.round(amt/100)*50)return '這個量杯頂端是 '+C.max+' mL，1 小格是 100 毫升喔！從 '+base+' 一格一格點上去數。';
+  }
+  return '點點看量杯上的刻度線，從 '+(base||C.mn)+' 開始一格一格數（每 1 格多 '+C.mn+' 毫升），看看水面停在哪裡！';
+}
+function scCheck(st,pick2){
+  var q=st.qs[st.i],w=st.w,e=w.e;w.msg='';w.good=0;
+  if(q.t==='scstep'){
+    var C=SC_CUP[q.cup];
+    if(w.ph!=='read'){w.msg='先在左邊選一個數字，試試看這個量杯 1 小格是幾毫升！';return false;}
+    if(e.a==null||e.a===''){w.msg='在框框裡寫下量杯裡有幾毫升。';return false;}
+    var ans=+e.a;
+    if(ans!==q.amt){w.miss++;w.msg=scMisconception(C,q.amt,ans);return false;}
+    w.s='done';w.good=1;st.res.push({ok:w.miss===0,al:true});
+    w.msg='答對了！'+C.nm+' 的 1 小格是 '+C.mn+' 毫升，這杯剛好是 '+q.amt+' 毫升。';
+    if(w.miss&&(st.add||0)<4){st.qs.push(scMkStep(q.cup));st.add=(st.add||0)+1;}
+    return true;
+  }
+  if(q.t==='sctwin'){
+    if(e.a==null||e.a===''||e.b==null||e.b===''){w.msg='先把甲、乙各有幾毫升寫在框框裡。';return false;}
+    var a=+e.a,b=+e.b,CA=SC_CUP[q.A.cup],CB=SC_CUP[q.B.cup];
+    if(a!==q.A.amt){w.miss++;w.msg='甲的毫升數再數一次！先看甲（'+CA.nm+'）1 小格是多少，點甲的刻度線幫自己數。';return false;}
+    if(b!==q.B.amt){w.miss++;w.msg='乙的毫升數再數一次！先看乙（'+CB.nm+'）1 小格是多少，點乙的刻度線幫自己數。';return false;}
+    if(!pick2){w.msg='再按下面的「甲比較多／一樣多／乙比較多」。';return false;}
+    w.pick=pick2;
+    if(pick2!==scTwinAns(q)){w.miss++;w.msg='不要看水面高矮，比比看你寫的兩個數字：甲 '+q.A.amt+' 毫升、乙 '+q.B.amt+' 毫升，誰比較多？';return false;}
+    w.s='done';w.good=1;st.res.push({ok:w.miss===0,al:true});
+    var an=scTwinAns(q);
+    w.msg='破案了！甲是 '+q.A.amt+' 毫升、乙是 '+q.B.amt+' 毫升，'+(an==='eq'?'雖然高度不一樣，其實一樣多！':(an==='gt'?'甲':'乙')+'裝得比較多！看下面的真實水量條！');
+    if(w.miss&&(st.add||0)<4){st.qs.push(scMkTwin({cup:q.A.cup,amt:scAmt(q.A.cup)},{cup:q.B.cup,amt:scAmt(q.B.cup)}));st.add=(st.add||0)+1;}
+    return true;
+  }
+  /* scdraw */
+  var CD=SC_CUP[q.cup];
+  if(!w.val){w.msg='先在量杯上點一下（或上下拖拉），畫出水位再送出！';return false;}
+  if(w.val!==q.amt){
+    w.miss++;
+    w.msg=w.val<q.amt?'客人量了一下：這杯只有 '+w.val+' 毫升，比 '+scGoalDesc(q)+' 少喔！（1 小格是 '+CD.mn+' 毫升，再往上畫高一點）':'客人量了一下：這杯有 '+w.val+' 毫升，超過 '+scGoalDesc(q)+' 了！（1 小格是 '+CD.mn+' 毫升，再往下調低一點）';
+    return false;
+  }
+  w.s='done';w.good=1;st.res.push({ok:w.miss===0,al:true});
+  w.msg='完美！客人好開心！你準確在 '+CD.nm+' 裡畫出了 '+scGoalDesc(q)+'！';
+  if(w.miss&&(st.add||0)<4){st.qs.push(scMkDraw(q.cup,scAmt(q.cup),q.sayL));st.add=(st.add||0)+1;}
+  return true;
+}
+function scSummary(st){
+  var q=st.qs[st.i],w=st.w,e=w.e||{},s='第 '+(st.i+1)+'/'+st.qs.length+' 題・';
+  if(q.t==='scstep'){var C=SC_CUP[q.cup];s+=C.nm+'・'+(w.ph==='step'?'破譯 1 小格中'+(w.tryG?'（試過 '+w.tryG+'）':''):'看刻度寫 '+esc(e.a==null||e.a===''?'□':e.a));}
+  else if(q.t==='sctwin')s+='甲 '+esc(e.a||'□')+'・乙 '+esc(e.b||'□')+(w.pick?'・選 '+{gt:'甲多',eq:'一樣',lt:'乙多'}[w.pick]:'');
+  else s+=SC_CUP[q.cup].nm+'・要 '+q.amt+'・畫到 '+w.val+' mL';
+  if(w.s==='done')s+='・<span class="good">這題對</span>';
+  return s+(w.miss?'・<span class="warn">錯 '+w.miss+' 次</span>':'')+(st.add?'・加練 '+st.add:'');
+}
+
+/* ---------- 畫圖：10 種真實課本／習作量杯 ---------- */
+var SC_GEO={top:64,bot:386};
+function scTickY(C,val){
+  var H=SC_GEO.bot-SC_GEO.top;
+  if(C.rev)return SC_GEO.top+H*(val/C.max);
+  return SC_GEO.bot-H*(val/C.max);
+}
+function scDrawCup(C,uid,opts){
+  opts=opts||{};
+  var cx=opts.cx||170,x0=cx-C.w/2,x1=cx+C.w/2,T=SC_GEO.top-26,B=SC_GEO.bot,H=B-SC_GEO.top,s='',val=opts.val||0;
+  var clipId='scC'+uid;
+  /* 杯身外框與特殊外形（針筒、油瓶、奶瓶、飲料桶、量杯） */
+  if(C.sh==='syringe'){
+    /* 20 mL 針筒：尖端在上（0）、刻度由上往下 1→20、推桿在下 */
+    var syTop=SC_GEO.top-12,syBot=B+12;
+    s+='<clipPath id="'+clipId+'"><rect x="'+(x0+3)+'" y="'+SC_GEO.top+'" width="'+(C.w-6)+'" height="'+(H+2)+'" rx="3"/></clipPath>';
+    /* 尖端 */
+    s+='<path d="M'+(cx-8)+' '+(syTop-28)+' L'+(cx+8)+' '+(syTop-28)+' L'+(cx+12)+' '+syTop+' L'+(cx-12)+' '+syTop+' Z" fill="#e6f2fa" stroke="#7c9db5" stroke-width="2.2"/>';
+    /* 管身 */
+    s+='<rect x="'+x0+'" y="'+syTop+'" width="'+C.w+'" height="'+(syBot-syTop)+'" rx="6" fill="url(#scGlass)" stroke="#7c9db5" stroke-width="2.5"/>';
+    /* 液體（從上方 0 往下到 val） */
+    if(val>0){
+      var yv=scTickY(C,val);
+      s+='<g clip-path="url(#'+clipId+')"><rect x="'+x0+'" y="'+SC_GEO.top+'" width="'+C.w+'" height="'+Math.max(0,yv-SC_GEO.top).toFixed(1)+'" fill="'+C.col+'" opacity=".88"/></g>';
+      /* 黑色橡膠活塞 + 透明推桿 */
+      s+='<rect x="'+(x0+3)+'" y="'+yv.toFixed(1)+'" width="'+(C.w-6)+'" height="16" rx="3" fill="#2e3b46"/>';
+      s+='<rect x="'+(cx-9)+'" y="'+(yv+16).toFixed(1)+'" width="18" height="'+Math.max(30,syBot+46-yv-16).toFixed(1)+'" fill="#d5e2ec" stroke="#8aa5b8" stroke-width="1.8"/>';
+      s+='<rect x="'+(cx-30)+'" y="'+(syBot+44)+'" width="60" height="10" rx="4" fill="#c7d8e5" stroke="#7c9db5" stroke-width="2"/>';
+    }else{
+      s+='<rect x="'+(x0+3)+'" y="'+(B+2)+'" width="'+(C.w-6)+'" height="14" rx="3" fill="#2e3b46"/>';
+      s+='<rect x="'+(cx-9)+'" y="'+(B+16)+'" width="18" height="36" fill="#d5e2ec" stroke="#8aa5b8" stroke-width="1.8"/>';
+      s+='<rect x="'+(cx-30)+'" y="'+(B+50)+'" width="60" height="10" rx="4" fill="#c7d8e5" stroke="#7c9db5" stroke-width="2"/>';
+    }
+    /* 外翼 */
+    s+='<rect x="'+(x0-16)+'" y="'+(syBot-2)+'" width="'+(C.w+32)+'" height="8" rx="4" fill="#d5e2ec" stroke="#7c9db5" stroke-width="2"/>';
+  }else{
+    s+='<clipPath id="'+clipId+'"><rect x="'+(x0+2)+'" y="'+(T+2)+'" width="'+(C.w-4)+'" height="'+(B-T+4)+'" rx="10"/></clipPath>';
+    if(C.sh==='bottle'){
+      s+='<path d="M'+(x0+14)+' '+(T-4)+' L'+(x0+14)+' '+(T-24)+' Q'+cx+' '+(T-40)+' '+(x1-14)+' '+(T-24)+' L'+(x1-14)+' '+(T-4)+' Z" fill="#8cc4eb" stroke="#5b96c4" stroke-width="2.2"/>';
+      s+='<path d="M'+(cx-11)+' '+(T-35)+' q11 -34 22 0" fill="#e9c79a" stroke="#c49a63" stroke-width="2"/>';
+    }else if(C.sh==='oil'){
+      s+='<rect x="'+(x0+12)+'" y="'+(T-26)+'" width="'+(C.w-24)+'" height="26" rx="6" fill="#e9eef2" stroke="#8aa5b8" stroke-width="2.2"/>';
+      s+='<path d="M'+(cx+6)+' '+(T-26)+' L'+(cx+12)+' '+(T-44)+' L'+(cx+22)+' '+(T-40)+' L'+(cx+16)+' '+(T-26)+'" fill="#e9eef2" stroke="#8aa5b8" stroke-width="2"/>';
+    }else if(C.sh==='tank'){
+      s+='<rect x="'+(x0+16)+'" y="'+(T-22)+'" width="'+(C.w-32)+'" height="22" rx="6" fill="#a894a8" stroke="#776677" stroke-width="2.2"/>';
+      /* 水龍頭 */
+      s+='<path d="M'+(x1+4)+' '+(B-78)+' L'+(x1+30)+' '+(B-78)+' Q'+(x1+38)+' '+(B-78)+' '+(x1+38)+' '+(B-68)+' L'+(x1+38)+' '+(B-56)+'" fill="none" stroke="#80929e" stroke-width="9" stroke-linecap="round"/>';
+      s+='<rect x="'+(x1+14)+'" y="'+(B-92)+'" width="18" height="8" rx="3" fill="#637480"/>';
+    }else if(C.sh==='beaker'||C.sh==='jug'){
+      s+='<path d="M'+(x1+2)+' '+(T+34)+' C'+(x1+46)+' '+(T+30)+' '+(x1+50)+' '+(B-105)+' '+(x1+4)+' '+(B-84)+'" fill="none" stroke="#b9d1e2" stroke-width="10" stroke-linecap="round"/>';
+    }
+    s+='<rect x="'+(x0-4)+'" y="'+T+'" width="'+(C.w+8)+'" height="'+(B-T+8)+'" rx="'+(C.sh==='tank'?22:10)+'" fill="url(#scGlass)" stroke="#7fa3be" stroke-width="2.6"/>';
+    if(C.sh==='beaker'||C.sh==='jug')s+='<path d="M'+(x0-4)+' '+(T+2)+' l-14 -10 l18 2" fill="#e8f3fb" stroke="#7fa3be" stroke-width="2.4" stroke-linejoin="round"/>';
+    /* 液體 */
+    if(val>0){
+      var yw=scTickY(C,val);
+      s+='<g clip-path="url(#'+clipId+')"><rect x="'+(x0-4)+'" y="'+yw.toFixed(1)+'" width="'+(C.w+8)+'" height="'+Math.max(0,B+8-yw).toFixed(1)+'" fill="'+C.col+'" opacity=".86"/>'+
+         '<rect x="'+(x0-4)+'" y="'+(yw-2).toFixed(1)+'" width="'+(C.w+8)+'" height="5" fill="#fff" opacity=".6"/></g>';
+    }
+  }
+  /* 刻度線（對齊課本／習作風格） */
+  var n=Math.round(C.max/C.mn),sx=C.sh==='syringe'?(x0+10):(x0+10);
+  var yFirst=scTickY(C,C.mn),yLast=scTickY(C,C.max);
+  s+='<line x1="'+sx+'" x2="'+sx+'" y1="'+Math.min(yFirst,yLast).toFixed(1)+'" y2="'+Math.max(yFirst,yLast).toFixed(1)+'" stroke="#1f5fa6" stroke-width="2"/>';
+  for(var i=1;i<=n;i++){
+    var tv=i*C.mn,ty=scTickY(C,tv);
+    var isLab=C.lab.indexOf(tv)>=0,isBig=(C.big&&tv%C.big===0)||tv===C.max,isMj=C.mj&&tv%C.mj===0,isMid=C.mid&&tv%C.mid===0;
+    var L=isBig?28:(isMj?22:(isMid?16:(isLab?18:11)));
+    var sw=isBig?2.4:(isMj?1.9:1.2);
+    s+='<line x1="'+sx+'" x2="'+(sx+L)+'" y1="'+ty.toFixed(2)+'" y2="'+ty.toFixed(2)+'" stroke="#1f5fa6" stroke-width="'+sw+'"/>';
+  }
+  /* 標示數字（右側） */
+  C.lab.forEach(function(tv){
+    var ty=scTickY(C,tv);
+    var txt=tv===C.max?(C.topL?'1L':tv+' mL'):(tv===100&&C.topL?'100 mL':String(tv));
+    if(C.labL&&tv===100)txt='100 mL';
+    if(C.labL&&(tv===1000||tv===2000))txt=tv+' mL';
+    var fs=C.lab.length>8?12.5:14.5;
+    s+='<text x="'+(sx+32)+'" y="'+(ty+5).toFixed(1)+'" font-size="'+fs+'" font-weight="800" fill="#1f5fa6">'+txt+'</text>';
+  });
+  /* 左側公升刻度（2 公升量杯） */
+  if(C.labL){
+    C.labL.forEach(function(tv){
+      var ty=scTickY(C,tv);
+      s+='<line x1="'+(sx-16)+'" x2="'+sx+'" y1="'+ty.toFixed(1)+'" y2="'+ty.toFixed(1)+'" stroke="#c0392b" stroke-width="2.6"/>'+
+         '<text x="'+(sx-20)+'" y="'+(ty+6).toFixed(1)+'" font-size="16" font-weight="900" text-anchor="end" fill="#c0392b">'+(tv/1000)+'L</text>';
+    });
+  }
+  /* 亮光 */
+  if(C.sh!=='syringe')s+='<rect x="'+(x1-14)+'" y="'+(T+14)+'" width="5" height="'+(B-T-36)+'" rx="2.5" fill="#fff" opacity=".5"/>';
+
+  /* 破譯區間框（Phase 1：標示 probe.from 到 probe.to） */
+  if(opts.probe){
+    var pr=C.probe,ya=scTickY(C,pr.from),yb=scTickY(C,pr.to),py0=Math.min(ya,yb),py1=Math.max(ya,yb);
+    s+='<rect x="'+(x0-8)+'" y="'+(py0-4).toFixed(1)+'" width="'+(C.w+16)+'" height="'+(py1-py0+8).toFixed(1)+'" rx="8" fill="rgba(255,193,7,.14)" stroke="#e68a00" stroke-width="2.4" stroke-dasharray="6 4"/>';
+  }
+  /* 爬樓梯驗證泡泡（猜 1 小格是多少時，一格一格跳出數字！） */
+  if(opts.climb&&opts.climb.g&&opts.climb.n>0&&!C.fine){
+    var cl=opts.climb,pr2=C.probe;
+    for(var k=1;k<=cl.n;k++){
+      var realV=pr2.from+k*C.mn,shownV=pr2.from+k*cl.g,cy2=scTickY(C,realV);
+      var isEnd=k===pr2.steps,okEnd=isEnd&&shownV===pr2.to,badEnd=isEnd&&shownV!==pr2.to;
+      var bg=okEnd?'#1f9d55':badEnd?'#d3392a':cl.ok?'#e6f7ee':'#fff4db';
+      var bd=okEnd?'#157a40':badEnd?'#a82317':cl.ok?'#1f9d55':'#e68a00';
+      var fc=okEnd||badEnd?'#fff':'#1d2b36';
+      s+='<circle cx="'+sx+'" cy="'+cy2.toFixed(1)+'" r="4" fill="'+bd+'"/>';
+      s+='<rect x="'+(x1+10)+'" y="'+(cy2-10).toFixed(1)+'" width="'+(shownV>=1000?52:44)+'" height="20" rx="6" fill="'+bg+'" stroke="'+bd+'" stroke-width="1.8"/>';
+      s+='<text x="'+(x1+10+(shownV>=1000?26:22))+'" y="'+(cy2+5).toFixed(1)+'" font-size="13.5" font-weight="900" text-anchor="middle" fill="'+fc+'">'+shownV+'</text>';
+    }
+  }
+  /* 孩子自己點出來的輔助刻度泡泡 */
+  if(opts.marks&&opts.marks.length&&!C.fine){
+    opts.marks.forEach(function(mv){
+      var my=scTickY(C,mv),mw=mv>=1000?50:42;
+      s+='<line x1="'+sx+'" x2="'+(x1+6)+'" y1="'+my.toFixed(1)+'" y2="'+my.toFixed(1)+'" stroke="#2a6fb0" stroke-width="1.2" stroke-dasharray="3 3" opacity=".65"/>';
+      s+='<rect x="'+(x1+8)+'" y="'+(my-9).toFixed(1)+'" width="'+mw+'" height="18" rx="5" fill="#eaf4ff" stroke="#2a6fb0" stroke-width="1.5"/>';
+      s+='<text x="'+(x1+8+mw/2)+'" y="'+(my+4.5).toFixed(1)+'" font-size="12.5" font-weight="800" text-anchor="middle" fill="#1f5fa6">'+mv+'</text>';
+    });
+  }
+  /* 畫水位驗證跳數（ml12 答錯時秀出你畫到哪裡） */
+  if(opts.chk&&opts.chk.steps&&opts.chk.steps.length){
+    var ck=opts.chk;
+    for(var j=0;j<ck.n&&j<ck.steps.length;j++){
+      var cv=ck.steps[j],cy3=scTickY(C,cv),last=(j===ck.steps.length-1);
+      var mw2=cv>=1000?54:46;
+      s+='<rect x="'+(x1+8)+'" y="'+(cy3-10).toFixed(1)+'" width="'+mw2+'" height="20" rx="6" fill="'+(last?'#d3392a':'#fff4db')+'" stroke="'+(last?'#a82317':'#e68a00')+'" stroke-width="1.8"/>';
+      s+='<text x="'+(x1+8+mw2/2)+'" y="'+(cy3+5).toFixed(1)+'" font-size="13.5" font-weight="900" text-anchor="middle" fill="'+(last?'#fff':'#1d2b36')+'">'+cv+'</text>';
+    }
+  }
+  /* 畫水位時的拖曳把手（ml12） */
+  if(opts.drawLive&&!opts.done){
+    var yNow=val>0?scTickY(C,val):SC_GEO.bot;
+    s+='<line x1="'+(x0-8)+'" x2="'+(x1+8)+'" y1="'+yNow.toFixed(1)+'" y2="'+yNow.toFixed(1)+'" stroke="#e07a12" stroke-width="3" stroke-dasharray="5 3"/>';
+    s+='<circle cx="'+(x0-10)+'" cy="'+yNow.toFixed(1)+'" r="11" fill="#e07a12" stroke="#fff" stroke-width="2.5"/>';
+    s+='<text x="'+(x0-10)+'" y="'+(yNow+4).toFixed(1)+'" font-size="12" font-weight="900" text-anchor="middle" fill="#fff">↕</text>';
+  }
+  /* 互動區：點刻度線（或拖曳水位） */
+  if(opts.live&&!C.fine){
+    if(opts.drawDrag){
+      s+='<rect data-scdrag="1" data-scbot="'+SC_GEO.bot+'" data-sctop="'+SC_GEO.top+'" x="'+(x0-24)+'" y="'+(SC_GEO.top-12)+'" width="'+(C.w+48)+'" height="'+(H+24)+'" fill="transparent" style="cursor:ns-resize;touch-action:none"/>';
+    }else if(opts.tapAction){
+      var th=Math.max(10,H/n);
+      for(var m=1;m<=n;m++){
+        var tv2=m*C.mn,ty2=scTickY(C,tv2);
+        s+='<rect class="ml-hit" data-a="'+opts.tapAction+'" data-v="'+(opts.side!=null?opts.side+':':'')+tv2+'" x="'+(x0-6)+'" y="'+(ty2-th/2).toFixed(1)+'" width="'+(C.w+66)+'" height="'+th.toFixed(1)+'"/>';
+      }
+    }
+  }
+  /* 1000 mL 精細量杯：右側課本 p.115③ 放大視窗！ */
+  if(C.fine){
+    var fBase=opts.probe?C.probe.from:(Math.floor(Math.max(100,val)/100)*100);
+    if(fBase>=1000)fBase=900;
+    var fTop=fBase+100,zx=x1+56,zy=90,zw=158,zh=270,zB=zy+zh-22,zT=zy+24,zH=zB-zT;
+    var zyOf=function(v){return zB-zH*(v-fBase)/100;};
+    /* 連接梯形線 */
+    s+='<path d="M'+(sx+22)+' '+scTickY(C,fTop).toFixed(1)+' L'+zx+' '+zy+' L'+zx+' '+(zy+zh)+' L'+(sx+22)+' '+scTickY(C,fBase).toFixed(1)+' Z" fill="#dff0fb" opacity=".55"/>';
+    s+='<rect x="'+zx+'" y="'+zy+'" width="'+zw+'" height="'+zh+'" rx="14" fill="#eef7fd" stroke="#2a6fb0" stroke-width="2.5"/>';
+    s+='<text x="'+(zx+zw/2)+'" y="'+(zy+16)+'" font-size="13" font-weight="800" text-anchor="middle" fill="#1f5fa6">🔍 放大看刻度</text>';
+    if(val>fBase){
+      var fVal=Math.min(fTop,val),fyw=zyOf(fVal);
+      s+='<rect x="'+(zx+4)+'" y="'+fyw.toFixed(1)+'" width="'+(zw-8)+'" height="'+Math.max(0,zB+18-fyw).toFixed(1)+'" rx="6" fill="'+C.col+'" opacity=".75"/>';
+    }
+    var zsx=zx+26;
+    s+='<line x1="'+zsx+'" x2="'+zsx+'" y1="'+zT+'" y2="'+zB+'" stroke="#1f5fa6" stroke-width="2.2"/>';
+    for(var fi=0;fi<=10;fi++){
+      var fv=fBase+fi*10,fty=zyOf(fv),fL=fi===0||fi===10?32:fi===5?24:16;
+      s+='<line x1="'+zsx+'" x2="'+(zsx+fL)+'" y1="'+fty.toFixed(1)+'" y2="'+fty.toFixed(1)+'" stroke="#1f5fa6" stroke-width="'+(fi%5===0?2.2:1.5)+'"/>';
+      if(fi===0||fi===10)s+='<text x="'+(zsx+38)+'" y="'+(fty+6).toFixed(1)+'" font-size="18" font-weight="900" fill="#1f5fa6">'+fv+'</text>';
+      if(opts.live&&opts.tapAction&&fi>0&&fi<10){
+        s+='<rect class="ml-hit" data-a="'+opts.tapAction+'" data-v="'+fv+'" x="'+(zx+6)+'" y="'+(fty-zH/20).toFixed(1)+'" width="'+(zw-12)+'" height="'+(zH/10).toFixed(1)+'"/>';
+      }
+    }
+    if(opts.climb&&opts.climb.g&&opts.climb.n>0){
+      var fcl=opts.climb;
+      for(var fk=1;fk<=fcl.n;fk++){
+        var fReal=fBase+fk*10,fShown=fBase+fk*fcl.g,fcy=zyOf(fReal);
+        var fEnd=fk===10,fOk=fEnd&&fShown===fTop,fBad=fEnd&&fShown!==fTop;
+        var fbg=fOk?'#1f9d55':fBad?'#d3392a':fcl.ok?'#e6f7ee':'#fff4db';
+        var fbd=fOk?'#157a40':fBad?'#a82317':fcl.ok?'#1f9d55':'#e68a00';
+        s+='<rect x="'+(zsx+74)+'" y="'+(fcy-9).toFixed(1)+'" width="48" height="18" rx="5" fill="'+fbg+'" stroke="'+fbd+'" stroke-width="1.6"/>'+
+           '<text x="'+(zsx+98)+'" y="'+(fcy+4.5).toFixed(1)+'" font-size="13" font-weight="900" text-anchor="middle" fill="'+(fOk||fBad?'#fff':'#1d2b36')+'">'+fShown+'</text>';
+      }
+    }
+    if(opts.marks&&opts.marks.length){
+      opts.marks.forEach(function(mv){
+        if(mv<=fBase||mv>=fTop)return;
+        var my=zyOf(mv);
+        s+='<rect x="'+(zsx+40)+'" y="'+(my-9).toFixed(1)+'" width="46" height="18" rx="5" fill="#eaf4ff" stroke="#2a6fb0" stroke-width="1.5"/>'+
+           '<text x="'+(zsx+63)+'" y="'+(my+4.5).toFixed(1)+'" font-size="13" font-weight="800" text-anchor="middle" fill="#1f5fa6">'+mv+'</text>';
+      });
+    }
+  }
+  /* 底部標籤 */
+  s+='<text x="'+cx+'" y="'+(C.sh==='syringe'?SC_GEO.bot+78:SC_GEO.bot+34)+'" font-size="15.5" font-weight="800" text-anchor="middle" fill="#475b6b">'+C.nm+'</text>';
+  return s;
+}
+function scBoardSVG(q,w,an,live){
+  var uid='s'+(SC_UID++)+'_';
+  var defs='<defs><linearGradient id="scGlass" x1="0" x2="1"><stop offset="0" stop-color="#eef7fd" stop-opacity=".92"/><stop offset=".5" stop-color="#fbfdff" stop-opacity=".55"/><stop offset="1" stop-color="#e0eef8" stop-opacity=".92"/></linearGradient></defs>';
+  if(q.t==='scstep'){
+    var C=SC_CUP[q.cup],VW=C.fine?500:380,VH=C.sh==='syringe'?480:440;
+    var val=w.ph==='read'||w.s==='done'?(an&&an.kind==='fill'?an.val:q.amt):0;
+    var climb=an&&an.kind==='climb'?an:(w.tryG?{g:w.tryG,n:C.probe.steps,ok:!!w.tryOk}:null);
+    return '<svg class="ml-svg sc-svg" viewBox="0 0 '+VW+' '+VH+'">'+defs+
+      scDrawCup(C,uid,{cx:C.fine?150:180,val:val,probe:w.ph==='step',climb:climb,marks:w.ph==='read'||w.s==='done'?w.marks:[],live:live&&w.ph==='read'&&w.s!=='done',tapAction:'sctk'})+
+      '</svg>';
+  }
+  if(q.t==='sctwin'){
+    var CA=SC_CUP[q.A.cup],CB=SC_CUP[q.B.cup];
+    var s='<svg class="ml-svg sc-svg sc-twin" viewBox="0 0 640 450">'+defs;
+    s+='<text x="58" y="34" font-size="28" font-weight="900" fill="#1d2b36">甲</text>';
+    s+='<text x="378" y="34" font-size="28" font-weight="900" fill="#1d2b36">乙</text>';
+    s+='<line x1="320" x2="320" y1="20" y2="420" stroke="#e2e8ee" stroke-width="2" stroke-dasharray="6 6"/>';
+    s+=scDrawCup(CA,uid+'a',{cx:155,val:q.A.amt,marks:(w.marks&&w.marks[0])||[],live:live&&w.s!=='done',tapAction:'sctk',side:0});
+    s+=scDrawCup(CB,uid+'b',{cx:475,val:q.B.amt,marks:(w.marks&&w.marks[1])||[],live:live&&w.s!=='done',tapAction:'sctk',side:1});
+    return s+'</svg>';
+  }
+  /* scdraw */
+  var CD=SC_CUP[q.cup],VW2=CD.fine?500:390;
+  var chk=an&&an.kind==='chk'?an:w.chk;
+  return '<svg class="ml-svg sc-svg sc-drawsvg" viewBox="0 0 '+VW2+' 440">'+defs+
+    scDrawCup(CD,uid,{cx:185,val:w.val,marks:w.marks||[],chk:chk,drawLive:live&&w.mode==='draw',done:w.s==='done',live:live&&w.s!=='done',drawDrag:w.mode==='draw',tapAction:w.mode==='mark'?'sctk':null})+
+    '</svg>';
+}
+
+/* ---------- 互動操作（掛在 MlDesk 上） ---------- */
+MlDesk.prototype.scTryStep=function(g){
+  var st=this.st(),q=st.qs[st.i],w=st.w,C=SC_CUP[q.cup],pr=C.probe;
+  if(this.anim||w.ph!=='step')return;
+  g=+g;w.tryG=g;w.tryOk=0;w.good=0;w.msg='照 1 小格 '+g+' 毫升往上數數看……';
+  var self=this,an={kind:'climb',g:g,n:0,ok:g===C.mn,t0:performance.now()};
+  this.anim=an;this.render();
+  var stepMs=pr.steps<=3?260:pr.steps<=5?210:145;
+  var go=function(){
+    if(self.anim!==an)return;
+    an.n++;
+    var box=self.root.querySelector('.sc-board');
+    if(box)box.innerHTML=scBoardSVG(q,w,an,true);
+    if(an.n<pr.steps){setTimeout(go,stepMs);return;}
+    var landed=pr.from+pr.steps*g;
+    if(landed===pr.to){
+      w.tryOk=1;w.good=1;
+      w.msg='叮咚！剛好對上 '+pr.to+' 毫升！這個量杯 1 小格就是 '+C.mn+' 毫升，馬上倒水進來！';
+      self.render();
+      setTimeout(function(){
+        if(self.anim!==an)return;
+        /* 平滑倒水到 q.amt，接著進入讀水位 */
+        var fAn={kind:'fill',val:0,t0:performance.now()};self.anim=fAn;
+        w.ph='read';w.f='a';w.tryG=0;
+        var t0=performance.now(),dur=620;
+        var fillStep=function(now){
+          if(self.anim!==fAn)return;
+          var p=Math.min(1,(now-t0)/dur);fAn.val=q.amt*p;
+          var b2=self.root.querySelector('.sc-board');
+          if(b2)b2.innerHTML=scBoardSVG(q,w,fAn,true);
+          if(p<1)mlTick(fillStep);
+          else{self.anim=null;w.good=1;w.msg='1 小格是 '+C.mn+' 毫升！現在看水面，寫下有幾毫升（點刻度線可以幫自己數喔）。';self.changed();}
+        };
+        self.render();mlTick(fillStep);
+      },750);
+    }else{
+      self.anim=null;w.miss++;w.good=0;
+      w.msg=landed>pr.to
+        ?'照 1 小格 '+g+' 毫升數，數了 '+pr.steps+' 格變成 '+landed+'，可是這裡寫的是 '+pr.to+' 毫升耶！太大了，換小一點試試！'
+        :'照 1 小格 '+g+' 毫升數，數了 '+pr.steps+' 格才到 '+landed+'，還不到 '+pr.to+' 毫升耶！太小了，換大一點試試！';
+      self.changed();
+    }
+  };
+  setTimeout(go,180);
+};
+MlDesk.prototype.scDrawCheckAnim=function(){
+  var st=this.st(),q=st.qs[st.i],w=st.w,C=SC_CUP[q.cup];
+  if(!w.val){scCheck(st);this.changed();return;}
+  if(w.val===q.amt){w.chk=null;scCheck(st);this.changed();return;}
+  /* 畫錯時：從底下（或最近刻度）一格一格跳數到他畫的水位，親眼看到自己畫了多少 */
+  var base=0;for(var i=0;i<C.lab.length;i++)if(C.lab[i]<w.val&&C.lab[i]>base)base=C.lab[i];
+  if(base===0&&w.val/C.mn>10)base=Math.floor((w.val-1)/(C.mj||C.mn*5))*(C.mj||C.mn*5);
+  var steps=[];for(var v=base+C.mn;v<=w.val;v+=C.mn)steps.push(v);
+  if(!steps.length)steps=[w.val];
+  var self=this,an={kind:'chk',steps:steps,n:0,t0:performance.now()};
+  this.anim=an;w.msg='幫客人量量看你倒了多少……';w.good=0;this.render();
+  var stepMs=steps.length>6?130:190;
+  var go=function(){
+    if(self.anim!==an)return;
+    an.n++;
+    var box=self.root.querySelector('.sc-board');
+    if(box)box.innerHTML=scBoardSVG(q,w,an,true);
+    if(an.n<steps.length){setTimeout(go,stepMs);return;}
+    self.anim=null;w.chk={steps:steps,n:steps.length};scCheck(st);self.changed();
+  };
+  setTimeout(go,160);
+};
+MlDesk.prototype.scDragSet=function(e){
+  var dr=this._scDrag;if(!dr)return;
+  var st=this.st();if(!st||st.done)return;var q=st.qs[st.i],w=st.w,C=SC_CUP[q.cup];
+  var rect=dr.getBoundingClientRect();
+  var topY=rect.top+12*(rect.height/(SC_GEO.bot-SC_GEO.top+24));
+  var botY=rect.bottom-12*(rect.height/(SC_GEO.bot-SC_GEO.top+24));
+  var frac=(botY-e.clientY)/Math.max(1,botY-topY);
+  if(C.rev)frac=1-frac;
+  frac=Math.max(0,Math.min(1,frac));
+  var nv=Math.round(frac*C.max/C.mn)*C.mn;
+  if(nv!==w.val){w.val=nv;w.chk=null;w.msg='';var box=this.root.querySelector('.sc-board');if(box)box.innerHTML=scBoardSVG(q,w,null,true);}
+};
+MlDesk.prototype.scDragStart=function(dr,e){var st=this.st();if(!st||st.done||this.anim)return;var w=st.w;if(w.s==='done')return;this._scDrag=dr;this.scDragSet(e);};
+MlDesk.prototype.scDragMove=function(e){this.scDragSet(e);};
+MlDesk.prototype.scDragEnd=function(){if(!this._scDrag)return;this._scDrag=null;this.changed();};
+MlDesk.prototype.scClick=function(a,v){
+  var st=this.st(),q=st.qs[st.i],w=st.w;
+  if(a==='scopt'&&q.t==='scstep'){this.scTryStep(v);return;}
+  if(a==='sctk'){
+    if(q.t==='sctwin'){
+      var ps=String(v).split(':'),k=+ps[0],tv=+ps[1];
+      w.marks=w.marks||[[],[]];var arr=w.marks[k];var ix=arr.indexOf(tv);
+      if(ix>=0)arr.splice(ix,1);else arr.push(tv);
+      this.changed();return;
+    }
+    var tv2=+v;w.marks=w.marks||[];var ix2=w.marks.indexOf(tv2);
+    if(ix2>=0)w.marks.splice(ix2,1);else w.marks.push(tv2);
+    this.changed();return;
+  }
+  if(a==='scclr'){if(q.t==='sctwin')w.marks=[[],[]];else w.marks=[];this.changed();return;}
+  if(a==='scmode'&&q.t==='scdraw'){w.mode=v;w.msg='';this.render();return;}
+  if(a==='scstep1'&&q.t==='scdraw'){var C=SC_CUP[q.cup];w.val=Math.max(0,Math.min(C.max,w.val+(+v)*C.mn));w.chk=null;w.msg='';this.changed();return;}
+  if(a==='check'){if(q.t==='scdraw'){this.scDrawCheckAnim();return;}if(q.t==='sctwin')return;scCheck(st);this.changed();return;}
+  if(a==='cmp'&&q.t==='sctwin'){scCheck(st,v);this.changed();return;}
+};
+MlDesk.prototype.scRender=function(){
+  var root=this.root,st=this.st(),q=st.qs[st.i],w=st.w,done=w.s==='done',e=w.e||{},busy=!!this.anim;
+  var h2='<div class="rm"><div class="rm-head"><span class="lv">'+esc(TASK[st.id].title)+'</span><b class="frhq">'+scText(q,w)+'</b><span class="no">第 '+(st.i+1)+' / '+st.qs.length+' 題</span></div>';
+  h2+='<div class="rm-body ml-body sc-body">';
+  /* 左欄：操作工具 */
+  h2+='<div class="rm-col ml-tools">';
+  if(q.t==='scstep'){
+    var C=SC_CUP[q.cup];
+    if(w.ph==='step'){
+      h2+='<div class="ml-ctl"><div class="t">猜一猜：<b>1 小格</b>是幾毫升？</div><div class="sc-opts">'+
+        SC_OPTS.map(function(o){return '<button type="button" class="sc-opt'+(w.tryG===o?(w.tryOk?' ok':' bad'):'')+'" data-a="scopt" data-v="'+o+'"'+(busy?' disabled':'')+'>'+o+' 毫升</button>';}).join('')+
+        '</div></div>';
+      h2+='<div class="fr-tip">點一個數字，量杯就會照你猜的「一格一格往上數」，看看最後能不能剛好對上杯子印的數字！</div>';
+    }else{
+      h2+='<div class="ml-ctl"><div class="t">✅ 已破譯！</div><div class="sc-badge">1 小格 ＝ <b>'+C.mn+'</b> 毫升</div>'+
+        '<button type="button" class="ml-sm" data-a="scclr"'+(done||!(w.marks&&w.marks.length)?' disabled':'')+'>清除刻度記號</button></div>';
+      h2+='<div class="fr-tip">點一下量杯上的刻度線，就能把那一格的數字叫出來，一格一格數到水面！</div>';
+    }
+  }else if(q.t==='sctwin'){
+    h2+='<div class="ml-ctl"><div class="t">🔍 刻度小幫手</div>'+
+      '<div class="sc-tip2">甲：'+SC_CUP[q.A.cup].nm+'</div>'+
+      '<div class="sc-tip2">乙：'+SC_CUP[q.B.cup].nm+'</div>'+
+      '<button type="button" class="ml-sm" data-a="scclr"'+(done||!((w.marks&&w.marks[0]&&w.marks[0].length)||(w.marks&&w.marks[1]&&w.marks[1].length))?' disabled':'')+'>清除刻度記號</button></div>';
+    h2+='<div class="fr-tip">不要只看水面高矮！先看清甲、乙各是哪種量杯，點刻度線幫自己數出幾毫升再比。</div>';
+  }else{
+    var CD=SC_CUP[q.cup];
+    h2+='<div class="ml-ctl"><div class="t">工具切換</div>'+
+      '<button type="button" class="sc-mbtn'+(w.mode==='draw'?' on':'')+'" data-a="scmode" data-v="draw"'+(done||busy?' disabled':'')+'>💧 畫水位（點或拖）</button>'+
+      '<button type="button" class="sc-mbtn'+(w.mode==='mark'?' on':'')+'" data-a="scmode" data-v="mark"'+(done||busy?' disabled':'')+'>🔢 點刻度數數看</button></div>';
+    h2+='<div class="ml-ctl"><div class="t">微調水位</div>'+
+      '<button type="button" class="ml-sm" data-a="scstep1" data-v="1"'+(done||busy||w.val>=CD.max?' disabled':'')+'>▲ 多畫一小格</button>'+
+      '<button type="button" class="ml-sm" data-a="scstep1" data-v="-1"'+(done||busy||w.val<=0?' disabled':'')+'>▼ 少畫一小格</button>'+
+      '<button type="button" class="ml-sm" data-a="scclr"'+(done||!(w.marks&&w.marks.length)?' disabled':'')+'>清除刻度記號</button></div>';
+    h2+='<div class="fr-tip">先看這個杯子最底下寫多少，想清楚 1 小格是幾毫升；不確定時按「點刻度數數看」先標出數字再畫！</div>';
+  }
+  h2+='</div>';
+
+  /* 中欄：量杯舞台 */
+  h2+='<div class="rm-col grow ml-stage"><div class="sc-board">'+scBoardSVG(q,w,this.anim,true)+'</div>';
+  if(q.t==='sctwin'&&done){
+    var mx=Math.max(q.A.amt,q.B.amt,1);
+    h2+='<div class="sc-real"><div class="t">📏 同比例真實水量比較</div>'+
+      '<div class="sc-bar"><span>甲 '+q.A.amt+' mL</span><div class="tr"><i style="width:'+Math.max(3,Math.round(q.A.amt/mx*100))+'%;background:'+SC_CUP[q.A.cup].col+'"></i></div></div>'+
+      '<div class="sc-bar"><span>乙 '+q.B.amt+' mL</span><div class="tr"><i style="width:'+Math.max(3,Math.round(q.B.amt/mx*100))+'%;background:'+SC_CUP[q.B.cup].col+'"></i></div></div></div>';
+  }
+  if(w.msg)h2+='<div class="rm-msg'+(w.good?' ok':'')+'">'+esc(w.msg)+'</div>';
+  h2+='</div>';
+
+  /* 右欄：作答區 */
+  var box=function(f){return '<button type="button" class="rm-ab'+(w.f===f&&!done?' f':'')+'" data-a="f" data-v="'+f+'">'+esc(e[f]==null?'':e[f])+'</button>';};
+  h2+='<div class="rm-col ml-ans"><div class="ap-eq ml-eq">';
+  if(q.t==='scstep'){
+    if(w.ph==='step'){
+      h2+='<div class="lb">第一步：破譯刻度</div><div class="ml-note">先在左邊點一個數字，看看這個量杯的 1 小格是多少毫升！</div>';
+    }else{
+      h2+='<div class="lb">第二步：讀出水量</div><div>這杯有 '+box('a')+' 毫升</div>';
+    }
+  }else if(q.t==='sctwin'){
+    h2+='<div class="lb">看刻度，寫下來</div><div>甲 '+box('a')+' 毫升</div><div>乙 '+box('b')+' 毫升</div>';
+  }else{
+    h2+='<div class="lb">客人點單</div><div class="sc-order">'+scGoalDesc(q)+'</div><div class="ml-note">在量杯上點一下或上下拖拉畫出水位，畫好了按「送出飲料」。</div>';
+  }
+  h2+='</div>';
+  if(!done){
+    if(scFields(q,w).length)h2+=rmPadHTML();
+    if(q.t==='sctwin'){
+      h2+='<div class="fr-cmp">'+[['gt','甲 比較多'],['eq','一樣多'],['lt','乙 比較多']].map(function(x){return '<button type="button" data-a="cmp" data-v="'+x[0]+'"'+(busy?' disabled':'')+'>'+x[1]+'</button>';}).join('')+'</div>';
+    }else if(q.t==='scdraw'){
+      h2+='<button type="button" class="rm-btn" data-a="check"'+(busy?' disabled':'')+'>🍹 送出飲料</button>';
+    }else if(w.ph==='read'){
+      h2+='<button type="button" class="rm-btn" data-a="check"'+(busy?' disabled':'')+'>檢查</button>';
+    }
+  }else{
+    if(q.t==='sctwin')h2+='<div class="fr-cmp"><button type="button" class="on">'+{gt:'甲 比較多',eq:'一樣多',lt:'乙 比較多'}[scTwinAns(q)]+'</button></div>';
+    h2+='<button type="button" class="rm-btn go" data-a="next">'+(st.i+1<st.qs.length?'下一題 ▶':'看結果 ▶')+'</button>';
+  }
+  root.innerHTML=h2+'</div></div></div>';
+};
+(function(){var s=document.createElement('style');s.textContent=
+  '.sc-body{gap:12px}.sc-body .ml-tools{width:196px;flex:none;padding:10px}.sc-body .ml-stage{min-width:250px;flex:1;padding:8px!important}.sc-body .ml-ans{width:254px;flex:none;padding:10px 12px}@media (min-width:780px){.sc-body{flex-wrap:nowrap}}'+
+  '.sc-board{width:100%;display:flex;justify-content:center;align-items:center}.sc-svg{max-width:460px;max-height:58vh}.sc-svg.sc-twin{max-width:640px;max-height:54vh}'+
+  '.sc-opts{display:flex;flex-direction:column;gap:7px}.sc-opt{font:inherit;font-size:19px;font-weight:800;padding:10px 8px;border:2.5px solid #2a6fb0;border-radius:12px;background:#fff;color:#1f5fa6;cursor:pointer;transition:transform .1s}'+
+  '.sc-opt:hover:not(:disabled){background:#eaf4ff}.sc-opt:active:not(:disabled){transform:scale(.97)}.sc-opt.bad{border-color:#d3392a;background:#fff1ef;color:#b82a1d}.sc-opt.ok{border-color:#1f9d55;background:#e6f7ee;color:#157a40}'+
+  '.sc-badge{background:#e6f7ee;border:2px solid #1f9d55;color:#157a40;border-radius:10px;padding:8px;text-align:center;font-size:17px;font-weight:700}.sc-badge b{font-size:24px}'+
+  '.sc-tip2{font-size:14px;font-weight:700;color:#2c3e50;background:#fff;border-radius:8px;padding:5px 8px;border:1px solid #d9e4ec}'+
+  '.sc-mbtn{font:inherit;font-size:15px;font-weight:800;border:2px solid var(--line);border-radius:10px;background:#fff;padding:9px 8px;cursor:pointer}.sc-mbtn.on{border-color:#e07a12;background:#fff4e3;color:#b85c00}'+
+  '.sc-order{font-size:28px;font-weight:900;color:#c0392b;background:#fff6e0;border-radius:12px;padding:8px 14px;margin:4px 0}'+
+  '.sc-real{width:100%;max-width:520px;background:#f7fbff;border:2px solid #bdd9f2;border-radius:12px;padding:10px 14px;margin-top:8px;display:flex;flex-direction:column;gap:6px}'+
+  '.sc-real .t{font-size:14px;font-weight:800;color:#1f5fa6}.sc-bar{display:flex;align-items:center;gap:10px;font-size:15px;font-weight:800}.sc-bar span{width:110px;text-align:right}.sc-bar .tr{flex:1;height:20px;background:#e5eef5;border-radius:10px;overflow:hidden}.sc-bar i{display:block;height:100%;border-radius:10px}'+
+  '.mlt .sc-svg{max-height:150px}.mlt.big .sc-svg{max-height:none}';
+document.head.appendChild(s);})();
 
 /* ================= 1 公升冰塊切切看（自己寫的 canvas 3D 動畫）=================
    正方體盒子 → 倒 1 公升水 → 結冰 → 倒出 → 側邊切 10 層 → 轉成俯視 → 切 10×10 → 拉出一塊 → 標出 1 毫升 → 總整理。
@@ -5043,7 +5683,7 @@ function kmTeacher(o){
 '.km-wait{font-size:28px;margin:auto}';
 var s=document.createElement('style');s.textContent=css;document.head.appendChild(s);})();
 
-var UNITS=[['angleb','角・課本','math'],['angle','角・習作','math'],['areab','面積・課本','math'],['area','面積・習作','math'],['divb','除法・課本','math'],['div','除法・習作','math'],['frac','分數板','math'],['mlb','8-1 毫升','math'],['mlc','8-2 公升與毫升','math'],['zh7','七 淡水小鎮','zh'],['zh8','八 安平古堡參觀記','zh'],['zh9','九 馬太鞍的巴拉告','zh'],['zh10','十 狐狸的故事','zh'],['zh11','十一 巨人的花園','zh'],['zh12','十二 模仿貓','zh'],['zizao','拆字造字','zh'],['bh','班會闖關','soc'],['socb','班級自治・課本','soc'],['socw','班級自治・習作','soc']];
+var UNITS=[['angleb','角・課本','math'],['angle','角・習作','math'],['areab','面積・課本','math'],['area','面積・習作','math'],['divb','除法・課本','math'],['div','除法・習作','math'],['frac','分數板','math'],['mlb','8-1 毫升','math'],['mlc','8-2 公升與毫升','math'],['mld','8-3 容量加減','math'],['mlw','公升毫升・習作','math'],['zh7','七 淡水小鎮','zh'],['zh8','八 安平古堡參觀記','zh'],['zh9','九 馬太鞍的巴拉告','zh'],['zh10','十 狐狸的故事','zh'],['zh11','十一 巨人的花園','zh'],['zh12','十二 模仿貓','zh'],['zizao','拆字造字','zh'],['bh','班會闖關','soc'],['socb','班級自治・課本','soc'],['socw','班級自治・習作','soc']];
 var SUBJ=[['zh','國語教室'],['math','數學教室'],['soc','社會教室']];
 function unitSubj(u){for(var i=0;i<UNITS.length;i++)if(UNITS[i][0]===u)return UNITS[i][2];return 'math';}
 function isZhSt(st){return !!st&&st.k==='wb'&&!!TASK[st.id]&&(TASK[st.id].subj==='zh'||!!TASK[st.id].ink);}
